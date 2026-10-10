@@ -198,7 +198,8 @@ section{padding-block:clamp(72px,9vw,120px)}
 @media (max-width:520px){.srow{grid-template-columns:44px 1fr auto;gap:12px;padding:14px}.srow .arrow{display:none}.star{padding:24px}.star h3{font-size:1.5rem}}
 
 /* ---------- Process: lock screen notifications ---------- */
-.e9{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:center}
+.e9{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:center}
+.e9 .lockwrap{order:2}
 .e9 .head{margin-bottom:0}
 .lockwrap{justify-self:center}
 .lock{width:310px;border-radius:44px;background:var(--ink);padding:12px;box-shadow:0 50px 90px -40px rgba(43,15,46,.75)}
@@ -220,7 +221,7 @@ section{padding-block:clamp(72px,9vw,120px)}
 .psteps li span{font-size:.78rem;font-weight:800;color:var(--rose);background:var(--blush);border-radius:10px;padding:6px 10px;white-space:nowrap;min-width:74px;text-align:center}
 .e9{direction:ltr}
 :root[dir="rtl"] .e9 > div:last-child,:root[dir="rtl"] .ntf,:root[dir="rtl"] .ltime small,:root[dir="rtl"] .lock-ex{direction:rtl}
-@media (max-width:1100px){.e9{grid-template-columns:auto 1fr;gap:40px}.lock{width:280px}.lscr{min-height:540px}}
+@media (max-width:1100px){.e9{grid-template-columns:1fr auto;gap:40px}.lock{width:280px}.lscr{min-height:540px}}
 @media (max-width:760px){.e9{grid-template-columns:1fr;gap:32px}}
 @media (max-width:360px){.lock{width:280px}}
 
