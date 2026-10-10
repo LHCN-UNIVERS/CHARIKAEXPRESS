@@ -19,7 +19,8 @@ let wav = music;
 
 (async () => {
   const PAGE = process.env.PAGE || 'promo.html', MUSIC = process.env.MUSIC || 'music.py';
-  execFileSync('python3', [path.join(__dirname, MUSIC), music], { stdio: 'inherit' });
+  const [mScript, ...mArgs] = MUSIC.split(' ');     // e.g. MUSIC='reel_music.py short'
+  execFileSync('python3', [path.join(__dirname, mScript), music, ...mArgs], { stdio: 'inherit' });
   if (process.env.KOKORO_DIR) {
     execFileSync('python3', [path.join(__dirname, 'voice.py'), music, mixed, process.env.KOKORO_DIR, ...(process.env.LINES ? [path.join(__dirname, process.env.LINES)] : [])], { stdio: 'inherit' });
     wav = mixed;

@@ -1,17 +1,25 @@
 """Soundtrack for reel.html: 22 s, 128 bpm, energetic, with sound effects synced to the animation.
 Synthesised with numpy only (no licensed audio).
-Usage: python3 reel_music.py out.wav
+Usage: python3 reel_music.py out.wav [short]
 """
 import sys, wave
 import numpy as np
 
 SR = 44100
-DUR = 22.0
-N = int(SR * DUR)
 BEAT = 60 / 128
+SHORT = len(sys.argv) > 2 and sys.argv[2] == 'short'
+# The 10 s ad compresses the 22 s timeline (same map as reel.html): new_start, new_end, orig_start, orig_end. Scene 2 is cut.
+MAP = [(0, 1.8, 0, 2.6), (1.8, 4.0, 6, 9), (4.0, 6.8, 9, 14.2), (6.8, 8.4, 14.2, 18), (8.4, 10, 18, 22)]
+def T(orig):
+    if not SHORT: return orig
+    for a, b, oa, ob in MAP:
+        if oa <= orig < ob or (ob == 22 and orig >= ob): return a + (orig - oa) * (b - a) / (ob - oa)
+    return None                                       # falls in the cut scene
+DUR = 10.0 if SHORT else 22.0
+N = int(SR * DUR)
 rng = np.random.default_rng(11)
 t_all = np.arange(N) / SR
-DROP, DROP2, BREAK = 6.0, 18.0, (17.4, 18.0)
+DROP, DROP2, BREAK = T(6.0), T(18.0), (T(17.4), T(18.0))
 
 def midi(m): return 440.0 * 2 ** ((m - 69) / 12)
 
@@ -83,7 +91,7 @@ def hat(open_=False):
 K, C, Hc, Ho = kick(), clap(), hat(), hat(True)
 for i in range(int(DUR / BEAT) + 1):
     at = i * BEAT
-    if at >= DUR - 1.2 or in_break(at): continue
+    if at >= DUR - (.5 if SHORT else 1.2) or in_break(at): continue
     add(dry, K, at, .5 if at >= DROP else .38)
     if at >= DROP and i % 2 == 1: add(dry, C, at, .18, .1); add(wet, C, at, .07)
     add(dry, Hc, at + BEAT / 2, .06 if at < DROP else .05, .35)
@@ -126,25 +134,32 @@ def swipe():
     nz = bandpass(rng.standard_normal(n), 2500, 9000)
     return nz / np.abs(nz).max() * np.sin(np.pi * tt / tt[-1]) ** 2
 
-for i in range(7):                                    # hook words
-    add(dry, pop(700 + i * 90), .05 + i * .19, .12, (-1) ** i * .3)
-add(dry, whoosh(.4), 2.35, .14)                        # cut to S2
+def fx(sig, orig_at, gain, pan=0.0, rev=0.0):
+    at = T(orig_at)
+    if at is None: return
+    add(dry, sig, at, gain, pan)
+    if rev: add(wet, sig, at, rev)
+
+for i in range(4 if SHORT else 7):                    # hook words
+    fx(pop(700 + i * 90), .05 + i * .19, .12, (-1) ** i * .3)
+fx(whoosh(.4), 2.35, .14)                             # cut to scene 2
 for i in range(4):                                    # stickers fly in, get crossed, fall
-    add(dry, whoosh(.3, 800, 9000), 2.6 + .2 + i * .3 - .1, .1, -.5 if i % 2 == 0 else .5)
-    add(dry, swipe(), 2.6 + 1.9 + i * .18, .12, .2)
-add(dry, whoosh(.6, 300, 4000), 2.6 + 2.75, .14)
-add(dry, riser(1.6), DROP - 1.6, .16); add(wet, riser(1.6), DROP - 1.6, .08)
+    fx(whoosh(.3, 800, 9000), 2.6 + .1 + i * .3, .1, -.5 if i % 2 == 0 else .5)
+    fx(swipe(), 2.6 + 1.9 + i * .18, .12, .2)
+fx(whoosh(.6, 300, 4000), 2.6 + 2.75, .14)
+r = 1.0 if SHORT else 1.6
+add(dry, riser(r), DROP - r, .16); add(wet, riser(r), DROP - r, .08)
 for at in (DROP, DROP2):
     add(dry, impact(), at, .55); add(wet, impact(), at, .25)
-add(dry, whoosh(.45), 9.0 - .3, .12)
+fx(whoosh(.45), 9.0 - .3, .12)
 for i, s0 in enumerate((.6, 1.6, 2.6, 3.6)):          # notifications
-    add(dry, chime(83 + (i % 2) * 2, 90 + (i % 2) * 2), 9.0 + s0, .11, .25); add(wet, chime(83, 90), 9.0 + s0, .07)
-add(dry, whoosh(.45), 14.2 - .3, .12)
+    fx(chime(83 + (i % 2) * 2, 90 + (i % 2) * 2), 9.0 + s0, .11, .25, .07)
+fx(whoosh(.45), 14.2 - .3, .12)
 for i in range(14):                                   # price count-up ticks
-    add(dry, pop(1400 + i * 40, .03), 14.35 + i * .065, .07)
-add(dry, chime(88, 95), 15.3, .14); add(wet, chime(88, 95), 15.3, .1)
-add(dry, riser(.6), BREAK[0], .12)
-add(dry, pop(800), 18.9, .14); add(dry, pop(1000), 19.3, .14)
+    fx(pop(1400 + i * 40, .03), 14.35 + i * .065, .07)
+fx(chime(88, 95), 15.3, .14, 0, .1)
+add(dry, riser(BREAK[1] - BREAK[0]), BREAK[0], .12)
+fx(pop(800), 18.9, .14); fx(pop(1000), 19.3, .14)
 
 # ---------- reverb + master ----------
 irn = int(1.4 * SR); tt = np.arange(irn) / SR
@@ -153,7 +168,7 @@ def conv(x, ir): return np.fft.irfft(np.fft.rfft(x, size) * np.fft.rfft(ir, size
 rev = np.vstack([conv(wet[c], rng.standard_normal(irn) * np.exp(-tt * 3.5)) for c in (0, 1)])
 rev /= np.abs(rev).max() + 1e-9
 mixd = dry + rev * .2
-fade = np.ones(N); fo = int(1.2 * SR); fade[-fo:] = np.linspace(1, 0, fo) ** 1.4
+fade = np.ones(N); fo = int((.6 if SHORT else 1.2) * SR); fade[-fo:] = np.linspace(1, 0, fo) ** 1.4
 mixd *= fade
 mixd /= np.abs(mixd).max()
 mixd = np.tanh(mixd * 1.4) / np.tanh(1.4) * .89
