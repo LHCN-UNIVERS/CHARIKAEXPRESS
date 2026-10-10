@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Espace équipe · Charika Express</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap">
+<style>
+/* Team space ("Dossier 360°"): inbox-style list, full file in the centre, client/company on the right. Same "Coucher" tokens as the site. */
+:root{
+  --ink:#2b0f2e; --m:#6b5468; --bg:#fffaf7; --blush:#fff0ec; --line:#f1e4e6;
+  --coral:#ff7a59; --pink:#ff4f9a; --gold:#ffc145; --rose:#ff5c7a; --ok:#0e8a5f; --err:#c0362c;
+  --font:"Sora",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --grad:linear-gradient(100deg,var(--coral),var(--pink));
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 var(--font)}
+h1,h2,h3,h4,p{margin:0}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+[hidden]{display:none!important}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-weight:700}
+.logo{font-weight:800;font-size:1.08rem;display:flex;align-items:center;gap:8px;letter-spacing:-.02em;white-space:nowrap}
+.logo i{width:10px;height:10px;border-radius:50%;background:var(--grad)}
+.logo span{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.av{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:800;font-size:.74rem;flex:none;background:var(--c,var(--grad))}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:0;border-radius:12px;padding:10px 15px;font-weight:700;font-size:.82rem;text-decoration:none;white-space:nowrap;transition:transform .15s,opacity .15s}
+.btn:active{transform:scale(.97)}
+.b-grad{background:var(--grad);color:#fff;box-shadow:0 10px 20px -12px rgba(255,79,154,.8)}
+.b-soft{background:#fff;border:1px solid var(--line);color:var(--ink)}
+.b-wa{background:#25d366;color:#fff}
+.b-ink{background:var(--ink);color:#fff}
+.b-sm{padding:6px 10px;font-size:.74rem;border-radius:10px}
+.pill{display:inline-flex;align-items:center;gap:4px;font-size:.68rem;font-weight:700;padding:3px 9px;border-radius:999px;white-space:nowrap}
+.p-new{background:#ffe9f2;color:#d6337a}.p-late{background:#ffe9e0;color:#c4502c}.p-ok{background:#e3f5ec;color:var(--ok)}.p-wait{background:#fff4d6;color:#a06d00}.p-mute{background:#f4eef1;color:var(--m)}
+input.f,select.f,textarea.f{width:100%;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 12px;outline:none}
+input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(255,79,154,.15)}
+
+/* Login */
+.login{min-height:100%;display:grid;place-items:center;padding:24px;background:radial-gradient(600px 400px at 85% 10%,rgba(255,122,89,.25),transparent 70%),radial-gradient(500px 400px at 10% 90%,rgba(255,79,154,.18),transparent 70%),var(--bg)}
+.lcard{width:100%;max-width:400px;background:#fff;border:1px solid var(--line);border-radius:26px;padding:28px;display:grid;gap:16px;box-shadow:0 30px 60px -36px rgba(43,15,46,.45)}
+.lcard h1{font-size:1.4rem;letter-spacing:-.03em}
+.lcard p{color:var(--m);font-size:.86rem}
+.lcard label{font-weight:600;font-size:.8rem;display:grid;gap:6px}
+.lerr{color:var(--err);font-size:.8rem;font-weight:600}
+.demo-acc{background:var(--bg);border:1px dashed var(--line);border-radius:14px;padding:10px 12px;font-size:.76rem;color:var(--m);display:grid;gap:6px}
+.demo-acc button{all:unset;cursor:pointer;color:var(--rose);font-weight:700}
+
+/* App shell */
+.app{height:100%;display:grid;grid-template-rows:auto auto 1fr}
+.top{display:flex;align-items:center;gap:16px;padding:12px 20px;background:#fff;border-bottom:1px solid var(--line)}
+.top .tag{font-size:.7rem;font-weight:700;color:var(--m);background:var(--blush);padding:4px 9px;border-radius:999px}
+.top .search{flex:1;max-width:380px}
+.top .r{margin-inline-start:auto;display:flex;align-items:center;gap:10px}
+.top .me{display:flex;align-items:center;gap:8px;font-weight:700}
+.top .me small{display:block;font-weight:500;color:var(--m);font-size:.7rem}
+.bell{position:relative;background:var(--blush);border:0;border-radius:12px;width:38px;height:38px;display:grid;place-items:center}
+.bell b{position:absolute;top:-4px;inset-inline-end:-4px;background:var(--grad);color:#fff;font-size:.62rem;border-radius:999px;padding:1px 6px}
+.demo-bar{background:#fff4d6;color:#7a5400;font-size:.76rem;padding:7px 20px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.demo-bar button{all:unset;cursor:pointer;font-weight:700;text-decoration:underline}
+.body{display:grid;grid-template-columns:320px 1fr 290px;min-height:0}
+.detail{display:contents}
+
+/* List */
+.list{background:#fff;border-inline-end:1px solid var(--line);display:grid;grid-template-rows:auto 1fr;min-height:0}
+.filters{display:flex;gap:5px;padding:12px 10px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 9px;font-weight:600;font-size:.72rem}
+.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.items{overflow:auto}
+.li{display:grid;grid-template-columns:36px 1fr auto;gap:10px;padding:12px 14px;border-bottom:1px solid var(--line);align-items:center;cursor:pointer;width:100%;background:none;border-inline:0;border-top:0;text-align:start}
+.li:hover{background:#fffaf7}
+.li.on{background:#fff3ef;box-shadow:inset 3px 0 0 var(--pink)}
+.li .av{width:36px;height:36px}
+.li b{font-size:.84rem;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.li small{font-size:.7rem;color:var(--m);display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.li .r{display:grid;justify-items:end;gap:4px;font-size:.66rem;color:var(--m)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--pink)}
+.empty{padding:30px 20px;text-align:center;color:var(--m);font-size:.84rem}
+
+/* Centre */
+.ctr{padding:20px 24px;display:grid;gap:16px;align-content:start;overflow:auto;min-height:0}
+.ctr .h{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.ctr .h h2{font-size:1.35rem;letter-spacing:-.03em}
+.ctr .h small{color:var(--m);font-size:.74rem}
+.ctr .h .r{margin-inline-start:auto;display:flex;gap:8px;flex-wrap:wrap}
+.back{display:none}
+.track{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px 10px;display:grid;grid-template-columns:repeat(7,1fr)}
+.track button{all:unset;cursor:pointer;display:grid;justify-items:center;gap:6px;text-align:center;font-size:.68rem;color:var(--m);position:relative;padding:0 2px}
+.track button::before{content:"";position:absolute;top:13px;inset-inline-end:50%;width:100%;height:3px;background:var(--line)}
+.track button:first-child::before{display:none}
+.track button.ok::before,.track button.cur::before{background:var(--ok)}
+.track i{width:28px;height:28px;border-radius:50%;background:#fff;border:2px solid var(--line);display:grid;place-items:center;font-style:normal;font-weight:800;font-size:.72rem;position:relative;z-index:1}
+.track .ok i{background:var(--ok);border-color:var(--ok);color:#fff}
+.track .cur i{border-color:var(--pink);color:var(--pink);box-shadow:0 0 0 5px rgba(255,79,154,.15)}
+.track .cur{color:var(--ink);font-weight:700}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.box{background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px;display:grid;gap:10px;align-content:start}
+.box h4{font-size:.88rem;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.box h4 small{color:var(--m);font-weight:600;font-size:.72rem}
+.row{display:flex;align-items:center;gap:10px;font-size:.8rem;padding:8px 10px;border-radius:12px;background:#fffaf7}
+.row span{flex:1}
+.row .st{font-style:normal;width:26px;height:26px;border-radius:8px;display:grid;place-items:center;font-size:.8rem;flex:none;border:0}
+.st.y{background:#e3f5ec;color:var(--ok)}.st.n{background:#ffe9e0;color:#c4502c}
+.tg{all:unset;cursor:pointer;font-size:.72rem;font-weight:700;padding:5px 10px;border-radius:999px;background:#fff;border:1px solid var(--line)}
+.tg.y{background:#e3f5ec;border-color:#c5ead7;color:var(--ok)}
+.prog{height:6px;background:var(--blush);border-radius:9px;overflow:hidden}.prog i{display:block;height:100%;background:var(--grad);transition:width .3s}
+.feed{display:grid;gap:10px;max-height:320px;overflow:auto}
+.msg{display:flex;gap:10px;font-size:.8rem}
+.msg > div{background:#fffaf7;border:1px solid var(--line);border-radius:4px 14px 14px 14px;padding:9px 11px;line-height:1.45;overflow-wrap:anywhere}
+.msg.sys > div{background:#fff;border-style:dashed;color:var(--m)}
+.msg small{display:block;color:var(--m);font-size:.66rem;margin-bottom:2px}
+.cmp{display:flex;gap:8px}
+.cmp input{flex:1}
+
+/* Right */
+.info{background:#fff;border-inline-start:1px solid var(--line);padding:18px;display:grid;gap:12px;align-content:start;overflow:auto;min-height:0}
+.info h4{font-size:.82rem;margin-top:4px}
+.cl{display:flex;gap:10px;align-items:center}
+.cl .av{width:42px;height:42px;font-size:.9rem}
+.cl small{display:block;color:var(--m);font-size:.72rem;overflow-wrap:anywhere}
+.dl{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;font-size:.76rem;margin:0}
+.dl dt{color:var(--m)}
+.dl dd{margin:0;font-weight:600;text-align:end;overflow-wrap:anywhere}
+.blank{display:grid;place-items:center;color:var(--m);text-align:center;padding:40px;gap:8px}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:12px;font-size:.82rem;font-weight:600;z-index:9;box-shadow:0 12px 30px -12px rgba(43,15,46,.6)}
+
+@media (max-width:1180px){
+  .body{grid-template-columns:300px 1fr}
+  .detail{display:block;overflow:auto;min-height:0}
+  .info{border-inline-start:0;border-top:1px solid var(--line);overflow:visible}
+  .ctr{overflow:visible}
+}
+@media (max-width:820px){
+  .top{flex-wrap:wrap;gap:10px;padding:10px 14px}
+  .top .tag,.top .me small,.top .me > div,#exportBtn,.demo-bar .long{display:none!important}
+  .app{height:auto;min-height:100%}
+  .body{display:block}
+  .items,.ctr,.detail{overflow:visible}
+  .detail{display:block}
+  .top .search{order:3;flex-basis:100%;max-width:none}
+  .body{grid-template-columns:1fr}
+  .body:not(.open) .detail{display:none}
+  .body.open .list{display:none}
+  .back{display:inline-flex}
+  .ctr{padding:16px}
+  .two{grid-template-columns:1fr}
+  .track{padding:14px 4px}
+  .track button{font-size:.58rem}
+  .track i{width:24px;height:24px;font-size:.64rem}
+  .track button::before{top:11px}
+}
+</style>
+</head>
+<body>
+
+<!-- Login -->
+<main class="login" id="loginView" hidden>
+  <form class="lcard" id="loginForm" novalidate>
+    <div class="logo"><i></i>Charika <span>Express</span></div>
+    <div><h1>Espace équipe</h1><p>Connectez-vous pour suivre les demandes.</p></div>
+    <label>E-mail<input class="f" type="email" id="lEmail" autocomplete="username" required></label>
+    <label>Mot de passe<input class="f" type="password" id="lPass" autocomplete="current-password" required></label>
+    <p class="lerr" id="lErr" hidden>E-mail ou mot de passe incorrect.</p>
+    <button class="btn b-grad" type="submit">Se connecter</button>
+    <div class="demo-acc" id="demoAcc"></div>
+  </form>
+</main>
+
+<!-- App -->
+<div class="app" id="appView" hidden>
+  <header class="top">
+    <div class="logo"><i></i>Charika <span>Express</span></div>
+    <span class="tag">Espace équipe</span>
+    <input class="f search" id="q" type="search" placeholder="Rechercher : réf, nom, téléphone, CIN…" aria-label="Rechercher">
+    <div class="r">
+      <button class="bell" id="bell" title="Nouvelles demandes non lues" aria-label="Nouvelles demandes">🔔<b id="bellN" hidden>0</b></button>
+      <button class="btn b-soft b-sm" id="exportBtn" title="Exporter la liste en CSV">Exporter</button>
+      <div class="me"><span class="av" id="meAv">?</span><div><span id="meName"></span><small id="meRole"></small></div></div>
+      <button class="btn b-soft b-sm" id="logout">Déconnexion</button>
+    </div>
+  </header>
+  <div class="demo-bar" id="demoBar"><span>⚠️ Mode démonstration<span class="long"> : les données sont enregistrées dans ce navigateur seulement. Pour que toute l'équipe partage les demandes, il faut connecter une base de données (voir README).</span></span><button id="resetDemo">Réinitialiser la démo</button></div>
+  <div class="body" id="body">
+    <aside class="list">
+      <div class="filters" id="filters">
+        <button class="chip on" data-f="todo">À traiter</button>
+        <button class="chip" data-f="mine">Mes dossiers</button>
+        <button class="chip" data-f="all">Tous</button>
+        <button class="chip" data-f="done">Terminés</button>
+      </div>
+      <div class="items" id="items"></div>
+    </aside>
+    <div class="detail" id="detail"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast" hidden></div>
+
+<script>
+(() => {
+  'use strict';
+  const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const fmt = n => Number(n || 0).toLocaleString('fr-FR').replace(/ | /g, ' ');
+  const DAY = 864e5;
+
+  // ---------- Reference data ----------
+  // Demo accounts only. With a real backend, logins are checked by the server (see README).
+  const TEAM = [
+    { id:'youssef', name:'Youssef', email:'admin@charikaexpress.ma', role:'admin',   c:'linear-gradient(100deg,#ff7a59,#ff4f9a)' },
+    { id:'salma',   name:'Salma',   email:'salma@charikaexpress.ma', role:'juriste', c:'#7a5cff' },
+    { id:'karim',   name:'Karim',   email:'karim@charikaexpress.ma', role:'juriste', c:'#14a3a3' },
+    { id:'hajar',   name:'Hajar',   email:'hajar@charikaexpress.ma', role:'juriste', c:'#e0a100' }
+  ];
+  const DEMO_PASS = 'demo';
+  const STEPS = ['Reçue', 'Paiement', 'Pièces', 'Certificat négatif', 'Statuts', 'RC · IF · CNSS', 'Livré'];
+  const FORMES = { sarlau:'SARL AU', sarl:'SARL', ae:'Auto-entrepreneur', sa:'Société anonyme' };
+  const PLANS = { essentiel:'Essentiel', premium:'Premium', ae:'Auto-entrepreneur' };
+  const OPTS = { o_prio:'Traitement prioritaire', o_logo:'Logo et carte de visite', o_pacte:"Pacte d'associés" };
+  const PAY = { virement:'Virement', cashplus:'Cash Plus' };
+  const member = id => TEAM.find(t => t.id === id);
+
+  // ---------- Storage (swap this object for a real backend) ----------
+  const DB_KEY = 'ce-admin-db', USER_KEY = 'ce-admin-user', INBOX_KEY = 'ce-requests';
+  const store = {
+    read(k, d){ try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch(e) { return d; } },
+    write(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e) {} }
+  };
+  let db = store.read(DB_KEY, null);
+  const persist = () => store.write(DB_KEY, db);
+
+  function seed(){
+    const now = Date.now(), ago = d => new Date(now - d * DAY).toISOString();
+    const mk = (o) => Object.assign({
+      lang:'fr', options:[], payAmount:'half', siege:'dom', message:'', seen:true, juriste:null,
+      docs:{}, paid:{ first:false, second:false }, notes:[]
+    }, o);
+    const P = (name, cin, pct) => ({ name, cin, pct });
+    const list = [
+      mk({ ref:'CE-446366', createdAt:ago(.02), updatedAt:ago(.02), seen:false, forme:'sarlau', plan:'essentiel', total:2900, payMethod:'cashplus',
+        noms:['Atlas Digital','Atlas Media','Atlas Group'], activite:'Agence de marketing digital', ville:'Casablanca', capital:10000,
+        partners:[P('Lahcen Tazi','BE123456',100)], gerant:{ name:'Lahcen Tazi', cin:'BE123456' },
+        client:{ nom:'Lahcen Tazi', tel:'0612345678', email:'lahcen@exemple.ma' }, step:1 }),
+      mk({ ref:'CE-446201', createdAt:ago(.3), updatedAt:ago(.3), seen:false, forme:'sarl', plan:'premium', total:8900, payMethod:'virement', payAmount:'full',
+        noms:['Nour Food','Nour Traiteur','Nour Gourmet'], activite:'Restauration et traiteur', ville:'Rabat', capital:50000,
+        partners:[P('Nadia Benali','A654321',60), P('Omar Benali','A112233',40)], gerant:{ name:'Nadia Benali', cin:'A654321' },
+        client:{ nom:'Nadia Benali', tel:'0661122334', email:'nadia@exemple.ma' }, step:1, juriste:'karim' }),
+      mk({ ref:'CE-445812', createdAt:ago(4), updatedAt:ago(3), forme:'sarl', plan:'essentiel', total:2900, payMethod:'virement',
+        noms:['Sahara Trans'], activite:'Transport de marchandises', ville:'Agadir', capital:20000,
+        partners:[P('Rachid Amrani','J998877',50), P('Samir Amrani','J887766',50)], gerant:{ name:'Rachid Amrani', cin:'J998877' },
+        client:{ nom:'Rachid Amrani', tel:'0677889900', email:'rachid@exemple.ma' }, step:2, juriste:'salma', paid:{ first:true, second:false },
+        docs:{ pay:true, 'cin-0':true } }),
+      mk({ ref:'CE-445610', createdAt:ago(6), updatedAt:ago(2.5), forme:'sarl', plan:'premium', total:10100, options:['o_pacte'], payMethod:'cashplus',
+        noms:['Kech Events'], activite:"Organisation d'événements", ville:'Marrakech', capital:30000, siege:'local',
+        partners:[P('Hind Alaoui','E445566',50), P('Yassine Alaoui','E556677',30), P('Sara Alaoui','E667788',20)], gerant:{ name:'Hind Alaoui', cin:'E445566' },
+        client:{ nom:'Hind Alaoui', tel:'0655443322', email:'hind@exemple.ma' }, step:2, juriste:'salma', paid:{ first:true, second:false },
+        docs:{ pay:true, 'cin-0':true, 'cin-1':true } }),
+      mk({ ref:'CE-445320', createdAt:ago(8), updatedAt:ago(1), forme:'sarl', plan:'essentiel', total:2900, payMethod:'virement', payAmount:'full',
+        noms:['Rif Agro'], activite:'Agriculture et export', ville:'Autre ville', capital:100000,
+        partners:[P('Karim Haddou','S334455',70), P('Ali Haddou','S445566',30)], gerant:{ name:'Karim Haddou', cin:'S334455' },
+        client:{ nom:'Karim Haddou', tel:'0644556677', email:'k.haddou@exemple.ma' }, step:3, juriste:'hajar', paid:{ first:true, second:true },
+        docs:{ pay:true, 'cin-0':true, 'cin-1':true } }),
+      mk({ ref:'CE-444980', createdAt:ago(12), updatedAt:ago(.5), forme:'sarl', plan:'premium', total:8900, payMethod:'virement',
+        noms:['Medina Craft'], activite:'Artisanat', ville:'Fès', capital:20000,
+        partners:[P('Fatima Idrissi','C223344',50), P('Mehdi Idrissi','C334455',50)], gerant:{ name:'Fatima Idrissi', cin:'C223344' },
+        client:{ nom:'Fatima Idrissi', tel:'0633221100', email:'fatima@exemple.ma' }, step:4, juriste:'karim', paid:{ first:true, second:false },
+        docs:{ pay:true, 'cin-0':true, 'cin-1':true } }),
+      mk({ ref:'CE-444512', createdAt:ago(22), updatedAt:ago(10), forme:'sarlau', plan:'essentiel', total:2900, payMethod:'cashplus',
+        noms:['Souss Fresh'], activite:'Distribution de fruits', ville:'Agadir', capital:10000,
+        partners:[P('Hamza Ouali','JK12345',100)], gerant:{ name:'Hamza Ouali', cin:'JK12345' },
+        client:{ nom:'Hamza Ouali', tel:'0622334455', email:'hamza@exemple.ma' }, step:7, juriste:'salma', paid:{ first:true, second:true },
+        docs:{ pay:true, 'cin-0':true } })
+    ];
+    list.forEach(r => {
+      r.notes.push({ t:'sys', at:r.createdAt, text:'Demande reçue depuis le site.' });
+      if (r.step >= 2) r.notes.push({ t:'note', by:r.juriste, at:new Date(Date.parse(r.createdAt) + DAY).toISOString(), text:'Paiement vérifié, client informé.' });
+    });
+    list[3].notes.push({ t:'note', by:'salma', at:ago(2.5), text:'Il manque la CNIE de Sara Alaoui. Relancée par WhatsApp.' });
+    return { requests:list };
+  }
+
+  // New requests sent from the form in this browser (demande.html)
+  function importInbox(){
+    const box = store.read(INBOX_KEY, []);
+    if (!box.length) return;
+    box.forEach(r => {
+      if (db.requests.some(x => x.ref === r.ref)) return;
+      db.requests.unshift(Object.assign({ seen:false, juriste:null, step:1, docs:{}, paid:{ first:false, second:false },
+        updatedAt:r.createdAt, notes:[{ t:'sys', at:r.createdAt, text:'Demande reçue depuis le site.' }] }, r));
+    });
+    store.write(INBOX_KEY, []); persist();
+  }
+
+  // ---------- Helpers ----------
+  const title = r => r.noms?.[0] || r.client?.nom || r.ref;
+  const days = iso => Math.floor((Date.now() - Date.parse(iso)) / DAY);
+  const isLate = r => r.step < 7 && days(r.updatedAt) >= 2;
+  function when(iso){
+    const d = new Date(iso), t = Date.now() - d;
+    if (t < 6e4) return "à l'instant";
+    if (t < 36e5) return `il y a ${Math.floor(t / 6e4)} min`;
+    if (new Date().toDateString() === d.toDateString()) return d.toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' });
+    if (t < 2 * DAY) return 'Hier';
+    return d.toLocaleDateString('fr-FR', { day:'2-digit', month:'2-digit' });
+  }
+  const amounts = r => {
+    if (r.total == null) return null;
+    return r.payAmount === 'full' ? [{ k:'first', label:'Totalité', v:r.total }] : [{ k:'first', label:'Acompte 50 %', v:Math.round(r.total / 2) }, { k:'second', label:'Solde (remise du RC)', v:r.total - Math.round(r.total / 2) }];
+  };
+  function docsOf(r){
+    const d = [{ k:'pay', label:'Preuve de paiement' }];
+    (r.partners || []).forEach((p, i) => d.push({ k:'cin-' + i, label:'CNIE · ' + (p.name || 'Associé ' + (i + 1)) }));
+    const g = r.gerant?.name;
+    if (g && !(r.partners || []).some(p => p.name === g)) d.push({ k:'cin-g', label:'CNIE gérant · ' + g });
+    if (r.siege === 'local') d.push({ k:'bail', label:'Contrat de bail ou titre de propriété' });
+    return d;
+  }
+  const waLink = (tel, text) => {
+    let n = String(tel || '').replace(/\D/g, '');
+    if (n.startsWith('0')) n = '212' + n.slice(1);
+    return `https://wa.me/${n}?text=${encodeURIComponent(text)}`;
+  };
+  function toast(t){ const el = $('#toast'); el.textContent = t; el.hidden = false; clearTimeout(toast.h); toast.h = setTimeout(() => el.hidden = true, 1800); }
+
+  // ---------- Auth (demo) ----------
+  let me = null, filter = 'todo', current = null;
+  function showLogin(){
+    $('#appView').hidden = true; $('#loginView').hidden = false;
+    $('#demoAcc').innerHTML = '<p><b>Comptes de démonstration</b> · mot de passe : <span class="mono">demo</span></p>' +
+      TEAM.map(t => `<button type="button" data-e="${t.email}">${t.name} · ${t.role === 'admin' ? 'admin' : 'juriste'}</button>`).join('');
+  }
+  $('#demoAcc').addEventListener('click', e => { const b = e.target.closest('[data-e]'); if (!b) return; $('#lEmail').value = b.dataset.e; $('#lPass').value = DEMO_PASS; });
+  $('#loginForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const u = TEAM.find(t => t.email === $('#lEmail').value.trim().toLowerCase());
+    if (!u || $('#lPass').value !== DEMO_PASS) { $('#lErr').hidden = false; return; }
+    $('#lErr').hidden = true; store.write(USER_KEY, u.id); start(u);
+  });
+  $('#logout').addEventListener('click', () => { try { localStorage.removeItem(USER_KEY); } catch(e) {} me = null; current = null; showLogin(); });
+
+  function start(u){
+    me = u;
+    if (!db) { db = seed(); persist(); }
+    importInbox();
+    $('#loginView').hidden = true; $('#appView').hidden = false;
+    $('#meAv').textContent = u.name[0]; $('#meAv').style.setProperty('--c', u.c);
+    $('#meName').textContent = u.name; $('#meRole').textContent = u.role === 'admin' ? 'Administrateur' : 'Juriste';
+    $('#exportBtn').hidden = u.role !== 'admin';
+    renderList();
+    const first = visible()[0];
+    if (first && matchMedia('(min-width:821px)').matches) open(first.ref); else renderDetail();
+  }
+
+  // ---------- List ----------
+  // Juristes see their own files plus unassigned ones; the admin sees everything.
+  const allowed = r => me.role === 'admin' || !r.juriste || r.juriste === me.id;
+  function visible(){
+    const q = $('#q').value.trim().toLowerCase();
+    return db.requests.filter(allowed).filter(r => {
+      if (filter === 'todo' && r.step >= 7) return false;
+      if (filter === 'done' && r.step < 7) return false;
+      if (filter === 'mine' && r.juriste !== me.id) return false;
+      if (!q) return true;
+      const hay = [r.ref, ...(r.noms || []), r.client?.nom, r.client?.tel, r.client?.email, ...(r.partners || []).flatMap(p => [p.name, p.cin])].join(' ').toLowerCase();
+      return hay.includes(q);
+    }).sort((a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt));
+  }
+  function statusLine(r){
+    if (r.step >= 7) return '✓ Terminé';
+    if (!r.seen) return 'Nouvelle demande';
+    return STEPS[r.step];
+  }
+  function renderList(){
+    const list = visible();
+    $('#items').innerHTML = list.length ? list.map(r => {
+      const j = member(r.juriste);
+      return `<button class="li ${r.ref === current ? 'on' : ''}" data-ref="${esc(r.ref)}">
+        <span class="av" style="--c:${j ? j.c : '#c9b6c4'}">${esc(title(r)[0] || '?')}</span>
+        <div><b>${esc(title(r))}</b><small><span class="mono">${esc(r.ref)}</span> · ${esc(FORMES[r.forme] || '')}</small><small>${esc(statusLine(r))}</small></div>
+        <div class="r"><span>${when(r.updatedAt)}</span>${!r.seen ? '<span class="dot" title="Non lue"></span>' : isLate(r) ? `<span class="pill p-late">J+${days(r.updatedAt)}</span>` : ''}</div>
+      </button>`;
+    }).join('') : '<p class="empty">Aucun dossier ici.</p>';
+    const n = db.requests.filter(r => !r.seen && allowed(r)).length;
+    $('#bellN').hidden = !n; $('#bellN').textContent = n;
+  }
+  $('#items').addEventListener('click', e => { const b = e.target.closest('[data-ref]'); if (b) open(b.dataset.ref); });
+  $('#filters').addEventListener('click', e => {
+    const b = e.target.closest('[data-f]'); if (!b) return;
+    filter = b.dataset.f; $$('#filters .chip').forEach(c => c.classList.toggle('on', c === b)); renderList();
+  });
+  $('#q').addEventListener('input', renderList);
+  $('#bell').addEventListener('click', () => { filter = 'todo'; $$('#filters .chip').forEach(c => c.classList.toggle('on', c.dataset.f === 'todo')); $('#q').value = ''; renderList(); const r = visible().find(x => !x.seen); if (r) open(r.ref); });
+
+  // ---------- Detail ----------
+  const get = ref => db.requests.find(r => r.ref === ref);
+  function open(ref){
+    current = ref;
+    const r = get(ref);
+    if (r && !r.seen) { r.seen = true; persist(); }
+    $('#body').classList.add('open');
+    renderList(); renderDetail();
+  }
+  function log(r, text, t = 'sys'){ r.notes.push({ t, by:me.id, at:new Date().toISOString(), text }); r.updatedAt = new Date().toISOString(); persist(); }
+
+  function renderDetail(){
+    const r = current && get(current);
+    if (!r || !allowed(r)) {
+      $('#detail').innerHTML = '<div class="ctr"><div class="blank"><b>Sélectionnez un dossier</b><span>La liste des demandes est à gauche.</span></div></div>';
+      return;
+    }
+    const j = member(r.juriste), am = amounts(r), docs = docsOf(r);
+    const paidSum = am ? am.filter(a => r.paid[a.k]).reduce((s, a) => s + a.v, 0) : 0;
+    const docsOk = docs.filter(d => r.docs[d.k]).length;
+    const canEdit = me.role === 'admin' || r.juriste === me.id;
+    const next = r.step < 7 ? (r.step === 6 ? 'Marquer livré ✓' : `Étape suivante : ${STEPS[r.step + 1]} →`) : null;
+    const waMsg = `Bonjour ${r.client?.nom || ''}, c'est ${me.name} de Charika Express au sujet de votre demande ${r.ref}.`;
+    $('#detail').innerHTML = `
+    <section class="ctr">
+      <div class="h">
+        <button class="btn b-soft b-sm back" id="back">← Liste</button>
+        <div><h2>${esc(title(r))}</h2><small class="mono">${esc(r.ref)} · ${esc(FORMES[r.forme] || '')} · ${esc(r.ville || '')} · ${esc(PLANS[r.plan] || '')}</small></div>
+        <div class="r">
+          <a class="btn b-wa" href="${waLink(r.client?.tel, waMsg)}" target="_blank" rel="noopener">WhatsApp</a>
+          ${r.client?.tel ? `<a class="btn b-soft" href="tel:${esc(r.client.tel.replace(/\s/g, ''))}">Appeler</a>` : ''}
+          ${!r.juriste ? '<button class="btn b-ink" id="take">Prendre le dossier</button>' : ''}
+          ${next && canEdit ? `<button class="btn b-grad" id="nextStep">${next}</button>` : r.step >= 7 ? '<span class="pill p-ok">✓ Dossier terminé</span>' : ''}
+        </div>
+      </div>
+      <div class="track" role="list">${STEPS.map((s, i) => `<button role="listitem" data-step="${i}" class="${i < r.step ? 'ok' : i === r.step ? 'cur' : ''}" ${canEdit ? '' : 'disabled'} title="${canEdit ? 'Placer le dossier à cette étape' : ''}"><i>${i < r.step ? '✓' : i + 1}</i>${s}</button>`).join('')}</div>
+      <div class="two">
+        <div class="box"><h4>Pièces <small>${docsOk}/${docs.length}</small></h4>
+          ${docs.map(d => `<div class="row"><i class="st ${r.docs[d.k] ? 'y' : 'n'}">${r.docs[d.k] ? '✓' : '!'}</i><span>${esc(d.label)}</span>
+            ${canEdit ? `<button class="tg ${r.docs[d.k] ? 'y' : ''}" data-doc="${d.k}">${r.docs[d.k] ? 'Reçue' : 'Marquer reçue'}</button>` : ''}
+            ${!r.docs[d.k] ? `<a class="tg" href="${waLink(r.client?.tel, `Bonjour ${r.client?.nom || ''}, pour avancer sur votre dossier ${r.ref}, merci de nous envoyer : ${d.label}.`)}" target="_blank" rel="noopener">Relancer</a>` : ''}</div>`).join('')}
+        </div>
+        <div class="box"><h4>Paiement <small>${esc(PAY[r.payMethod] || '')} · ${r.payAmount === 'full' ? 'Totalité' : '50 / 50'}</small></h4>
+          ${am ? am.map(a => `<div class="row"><span>${a.label}</span><b>${fmt(a.v)} MAD</b>${canEdit ? `<button class="tg ${r.paid[a.k] ? 'y' : ''}" data-pay="${a.k}">${r.paid[a.k] ? 'Reçu ✓' : 'Attendu'}</button>` : `<span class="pill ${r.paid[a.k] ? 'p-ok' : 'p-wait'}">${r.paid[a.k] ? 'Reçu' : 'Attendu'}</span>`}</div>`).join('') +
+            `<div class="prog"><i style="width:${r.total ? paidSum / r.total * 100 : 0}%"></i></div><div style="display:flex;justify-content:space-between;font-size:.76rem;color:var(--m)"><span>Payé</span><b style="color:var(--ink)">${fmt(paidSum)} / ${fmt(r.total)} MAD</b></div>`
+          : '<div class="row"><span>Société anonyme : montant sur devis.</span></div>'}
+        </div>
+      </div>
+      <div class="box"><h4>Historique et notes de l'équipe <small>visibles par l'équipe seulement</small></h4>
+        <div class="feed" id="feed">${r.notes.map(n => { const w = member(n.by); return `<div class="msg ${n.t === 'sys' ? 'sys' : ''}"><span class="av" style="--c:${w ? w.c : '#c9b6c4'}">${n.t === 'sys' && !w ? '•' : esc((w?.name || '?')[0])}</span><div><small>${n.t === 'sys' ? 'Suivi' : 'Note'}${w ? ' · ' + esc(w.name) : ''} · ${when(n.at)}</small>${esc(n.text)}</div></div>`; }).join('')}</div>
+        <form class="cmp" id="noteForm"><input class="f" id="noteIn" placeholder="Ajouter une note pour l'équipe…" autocomplete="off"><button class="btn b-grad">Ajouter</button></form>
+      </div>
+    </section>
+    <aside class="info">
+      <h4>Client</h4>
+      <div class="cl"><span class="av">${esc((r.client?.nom || '?')[0])}</span><div><b>${esc(r.client?.nom)}</b><small class="mono" style="font-weight:600">${esc(r.client?.tel)}</small><small>${esc(r.client?.email)}</small></div></div>
+      ${r.message ? `<div class="row" style="font-size:.76rem"><span>« ${esc(r.message)} »</span></div>` : ''}
+      <h4>Société</h4>
+      <dl class="dl"><dt>Noms</dt><dd>${esc((r.noms || []).join(' · '))}</dd><dt>Activité</dt><dd>${esc(r.activite)}</dd><dt>Ville</dt><dd>${esc(r.ville)}</dd><dt>Capital</dt><dd>${fmt(r.capital)} MAD</dd><dt>Siège</dt><dd>${r.siege === 'local' ? 'Local du client' : 'Domiciliation'}</dd></dl>
+      <h4>Associés</h4>
+      <dl class="dl">${(r.partners || []).map(p => `<dt>${esc(p.name)} <span class="mono" style="font-weight:500">${esc(p.cin)}</span></dt><dd>${p.pct} %</dd>`).join('')}<dt>Gérant</dt><dd>${esc(r.gerant?.name)}</dd></dl>
+      <h4>Formule</h4>
+      <dl class="dl"><dt>Formule</dt><dd>${esc(PLANS[r.plan] || '')}</dd><dt>Options</dt><dd>${r.options?.length ? r.options.map(o => esc(OPTS[o] || o)).join(', ') : 'Aucune'}</dd><dt>Total TTC</dt><dd>${r.total == null ? 'Sur devis' : fmt(r.total) + ' MAD'}</dd><dt>Reçue le</dt><dd>${new Date(r.createdAt).toLocaleString('fr-FR', { dateStyle:'short', timeStyle:'short' })}</dd></dl>
+      <h4>Juriste assigné</h4>
+      ${me.role === 'admin'
+        ? `<select class="f" id="assign"><option value="">Non assigné</option>${TEAM.map(t => `<option value="${t.id}" ${r.juriste === t.id ? 'selected' : ''}>${t.name}</option>`).join('')}</select>`
+        : `<div class="cl"><span class="av" style="--c:${j ? j.c : '#c9b6c4'};width:32px;height:32px">${j ? j.name[0] : '?'}</span><b>${j ? j.name : 'Non assigné'}</b></div>`}
+    </aside>`;
+    const feed = $('#feed'); feed.scrollTop = feed.scrollHeight;
+  }
+
+  // Actions on the open file (event delegation)
+  $('#detail').addEventListener('click', e => {
+    const r = current && get(current); if (!r) return;
+    const t = e.target.closest('button'); if (!t) return;
+    if (t.id === 'back') { $('#body').classList.remove('open'); return; }
+    if (t.id === 'take') { r.juriste = me.id; log(r, `${me.name} prend le dossier.`); toast('Dossier assigné à vous'); }
+    else if (t.id === 'nextStep') { r.step++; log(r, r.step >= 7 ? 'Dossier livré au client. ✓' : `Étape : ${STEPS[r.step - 1]} terminée → ${STEPS[r.step]}.`); toast(r.step >= 7 ? 'Dossier terminé ✓' : 'Étape mise à jour'); }
+    else if (t.dataset.step != null) {
+      const s = +t.dataset.step; if (s === r.step) return;
+      r.step = s; log(r, `Dossier placé à l'étape : ${STEPS[s]}.`);
+    }
+    else if (t.dataset.doc) { const k = t.dataset.doc; r.docs[k] = !r.docs[k]; const d = docsOf(r).find(x => x.k === k); log(r, `${d ? d.label : 'Pièce'} : ${r.docs[k] ? 'reçue ✓' : 'marquée manquante'}.`); }
+    else if (t.dataset.pay) { const k = t.dataset.pay; r.paid[k] = !r.paid[k]; const a = amounts(r).find(x => x.k === k); log(r, `${a.label} (${fmt(a.v)} MAD) : ${r.paid[k] ? 'reçu ✓' : 'remis en attente'}.`); }
+    else return;
+    renderList(); renderDetail();
+  });
+  $('#detail').addEventListener('submit', e => {
+    if (e.target.id !== 'noteForm') return;
+    e.preventDefault();
+    const r = get(current), v = $('#noteIn').value.trim(); if (!r || !v) return;
+    log(r, v, 'note'); renderList(); renderDetail(); $('#noteIn').focus();
+  });
+  $('#detail').addEventListener('change', e => {
+    if (e.target.id !== 'assign') return;
+    const r = get(current); r.juriste = e.target.value || null;
+    log(r, r.juriste ? `Dossier assigné à ${member(r.juriste).name}.` : 'Dossier désassigné.');
+    renderList(); renderDetail(); toast('Juriste mis à jour');
+  });
+
+  // ---------- Export (admin) ----------
+  $('#exportBtn').addEventListener('click', () => {
+    const cols = ['Référence','Date','Société','Forme','Formule','Total MAD','Payé MAD','Paiement','Étape','Juriste','Client','Téléphone','E-mail','Ville'];
+    const q = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
+    const rows = visible().map(r => { const am = amounts(r) || []; return [r.ref, new Date(r.createdAt).toLocaleDateString('fr-FR'), title(r), FORMES[r.forme], PLANS[r.plan], r.total ?? '', am.filter(a => r.paid[a.k]).reduce((s, a) => s + a.v, 0), PAY[r.payMethod], r.step >= 7 ? 'Terminé' : STEPS[r.step], member(r.juriste)?.name || '', r.client?.nom, r.client?.tel, r.client?.email, r.ville]; });
+    const csv = '﻿' + [cols, ...rows].map(x => x.map(q).join(';')).join('\n');
+    const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type:'text/csv;charset=utf-8' }));
+    a.download = 'demandes-charika-express.csv'; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  });
+
+  $('#resetDemo').addEventListener('click', () => {
+    if (!confirm('Remettre les données de démonstration ? Les modifications faites dans ce navigateur seront perdues.')) return;
+    db = seed(); persist(); current = null; renderList(); renderDetail(); toast('Démo réinitialisée');
+  });
+
+  // Pick up requests sent from the form in another tab
+  addEventListener('storage', e => { if (e.key === INBOX_KEY && me) { importInbox(); renderList(); toast('Nouvelle demande reçue'); } });
+
+  const saved = TEAM.find(t => t.id === store.read(USER_KEY, null));
+  saved ? start(saved) : showLogin();
+})();
+</script>
+</body>
+</html>

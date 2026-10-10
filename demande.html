@@ -305,7 +305,7 @@ textarea{min-height:96px;resize:vertical}
               <div><label for="ville"><span data-t="ville">Ville du siège</span> *</label>
                 <select id="ville" name="ville" required>
                   <option value="" data-t="choose">Choisir…</option>
-                  <option data-t="c1">Casablanca</option><option data-t="c2">Rabat</option><option data-t="c3">Marrakech</option><option data-t="c4">Tanger</option><option data-t="c5">Agadir</option><option data-t="c6">Fès</option><option data-t="c7">Autre ville</option>
+                  <option value="Casablanca" data-t="c1">Casablanca</option><option value="Rabat" data-t="c2">Rabat</option><option value="Marrakech" data-t="c3">Marrakech</option><option value="Tanger" data-t="c4">Tanger</option><option value="Agadir" data-t="c5">Agadir</option><option value="Fès" data-t="c6">Fès</option><option value="Autre ville" data-t="c7">Autre ville</option>
                 </select>
               </div>
               <div class="cap"><label for="capital"><span data-t="capital">Capital social (MAD)</span> *</label><input id="capital" name="capital" type="number" min="1000" step="1000" value="10000" required class="ltr"></div>
@@ -707,11 +707,28 @@ textarea{min-height:96px;resize:vertical}
     $('.layout').classList.add('sent'); // summary is no longer needed once the request is sent
     $('#wizard').scrollIntoView({ behavior: 'smooth', block: 'start' });
     try { localStorage.removeItem('ce-demande'); } catch(e) {}
-    // Demo only. To receive requests, send the data to your backend here, e.g.:
-    // fetch('/api/demande', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(collect(ref)) });
+    // Demo: hand the request to the team space (admin.html) through this browser's storage.
+    // With a backend, send collect() to it instead (see README).
+    try { const box = JSON.parse(localStorage.getItem('ce-requests') || '[]'); box.push(collect()); localStorage.setItem('ce-requests', JSON.stringify(box)); } catch(e) {}
   }
 
   // ---------- Draft save ----------
+  // Request as stored for the team: keys, not translated labels
+  function collect(){
+    const g = $('#gerant').value;
+    return {
+      ref, createdAt: new Date().toISOString(), lang,
+      forme: val('forme'), plan: val('forme') === 'ae' ? 'ae' : val('plan'),
+      options: $$('#wizard input[type=checkbox][data-price]:checked').map(c => c.name),
+      total: total(), payMethod: val('pay_method'), payAmount: val('pay_amount'),
+      noms: ['n1','n2','n3'].map(id => $('#'+id).value.trim()).filter(Boolean),
+      activite: $('#act').value.trim(), ville: $('#ville').value, capital: +$('#capital').value || 0, siege: val('siege'),
+      partners: partners.map(p => ({ name: p.name.trim(), cin: p.cin.trim(), pct: +p.pct || 0 })),
+      gerant: g === 'other' ? { name: $('#gn').value.trim(), cin: $('#gc').value.trim() } : { name: partners[+g]?.name || '', cin: partners[+g]?.cin || '' },
+      client: { nom: $('#nom').value.trim(), tel: $('#tel').value.trim(), email: $('#email').value.trim() },
+      message: $('#note').value.trim()
+    };
+  }
   function save(){
     try {
       const data = {}; new FormData($('#wizard')).forEach((v, k) => data[k] = v);
