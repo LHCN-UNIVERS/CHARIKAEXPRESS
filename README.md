@@ -31,3 +31,6 @@ To use it for real, connect a backend. The recommended option is Supabase (free 
 4. In `demande.html` `finish()`, insert `collect()` into `requests`. In `admin.html`, replace the `store` / `TEAM` / demo login code with Supabase calls.
 
 Never put a secret (service-role) key in these pages: only the public "anon" key, protected by the Row Level Security rules.
+
+## Planned: client space
+Client accounts (follow their file, upload documents, message their juriste, download company documents) are described in [`docs/client-space.md`](docs/client-space.md), with 3 models to choose from. Not built yet.
