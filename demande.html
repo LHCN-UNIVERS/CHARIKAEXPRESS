@@ -165,19 +165,34 @@ textarea{min-height:96px;resize:vertical}
 .rv dt{color:var(--m)}
 .rv dd{margin:0;font-weight:600;overflow-wrap:anywhere}
 
-/* Summary */
-.sum{position:sticky;top:20px;background:var(--ink);color:#fff;border-radius:26px;padding:24px;display:grid;gap:14px;overflow:hidden}
-.sum::after{content:"";position:absolute;width:260px;height:260px;border-radius:50%;background:var(--grad);filter:blur(60px);opacity:.45;inset-inline-end:-120px;bottom:-130px}
-.sum > *{position:relative}
-.sum h3{font-size:1.1rem}
-.sum ul{list-style:none;margin:0;padding:0;display:grid;gap:8px;font-size:.9rem}
-.sum li{display:flex;justify-content:space-between;gap:10px}
-.sum li span:first-child{color:#cdb8c9}
-.sum li span:last-child{font-weight:600;text-align:end}
-.total{border-top:1px solid rgba(255,255,255,.15);padding-top:14px;display:flex;justify-content:space-between;align-items:baseline}
-.total b{font-size:2rem;font-weight:800;letter-spacing:-.04em}
-.dep{font-size:.84rem;color:#cdb8c9}
-.help{font-size:.84rem;color:#cdb8c9;border-top:1px solid rgba(255,255,255,.12);padding-top:12px}
+/* Summary — checklist: each row ticks once filled, ring shows progress */
+.sum{position:sticky;top:20px;background:#fff;border:1px solid var(--line);border-radius:26px;padding:22px;display:grid;gap:0;box-shadow:0 22px 44px -30px rgba(43,15,46,.3)}
+.sum-hd{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.sum h3{margin:0;font-size:1.1rem}
+.ring{--p:0%;width:46px;height:46px;border-radius:50%;background:conic-gradient(var(--pink) 0 var(--p),var(--blush) 0);display:grid;place-items:center;flex:none;transition:background .3s}
+.ring span{width:36px;height:36px;border-radius:50%;background:#fff;display:grid;place-items:center;font-size:.72rem;font-weight:800}
+.sum-sub{font-size:.78rem;color:var(--m);margin:2px 0 14px}
+.sum ol{list-style:none;margin:0;padding:0;display:grid;position:relative}
+.sum ol::before{content:"";position:absolute;inset-inline-start:11px;top:14px;bottom:14px;width:2px;background:var(--line)}
+.sum li{display:grid;grid-template-columns:24px auto 1fr;gap:12px;align-items:center;padding:8px 0;position:relative;font-size:.88rem}
+.sum .dot{width:24px;height:24px;border-radius:50%;border:2px solid var(--line);background:#fff;display:grid;place-items:center;color:#fff;transition:.25s}
+.sum .dot svg{width:12px;height:12px;opacity:0}
+.sum li.ok .dot{background:var(--ok);border-color:var(--ok)}
+.sum li.ok .dot svg{opacity:1}
+.sum li > span:nth-child(2){color:var(--m)}
+.sum li > span:last-child{font-weight:600;text-align:end;overflow-wrap:anywhere}
+.sum li:not(.ok) > span:last-child{color:#c9b6c4;font-weight:400;font-style:italic}
+.total{margin-top:14px;background:var(--ink);color:#fff;border-radius:20px;padding:16px 18px;display:grid;gap:10px}
+.total .r{display:flex;justify-content:space-between;align-items:baseline}
+.total .r b{font-size:1.8rem;font-weight:800;letter-spacing:-.04em}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.split div{border-radius:12px;padding:8px 10px;font-size:.72rem;background:rgba(255,255,255,.08);color:#cdb8c9}
+.split div b{display:block;color:#fff;font-size:.92rem;margin-top:2px}
+.split div.now{background:var(--grad);color:#fff}
+.help{display:flex;gap:10px;align-items:center;margin:14px 0 0;font-size:.78rem;color:var(--m)}
+.help .av{width:36px;height:36px;border-radius:50%;background:var(--grad);color:#fff;display:grid;place-items:center;font-weight:800;flex:none}
+.help bdi{white-space:nowrap}
+.help a{color:var(--rose);font-weight:700;text-decoration:none}
 @media (max-width:920px){.sum{position:static}}
 
 /* Success */
@@ -394,18 +409,21 @@ textarea{min-height:96px;resize:vertical}
     </div>
 
     <aside class="sum" aria-live="polite">
-      <h3 data-t="sumh">Votre demande</h3>
-      <ul>
-        <li><span data-t="sf">Forme</span><span id="sForme">SARL AU</span></li>
-        <li><span data-t="sn">Nom</span><span id="sNom">—</span></li>
-        <li><span data-t="sv">Ville</span><span id="sVille">—</span></li>
-        <li><span data-t="sp">Formule</span><span id="sPlan">Essentiel</span></li>
-        <li><span data-t="so">Options</span><span id="sOpts">—</span></li>
-        <li><span data-t="spay">Paiement</span><span id="sPay">—</span></li>
-      </ul>
-      <div class="total"><span data-t="tot">Total TTC</span><b class="ltr" id="sTotal">2 900</b></div>
-      <p class="dep"><span data-t="dep">À régler maintenant :</span> <span class="ltr" id="sDep">1 450 MAD</span></p>
-      <p class="help" data-t="help">Une question ? Un juriste vous répond au +212 5 00 00 00 00 ou sur WhatsApp.</p>
+      <div class="sum-hd"><h3 data-t="sumh">Votre demande</h3><div class="ring" id="sRing"><span class="ltr" id="sCount">0/6</span></div></div>
+      <p class="sum-sub" id="sSub">0 éléments sur 6 complétés</p>
+      <ol>
+        <li><i class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg></i><span data-t="sf">Forme</span><span id="sForme">SARL AU</span></li>
+        <li><i class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg></i><span data-t="sn">Nom</span><span id="sNom">—</span></li>
+        <li><i class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg></i><span data-t="sv">Ville</span><span id="sVille">—</span></li>
+        <li><i class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg></i><span data-t="sp">Formule</span><span id="sPlan">Essentiel</span></li>
+        <li><i class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg></i><span data-t="so">Options</span><span id="sOpts">—</span></li>
+        <li><i class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg></i><span data-t="spay">Paiement</span><span id="sPay">—</span></li>
+      </ol>
+      <div class="total">
+        <div class="r"><span data-t="tot">Total TTC</span><b class="ltr" id="sTotal">2 900</b></div>
+        <div class="split"><div class="now"><span data-t="snow">Maintenant</span><b class="ltr" id="sDep">1 450 MAD</b></div><div><span data-t="slater">Plus tard</span><b class="ltr" id="sLater">1 450 MAD</b></div></div>
+      </div>
+      <p class="help"><span class="av">N</span><span data-th="help">Une question ? Un juriste vous répond au <bdi dir="ltr">+212 5 00 00 00 00</bdi> ou sur <a href="https://wa.me/212500000000" target="_blank" rel="noopener">WhatsApp</a>.</span></p>
     </aside>
   </div>
 </main>
@@ -436,22 +454,22 @@ textarea{min-height:96px;resize:vertical}
     okh:"تمّ إرسال الطلب!", nx1:"أدِّ المبلغ مع ذكر مرجعك كسبب للأداء.", nx2:"أرسل إثبات الأداء ووثائقك (البطاقة الوطنية) عبر واتساب.", nx3:"يتصل بك مستشارك ويُطلق طلب الشهادة السلبية لدى OMPIC.",
     demo:"نسخة تجريبية: اربط هذا النموذج ببريدك الإلكتروني أو نظام إدارة العملاء لاستقبال الطلبات.", home:"العودة إلى الرئيسية",
     prev:"رجوع", next:"متابعة", send:"إرسال طلبي",
-    sumh:"طلبك", sf:"الشكل", sn:"الاسم", sv:"المدينة", sp:"الباقة", so:"الخيارات", tot:"المجموع", dep:"المبلغ المطلوب الآن:",
-    help:"سؤال؟ يجيبك مستشار قانوني على ‎+212 5 00 00 00 00‎ أو عبر واتساب.",
+    sumh:"طلبك", sf:"الشكل", sn:"الاسم", sv:"المدينة", sp:"الباقة", so:"الخيارات", tot:"المجموع", dep:"المبلغ المطلوب الآن:", snow:"الآن", slater:"لاحقاً",
+    help:'سؤال؟ يجيبك مستشار قانوني على <bdi dir="ltr">+212 5 00 00 00 00</bdi> أو عبر <a href="https://wa.me/212500000000" target="_blank" rel="noopener">واتساب</a>.',
     edit:"تعديل", rv1:"الخدمة", rv2:"الشركة", rv3:"الشركاء", rv4:"الباقة", none:"بدون", quote:"حسب الطلب"
   };
   const T = {
     fr:{st:n=>`Étape ${n} sur 6`, copied:"Copié !", copy:"Copier", pm:{virement:"Virement",cashplus:"Cash Plus"}, pa:{half:"50 / 50",full:"Totalité"}, rv5:"Paiement", rv6:"Coordonnées", gl:"Gérant", cn:{nom:"Nom",tel:"Téléphone",email:"E-mail"}, req:"Ce champ est obligatoire.", email:"Adresse e-mail invalide.", tel:"Numéro de téléphone invalide.", cap:"Minimum 1 000 MAD.",
         pct:"Le total des parts doit faire 100%.", shareTxt:t=>`Total des parts : ${t}%`, cgu:"Merci de cocher cette case.",
         ok:(n,e)=>`Merci ${n}. Nous avons bien reçu votre demande. Un récapitulatif sera envoyé à ${e}.`,
-        edit:"Modifier", rv1:"Service", rv2:"Société", rv3:"Associés", rv4:"Formule", none:"Aucune", quote:"Sur devis",
+        edit:"Modifier", rv1:"Service", rv2:"Société", rv3:"Associés", rv4:"Formule", none:"Aucune", quote:"Sur devis", todo:"à compléter", prog:n=>`${n} élément${n>1?"s":""} sur 6 complété${n>1?"s":""}`,
         pname:"Nom complet", pcin:"N° CNIE ou passeport", ppct:"Part (%)", pttl:"Associé", rm:"Retirer", other:"Une autre personne", next:"Continuer", send:"Envoyer ma demande",
         k:{forme:"Forme",noms:"Noms",act:"Activité",ville:"Ville",capital:"Capital",siege:"Siège",plan:"Formule",opts:"Options",total:"Total",method:"Moyen",amount:"Montant",ref:"Référence",now:"À régler maintenant"},
         siege:{dom:"Domiciliation",local:"Local existant"}},
     ar:{st:n=>`المرحلة ${n} من 6`, copied:"تمّ النسخ!", copy:"نسخ", pm:{virement:"تحويل بنكي",cashplus:"كاش بلوس"}, pa:{half:"50 / 50",full:"المبلغ كاملاً"}, rv5:"الأداء", rv6:"معلوماتك", gl:"المسيّر", cn:{nom:"الاسم",tel:"الهاتف",email:"البريد الإلكتروني"}, req:"هذا الحقل إلزامي.", email:"بريد إلكتروني غير صالح.", tel:"رقم هاتف غير صالح.", cap:"الحد الأدنى 1 000 درهم.",
         pct:"يجب أن يكون مجموع الحصص 100%.", shareTxt:t=>`مجموع الحصص: ${t}%`, cgu:"يرجى تحديد هذه الخانة.",
         ok:(n,e)=>`شكراً ${n}. توصّلنا بطلبك. سيُرسل ملخّص إلى ${e}.`,
-        edit:"تعديل", rv1:"الخدمة", rv2:"الشركة", rv3:"الشركاء", rv4:"الباقة", none:"بدون", quote:"حسب الطلب",
+        edit:"تعديل", rv1:"الخدمة", rv2:"الشركة", rv3:"الشركاء", rv4:"الباقة", none:"بدون", quote:"حسب الطلب", todo:"يُستكمل لاحقاً", prog:n=>`${n} من 6 عناصر مكتملة`,
         pname:"الاسم الكامل", pcin:"رقم البطاقة الوطنية أو الجواز", ppct:"الحصة (%)", pttl:"شريك", rm:"حذف", other:"شخص آخر", next:"متابعة", send:"إرسال طلبي",
         k:{forme:"الشكل",noms:"الأسماء",act:"النشاط",ville:"المدينة",capital:"الرأسمال",siege:"المقر",plan:"الباقة",opts:"الخيارات",total:"المجموع",method:"الطريقة",amount:"المبلغ",ref:"المرجع",now:"المطلوب الآن"},
         siege:{dom:"توطين",local:"محلّ موجود"}}
@@ -613,16 +631,24 @@ textarea{min-height:96px;resize:vertical}
     if (!navigator.clipboard) { const r = document.createRange(); r.selectNodeContents($('#payRef')); getSelection().removeAllRanges(); getSelection().addRange(r); }
   });
   function summary(){
+    const nom = $('#n1').value.trim(), ville = $('#ville').value;
     $('#sForme').textContent = label('forme');
-    $('#sNom').textContent = $('#n1').value.trim() || '—';
-    $('#sVille').textContent = $('#ville').value ? $('#ville').selectedOptions[0].textContent : '—';
+    $('#sNom').textContent = nom || T[lang].todo;
+    $('#sVille').textContent = ville ? $('#ville').selectedOptions[0].textContent : T[lang].todo;
     $('#sPlan').textContent = val('forme') === 'ae' ? (lang === 'ar' ? AR.fo3 : 'Auto-entrepreneur') : label('plan');
     $('#sOpts').textContent = optsText();
     const t = total();
     $('#sTotal').textContent = t === null ? T[lang].quote : fmt(t);
     const n = payNow();
     $('#sDep').textContent = n === null ? '—' : fmt(n) + ' MAD';
+    $('#sLater').textContent = n === null ? '—' : fmt(t - n) + ' MAD';
     $('#sPay').textContent = T[lang].pm[val('pay_method')] + ' · ' + T[lang].pa[val('pay_amount')];
+    // Checklist: tick each row once it has a value, then update the ring
+    const filled = [!!val('forme'), !!nom, !!ville, !!document.querySelector('[name=plan]:checked') || val('forme') === 'ae', true, !!val('pay_method')];
+    $$('.sum li').forEach((li, i) => li.classList.toggle('ok', filled[i]));
+    const c = filled.filter(Boolean).length;
+    $('#sCount').textContent = c + '/6'; $('#sSub').textContent = T[lang].prog(c);
+    $('#sRing').style.setProperty('--p', (c / 6 * 100) + '%');
     if (step === 6) { payment(); review(); }
   }
   function review(){
