@@ -8,7 +8,7 @@ Single-page marketing site (French + English) for an online company-formation se
 
 ## Before going live
 - Replace the placeholders: phone `+212 5 00 00 00 00` and email `contact@charikaexpress.ma` (create this mailbox).
-- Prices: SARL packs Essentiel 4 680, Pro 5 980, Premium 9 980 MAD TTC (50% deposit). SAS packs show "Sur devis" until SAS prices are set (`#plans-sas` in `index.html`; `sas` is priced on quote in `total()` in `demande.html`).
+- Prices: SARL packs Essentiel 4 680, Pro 5 980, Premium 9 980 MAD TTC. Payment: 700 MAD avance at the order, 50% of the rest after légalisation, the balance when the file is complete. SAS packs show "Sur devis" until SAS prices are set (`#plans-sas` in `index.html`; `sas` is priced on quote in `total()` in `demande.html`).
 - Connect the callback form (`#form`) to your email or CRM. It is currently a demo and sends nothing.
 - Have the English text proofread.
 
@@ -20,7 +20,7 @@ Single-page marketing site (French + English) for an online company-formation se
 - `admin.html`: team space ("Dossier 360°"), not linked from the site and marked `noindex`.
   - Login with roles: the admin sees every file, can assign juristes and export CSV; a juriste sees their own files plus unassigned ones and can take a file.
   - Inbox-style list (À traiter / Mes dossiers / Tous / Terminés, search by ref, name, phone, CIN), unread and late (J+n) markers.
-  - File view: 7-step tracker (Reçue → Paiement → Pièces → Certificat négatif → Statuts → RC · IF · CNSS → Livré), documents checklist with WhatsApp reminders, the 13 company documents produced during the creation (statuts, RC, IF, TP, ICE, CNSS…) each with a status (En attente / En cours / Obtenu), deposit and balance tracking, team notes and an automatic history of every change, client, company and partners details.
+  - File view: the real 10-step creation workflow (Demande reçue → Certificat négatif → Rédaction → Légalisation → Enregistrement → Dépôt OMPIC · Impôts → Tribunal → Bulletin Officiel → Annonce légale → Dossier complet). Each step owns its documents, tasks and payments; when the last one is done the file moves to the next step automatically. Step 6 can be marked rejected with a motif (client notified by WhatsApp when the problem is on their side). Also: the 14 company documents with their status, client pieces with WhatsApp reminders, payments, team notes and an automatic history, client, company and partners details. Full table in `docs/client-space.md`.
 
 ## Team space: demo mode and going live
 `admin.html` currently runs in **demo mode**: demo accounts (password `demo`), example files, and all data saved in the browser only. Each team member would see a different copy, so this is for trying the workflow, not for real use.

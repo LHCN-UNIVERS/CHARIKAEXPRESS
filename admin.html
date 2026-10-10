@@ -88,7 +88,9 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
 .ctr .h small{color:var(--m);font-size:.74rem}
 .ctr .h .r{margin-inline-start:auto;display:flex;gap:8px;flex-wrap:wrap}
 .back{display:none}
-.track{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px 10px;display:grid;grid-template-columns:repeat(7,1fr)}
+.trackw{border-radius:18px}
+@media (max-width:820px){.trackw{overflow-x:auto}}
+.track{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px 8px;display:grid;grid-template-columns:repeat(10,minmax(66px,1fr));min-width:700px}
 .track button{all:unset;cursor:pointer;display:grid;justify-items:center;gap:6px;text-align:center;font-size:.68rem;color:var(--m);position:relative;padding:0 2px}
 .track button::before{content:"";position:absolute;top:13px;inset-inline-end:50%;width:100%;height:3px;background:var(--line)}
 .track button:first-child::before{display:none}
@@ -97,6 +99,20 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
 .track .ok i{background:var(--ok);border-color:var(--ok);color:#fff}
 .track .cur i{border-color:var(--pink);color:var(--pink);box-shadow:0 0 0 5px rgba(255,79,154,.15)}
 .track .cur{color:var(--ink);font-weight:700}
+.track .rj i{border-color:var(--err);color:var(--err);box-shadow:0 0 0 5px rgba(192,54,44,.14)}
+.cur-step{border-color:#ffc2d6;box-shadow:inset 4px 0 0 var(--pink)}
+.cur-step.okb{border-color:#c5ead7;box-shadow:inset 4px 0 0 var(--ok)}
+.hint{font-size:.78rem;color:var(--m);margin-top:-4px}
+.tk{display:grid;grid-template-columns:26px 1fr auto;gap:10px;align-items:center;padding:9px 10px;border-radius:12px;background:#fffaf7;font-size:.8rem}
+.tk b{font-weight:600;display:block}.tk small{display:block;color:var(--m);font-size:.7rem;margin-top:1px}
+.tk.done{opacity:.6}.tk.done b{text-decoration:line-through}
+.rejb{display:grid;gap:3px;background:#fff0ee;border:1px solid #f6c6bf;border-radius:14px;padding:12px;font-size:.8rem;color:#7a2018}
+.rejb small{color:#a5524a}.rejb .ra{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.rejf{display:grid;gap:8px;background:#fffaf7;border:1px dashed var(--line);border-radius:14px;padding:12px;font-size:.8rem}
+.rejbtn{justify-self:start;color:#a5524a}
+.lgrp{border-top:1px dashed var(--line);padding-top:10px}.lgrp h5{margin:0 0 8px;font-size:.74rem;color:var(--m);text-transform:uppercase;letter-spacing:.05em}
+.lgrp.now h5{color:var(--rose)}
+.li small.rej{color:var(--err);font-weight:600}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .box{background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px;display:grid;gap:10px;align-content:start}
 .box h4{font-size:.88rem;display:flex;justify-content:space-between;align-items:center;gap:8px}
@@ -224,24 +240,41 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
     { id:'hajar',   name:'Hajar',   email:'hajar@charikaexpress.ma', role:'juriste', c:'#e0a100' }
   ];
   const DEMO_PASS = 'demo';
-  // Documents produced during the company creation, tracked per file (0 en attente, 1 en cours, 2 obtenu)
-  const LIVRABLES = [
-    ['statuts', 'Statuts', 'Définissent le fonctionnement juridique de la société (associés, gérants, capital, objet social…).'],
-    ['domiciliation', 'Contrat de domiciliation', "Prouve que la société dispose d'une adresse légale pour recevoir son courrier et exercer son activité."],
-    ['procuration', 'Procuration', 'Autorisation donnée à un tiers pour recevoir et gérer le courrier au nom de la société.'],
-    ['enr-statuts', "Attestation d'enregistrement des statuts", "Confirme que les statuts ont été enregistrés auprès de l'administration fiscale."],
-    ['enr-domiciliation', "Attestation d'enregistrement du contrat de domiciliation", 'Preuve que le contrat de domiciliation a été enregistré auprès de la Direction des Impôts.'],
-    ['tp', "Attestation d'inscription à la Taxe Professionnelle (TP)", 'Document fiscal permettant de déclarer et payer la taxe professionnelle.'],
-    ['if', "Bulletin de notification de l'Identifiant Fiscal (IF)", "L'identifiant fiscal unique pour toutes les démarches fiscales."],
-    ['rc', 'Registre de Commerce (RC)', "La carte d'identité juridique de la société, indispensable pour exercer légalement."],
-    ['bo', 'Publication au Bulletin Officiel', 'Obligatoire pour rendre publique la création de la société.'],
-    ['annonce', 'Annonce légale', 'Obligatoire pour rendre publique la création de la société.'],
-    ['cnss', 'Affiliation à la CNSS', 'Immatricule la société à la CNSS, obligatoire pour déclarer les salariés.'],
-    ['identifiants', 'Document des identifiants', 'Numéros attribués après immatriculation (RC, ICE, IF, CNSS).'],
-    ['ice', 'Attestation ICE', "Atteste de l'identifiant commun de l'entreprise (ICE), utilisé auprès des administrations."]
+  // Company documents obtained during the creation (status per file: 0 en attente, 1 en cours, 2 obtenu)
+  const DOCS = {
+    'cn': ['Certificat négatif', "Réserve le nom de la société auprès de l'OMPIC."],
+    'statuts': ['Statuts', 'Définissent le fonctionnement juridique de la société (associés, gérants, capital, objet social…).'],
+    'domiciliation': ['Contrat de domiciliation', "Prouve que la société dispose d'une adresse légale pour recevoir son courrier et exercer son activité."],
+    'procuration': ['Procuration', 'Autorisation donnée à un tiers pour recevoir et gérer le courrier au nom de la société.'],
+    'enr-statuts': ["Attestation d'enregistrement des statuts", "Confirme que les statuts ont été enregistrés auprès de l'administration fiscale."],
+    'enr-domiciliation': ["Attestation d'enregistrement du contrat de domiciliation", 'Preuve que le contrat de domiciliation a été enregistré auprès de la Direction des Impôts.'],
+    'ice': ['Attestation ICE', "Atteste de l'identifiant commun de l'entreprise (ICE), utilisé auprès des administrations."],
+    'tp': ["Attestation d'inscription à la Taxe Professionnelle (TP)", 'Document fiscal permettant de déclarer et payer la taxe professionnelle (patente).'],
+    'if': ["Bulletin de notification de l'Identifiant Fiscal (IF)", "L'identifiant fiscal unique pour toutes les démarches fiscales."],
+    'identifiants': ['Document des identifiants', 'Numéros attribués après immatriculation (RC, ICE, IF, CNSS).'],
+    'rc': ['Registre de Commerce (RC)', "La carte d'identité juridique de la société, indispensable pour exercer légalement."],
+    'cnss': ['Affiliation à la CNSS', 'Immatricule la société à la CNSS, obligatoire pour déclarer les salariés.'],
+    'bo': ['Publication au Bulletin Officiel', 'Obligatoire pour rendre publique la création de la société.'],
+    'annonce': ['Annonce légale (PDF du journal)', 'Obligatoire pour rendre publique la création de la société.']
+  };
+  const DOC_ST = ['En attente', 'En cours', 'Obtenu'];
+  const AVANCE = 700;
+  // The creation workflow. A step is finished when all its tasks are done; the file then moves on by itself.
+  // Task types: doc (a document above, done when "Obtenu"), check (an action ticked by the team), pay (a payment received).
+  const WORKFLOW = [
+    { name:'Demande reçue', short:'Reçue', hint:"Le client règle l'avance de 700 MAD. Le certificat négatif démarre dès réception.", tasks:[{ t:'pay', k:'avance' }] },
+    { name:'Certificat négatif', short:'Certificat', hint:"Demande du certificat négatif à l'OMPIC pour réserver le nom.", tasks:[{ t:'doc', k:'cn' }] },
+    { name:'Rédaction', short:'Rédaction', hint:'Préparation des documents, puis envoi au client pour légalisation.', tasks:[{ t:'doc', k:'statuts' }, { t:'doc', k:'domiciliation' }, { t:'doc', k:'procuration' }, { t:'check', k:'form-rc', label:"Formulaire RC (déclaration d'immatriculation) préparé" }, { t:'check', k:'sent-legal', label:'Documents envoyés au client pour légalisation' }] },
+    { name:'Légalisation', short:'Légalisation', hint:'Le client légalise les documents, les renvoie et règle 50 % du reste.', tasks:[{ t:'check', k:'legal-back', label:'Documents légalisés reçus du client' }, { t:'pay', k:'second' }] },
+    { name:'Enregistrement', short:'Enregistrement', hint:'Enregistrement des statuts et du contrat de domiciliation.', tasks:[{ t:'doc', k:'enr-statuts' }, { t:'doc', k:'enr-domiciliation' }] },
+    { name:'Dépôt OMPIC · Impôts', short:'OMPIC · Impôts', hint:"Dépôt à l'OMPIC, traitement par les Impôts. En cas de rejet, indiquez le motif.", reject:true, tasks:[{ t:'check', k:'depot', label:"Dossier déposé à l'OMPIC" }, { t:'doc', k:'ice' }, { t:'doc', k:'tp' }, { t:'doc', k:'if' }, { t:'doc', k:'identifiants' }] },
+    { name:'Tribunal', short:'Tribunal', hint:'Immatriculation au registre de commerce, puis affiliation CNSS.', tasks:[{ t:'doc', k:'rc' }, { t:'doc', k:'cnss' }] },
+    { name:'Bulletin Officiel', short:'BO', hint:'Publication de la création au Bulletin Officiel.', tasks:[{ t:'doc', k:'bo' }] },
+    { name:'Annonce légale', short:'Annonce', hint:"Rédaction de l'annonce, envoi au journal, réception du PDF.", tasks:[{ t:'check', k:'annonce-sent', label:'Annonce envoyée au journal' }, { t:'doc', k:'annonce' }] },
+    { name:'Dossier complet', short:'Complet', hint:'Le client règle le solde, puis on lui envoie tous les documents.', tasks:[{ t:'pay', k:'final' }, { t:'check', k:'delivered', label:'Tous les documents envoyés au client' }] }
   ];
-  const LIV_ST = ['En attente', 'En cours', 'Obtenu'];
-  const STEPS = ['Reçue', 'Paiement', 'Pièces', 'Certificat négatif', 'Statuts', 'RC · IF · CNSS', 'Livré'];
+  const DONE = WORKFLOW.length;           // step index of a delivered file
+  const stepName = i => i >= DONE ? 'Livré' : WORKFLOW[i].name;
   const FORMES = { sarlau:'SARL AU', sarl:'SARL', sas:'SAS', ae:'Auto-entrepreneur', sa:'Société anonyme' };
   const PLANS = { essentiel:'Pack Essentiel', pro:'Pack Pro', premium:'Pack Premium', ae:'Auto-entrepreneur' };
   const OPTS = { o_prio:'Traitement prioritaire', o_logo:'Logo et carte de visite', o_pacte:"Pacte d'associés" };
@@ -249,7 +282,7 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
   const member = id => TEAM.find(t => t.id === id);
 
   // ---------- Storage (swap this object for a real backend) ----------
-  const DB_KEY = 'ce-admin-db', USER_KEY = 'ce-admin-user', INBOX_KEY = 'ce-requests';
+  const DB_KEY = 'ce-admin-db-v2', USER_KEY = 'ce-admin-user', INBOX_KEY = 'ce-requests';
   const store = {
     read(k, d){ try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch(e) { return d; } },
     write(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e) {} }
@@ -257,55 +290,66 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
   let db = store.read(DB_KEY, null);
   const persist = () => store.write(DB_KEY, db);
 
+  // Empty workflow state for a new file
+  const fresh = () => ({ step:0, docs:{}, livrables:{}, checks:{}, paid:{}, reject:null });
+
+  // Mark everything before `step` as done, and the current step's documents as in progress (demo data)
+  function progress(r, step){
+    WORKFLOW.forEach((w, i) => w.tasks.forEach(tk => {
+      if (i < step) { if (tk.t === 'doc') r.livrables[tk.k] = 2; else if (tk.t === 'check') r.checks[tk.k] = true; else r.paid[tk.k] = true; }
+      else if (i === step && tk.t === 'doc') r.livrables[tk.k] = 1;
+    }));
+    r.step = step;
+  }
+
   function seed(){
     const now = Date.now(), ago = d => new Date(now - d * DAY).toISOString();
-    const mk = (o) => Object.assign({
-      lang:'fr', options:[], payAmount:'half', siege:'dom', message:'', seen:true, juriste:null,
-      docs:{}, paid:{ first:false, second:false }, notes:[]
-    }, o);
+    const mk = (o) => Object.assign(fresh(), { lang:'fr', options:[], payAmount:'avance', siege:'dom', message:'', seen:true, juriste:null, notes:[] }, o);
     const P = (name, cin, pct) => ({ name, cin, pct });
     const list = [
       mk({ ref:'CE-446366', createdAt:ago(.02), updatedAt:ago(.02), seen:false, forme:'sarlau', plan:'essentiel', total:4680, payMethod:'cashplus',
         noms:['Atlas Digital','Atlas Media','Atlas Group'], activite:'Agence de marketing digital', ville:'Casablanca', capital:10000,
         partners:[P('Lahcen Tazi','BE123456',100)], gerant:{ name:'Lahcen Tazi', cin:'BE123456' },
-        client:{ nom:'Lahcen Tazi', tel:'0612345678', email:'lahcen@exemple.ma' }, step:1 }),
+        client:{ nom:'Lahcen Tazi', tel:'0612345678', email:'lahcen@exemple.ma' } }),
       mk({ ref:'CE-446201', createdAt:ago(.3), updatedAt:ago(.3), seen:false, forme:'sarl', plan:'premium', total:9980, payMethod:'virement', payAmount:'full',
         noms:['Nour Food','Nour Traiteur','Nour Gourmet'], activite:'Restauration et traiteur', ville:'Rabat', capital:50000,
         partners:[P('Nadia Benali','A654321',60), P('Omar Benali','A112233',40)], gerant:{ name:'Nadia Benali', cin:'A654321' },
-        client:{ nom:'Nadia Benali', tel:'0661122334', email:'nadia@exemple.ma' }, step:1, juriste:'karim' }),
+        client:{ nom:'Nadia Benali', tel:'0661122334', email:'nadia@exemple.ma' }, juriste:'karim', _step:1 }),
       mk({ ref:'CE-445812', createdAt:ago(4), updatedAt:ago(3), forme:'sarl', plan:'essentiel', total:4680, payMethod:'virement',
         noms:['Sahara Trans'], activite:'Transport de marchandises', ville:'Agadir', capital:20000,
         partners:[P('Rachid Amrani','J998877',50), P('Samir Amrani','J887766',50)], gerant:{ name:'Rachid Amrani', cin:'J998877' },
-        client:{ nom:'Rachid Amrani', tel:'0677889900', email:'rachid@exemple.ma' }, step:2, juriste:'salma', paid:{ first:true, second:false },
-        docs:{ pay:true, 'cin-0':true } }),
+        client:{ nom:'Rachid Amrani', tel:'0677889900', email:'rachid@exemple.ma' }, juriste:'salma', _step:2 }),
       mk({ ref:'CE-445610', createdAt:ago(6), updatedAt:ago(2.5), forme:'sarl', plan:'pro', total:7180, options:['o_pacte'], payMethod:'cashplus',
         noms:['Kech Events'], activite:"Organisation d'événements", ville:'Marrakech', capital:30000, siege:'local',
         partners:[P('Hind Alaoui','E445566',50), P('Yassine Alaoui','E556677',30), P('Sara Alaoui','E667788',20)], gerant:{ name:'Hind Alaoui', cin:'E445566' },
-        client:{ nom:'Hind Alaoui', tel:'0655443322', email:'hind@exemple.ma' }, step:2, juriste:'salma', paid:{ first:true, second:false },
-        docs:{ pay:true, 'cin-0':true, 'cin-1':true } }),
-      mk({ ref:'CE-445320', createdAt:ago(8), updatedAt:ago(1), forme:'sarl', plan:'essentiel', total:4680, payMethod:'virement', payAmount:'full',
+        client:{ nom:'Hind Alaoui', tel:'0655443322', email:'hind@exemple.ma' }, juriste:'salma', _step:3 }),
+      mk({ ref:'CE-445320', createdAt:ago(9), updatedAt:ago(1), forme:'sarl', plan:'essentiel', total:4680, payMethod:'virement',
         noms:['Rif Agro'], activite:'Agriculture et export', ville:'Autre ville', capital:100000,
         partners:[P('Karim Haddou','S334455',70), P('Ali Haddou','S445566',30)], gerant:{ name:'Karim Haddou', cin:'S334455' },
-        client:{ nom:'Karim Haddou', tel:'0644556677', email:'k.haddou@exemple.ma' }, step:3, juriste:'hajar', paid:{ first:true, second:true },
-        docs:{ pay:true, 'cin-0':true, 'cin-1':true } }),
-      mk({ ref:'CE-444980', createdAt:ago(12), updatedAt:ago(.5), forme:'sarl', plan:'premium', total:9980, payMethod:'virement',
+        client:{ nom:'Karim Haddou', tel:'0644556677', email:'k.haddou@exemple.ma' }, juriste:'hajar', _step:5 }),
+      mk({ ref:'CE-444980', createdAt:ago(14), updatedAt:ago(.5), forme:'sarl', plan:'premium', total:9980, payMethod:'virement',
         noms:['Medina Craft'], activite:'Artisanat', ville:'Fès', capital:20000,
         partners:[P('Fatima Idrissi','C223344',50), P('Mehdi Idrissi','C334455',50)], gerant:{ name:'Fatima Idrissi', cin:'C223344' },
-        client:{ nom:'Fatima Idrissi', tel:'0633221100', email:'fatima@exemple.ma' }, step:4, juriste:'karim', paid:{ first:true, second:false },
-        docs:{ pay:true, 'cin-0':true, 'cin-1':true } }),
-      mk({ ref:'CE-444512', createdAt:ago(22), updatedAt:ago(10), forme:'sarlau', plan:'essentiel', total:4680, payMethod:'cashplus',
+        client:{ nom:'Fatima Idrissi', tel:'0633221100', email:'fatima@exemple.ma' }, juriste:'karim', _step:8 }),
+      mk({ ref:'CE-444512', createdAt:ago(24), updatedAt:ago(10), forme:'sarlau', plan:'essentiel', total:4680, payMethod:'cashplus',
         noms:['Souss Fresh'], activite:'Distribution de fruits', ville:'Agadir', capital:10000,
         partners:[P('Hamza Ouali','JK12345',100)], gerant:{ name:'Hamza Ouali', cin:'JK12345' },
-        client:{ nom:'Hamza Ouali', tel:'0622334455', email:'hamza@exemple.ma' }, step:7, juriste:'salma', paid:{ first:true, second:true },
-        docs:{ pay:true, 'cin-0':true } })
+        client:{ nom:'Hamza Ouali', tel:'0622334455', email:'hamza@exemple.ma' }, juriste:'salma', _step:DONE })
     ];
-    const done = [0, 0, 0, 0, 3, 8, 11, 13];
     list.forEach(r => {
-      r.livrables = {}; LIVRABLES.forEach(([k], i) => { if (i < done[r.step]) r.livrables[k] = 2; else if (i === done[r.step] && r.step >= 3 && r.step < 7) r.livrables[k] = 1; });
+      if (r.payAmount === 'full' && r._step) r.paid.full = true;
+      progress(r, r._step || 0); delete r._step;
+      if (r.step >= 1) { r.docs.pay = true; r.docs['cin-0'] = true; }
+      if (r.step >= 3) r.partners.forEach((p, i) => r.docs['cin-' + i] = true);
       r.notes.push({ t:'sys', at:r.createdAt, text:'Demande reçue depuis le site.' });
-      if (r.step >= 2) r.notes.push({ t:'note', by:r.juriste, at:new Date(Date.parse(r.createdAt) + DAY).toISOString(), text:'Paiement vérifié, client informé.' });
+      for (let i = 0; i < Math.min(r.step, DONE); i++) r.notes.push({ t:'sys', by:r.juriste, at:new Date(Date.parse(r.createdAt) + (i + 1) * DAY * .8).toISOString(), text:`Étape terminée : ${WORKFLOW[i].name} → ${stepName(i + 1)}.` });
     });
-    list[3].notes.push({ t:'note', by:'salma', at:ago(2.5), text:'Il manque la CNIE de Sara Alaoui. Relancée par WhatsApp.' });
+    // a rejected file (problem on the client's side)
+    const rif = list[4]; rif.checks.depot = true;
+    rif.reject = { motif:'CIN du gérant expirée', cause:'client', at:ago(1), by:'hajar' };
+    rif.notes.push({ t:'sys', by:'hajar', at:ago(1), text:'Dossier rejeté par les Impôts. Motif : CIN du gérant expirée (problème côté client).' });
+    list[5].checks['annonce-sent'] = true;
+    list[3].notes.push({ t:'note', by:'salma', at:ago(2.5), text:"Documents envoyés pour légalisation. Le client passe à la commune demain." });
     return { requests:list };
   }
 
@@ -315,7 +359,7 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
     if (!box.length) return;
     box.forEach(r => {
       if (db.requests.some(x => x.ref === r.ref)) return;
-      db.requests.unshift(Object.assign({ seen:false, juriste:null, step:1, docs:{}, livrables:{}, paid:{ first:false, second:false },
+      db.requests.unshift(Object.assign(fresh(), { seen:false, juriste:null, payAmount:'avance',
         updatedAt:r.createdAt, notes:[{ t:'sys', at:r.createdAt, text:'Demande reçue depuis le site.' }] }, r));
     });
     store.write(INBOX_KEY, []); persist();
@@ -324,7 +368,7 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
   // ---------- Helpers ----------
   const title = r => r.noms?.[0] || r.client?.nom || r.ref;
   const days = iso => Math.floor((Date.now() - Date.parse(iso)) / DAY);
-  const isLate = r => r.step < 7 && days(r.updatedAt) >= 2;
+  const isLate = r => r.step < DONE && days(r.updatedAt) >= 2;
   function when(iso){
     const d = new Date(iso), t = Date.now() - d;
     if (t < 6e4) return "à l'instant";
@@ -333,10 +377,31 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
     if (t < 2 * DAY) return 'Hier';
     return d.toLocaleDateString('fr-FR', { day:'2-digit', month:'2-digit' });
   }
-  const amounts = r => {
-    if (r.total == null) return null;
-    return r.payAmount === 'full' ? [{ k:'first', label:'Totalité', v:r.total }] : [{ k:'first', label:'Acompte 50 %', v:Math.round(r.total / 2) }, { k:'second', label:'Solde (remise du RC)', v:r.total - Math.round(r.total / 2) }];
-  };
+  // Payments: 700 MAD avance at the order, 50 % of the rest after the documents are légalisés, the balance when the file is complete.
+  // A client may also pay everything at the order (payAmount 'full'). v is null when the price is on quote.
+  function amounts(r){
+    const t = r.total;
+    if (r.payAmount === 'full') return [{ k:'full', label:'Totalité (à la commande)', v:t }];
+    const av = t == null ? AVANCE : Math.min(AVANCE, t), rest = t == null ? null : t - av, second = rest == null ? null : Math.round(rest / 2);
+    return [{ k:'avance', label:'Avance (à la commande)', v:av }, { k:'second', label:'50 % du reste (après légalisation)', v:second }, { k:'final', label:'Solde (dossier complet)', v:rest == null ? null : rest - second }];
+  }
+  const payDone = (r, k) => !!(r.paid.full || r.paid[k]);
+  const payLabel = k => ({ avance:'Avance de 700 MAD reçue', second:'50 % du reste reçu', final:'Solde reçu' })[k];
+  const taskDone = (r, tk) => tk.t === 'doc' ? r.livrables[tk.k] === 2 : tk.t === 'check' ? !!r.checks[tk.k] : payDone(r, tk.k);
+  const stepDone = (r, i) => WORKFLOW[i].tasks.every(tk => taskDone(r, tk)) && !(WORKFLOW[i].reject && r.reject);
+  const docsTotal = Object.keys(DOCS).length;
+  const docsOk = r => Object.keys(DOCS).filter(k => r.livrables[k] === 2).length;
+
+  // Move the file forward while its current step is finished; the next step's documents become "En cours".
+  function advance(r){
+    let moved = 0;
+    while (r.step < DONE && stepDone(r, r.step)) {
+      r.step++; moved++;
+      log(r, r.step >= DONE ? 'Dossier livré au client. ✓' : `Étape terminée : ${WORKFLOW[r.step - 1].name} → ${WORKFLOW[r.step].name}.`);
+      if (r.step < DONE) WORKFLOW[r.step].tasks.forEach(tk => { if (tk.t === 'doc' && !r.livrables[tk.k]) r.livrables[tk.k] = 1; });
+    }
+    if (moved) toast(r.step >= DONE ? 'Dossier terminé ✓' : `Étape suivante : ${WORKFLOW[r.step].name}`);
+  }
   function docsOf(r){
     const d = [{ k:'pay', label:'Preuve de paiement' }];
     (r.partners || []).forEach((p, i) => d.push({ k:'cin-' + i, label:'CNIE · ' + (p.name || 'Associé ' + (i + 1)) }));
@@ -387,8 +452,8 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
   function visible(){
     const q = $('#q').value.trim().toLowerCase();
     return db.requests.filter(allowed).filter(r => {
-      if (filter === 'todo' && r.step >= 7) return false;
-      if (filter === 'done' && r.step < 7) return false;
+      if (filter === 'todo' && r.step >= DONE) return false;
+      if (filter === 'done' && r.step < DONE) return false;
       if (filter === 'mine' && r.juriste !== me.id) return false;
       if (!q) return true;
       const hay = [r.ref, ...(r.noms || []), r.client?.nom, r.client?.tel, r.client?.email, ...(r.partners || []).flatMap(p => [p.name, p.cin])].join(' ').toLowerCase();
@@ -396,9 +461,10 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
     }).sort((a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt));
   }
   function statusLine(r){
-    if (r.step >= 7) return '✓ Terminé';
+    if (r.step >= DONE) return '✓ Livré';
     if (!r.seen) return 'Nouvelle demande';
-    return STEPS[r.step];
+    if (r.reject) return `⚠ Rejeté · ${r.reject.motif}`;
+    return `${r.step + 1}/${DONE} · ${WORKFLOW[r.step].name}`;
   }
   function renderList(){
     const list = visible();
@@ -406,7 +472,7 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
       const j = member(r.juriste);
       return `<button class="li ${r.ref === current ? 'on' : ''}" data-ref="${esc(r.ref)}">
         <span class="av" style="--c:${j ? j.c : '#c9b6c4'}">${esc(title(r)[0] || '?')}</span>
-        <div><b>${esc(title(r))}</b><small><span class="mono">${esc(r.ref)}</span> · ${esc(FORMES[r.forme] || '')}</small><small>${esc(statusLine(r))}</small></div>
+        <div><b>${esc(title(r))}</b><small><span class="mono">${esc(r.ref)}</span> · ${esc(FORMES[r.forme] || '')}</small><small class="${r.reject && r.step < DONE ? 'rej' : ''}">${esc(statusLine(r))}</small></div>
         <div class="r"><span>${when(r.updatedAt)}</span>${!r.seen ? '<span class="dot" title="Non lue"></span>' : isLate(r) ? `<span class="pill p-late">J+${days(r.updatedAt)}</span>` : ''}</div>
       </button>`;
     }).join('') : '<p class="empty">Aucun dossier ici.</p>';
@@ -434,17 +500,42 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
 
   function renderDetail(){
     const r = current && get(current);
+    if (current !== renderDetail.last) { rejectOpen = false; renderDetail.last = current; }
     if (!r || !allowed(r)) {
       $('#detail').innerHTML = '<div class="ctr"><div class="blank"><b>Sélectionnez un dossier</b><span>La liste des demandes est à gauche.</span></div></div>';
       return;
     }
     const j = member(r.juriste), am = amounts(r), docs = docsOf(r);
-    const paidSum = am ? am.filter(a => r.paid[a.k]).reduce((s, a) => s + a.v, 0) : 0;
-    const docsOk = docs.filter(d => r.docs[d.k]).length;
-    const livOk = LIVRABLES.filter(([k]) => (r.livrables || {})[k] === 2).length;
+    const paidSum = am.filter(a => payDone(r, a.k) && a.v != null).reduce((x, a) => x + a.v, 0);
+    const piecesOk = docs.filter(d => r.docs[d.k]).length, livOk = docsOk(r);
     const canEdit = me.role === 'admin' || r.juriste === me.id;
-    const next = r.step < 7 ? (r.step === 6 ? 'Marquer livré ✓' : `Étape suivante : ${STEPS[r.step + 1]} →`) : null;
     const waMsg = `Bonjour ${r.client?.nom || ''}, c'est ${me.name} de Charika Express au sujet de votre demande ${r.ref}.`;
+    const docBtn = k => { const st = r.livrables[k] || 0; return `<button class="lst s${st}" data-liv="${k}" ${canEdit ? '' : 'disabled'}>${DOC_ST[st]}</button>`; };
+    const taskRow = tk => {
+      const done = taskDone(r, tk);
+      if (tk.t === 'doc') return `<div class="tk ${done ? 'done' : ''}"><i class="st ${done ? 'y' : 'n'}">${done ? '✓' : '•'}</i><span><b>${esc(DOCS[tk.k][0])}</b><small>${esc(DOCS[tk.k][1])}</small></span>${docBtn(tk.k)}</div>`;
+      if (tk.t === 'check') return `<div class="tk ${done ? 'done' : ''}"><i class="st ${done ? 'y' : 'n'}">${done ? '✓' : '•'}</i><span><b>${esc(tk.label)}</b></span><button class="tg ${done ? 'y' : ''}" data-check="${tk.k}" ${canEdit ? '' : 'disabled'}>${done ? 'Fait ✓' : 'Marquer fait'}</button></div>`;
+      const a = am.find(x => x.k === tk.k) || am[0];
+      return `<div class="tk ${done ? 'done' : ''}"><i class="st ${done ? 'y' : 'n'}">${done ? '✓' : '•'}</i><span><b>${esc(payLabel(tk.k))}</b><small>${r.paid.full ? 'Totalité payée à la commande' : a.v == null ? 'Montant sur devis' : fmt(a.v) + ' MAD · ' + esc(PAY[r.payMethod] || '')}</small></span>${r.paid.full ? '<span class="pill p-ok">Payé</span>' : `<button class="tg ${done ? 'y' : ''}" data-pay="${tk.k}" ${canEdit ? '' : 'disabled'}>${done ? 'Reçu ✓' : 'Marquer reçu'}</button>`}</div>`;
+    };
+    const w = WORKFLOW[r.step];
+    let curBox = '';
+    if (r.step >= DONE) curBox = `<div class="box cur-step okb"><h4>✓ Dossier livré <small>Tous les documents ont été envoyés au client.</small></h4></div>`;
+    else {
+      const left = w.tasks.filter(tk => !taskDone(r, tk)).length;
+      let rej = '';
+      if (w.reject && r.reject) {
+        const msg = `Bonjour ${r.client?.nom || ''}, votre dossier ${r.ref} a été rejeté par l'administration pour le motif suivant : ${r.reject.motif}. Merci de nous envoyer les éléments corrigés pour que nous puissions le redéposer.`;
+        rej = `<div class="rejb"><b>⚠ Dossier rejeté</b><span>Motif : ${esc(r.reject.motif)}</span><small>${r.reject.cause === 'client' ? 'Problème côté client' : 'Problème côté cabinet'} · ${when(r.reject.at)}</small>
+          <div class="ra">${r.reject.cause === 'client' ? `<a class="btn b-wa b-sm" href="${waLink(r.client?.tel, msg)}" target="_blank" rel="noopener">Notifier le client</a>` : ''}${canEdit ? '<button class="btn b-soft b-sm" id="redepot">Dossier corrigé et redéposé</button>' : ''}</div></div>`;
+      } else if (w.reject && canEdit) {
+        rej = rejectOpen ? `<form class="rejf" id="rejForm"><b>Signaler un rejet</b><input class="f" id="rejMotif" placeholder="Motif du rejet (ex. CIN expirée, erreur de légalisation…)" required autocomplete="off">
+          <div class="cmp"><select class="f" id="rejCause"><option value="client">Problème côté client (le client sera notifié)</option><option value="cabinet">Problème côté cabinet</option></select><button class="btn b-ink">Enregistrer</button><button type="button" class="btn b-soft" id="rejCancel">Annuler</button></div></form>`
+          : '<button class="btn b-soft b-sm rejbtn" id="rejOpen">⚠ Signaler un rejet</button>';
+      }
+      curBox = `<div class="box cur-step"><h4>Étape ${r.step + 1}/${DONE} · ${esc(w.name)} <small>${left ? `${left} élément${left > 1 ? 's' : ''} restant${left > 1 ? 's' : ''} · l'étape suivante démarre automatiquement` : 'terminée'}</small></h4>
+        <p class="hint">${esc(w.hint)}</p>${rej}${w.tasks.map(taskRow).join('')}</div>`;
+    }
     $('#detail').innerHTML = `
     <section class="ctr">
       <div class="h">
@@ -454,25 +545,25 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
           <a class="btn b-wa" href="${waLink(r.client?.tel, waMsg)}" target="_blank" rel="noopener">WhatsApp</a>
           ${r.client?.tel ? `<a class="btn b-soft" href="tel:${esc(r.client.tel.replace(/\s/g, ''))}">Appeler</a>` : ''}
           ${!r.juriste ? '<button class="btn b-ink" id="take">Prendre le dossier</button>' : ''}
-          ${next && canEdit ? `<button class="btn b-grad" id="nextStep">${next}</button>` : r.step >= 7 ? '<span class="pill p-ok">✓ Dossier terminé</span>' : ''}
+          ${r.step >= DONE ? '<span class="pill p-ok">✓ Dossier livré</span>' : ''}
         </div>
       </div>
-      <div class="track" role="list">${STEPS.map((s, i) => `<button role="listitem" data-step="${i}" class="${i < r.step ? 'ok' : i === r.step ? 'cur' : ''}" ${canEdit ? '' : 'disabled'} title="${canEdit ? 'Placer le dossier à cette étape' : ''}"><i>${i < r.step ? '✓' : i + 1}</i>${s}</button>`).join('')}</div>
+      <div class="trackw"><div class="track" role="list">${WORKFLOW.map((x, i) => `<button role="listitem" data-step="${i}" class="${i < r.step ? 'ok' : i === r.step ? (r.reject && x.reject ? 'cur rj' : 'cur') : ''}" ${me.role === 'admin' ? '' : 'disabled'} title="${esc(x.name)}${me.role === 'admin' ? ' · cliquer pour déplacer le dossier' : ''}"><i>${i < r.step ? '✓' : r.reject && x.reject && i === r.step ? '!' : i + 1}</i>${esc(x.short)}</button>`).join('')}</div></div>
+      ${curBox}
+      <div class="box"><h4>Documents de la société <small>${livOk}/${docsTotal} obtenus</small></h4>
+        <div class="prog"><i style="width:${livOk / docsTotal * 100}%"></i></div>
+        ${WORKFLOW.map((x, i) => { const ds = x.tasks.filter(tk => tk.t === 'doc'); if (!ds.length) return ''; return `<div class="lgrp ${i === r.step ? 'now' : ''}"><h5>${i + 1}. ${esc(x.name)}</h5><div class="livs">${ds.map(tk => `<div class="lv">${docBtn(tk.k)}<div><b>${esc(DOCS[tk.k][0])}</b></div></div>`).join('')}</div></div>`; }).join('')}
+      </div>
       <div class="two">
-        <div class="box"><h4>Pièces <small>${docsOk}/${docs.length}</small></h4>
+        <div class="box"><h4>Pièces du client <small>${piecesOk}/${docs.length}</small></h4>
           ${docs.map(d => `<div class="row"><i class="st ${r.docs[d.k] ? 'y' : 'n'}">${r.docs[d.k] ? '✓' : '!'}</i><span>${esc(d.label)}</span>
             ${canEdit ? `<button class="tg ${r.docs[d.k] ? 'y' : ''}" data-doc="${d.k}">${r.docs[d.k] ? 'Reçue' : 'Marquer reçue'}</button>` : ''}
             ${!r.docs[d.k] ? `<a class="tg" href="${waLink(r.client?.tel, `Bonjour ${r.client?.nom || ''}, pour avancer sur votre dossier ${r.ref}, merci de nous envoyer : ${d.label}.`)}" target="_blank" rel="noopener">Relancer</a>` : ''}</div>`).join('')}
         </div>
-        <div class="box"><h4>Paiement <small>${esc(PAY[r.payMethod] || '')} · ${r.payAmount === 'full' ? 'Totalité' : '50 / 50'}</small></h4>
-          ${am ? am.map(a => `<div class="row"><span>${a.label}</span><b>${fmt(a.v)} MAD</b>${canEdit ? `<button class="tg ${r.paid[a.k] ? 'y' : ''}" data-pay="${a.k}">${r.paid[a.k] ? 'Reçu ✓' : 'Attendu'}</button>` : `<span class="pill ${r.paid[a.k] ? 'p-ok' : 'p-wait'}">${r.paid[a.k] ? 'Reçu' : 'Attendu'}</span>`}</div>`).join('') +
-            `<div class="prog"><i style="width:${r.total ? paidSum / r.total * 100 : 0}%"></i></div><div style="display:flex;justify-content:space-between;font-size:.76rem;color:var(--m)"><span>Payé</span><b style="color:var(--ink)">${fmt(paidSum)} / ${fmt(r.total)} MAD</b></div>`
-          : '<div class="row"><span>Société anonyme : montant sur devis.</span></div>'}
+        <div class="box"><h4>Paiements <small>${esc(PAY[r.payMethod] || '')}</small></h4>
+          ${am.map(a => `<div class="row"><span>${esc(a.label)}</span><b>${a.v == null ? 'Sur devis' : fmt(a.v) + ' MAD'}</b><span class="pill ${payDone(r, a.k) ? 'p-ok' : 'p-wait'}">${payDone(r, a.k) ? 'Reçu' : 'Attendu'}</span></div>`).join('')}
+          <div class="prog"><i style="width:${r.total ? paidSum / r.total * 100 : 0}%"></i></div><div style="display:flex;justify-content:space-between;font-size:.76rem;color:var(--m)"><span>Payé</span><b style="color:var(--ink)">${fmt(paidSum)} / ${r.total == null ? 'sur devis' : fmt(r.total) + ' MAD'}</b></div>
         </div>
-      </div>
-      <div class="box"><h4>Documents de la société <small>${livOk}/${LIVRABLES.length} obtenus${canEdit ? ' · cliquez sur un statut pour le changer' : ''}</small></h4>
-        <div class="prog"><i style="width:${livOk / LIVRABLES.length * 100}%"></i></div>
-        <div class="livs">${LIVRABLES.map(([k, t, d]) => { const st = (r.livrables || {})[k] || 0; return `<div class="lv"><button class="lst s${st}" data-liv="${k}" ${canEdit ? '' : 'disabled'}>${LIV_ST[st]}</button><div><b>${esc(t)}</b><small>${esc(d)}</small></div></div>`; }).join('')}</div>
       </div>
       <div class="box"><h4>Historique et notes de l'équipe <small>visibles par l'équipe seulement</small></h4>
         <div class="feed" id="feed">${r.notes.map(n => { const w = member(n.by); return `<div class="msg ${n.t === 'sys' ? 'sys' : ''}"><span class="av" style="--c:${w ? w.c : '#c9b6c4'}">${n.t === 'sys' && !w ? '•' : esc((w?.name || '?')[0])}</span><div><small>${n.t === 'sys' ? 'Suivi' : 'Note'}${w ? ' · ' + esc(w.name) : ''} · ${when(n.at)}</small>${esc(n.text)}</div></div>`; }).join('')}</div>
@@ -498,24 +589,43 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
   }
 
   // Actions on the open file (event delegation)
+  let rejectOpen = false;
   $('#detail').addEventListener('click', e => {
     const r = current && get(current); if (!r) return;
-    const t = e.target.closest('button'); if (!t) return;
+    const t = e.target.closest('button'); if (!t || t.disabled) return;
     if (t.id === 'back') { $('#body').classList.remove('open'); return; }
+    if (t.id === 'rejOpen' || t.id === 'rejCancel') { rejectOpen = t.id === 'rejOpen'; renderDetail(); if (rejectOpen) $('#rejMotif').focus(); return; }
+    if (t.closest('#rejForm')) return;                  // the form's own submit
     if (t.id === 'take') { r.juriste = me.id; log(r, `${me.name} prend le dossier.`); toast('Dossier assigné à vous'); }
-    else if (t.id === 'nextStep') { r.step++; log(r, r.step >= 7 ? 'Dossier livré au client. ✓' : `Étape : ${STEPS[r.step - 1]} terminée → ${STEPS[r.step]}.`); toast(r.step >= 7 ? 'Dossier terminé ✓' : 'Étape mise à jour'); }
+    else if (t.id === 'redepot') { log(r, `Dossier corrigé et redéposé (rejet précédent : ${r.reject.motif}).`); r.reject = null; toast('Dossier redéposé'); }
     else if (t.dataset.step != null) {
-      const s = +t.dataset.step; if (s === r.step) return;
-      r.step = s; log(r, `Dossier placé à l'étape : ${STEPS[s]}.`);
+      const s2 = +t.dataset.step; if (s2 === r.step) return;
+      if (!confirm(`Déplacer manuellement le dossier à l'étape « ${WORKFLOW[s2].name} » ?`)) return;
+      r.step = s2; log(r, `Dossier déplacé manuellement à l'étape : ${WORKFLOW[s2].name}.`);
     }
     else if (t.dataset.liv) {
-      const k = t.dataset.liv; r.livrables = r.livrables || {}; r.livrables[k] = ((r.livrables[k] || 0) + 1) % 3;
-      log(r, `${LIVRABLES.find(x => x[0] === k)[1]} : ${LIV_ST[r.livrables[k]].toLowerCase()}.`);
+      const k = t.dataset.liv; r.livrables[k] = ((r.livrables[k] || 0) + 1) % 3;
+      log(r, `${DOCS[k][0]} : ${DOC_ST[r.livrables[k]].toLowerCase()}.`);
+    }
+    else if (t.dataset.check) {
+      const k = t.dataset.check; r.checks[k] = !r.checks[k];
+      const tk = WORKFLOW.flatMap(x => x.tasks).find(x => x.k === k); log(r, `${tk.label} : ${r.checks[k] ? 'fait ✓' : 'annulé'}.`);
     }
     else if (t.dataset.doc) { const k = t.dataset.doc; r.docs[k] = !r.docs[k]; const d = docsOf(r).find(x => x.k === k); log(r, `${d ? d.label : 'Pièce'} : ${r.docs[k] ? 'reçue ✓' : 'marquée manquante'}.`); }
-    else if (t.dataset.pay) { const k = t.dataset.pay; r.paid[k] = !r.paid[k]; const a = amounts(r).find(x => x.k === k); log(r, `${a.label} (${fmt(a.v)} MAD) : ${r.paid[k] ? 'reçu ✓' : 'remis en attente'}.`); }
+    else if (t.dataset.pay) {
+      const k = t.dataset.pay; r.paid[k] = !r.paid[k]; const a = amounts(r).find(x => x.k === k);
+      log(r, `${a.label}${a.v != null ? ` (${fmt(a.v)} MAD)` : ''} : ${r.paid[k] ? 'reçu ✓' : 'remis en attente'}.`);
+    }
     else return;
-    renderList(); renderDetail();
+    advance(r); renderList(); renderDetail();
+  });
+  $('#detail').addEventListener('submit', e => {
+    if (e.target.id !== 'rejForm') return;
+    e.preventDefault();
+    const r = get(current), motif = $('#rejMotif').value.trim(); if (!r || !motif) return;
+    r.reject = { motif, cause:$('#rejCause').value, at:new Date().toISOString(), by:me.id }; rejectOpen = false;
+    log(r, `Dossier rejeté par les Impôts. Motif : ${motif} (${r.reject.cause === 'client' ? 'problème côté client' : 'problème côté cabinet'}).`);
+    renderList(); renderDetail(); toast('Rejet enregistré');
   });
   $('#detail').addEventListener('submit', e => {
     if (e.target.id !== 'noteForm') return;
@@ -532,9 +642,9 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
 
   // ---------- Export (admin) ----------
   $('#exportBtn').addEventListener('click', () => {
-    const cols = ['Référence','Date','Société','Forme','Formule','Total MAD','Payé MAD','Paiement','Étape','Juriste','Client','Téléphone','E-mail','Ville'];
+    const cols = ['Référence','Date','Société','Forme','Formule','Total MAD','Payé MAD','Paiement','Étape','Rejet','Documents obtenus','Juriste','Client','Téléphone','E-mail','Ville'];
     const q = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
-    const rows = visible().map(r => { const am = amounts(r) || []; return [r.ref, new Date(r.createdAt).toLocaleDateString('fr-FR'), title(r), FORMES[r.forme], PLANS[r.plan], r.total ?? '', am.filter(a => r.paid[a.k]).reduce((s, a) => s + a.v, 0), PAY[r.payMethod], r.step >= 7 ? 'Terminé' : STEPS[r.step], member(r.juriste)?.name || '', r.client?.nom, r.client?.tel, r.client?.email, r.ville]; });
+    const rows = visible().map(r => { const am = amounts(r); return [r.ref, new Date(r.createdAt).toLocaleDateString('fr-FR'), title(r), FORMES[r.forme], PLANS[r.plan], r.total ?? 'Sur devis', am.filter(a => payDone(r, a.k) && a.v != null).reduce((x, a) => x + a.v, 0), PAY[r.payMethod], stepName(r.step), r.reject ? r.reject.motif : '', `${docsOk(r)}/${docsTotal}`, member(r.juriste)?.name || '', r.client?.nom, r.client?.tel, r.client?.email, r.ville]; });
     const csv = '﻿' + [cols, ...rows].map(x => x.map(q).join(';')).join('\n');
     const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type:'text/csv;charset=utf-8' }));
     a.download = 'demandes-charika-express.csv'; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);

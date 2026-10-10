@@ -348,7 +348,7 @@ textarea{min-height:96px;resize:vertical}
 
         <!-- STEP 4 -->
         <section class="step" data-step="4" hidden>
-          <div class="step-h"><small data-t="st">Étape 4 sur 5</small><h2 data-t="s4h">Choisissez votre formule</h2><p data-t="s4p">Prix TTC, frais administratifs inclus. Paiement en deux fois.</p></div>
+          <div class="step-h"><small data-t="st">Étape 4 sur 5</small><h2 data-t="s4h">Choisissez votre formule</h2><p data-t="s4p">Prix TTC, frais administratifs inclus. 700 MAD d'avance, puis le reste en deux fois.</p></div>
           <div class="tiles t3" role="radiogroup">
             <label class="tile"><input type="radio" name="plan" value="essentiel" data-price="4680" checked><b data-t="pl1">Pack Essentiel</b><span data-t="pl1d">12 mois de domiciliation offerts</span><em class="ltr">4 680 MAD</em></label>
             <label class="tile"><span class="tag" data-t="pkrec">Recommandé</span><input type="radio" name="plan" value="pro" data-price="5980"><b data-t="pl2">Pack Pro</b><span data-t="pl2d">24 mois de domiciliation et cachet de la société</span><em class="ltr">5 980 MAD</em></label>
@@ -380,7 +380,7 @@ textarea{min-height:96px;resize:vertical}
           <div class="step-h"><small data-t="st">Étape 6 sur 6</small><h2 data-t="s6h">Mode de paiement</h2><p data-t="s6p">Choisissez le montant et le moyen de paiement. Indiquez votre référence comme motif du paiement.</p></div>
           <span class="lbl" data-t="amt">Montant à régler</span>
           <div class="tiles t2" role="radiogroup">
-            <label class="tile"><input type="radio" name="pay_amount" value="half" checked><b data-t="am2">50 / 50</b><span data-t="am2d">50% maintenant, 50% à la remise du RC</span><em class="ltr" id="amtHalf">—</em></label>
+            <label class="tile"><input type="radio" name="pay_amount" value="avance" checked><b data-t="am2">Avance de 700 MAD</b><span data-t="am2d">On lance le certificat négatif dès réception. Le reste en deux fois : 50% à la signature des documents, le solde à la livraison.</span><em class="ltr" id="amtHalf">700 MAD</em></label>
             <label class="tile"><input type="radio" name="pay_amount" value="full"><b data-t="am1">Totalité</b><span data-t="am1d">100% maintenant, en une seule fois</span><em class="ltr" id="amtFull">—</em></label>
           </div>
           <span class="lbl" style="margin-top:22px" data-t="meth">Moyen de paiement</span>
@@ -455,7 +455,7 @@ textarea{min-height:96px;resize:vertical}
       </ol>
       <div class="total">
         <div class="r"><span data-t="tot">Total TTC</span><b class="ltr" id="sTotal">4 680</b></div>
-        <div class="split"><div class="now"><span data-t="snow">Maintenant</span><b class="ltr" id="sDep">2 340 MAD</b></div><div><span data-t="slater">Plus tard</span><b class="ltr" id="sLater">2 340 MAD</b></div></div>
+        <div class="split"><div class="now"><span data-t="snow">Maintenant</span><b class="ltr" id="sDep">700 MAD</b></div><div><span data-t="slater">Plus tard</span><b class="ltr" id="sLater">3 980 MAD</b></div></div>
       </div>
       <p class="help"><span class="av">N</span><span data-th="help">Une question ? Un juriste vous répond au <bdi dir="ltr">+212 5 00 00 00 00</bdi> ou sur <a href="https://wa.me/212500000000" target="_blank" rel="noopener">WhatsApp</a>.</span></p>
     </aside>
@@ -476,13 +476,13 @@ textarea{min-height:96px;resize:vertical}
     capital:"Share capital (MAD)", siege:"Registered office", sg1:"I need a business address", sg1d:"We provide one for you", sg2:"I already have premises", sg2d:"Lease or title deed",
     s3h:"Partners and manager", s3p:"Enter each partner and their share of the capital. The total must be 100%.",
     addp:"Add a partner", gerant:"Manager", gname:"Manager's full name", pcin2:"National ID (CNIE) or passport number",
-    s4h:"Choose your plan", s4p:"Prices include VAT and administrative fees. Pay in two instalments.",
+    s4h:"Choose your plan", s4p:"Prices include VAT and administrative fees. 700 MAD upfront, then the rest in two instalments.",
     pl1:"Essential Pack", pl1d:"12 months of business address, free", pkrec:"Recommended", pl2:"Pro Pack", pl2d:"24 months of business address and company stamp", pl3:"Premium Pack", pl3d:"24 months of business address, company stamp and trademark protection (2 classes)",
     opts:"Options", o1:"Priority processing", o2:"Logo and business card", o3:"Shareholders' agreement",
     s5h:"Your contact details", s5p:"Your legal advisor will contact you within one working day to confirm your file.",
     fn:"Full name", ft:"Phone / WhatsApp", fe:"Email", fm:"Additional information",
     s6h:"Payment method", s6p:"Choose the amount and payment method. Use your reference as the payment description.",
-    amt:"Amount to pay", am2:"50 / 50", am2d:"50% now, 50% when your trade register is delivered", am1:"Full amount", am1d:"100% now, in a single payment",
+    amt:"Amount to pay", am2:"700 MAD upfront", am2d:"We start the negative certificate as soon as it arrives. The rest in two instalments: 50% when the documents are signed, the balance on delivery.", am1:"Full amount", am1d:"100% now, in a single payment",
     meth:"Payment method", pm1:"Bank transfer", pm1d:"From your bank or banking app", pm2:"Cash Plus", pm2d:"In cash, at any Cash Plus branch",
     refl:"Your payment reference", copy:"Copy", now:"To pay now", bf:"Beneficiary", bk:"Bank", bkv:"Your bank", motif:"Payment description", cpn:"Beneficiary name", cin:"ID number", tel:"Phone",
     pnote:"After paying, send a photo of your receipt on WhatsApp, quoting your reference.", pdemo:"Demo details: replace them with your real RIB and Cash Plus beneficiary.",
@@ -496,14 +496,14 @@ textarea{min-height:96px;resize:vertical}
     help:'Questions? A legal advisor is available on <bdi dir="ltr">+212 5 00 00 00 00</bdi> or on <a href="https://wa.me/212500000000" target="_blank" rel="noopener">WhatsApp</a>.'
   };
   const T = {
-    fr:{st:n=>`Étape ${n} sur 6`, copied:"Copié !", copy:"Copier", pm:{virement:"Virement",cashplus:"Cash Plus"}, pa:{half:"50 / 50",full:"Totalité"}, rv5:"Paiement", rv6:"Coordonnées", gl:"Gérant", cn:{nom:"Nom",tel:"Téléphone",email:"E-mail"}, req:"Ce champ est obligatoire.", email:"Adresse e-mail invalide.", tel:"Numéro de téléphone invalide.", cap:"Minimum 1 000 MAD.",
+    fr:{st:n=>`Étape ${n} sur 6`, copied:"Copié !", copy:"Copier", pm:{virement:"Virement",cashplus:"Cash Plus"}, pa:{avance:"Avance 700 MAD",full:"Totalité"}, rv5:"Paiement", rv6:"Coordonnées", gl:"Gérant", cn:{nom:"Nom",tel:"Téléphone",email:"E-mail"}, req:"Ce champ est obligatoire.", email:"Adresse e-mail invalide.", tel:"Numéro de téléphone invalide.", cap:"Minimum 1 000 MAD.",
         pct:"Le total des parts doit faire 100%.", shareTxt:t=>`Total des parts : ${t}%`, cgu:"Merci de cocher cette case.",
         ok:(n,e)=>`Merci ${n}. Nous avons bien reçu votre demande. Un récapitulatif sera envoyé à ${e}.`,
         edit:"Modifier", rv1:"Service", rv2:"Société", rv3:"Associés", rv4:"Formule", none:"Aucune", quote:"Sur devis", todo:"à compléter", prog:n=>`${n} élément${n>1?"s":""} sur 6 complété${n>1?"s":""}`,
         pname:"Nom complet", pcin:"N° CNIE ou passeport", ppct:"Part (%)", pttl:"Associé", rm:"Retirer", other:"Une autre personne", next:"Continuer", send:"Envoyer ma demande",
         k:{forme:"Forme",noms:"Noms",act:"Activité",ville:"Ville",capital:"Capital",siege:"Siège",plan:"Formule",opts:"Options",total:"Total",method:"Moyen",amount:"Montant",ref:"Référence",now:"À régler maintenant"},
         siege:{dom:"Domiciliation",local:"Local existant"}},
-    en:{st:n=>`Step ${n} of 6`, copied:"Copied!", copy:"Copy", pm:{virement:"Bank transfer",cashplus:"Cash Plus"}, pa:{half:"50 / 50",full:"Full amount"}, rv5:"Payment", rv6:"Contact details", gl:"Manager", cn:{nom:"Name",tel:"Phone",email:"Email"}, req:"This field is required.", email:"Invalid email address.", tel:"Invalid phone number.", cap:"Minimum: 1,000 MAD.",
+    en:{st:n=>`Step ${n} of 6`, copied:"Copied!", copy:"Copy", pm:{virement:"Bank transfer",cashplus:"Cash Plus"}, pa:{avance:"700 MAD upfront",full:"Full amount"}, rv5:"Payment", rv6:"Contact details", gl:"Manager", cn:{nom:"Name",tel:"Phone",email:"Email"}, req:"This field is required.", email:"Invalid email address.", tel:"Invalid phone number.", cap:"Minimum: 1,000 MAD.",
         pct:"Shares must total 100%.", shareTxt:t=>`Total shares: ${t}%`, cgu:"Please tick this box.",
         ok:(n,e)=>`Thank you ${n}. We have received your request. A summary will be sent to ${e}.`,
         edit:"Edit", rv1:"Service", rv2:"Company", rv3:"Partners", rv4:"Plan", none:"None", quote:"Custom quote", todo:"to be completed", prog:n=>`${n} of 6 item${n>1?"s":""} completed`,
@@ -652,11 +652,13 @@ textarea{min-height:96px;resize:vertical}
   }
   function optsText(){ const o = $$('#wizard input[type=checkbox][data-price]:checked').map(c => c.nextElementSibling.textContent); return o.length ? o.join(', ') : T[lang].none; }
   let ref = 'CE-' + String(Math.floor(100000 + Math.random() * 900000));
-  function payNow(){ const t = total(); if (t === null) return null; return val('pay_amount') === 'full' ? t : Math.round(t / 2); }
+  // 700 MAD avance at the order (or everything at once); with a price on quote, the avance still applies
+  const AVANCE = 700;
+  function payNow(){ const t = total(); if (val('pay_amount') === 'full' && t !== null) return t; return t === null ? AVANCE : Math.min(AVANCE, t); }
   function payment(){
     const t = total();
     $('#amtFull').textContent = t === null ? T[lang].quote : fmt(t) + ' MAD';
-    $('#amtHalf').textContent = t === null ? T[lang].quote : fmt(Math.round(t / 2)) + ' MAD';
+    $('#amtHalf').textContent = fmt(t === null ? AVANCE : Math.min(AVANCE, t)) + ' MAD';
     $('#payRef').textContent = ref; $$('.refv').forEach(e => e.textContent = ref);
     const n = payNow(); $('#payNow').textContent = n === null ? T[lang].quote : fmt(n) + ' MAD';
     const cash = val('pay_method') === 'cashplus';
@@ -679,8 +681,8 @@ textarea{min-height:96px;resize:vertical}
     const t = total();
     $('#sTotal').textContent = t === null ? T[lang].quote : fmt(t);
     const n = payNow();
-    $('#sDep').textContent = n === null ? '—' : fmt(n) + ' MAD';
-    $('#sLater').textContent = n === null ? '—' : fmt(t - n) + ' MAD';
+    $('#sDep').textContent = fmt(n) + ' MAD';
+    $('#sLater').textContent = t === null ? T[lang].quote : fmt(t - n) + ' MAD';
     $('#sPay').textContent = T[lang].pm[val('pay_method')] + ' · ' + T[lang].pa[val('pay_amount')];
     // Checklist: tick each row once it has a value, then update the ring
     const filled = [!!val('forme'), !!nom, !!ville, !!document.querySelector('[name=plan]:checked') || val('forme') === 'ae', true, !!val('pay_method')];
@@ -775,6 +777,7 @@ textarea{min-height:96px;resize:vertical}
   const plan = q.get('plan'); if (plan && document.querySelector(`[name=plan][value="${plan}"]`)) document.querySelector(`[name=plan][value="${plan}"]`).checked = true;
   const svc = q.get('service'); if (svc && document.querySelector(`[name=forme][value="${svc}"]`)) document.querySelector(`[name=forme][value="${svc}"]`).checked = true;
   if (!document.querySelector('[name=plan]:checked')) document.querySelector('[name=plan][value=essentiel]').checked = true;
+  if (!document.querySelector('[name=pay_amount]:checked')) document.querySelector('[name=pay_amount][value=avance]').checked = true;
   let startLang = 'fr'; try { if (localStorage.getItem('ce-lang') === 'en') startLang = 'en'; } catch(e) {}
   setLang(startLang);
   show(1, true);

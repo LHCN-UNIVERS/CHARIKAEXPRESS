@@ -12,33 +12,49 @@ Each client gets their own account to follow their company creation. It is conne
 
 ## What the client sees
 
-- Where their file is in the 7 steps: Reçue → Paiement → Pièces → Certificat négatif → Statuts → RC · IF · CNSS → Livré.
+- Where their file is in the 10 steps (the same workflow as the team space, see below).
 - What they have to do now: pay, send their CNIE.
-- Their payments: amount, reference, what is left to pay.
+- Their payments: 700 MAD avance, 50% of the rest after légalisation, the balance when the file is complete.
 - Document upload (photo of the CNIE, payment proof), which goes straight into their file in the team space.
 - Messages with their juriste.
-- At the end, all their company documents to download: certificat négatif, statuts, RC, IF/ICE/CNSS.
+- At the end, all their company documents to download.
 - Later: other services, such as a change to the statuts or a domiciliation renewal.
 
-## Company documents the client follows
+## Creation workflow (shared with the team space)
 
-The same 13 documents the team tracks in `admin.html` (status: En attente → En cours → Obtenu). In the client space each one becomes downloadable once obtained.
+Each step owns its documents and tasks. When the last one is done, the file moves to the next step automatically.
+
+| # | Step | Documents and tasks |
+|---|---|---|
+| 1 | Demande reçue | 700 MAD avance received |
+| 2 | Certificat négatif | Certificat négatif (name reserved with OMPIC) |
+| 3 | Rédaction | Statuts, Contrat de domiciliation, Procuration, RC form (déclaration d'immatriculation) · documents sent to the client for légalisation |
+| 4 | Légalisation | Légalised documents received from the client · 50% of the rest received |
+| 5 | Enregistrement | Attestation d'enregistrement des statuts · Attestation d'enregistrement du contrat de domiciliation |
+| 6 | Dépôt OMPIC · Impôts | File deposited at OMPIC · Attestation ICE · Taxe Professionnelle (patente) · Identifiant Fiscal · Document des identifiants. **Can be rejected**: the motif is recorded and, when the problem is on the client's side (expired CIN, légalisation error…), the client is notified. |
+| 7 | Tribunal | Registre de Commerce · Affiliation à la CNSS |
+| 8 | Bulletin Officiel | Publication au Bulletin Officiel |
+| 9 | Annonce légale | Announcement sent to the journal · journal PDF received |
+| 10 | Dossier complet | Balance received · all documents sent to the client → Livré |
+
+## Company documents (14)
 
 | Document | What it is |
 |---|---|
+| Certificat négatif | Reserves the company name with OMPIC. |
 | Statuts | Define how the company works legally (partners, managers, capital, business purpose…). |
 | Contrat de domiciliation | Proves the company has a legal address to receive mail and operate. |
 | Procuration | Authorises a third party to receive and handle mail on the company's behalf. |
 | Attestation d'enregistrement des statuts | Confirms the statuts were registered with the tax administration. |
 | Attestation d'enregistrement du contrat de domiciliation | Proves the domiciliation contract was registered with the Direction des Impôts. |
-| Attestation d'inscription à la Taxe Professionnelle (TP) | Tax document used to declare and pay the business tax. |
-| Bulletin de notification de l'Identifiant Fiscal (IF) | The company's unique tax ID for all tax procedures. |
-| Registre de Commerce (RC) | The company's legal identity card, required to operate legally. |
-| Publication au Bulletin Officiel | Required to make the company's creation public. |
-| Annonce légale | Required to make the company's creation public. |
-| Affiliation à la CNSS | Registers the company with the CNSS, required before declaring employees. |
-| Document des identifiants | The numbers assigned after registration (RC, ICE, IF, CNSS). |
 | Attestation ICE | Official certificate of the company's common identifier (ICE). |
+| Attestation d'inscription à la Taxe Professionnelle (TP) | Tax document used to declare and pay the business tax (patente). |
+| Bulletin de notification de l'Identifiant Fiscal (IF) | The company's unique tax ID for all tax procedures. |
+| Document des identifiants | The numbers assigned after registration (RC, ICE, IF, CNSS). |
+| Registre de Commerce (RC) | The company's legal identity card, required to operate legally. |
+| Affiliation à la CNSS | Registers the company with the CNSS, required before declaring employees. |
+| Publication au Bulletin Officiel | Required to make the company's creation public. |
+| Annonce légale | Required to make the company's creation public (journal PDF). |
 
 ## Models
 

@@ -23,8 +23,8 @@ LINES = [
     (8.55, 13.85, "Votre demande se fait en cinq minutes. Forme juridique, nom, formule… et c'est envoyé."),
     (14.5, 19.85, "Ensuite, vous suivez chaque étape en temps réel, sur Ouatsape et par imèle."),
     (20.4, 23.85, "Et un vrai juriste vous accompagne, du début à la fin."),
-    (24.4, 27.85, "Sept à quinze jours. Paiement en deux fois. Garantie anti-rejet."),
-    (28.45, 31.85, "Le tout, dès quatre mille six cent quatre-vingts dirhams."),
+    (24.15, 28.35, "Sept à quinze jours. Sept cents dirhams pour démarrer. Garantie anti-rejet."),
+    (28.55, 31.85, "Le tout, dès quatre mille six cent quatre-vingts dirhams."),
     (32.4, 35.75, "Charika Expresse. Lancez votre société aujourd'hui."),
 ]
 
