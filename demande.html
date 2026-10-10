@@ -7,7 +7,7 @@
 <title>Ma demande · Charika Express</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap">
 <style>
 /* Request page: same "Coucher" tokens as the homepage. Two-column layout: sticky summary on the side, step-by-step form card in the main column. */
 :root{
@@ -17,19 +17,15 @@
   --font:"Sora",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
   --grad:linear-gradient(100deg,var(--coral),var(--pink));
 }
-:root[dir="rtl"]{--font:"Tajawal","Noto Sans Arabic",ui-sans-serif,system-ui,sans-serif}
 *{box-sizing:border-box}
 html{overflow-x:clip}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 var(--font);overflow-x:clip}
-:root[dir="rtl"] body{font-size:17px;line-height:1.8}
 a{color:inherit}
 p{margin:0}
 h1,h2,h3{margin:0;line-height:1.1;letter-spacing:-.035em;text-wrap:balance}
-:root[dir="rtl"] h1,:root[dir="rtl"] h2,:root[dir="rtl"] h3{letter-spacing:0;line-height:1.4}
 :focus-visible{outline:3px solid var(--rose);outline-offset:3px;border-radius:8px}
 .wrap{max-width:1160px;margin-inline:auto;padding-inline:clamp(16px,4vw,40px)}
 .flip{display:inline-block}
-:root[dir="rtl"] .flip{transform:scaleX(-1)}
 .ltr{direction:ltr;unicode-bidi:isolate}
 [hidden]{display:none!important}
 
@@ -244,9 +240,9 @@ textarea{min-height:96px;resize:vertical}
       </ul>
       <div class="bar-r">
         <a class="ico wa-ico" href="https://wa.me/212500000000" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.5-3.9-4.7-4.1-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1c.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.1 1.4z"/></svg></a>
-        <div class="lang" role="group" aria-label="Langue">
+        <div class="lang" role="group" aria-label="Langue / Language">
           <button type="button" data-lang="fr" aria-pressed="true">FR</button>
-          <button type="button" data-lang="ar" aria-pressed="false">ع</button>
+          <button type="button" data-lang="en" aria-pressed="false">EN</button>
         </div>
         <button class="ico burger" type="button" id="burger" aria-expanded="false" aria-controls="mnav" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"/></svg></button>
       </div>
@@ -296,9 +292,9 @@ textarea{min-height:96px;resize:vertical}
           <div class="step-h"><small data-t="st">Étape 2 sur 5</small><h2 data-t="s2h">Votre future société</h2><p data-t="s2p">Proposez 3 noms, par ordre de préférence. Nous vérifierons leur disponibilité auprès de l'OMPIC.</p></div>
           <div class="grid">
             <div class="grid g3">
-              <div><label for="n1"><span data-t="n1">Nom 1</span> *</label><input id="n1" name="n1" required></div>
-              <div><label for="n2"><span data-t="n2">Nom 2</span> *</label><input id="n2" name="n2" required></div>
-              <div><label for="n3"><span data-t="n3">Nom 3</span> *</label><input id="n3" name="n3" required></div>
+              <div><label for="n1"><span data-t="nm1">Nom 1</span> *</label><input id="n1" name="n1" required></div>
+              <div><label for="n2"><span data-t="nm2">Nom 2</span> *</label><input id="n2" name="n2" required></div>
+              <div><label for="n3"><span data-t="nm3">Nom 3</span> *</label><input id="n3" name="n3" required></div>
             </div>
             <div><label for="act"><span data-t="act">Activité principale</span> *</label><textarea id="act" name="act" required data-ph="actph" placeholder="Ex. : agence de marketing digital, conseil, import-export…"></textarea></div>
             <div class="grid g2">
@@ -411,7 +407,7 @@ textarea{min-height:96px;resize:vertical}
             <span class="ok-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
             <div><h2 data-t="okh">Demande envoyée !</h2><p id="okp"></p></div>
           </div>
-          <div class="ok-ref"><div><small data-t="refl">Référence du dossier</small><b class="ltr" id="ref">CE-000000</b></div><button type="button" class="btn copy" id="copyRef2" data-t="copy">Copier</button></div>
+          <div class="ok-ref"><div><small data-t="refd">Référence du dossier</small><b class="ltr" id="ref">CE-000000</b></div><button type="button" class="btn copy" id="copyRef2" data-t="copy">Copier</button></div>
           <ol class="tl">
             <li class="done"><i class="d"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></i><div><h3><span data-t="t0h">Demande reçue</span><span class="when" data-t="t0w">à l'instant</span></h3><p data-t="t0p">Votre dossier est enregistré.</p></div></li>
             <li class="now"><i class="d">2</i><div><h3 data-t="nx1h">Effectuez votre paiement</h3><p data-t="nx1">Indiquez votre référence comme motif.</p><div class="box"><span id="okPay">Virement · 50 / 50</span><b class="ltr" id="okAmt">1 450 MAD</b></div></div></li>
@@ -453,33 +449,36 @@ textarea{min-height:96px;resize:vertical}
 
 <script>
 (function(){
-  const AR = {
-    brand:"شركة<b>إكسبريس</b>", nh:"الرئيسية", n1:"خدماتنا", n3:"الأسعار", n4:"الأسئلة الشائعة", n5:"اتصل بنا",
-    title:"طلب <span>تأسيس شركتك</span>", subtitle:"6 مراحل، حوالي 5 دقائق. بعدها يتصل بك مستشارك القانوني للمصادقة على الملف.",
-    sp1:"الخدمة", sp2:"الشركة", sp3:"الشركاء", sp4:"الباقة", sp5:"معلوماتك", sp6:"الأداء",
-    s1h:"ما هو الشكل القانوني؟", s1p:"لست متأكداً؟ اختر SARL AU إذا كنت وحدك، وSARL إذا كنتم عدة شركاء.",
-    fo1:"SARL AU", fo1d:"شريك واحد", fo2:"SARL", fo2d:"شريكان أو أكثر", fo3:"المقاول الذاتي", fo3d:"نشاط فردي", fo4:"شركة المساهمة", fo4d:"عدة مساهمين، حسب الطلب",
-    s2h:"شركتك المستقبلية", s2p:"اقترح 3 أسماء حسب الأفضلية. سنتحقّق من توفّرها لدى OMPIC.",
-    n1:"الاسم 1", n2:"الاسم 2", n3:"الاسم 3", opt:"(اختياري)", act:"النشاط الرئيسي", actph:"مثال: وكالة تسويق رقمي، استشارات، استيراد وتصدير…",
-    ville:"مدينة المقر", choose:"اختر…", c1:"الدار البيضاء", c2:"الرباط", c3:"مراكش", c4:"طنجة", c5:"أكادير", c6:"فاس", c7:"مدينة أخرى",
-    capital:"الرأسمال (درهم)", siege:"المقر الاجتماعي", sg1:"أحتاج إلى توطين", sg1d:"نوفّر لك عنواناً", sg2:"لدي محلّ", sg2d:"عقد كراء أو سند ملكية",
-    s3h:"الشركاء والمسيّر", s3p:"أدخل كل شريك وحصّته من الرأسمال. يجب أن يكون المجموع 100%.",
-    addp:"إضافة شريك", gname:"الاسم الكامل للمسيّر", pcin2:"رقم البطاقة الوطنية أو الجواز", gerant:"المسيّر", pname:"الاسم الكامل", pcin:"رقم البطاقة الوطنية أو الجواز", ppct:"الحصة (%)", pttl:"شريك", rm:"حذف", other:"شخص آخر",
-    s4h:"اختر باقتك", s4p:"الأسعار شاملة للضريبة والمصاريف الإدارية. الأداء على دفعتين.",
-    pl1:"الأساسية", pl1d:"الإجراءات الضرورية", pl3:"المميّزة", pl3d:"توطين 12 شهراً، مستشار مخصّص، محاسبة 3 أشهر، حساب بنكي", best:"الأكثر شمولاً", rec:"الأكثر طلباً",
-    opts:"خيارات", o1:"معالجة ذات أولوية", o2:"شعار وبطاقة زيارة", o3:"ميثاق الشركاء",
-    s5h:"معلوماتك",
-    s6h:"طريقة الأداء", s6p:"اختر المبلغ وطريقة الأداء. اذكر مرجعك كسبب للأداء.", amt:"المبلغ المطلوب", am2:"50 / 50", am2d:"50% الآن و50% عند تسليم السجل التجاري", am1:"المبلغ كاملاً", am1d:"100% الآن، دفعة واحدة",
-    meth:"طريقة الأداء", pm1:"تحويل بنكي", pm1d:"من بنكك أو تطبيقك البنكي", pm2:"كاش بلوس", pm2d:"نقداً، في وكالة كاش بلوس",
-    refl:"مرجع الأداء الخاص بك", copy:"نسخ", now:"المبلغ المطلوب الآن", bf:"المستفيد", bk:"البنك", bkv:"بنكك", motif:"سبب الأداء", cpn:"اسم المستفيد", cin:"البطاقة الوطنية", tel:"الهاتف",
-    pnote:"بعد الأداء، أرسل صورة الوصل عبر واتساب مع ذكر مرجعك.", pdemo:"معلومات تجريبية: استبدلها برقم حسابك البنكي (RIB) ومعلومات المستفيد في كاش بلوس.", spay:"الأداء", s5p:"يتصل بك مستشارك خلال يوم عمل للمصادقة على الملف.",
-    fn:"الاسم الكامل", ft:"الهاتف / واتساب", fe:"البريد الإلكتروني", fm:"معلومات إضافية", recap:"ملخّص", cgu:"أوافق على أن يتم الاتصال بي بخصوص طلبي.",
-    okh:"تمّ إرسال الطلب!", refl:"مرجع الملف", t0h:"تمّ استلام الطلب", t0w:"الآن", t0p:"تمّ تسجيل ملفك.", nx1h:"أدِّ المبلغ", nx1:"اذكر مرجعك كسبب للأداء.", nx2h:"أرسل وثائقك", nx2:"إثبات الأداء + البطاقة الوطنية عبر واتساب.", wao:"فتح واتساب", nx3h:"مستشارك يتصل بك", nx3:"يُطلق طلب الشهادة السلبية لدى OMPIC.",
-    demo:"نسخة تجريبية: اربط هذا النموذج ببريدك الإلكتروني أو نظام إدارة العملاء لاستقبال الطلبات.", home:"العودة إلى الرئيسية",
-    prev:"رجوع", next:"متابعة", send:"إرسال طلبي",
-    sumh:"طلبك", sf:"الشكل", sn:"الاسم", sv:"المدينة", sp:"الباقة", so:"الخيارات", tot:"المجموع", dep:"المبلغ المطلوب الآن:", snow:"الآن", slater:"لاحقاً",
-    help:'سؤال؟ يجيبك مستشار قانوني على <bdi dir="ltr">+212 5 00 00 00 00</bdi> أو عبر <a href="https://wa.me/212500000000" target="_blank" rel="noopener">واتساب</a>.',
-    edit:"تعديل", rv1:"الخدمة", rv2:"الشركة", rv3:"الشركاء", rv4:"الباقة", none:"بدون", quote:"حسب الطلب"
+  const EN = {
+    nh:"Home", n1:"Services", n3:"Pricing", n4:"FAQ", n5:"Contact",
+    title:"Your <span>company formation</span> request", subtitle:"6 steps, about 5 minutes. Your lawyer then contacts you to confirm the file.",
+    sp1:"Service", sp2:"Company", sp3:"Partners", sp4:"Plan", sp5:"Contact details", sp6:"Payment",
+    s1h:"Which legal form?", s1p:"Not sure? Choose SARL AU if you're on your own, SARL if there are several of you.",
+    fo1:"SARL AU", fo1d:"A single partner", fo2:"SARL", fo2d:"2 partners or more", fo3:"Self-employed", fo3d:"Individual activity", fo4:"Public limited company (SA)", fo4d:"Several shareholders, on quote",
+    s2h:"Your future company", s2p:"Suggest 3 names, in order of preference. We'll check their availability with the OMPIC.",
+    nm1:"Name 1", nm2:"Name 2", nm3:"Name 3", opt:"(optional)", act:"Main activity", actph:"E.g. digital marketing agency, consulting, import-export…",
+    ville:"City of the registered office", choose:"Choose…", c1:"Casablanca", c2:"Rabat", c3:"Marrakech", c4:"Tangier", c5:"Agadir", c6:"Fez", c7:"Other city",
+    capital:"Share capital (MAD)", siege:"Registered office", sg1:"I need a registered address", sg1d:"We provide you with an address", sg2:"I already have premises", sg2d:"Lease or title deed",
+    s3h:"Partners and manager", s3p:"Enter each partner and their share of the capital. The total must be 100%.",
+    addp:"Add a partner", gerant:"Manager", gname:"Manager's full name", pcin2:"National ID (CNIE) or passport no.",
+    s4h:"Choose your plan", s4p:"Prices incl. tax, administrative fees included. Payment in two instalments.",
+    pl1:"Essential", pl1d:"Essential formalities", best:"Most complete", pl3:"Premium", pl3d:"Registered address for 12 months, dedicated lawyer, 3 months of accounting, bank account",
+    opts:"Options", o1:"Priority processing", o2:"Logo and business card", o3:"Shareholders' agreement",
+    s5h:"Your contact details", s5p:"Your lawyer contacts you within one working day to confirm the file.",
+    fn:"Full name", ft:"Phone / WhatsApp", fe:"Email", fm:"Additional information",
+    s6h:"Payment method", s6p:"Choose the amount and how you pay. Use your reference as the payment description.",
+    amt:"Amount to pay", am2:"50 / 50", am2d:"50% now, 50% when the trade register is delivered", am1:"Full amount", am1d:"100% now, in one payment",
+    meth:"Payment method", pm1:"Bank transfer", pm1d:"From your bank or banking app", pm2:"Cash Plus", pm2d:"In cash, at a Cash Plus agency",
+    refl:"Your payment reference", copy:"Copy", now:"To pay now", bf:"Beneficiary", bk:"Bank", bkv:"Your bank", motif:"Description", cpn:"Beneficiary name", cin:"ID no.", tel:"Phone",
+    pnote:"After paying, send a photo of the receipt by WhatsApp with your reference.", pdemo:"Demo details: replace them with your real RIB and Cash Plus beneficiary.",
+    recap:"Summary", cgu:"I agree to be contacted about my request.",
+    okh:"Request sent!", refd:"File reference", t0h:"Request received", t0w:"just now", t0p:"Your file is registered.",
+    nx1h:"Make your payment", nx1:"Use your reference as the payment description.", nx2h:"Send your documents", nx2:"Payment proof + national ID (CNIE) by WhatsApp.", wao:"Open WhatsApp",
+    nx3h:"Your lawyer calls you", nx3:"They start the certificat négatif with the OMPIC.",
+    home:"Back to home", demo:"Demo version: connect this form to your email or CRM to receive requests.",
+    prev:"Back", next:"Continue",
+    sumh:"Your request", sf:"Form", sn:"Name", sv:"City", sp:"Plan", so:"Options", spay:"Payment", tot:"Total incl. tax", snow:"Now", slater:"Later",
+    help:'A question? A lawyer answers you on <bdi dir="ltr">+212 5 00 00 00 00</bdi> or on <a href="https://wa.me/212500000000" target="_blank" rel="noopener">WhatsApp</a>.'
   };
   const T = {
     fr:{st:n=>`Étape ${n} sur 6`, copied:"Copié !", copy:"Copier", pm:{virement:"Virement",cashplus:"Cash Plus"}, pa:{half:"50 / 50",full:"Totalité"}, rv5:"Paiement", rv6:"Coordonnées", gl:"Gérant", cn:{nom:"Nom",tel:"Téléphone",email:"E-mail"}, req:"Ce champ est obligatoire.", email:"Adresse e-mail invalide.", tel:"Numéro de téléphone invalide.", cap:"Minimum 1 000 MAD.",
@@ -489,13 +488,13 @@ textarea{min-height:96px;resize:vertical}
         pname:"Nom complet", pcin:"N° CNIE ou passeport", ppct:"Part (%)", pttl:"Associé", rm:"Retirer", other:"Une autre personne", next:"Continuer", send:"Envoyer ma demande",
         k:{forme:"Forme",noms:"Noms",act:"Activité",ville:"Ville",capital:"Capital",siege:"Siège",plan:"Formule",opts:"Options",total:"Total",method:"Moyen",amount:"Montant",ref:"Référence",now:"À régler maintenant"},
         siege:{dom:"Domiciliation",local:"Local existant"}},
-    ar:{st:n=>`المرحلة ${n} من 6`, copied:"تمّ النسخ!", copy:"نسخ", pm:{virement:"تحويل بنكي",cashplus:"كاش بلوس"}, pa:{half:"50 / 50",full:"المبلغ كاملاً"}, rv5:"الأداء", rv6:"معلوماتك", gl:"المسيّر", cn:{nom:"الاسم",tel:"الهاتف",email:"البريد الإلكتروني"}, req:"هذا الحقل إلزامي.", email:"بريد إلكتروني غير صالح.", tel:"رقم هاتف غير صالح.", cap:"الحد الأدنى 1 000 درهم.",
-        pct:"يجب أن يكون مجموع الحصص 100%.", shareTxt:t=>`مجموع الحصص: ${t}%`, cgu:"يرجى تحديد هذه الخانة.",
-        ok:(n,e)=>`شكراً ${n}. توصّلنا بطلبك. سيُرسل ملخّص إلى ${e}.`,
-        edit:"تعديل", rv1:"الخدمة", rv2:"الشركة", rv3:"الشركاء", rv4:"الباقة", none:"بدون", quote:"حسب الطلب", todo:"يُستكمل لاحقاً", prog:n=>`${n} من 6 عناصر مكتملة`,
-        pname:"الاسم الكامل", pcin:"رقم البطاقة الوطنية أو الجواز", ppct:"الحصة (%)", pttl:"شريك", rm:"حذف", other:"شخص آخر", next:"متابعة", send:"إرسال طلبي",
-        k:{forme:"الشكل",noms:"الأسماء",act:"النشاط",ville:"المدينة",capital:"الرأسمال",siege:"المقر",plan:"الباقة",opts:"الخيارات",total:"المجموع",method:"الطريقة",amount:"المبلغ",ref:"المرجع",now:"المطلوب الآن"},
-        siege:{dom:"توطين",local:"محلّ موجود"}}
+    en:{st:n=>`Step ${n} of 6`, copied:"Copied!", copy:"Copy", pm:{virement:"Bank transfer",cashplus:"Cash Plus"}, pa:{half:"50 / 50",full:"Full amount"}, rv5:"Payment", rv6:"Contact details", gl:"Manager", cn:{nom:"Name",tel:"Phone",email:"Email"}, req:"This field is required.", email:"Invalid email address.", tel:"Invalid phone number.", cap:"Minimum 1,000 MAD.",
+        pct:"Shares must add up to 100%.", shareTxt:t=>`Total shares: ${t}%`, cgu:"Please tick this box.",
+        ok:(n,e)=>`Thank you ${n}. We have received your request. A summary will be sent to ${e}.`,
+        edit:"Edit", rv1:"Service", rv2:"Company", rv3:"Partners", rv4:"Plan", none:"None", quote:"On quote", todo:"to complete", prog:n=>`${n} of 6 item${n>1?"s":""} completed`,
+        pname:"Full name", pcin:"National ID (CNIE) or passport no.", ppct:"Share (%)", pttl:"Partner", rm:"Remove", other:"Someone else", next:"Continue", send:"Send my request",
+        k:{forme:"Form",noms:"Names",act:"Activity",ville:"City",capital:"Capital",siege:"Office",plan:"Plan",opts:"Options",total:"Total",method:"Method",amount:"Amount",ref:"Reference",now:"To pay now"},
+        siege:{dom:"Registered address",local:"Existing premises"}}
   };
   const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
   const fmt = n => n.toLocaleString('fr-FR').replace(/[  ]/g,' ');
@@ -507,14 +506,14 @@ textarea{min-height:96px;resize:vertical}
   nodes.forEach(n => { n._fr = n.hasAttribute('data-th') ? n.innerHTML : n.textContent; });
   const phs = $$('[data-ph]'); phs.forEach(n => n._fr = n.placeholder);
   function setLang(l){
-    lang = l; root.lang = l; root.dir = l === 'ar' ? 'rtl' : 'ltr';
+    lang = l; root.lang = l;
     nodes.forEach(n => {
       const k = n.dataset.t || n.dataset.th;
       if (k === 'st') return;
-      const v = l === 'ar' && AR[k] ? AR[k] : n._fr;
+      const v = l === 'en' && EN[k] ? EN[k] : n._fr;
       n.hasAttribute('data-th') ? n.innerHTML = v : n.textContent = v;
     });
-    phs.forEach(n => n.placeholder = l === 'ar' && AR[n.dataset.ph] ? AR[n.dataset.ph] : n._fr);
+    phs.forEach(n => n.placeholder = l === 'en' && EN[n.dataset.ph] ? EN[n.dataset.ph] : n._fr);
     $$('[data-lang]').forEach(b => b.setAttribute('aria-pressed', b.dataset.lang === l));
     try { localStorage.setItem('ce-lang', l); } catch(e) {}
     renderPartners(); show(step, true); summary();
@@ -660,7 +659,7 @@ textarea{min-height:96px;resize:vertical}
     $('#sForme').textContent = label('forme');
     $('#sNom').textContent = nom || T[lang].todo;
     $('#sVille').textContent = ville ? $('#ville').selectedOptions[0].textContent : T[lang].todo;
-    $('#sPlan').textContent = val('forme') === 'ae' ? (lang === 'ar' ? AR.fo3 : 'Auto-entrepreneur') : label('plan');
+    $('#sPlan').textContent = val('forme') === 'ae' ? (lang === 'en' ? EN.fo3 : 'Auto-entrepreneur') : label('plan');
     $('#sOpts').textContent = optsText();
     const t = total();
     $('#sTotal').textContent = t === null ? T[lang].quote : fmt(t);
@@ -761,7 +760,7 @@ textarea{min-height:96px;resize:vertical}
   const plan = q.get('plan'); if (plan && document.querySelector(`[name=plan][value="${plan}"]`)) document.querySelector(`[name=plan][value="${plan}"]`).checked = true;
   const svc = q.get('service'); if (svc && document.querySelector(`[name=forme][value="${svc}"]`)) document.querySelector(`[name=forme][value="${svc}"]`).checked = true;
   if (!document.querySelector('[name=plan]:checked')) document.querySelector('[name=plan][value=essentiel]').checked = true;
-  let startLang = 'fr'; try { if (localStorage.getItem('ce-lang') === 'ar') startLang = 'ar'; } catch(e) {}
+  let startLang = 'fr'; try { if (localStorage.getItem('ce-lang') === 'en') startLang = 'en'; } catch(e) {}
   setLang(startLang);
   show(1, true);
 })();

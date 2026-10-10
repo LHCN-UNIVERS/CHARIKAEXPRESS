@@ -7,7 +7,7 @@
 <title>Charika Express</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap">
 <style>
 /* Layout: "Coucher". Soft warm-white page with a living coral/pink/gold orb. Dark sticky navbar (logo left, phone menu). Hero pairs a start-request button with fanned document cards; dark key-facts ribbon; lawyer chat + benefits; services (featured + list); process (lock-screen notifications); pricing; warm guarantee band; FAQ; contact. Logical properties for RTL. Single deliberate light look. */
 :root{
@@ -18,15 +18,12 @@
   --grad:linear-gradient(100deg,var(--coral),var(--pink));
   --grad3:linear-gradient(120deg,var(--gold),var(--coral) 45%,var(--pink));
 }
-:root[dir="rtl"]{--font:"Tajawal","Noto Sans Arabic",ui-sans-serif,system-ui,sans-serif}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--ink);font:16px/1.65 var(--font);overflow-x:hidden}
-:root[dir="rtl"] body{font-size:17px;line-height:1.8}
 a{color:inherit}
 p{margin:0}
 h1,h2,h3{margin:0;line-height:1.05;letter-spacing:-.04em;text-wrap:balance}
-:root[dir="rtl"] h1,:root[dir="rtl"] h2,:root[dir="rtl"] h3{letter-spacing:0;line-height:1.35}
 h2{font-size:clamp(2.1rem,4.4vw,3.4rem);font-weight:800}
 h3{font-size:1.2rem;font-weight:700;letter-spacing:-.02em}
 .wrap{max-width:1200px;margin-inline:auto;padding-inline:clamp(20px,4vw,48px)}
@@ -39,7 +36,6 @@ section{padding-block:clamp(72px,9vw,120px)}
 .gt{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 :focus-visible{outline:3px solid var(--rose);outline-offset:3px;border-radius:8px}
 .flip{display:inline-block}
-:root[dir="rtl"] .flip{transform:scaleX(-1)}
 .ltr{direction:ltr;unicode-bidi:isolate}
 
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:700 .96rem var(--font);padding:14px 24px;border-radius:14px;border:0;text-decoration:none;cursor:pointer;transition:transform .2s,box-shadow .2s,background .2s}
@@ -55,7 +51,6 @@ section{padding-block:clamp(72px,9vw,120px)}
 @keyframes drift{to{transform:translate(6%,4%) rotate(10deg) scale(1.08)}}
 
 .logo{display:flex;align-items:center;gap:9px;font-weight:800;font-size:1.45rem;letter-spacing:-.05em;text-decoration:none}
-:root[dir="rtl"] .logo{letter-spacing:0}
 .logo i{width:16px;height:16px;border-radius:50%;background:var(--grad);display:block}
 .logo b{font-weight:800;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;margin-inline-start:.24em}
 @media (max-width:420px){.navbar .logo{font-size:1.08rem}}
@@ -93,10 +88,8 @@ section{padding-block:clamp(72px,9vw,120px)}
 .hero .orb{width:min(820px,90vw);aspect-ratio:1;inset-inline-end:-220px;top:-260px}
 .hero-grid{position:relative;display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center}
 .pill{display:inline-flex;gap:8px;align-items:center;background:#fff;border-radius:99px;padding:6px 14px 6px 6px;font-size:.84rem;font-weight:600;box-shadow:0 6px 16px -8px rgba(43,15,46,.25)}
-:root[dir="rtl"] .pill{padding:6px 6px 6px 14px}
 .pill b{background:var(--rose);color:#fff;border-radius:99px;padding:2px 10px;font-size:.74rem}
 .hero h1{font-size:clamp(2.8rem,6vw,5rem);line-height:.98;font-weight:800;letter-spacing:-.055em;margin-top:20px}
-:root[dir="rtl"] .hero h1{letter-spacing:0;line-height:1.3;font-size:clamp(2.4rem,5vw,4.2rem)}
 .hero .lead{color:var(--m);font-size:1.1rem;max-width:44ch;margin-top:18px}
 
 .ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
@@ -104,7 +97,6 @@ section{padding-block:clamp(72px,9vw,120px)}
 .fan{position:relative;height:460px}
 .doc{position:absolute;left:50%;top:50%;width:240px;height:310px;margin:-155px 0 0 -120px;background:#fff;border-radius:22px;box-shadow:0 34px 64px -30px rgba(43,15,46,.55);padding:22px;display:grid;align-content:start;gap:10px;transition:transform .5s cubic-bezier(.2,.8,.2,1)}
 .doc small{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--m)}
-:root[dir="rtl"] .doc small{letter-spacing:0;font-size:.8rem}
 .doc b{font-size:1.12rem;line-height:1.25}
 .doc .l{height:8px;border-radius:99px;background:#f5eaec}
 .doc .st{justify-self:start;font-size:.74rem;font-weight:700;padding:4px 11px;border-radius:99px;margin-top:6px}
@@ -185,7 +177,6 @@ section{padding-block:clamp(72px,9vw,120px)}
 .slist{display:grid;gap:12px;align-content:start}
 .srow{display:grid;grid-template-columns:48px 1fr auto 38px;gap:16px;align-items:center;padding:18px;border:1px solid var(--line);border-radius:20px;background:var(--bg);text-decoration:none;color:inherit;transition:background .2s,transform .2s,box-shadow .2s}
 .srow:hover{background:#fff;transform:translateX(4px);box-shadow:0 20px 40px -30px rgba(43,15,46,.5)}
-:root[dir="rtl"] .srow:hover{transform:translateX(-4px)}
 .srow .ic{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;color:#fff}
 .srow .ic svg{width:22px;height:22px}
 .srow b{display:block;font-size:1.02rem}
@@ -220,7 +211,6 @@ section{padding-block:clamp(72px,9vw,120px)}
 .psteps li{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center;font-weight:600}
 .psteps li span{font-size:.78rem;font-weight:800;color:var(--rose);background:var(--blush);border-radius:10px;padding:6px 10px;white-space:nowrap;min-width:74px;text-align:center}
 .e9{direction:ltr}
-:root[dir="rtl"] .e9 > div:last-child,:root[dir="rtl"] .ntf,:root[dir="rtl"] .ltime small,:root[dir="rtl"] .lock-ex{direction:rtl}
 @media (max-width:1100px){.e9{grid-template-columns:1fr auto;gap:40px}.lock{width:280px}.lscr{min-height:540px}}
 @media (max-width:760px){.e9{grid-template-columns:1fr;gap:32px}}
 @media (max-width:360px){.lock{width:280px}}
@@ -326,9 +316,9 @@ footer a:hover{color:var(--rose)}
       </ul>
       <div class="bar-r">
         <a class="ico wa-ico" href="https://wa.me/212500000000" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.5-3.9-4.7-4.1-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1c.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.1 1.4z"/></svg></a>
-        <div class="lang" role="group" aria-label="Langue">
+        <div class="lang" role="group" aria-label="Langue / Language">
           <button type="button" data-lang="fr" aria-pressed="true">FR</button>
-          <button type="button" data-lang="ar" aria-pressed="false">ع</button>
+          <button type="button" data-lang="en" aria-pressed="false">EN</button>
         </div>
         <a class="cta" href="demande.html"><span data-t="start">Commencer ma demande</span> <span class="flip">→</span></a>
         <button class="ico burger" type="button" id="burger" aria-expanded="false" aria-controls="mnav" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"/></svg></button>
@@ -584,65 +574,53 @@ footer a:hover{color:var(--rose)}
 
 <script>
 (function(){
-  const AR = {
-    brand:"شركة<b>إكسبريس</b>", hours:"الإثنين – الجمعة · 9:00 – 18:00",
-    n1:"خدماتنا", n2:"المراحل", n3:"الأسعار", n4:"الأسئلة الشائعة", n5:"اتصل بنا", navcta:"ابدأ",
-    "h-new":"عن بُعد 100%", "h-eye":"مستشار قانوني مخصّص",
-    "h-title":"الطريقة الأبسط <span class=\"gt\">لإطلاق شركتك</span>.",
-    "h-lead":"صِف مشروعك، اختر باقتك، ووقّع عبر الإنترنت. نتكفّل بجميع الإجراءات، من الشهادة السلبية إلى السجل التجاري.",
-    start:"ابدأ طلبي",
-    f1:"الشهادة السلبية", f5:"السجل التجاري", f2:"النظام الأساسي للشركة", d3k:"المحكمة", d2k:"النظام الأساسي",
-    "st-ok":"تمّ", "st-wait":"قريباً", "st-sign":"للتوقيع", seal1:"ابتداءً من", seal2:"درهم",
-    k1b:"من 7 إلى 15 يوماً", k1:"حتى السجل التجاري", k2b:"100% عن بُعد", k2:"دون أي تنقّل", k3b:"الأداء 50 / 50", k3:"على دفعتين", k4b:"ضد الرفض", k4:"ضمان مشمول",
-    "p-eye":"لماذا شركة إكسبريس",
-    "ch-name":"نادية · مستشارتك القانونية", "ch-on":"● متصلة", m1:"مرحباً ياسين 👋 تمّ حجز اسم « <bdi>Atlas Digital</bdi> » لدى <bdi>OMPIC</bdi>.", m2:"نظامك الأساسي جاهز، يمكنك توقيعه عبر الإنترنت:", m3:"ممتاز، تمّ التوقيع ✅", m4:"تمّ إيداع الملف لدى المركز الجهوي للاستثمار. السجل التجاري خلال 5 أيام.",
-    fa:"تمّ حجز الاسم", fb:"تمّ توقيع النظام الأساسي", "ch-ex":"مثال على محادثة",
-    w1p:"متاح عبر الهاتف وواتساب.", w3:"إشعار عند كل مرحلة", w3p:"تعرف دائماً أين وصل ملفك.", w5:"سعر ثابت وشامل", w5p:"ابتداءً من 2 900 درهم، المصاريف مشمولة.", w6:"الأداء 50 / 50", w6p:"النصف عند الطلب، والباقي عند تسليم السجل التجاري.", w4p:"خطأ من جهتنا؟ نُصحّحه على نفقتنا.", "p-title":"مستشار قانوني حقيقي، <span class=\"gt\">وبساطة التطبيق</span>.",
-    bn1:"كل شيء مشمول: الشهادة السلبية، النظام الأساسي، السجل التجاري، التعريف الضريبي، ICE، CNSS والإعلانات القانونية. المصاريف الإدارية مشمولة.",
-    "h-cta2":"اطّلع على الأسعار", "h-cta1":"أنشئ شركتك",
-    p1:"مستشار قانوني مخصّص", p1p:"مخاطَب واحد يعرف ملفك، متاح عبر الهاتف وواتساب.",
-    bn2:"المتابعة", bn2v:"إشعار عند كل مرحلة",
-    p2:"دون أي تنقّل", bn3:"توقيع إلكتروني لوثائقك.",
-    p4:"ضمان ضد الرفض", bn4:"رفضٌ بسبب خطأ منّا؟ نُصحّحه على نفقتنا.",
-    p3:"أسعار شفافة", bn5:"الأداء على دفعتين: 50% عند الطلب و50% عند تسليم السجل التجاري.",
-    "s-eye":"خدماتنا", "s-title":"كل مراحل حياة <span class=\"gt\">مقاولتك</span>", "s-lead":"من التأسيس إلى الحلّ، نُدبّر إجراءاتك بدقّة وشفافية.",
-    popular:"الأكثر طلباً", si2:"نظام أساسي يصوغه مستشار قانوني", des:"ابتداءً من", cur:"درهم", curm:"درهم/شهرياً", sr2:"التسجيل في السجل الوطني", sr3:"مشاريع بعدة مساهمين", sr4:"مقرّ اجتماعي وتدبير البريد", sr5:"المقر، الحصص، المسيّر، الرأسمال", sr6:"الإغلاق والتشطيب من السجل التجاري",
-    s1:"تأسيس SARL / SARL AU", s1p:"نظام أساسي على المقاس وتسجيل كامل، من الشهادة السلبية إلى الإعلانات القانونية.", s1f:"ابتداءً من 2 900 درهم",
-    s2:"المقاول الذاتي", s2p:"التسجيل في السجل الوطني ومواكبة جبائية واجتماعية.", s2f:"ابتداءً من 900 درهم",
-    s3:"شركة المساهمة", s3p:"تأسيس شركات المساهمة للمشاريع متعددة المساهمين.", s3f:"حسب الطلب",
-    s4:"التوطين", s4p:"عنوان مقرّ اجتماعي مطابق للقانون، واستلام البريد ورقمنته.", s4f:"ابتداءً من 150 درهم / شهرياً",
-    s5:"تعديل النظام الأساسي", s5p:"نقل المقر، تفويت الحصص، تغيير المسيّر أو الرأسمال.", s5f:"ابتداءً من 1 500 درهم",
-    s6:"الحلّ والتصفية", s6p:"إغلاق شركتك والتشطيب من السجل التجاري.", s6f:"ابتداءً من 2 500 درهم",
-    "lk-date":"الخميس 14 ماي", "lk-now":"الآن", "lk-yday":"أمس", "lk-mon":"الإثنين", lk1:"✍️ نظامك الأساسي جاهز", lk1p:"وقّعه عبر الإنترنت بنقرة واحدة.", lk2:"تمّ حجز الاسم 🎉", lk2p:"تمّ حجز « <bdi>Atlas Digital</bdi> » لدى <bdi>OMPIC</bdi>.", lk3:"تمّ استلام الطلب", lk3p:"نادية، مستشارتك القانونية، تتكفّل بكل شيء.", "lk-ex":"مثال على المتابعة",
-    ps1:"تملأ الطلب", ps2:"يُحجز اسم شركتك لدى OMPIC", ps3:"توقّع نظامك الأساسي عبر الإنترنت", ps4:"تتوصّل بسجلّك التجاري",
-    "pr-eye":"المراحل", "pr-title":"نُخبرك <span class=\"gt\">في كل مرحلة</span>", "pr-lead":"لا حاجة للمتابعة. كل تقدّم في ملفك يصلك عبر واتساب والبريد الإلكتروني.",
-    st1:"طلبك", st1p:"تصف مشروعك عبر الإنترنت: الشكل القانوني، الشركاء، الرأسمال والنشاط.", st1d:"10 دقائق",
-    st2:"الشهادة السلبية", st2p:"نتحقّق من اسم شركتك ونحجزه لدى المكتب المغربي للملكية الصناعية والتجارية.", st2d:"24–48 ساعة",
-    st3:"النظام الأساسي والتوقيع", st3p:"يصوغ مستشارك النظام الأساسي وتوقّعه إلكترونياً.", st3d:"1–2 يوم",
-    st4:"التسجيل", st4p:"الإيداع لدى المركز الجهوي للاستثمار، الحصول على السجل التجاري والتعريف الضريبي وICE، الانخراط في CNSS والإعلانات القانونية.", st4d:"5–10 أيام",
-    "t-eye":"الأسعار", "t-title":"باقات بسيطة دون مفاجآت", "t-lead":"الأسعار شاملة للضريبة لتأسيس SARL أو SARL AU، مع المصاريف الإدارية.",
-    pl1:"الأساسية", pl1s:"الإجراءات الضرورية", mad:"درهم شامل الضريبة",
-    x1:"الشهادة السلبية", x2:"نظام أساسي نموذجي", x3:"السجل التجاري، التعريف الضريبي، ICE وCNSS", x4:"الإعلانات القانونية", x5:"التوطين", x6:"مستشار قانوني مخصّص",
-    choose:"اختر الأساسية", choose3:"اختر المميّزة", rec:"الأكثر طلباً", best:"الأكثر شمولاً",
-    pl2:"المريحة", pl2s:"المواكبة الكاملة", y1:"كل ما في الباقة الأساسية", y2:"نظام أساسي على المقاس", y3:"توطين لمدة 12 شهراً", y5:"التوقيع الإلكتروني", y6:"المحاسبة لمدة 3 أشهر",
-    pl3:"المميّزة", pl3s:"لانطلاقة دون أي عناء", z1:"كل ما في الباقة المريحة", z3:"ميثاق الشركاء", z4:"فتح حساب بنكي", z5:"معالجة ذات أولوية", z6:"مساعدة قانونية لمدة 6 أشهر",
-    "t-note":"الأداء على دفعتين: 50% عند الطلب و50% عند تسليم السجل التجاري. الأسعار إرشادية حسب المدينة والرأسمال.",
-    "g-title":"رُفض الملف؟ نعيد الكرّة على نفقتنا.", "g-text":"إذا رفضت إدارةٌ ملفك بسبب خطأ من جهتنا، نُصحّحه ونعيد إيداعه مجاناً، أو نُرجع لك الأتعاب المعنية.",
-    "q-eye":"الأسئلة الشائعة", "q-title":"أسئلتكم وأجوبتنا", "q-lead":"لم تجد جوابك؟ يجيبك مستشار قانوني عبر الهاتف أو واتساب.",
-    q1:"كم يستغرق تأسيس شركة ذات مسؤولية محدودة؟", q1a:"عادةً بين 7 و15 يوم عمل من الشهادة السلبية إلى الحصول على السجل التجاري، حسب المدينة والفترة.",
-    q2:"ما هو الحد الأدنى لرأسمال الشركة ذات المسؤولية المحدودة؟", q2a:"لم يعد هناك حدّ أدنى قانوني لرأسمال هذه الشركات. ويبقى رأسمال 10 000 درهم شائعاً لطمأنة البنوك والشركاء.",
-    q3:"هل يجب أن أتنقّل؟", q3a:"لا. توقّع وثائقك إلكترونياً ونتكفّل نحن بالإيداعات. قد تتطلّب بعض الوثائق تصحيح الإمضاء.",
-    q4:"ما هي الوثائق المطلوبة؟", q4a:"البطاقة الوطنية (أو جواز السفر للأجانب) لكل شريك ومسيّر، وعقد الكراء إذا كان لديك محلّ.",
-    q5:"هل يمكن لأجنبي تأسيس شركة في المغرب؟", q5a:"نعم. يمكن للأجنبي أن يكون شريكاً أو مسيّراً لشركة مغربية ذات مسؤولية محدودة. سنحدّد لك الوثائق الخاصة اللازمة.",
-    "c-eye":"اتصل بنا", "c-title":"لنتحدّث عن مشروعك", "c-lead":"اترك معلوماتك، وسيتّصل بك مستشار قانوني خلال يوم العمل لدراسة مشروعك وتقديم عرض سعر.",
-    ci1:"الهاتف", ci2:"البريد الإلكتروني", ci4:"أوقات العمل", ci3v:"الدار البيضاء، المغرب",
-    "fm-title":"اطلب معاودة الاتصال", fm1:"الاسم الكامل", fm2:"الهاتف", fm3:"الخدمة المطلوبة", fm4:"مشروعك في بضع كلمات", "fm-btn":"أرسل طلبي",
-    "ft-about":"تأسيس وتدبير قانوني للمقاولات بالمغرب، عبر الإنترنت بالكامل.", "ft-co":"شركة إكسبريس",
-    "ft-team":"فضاء الفريق", "ft-copy":"© 2026 شركة إكسبريس. جميع الحقوق محفوظة.", "ft-legal":"الإشعارات القانونية · السرية"
+  const EN = {
+    n1:"Services", n2:"How it works", n3:"Pricing", n4:"FAQ", n5:"Contact", start:"Start my request",
+    "h-new":"100% online", "h-eye":"Dedicated lawyer included",
+    "h-title":"The easiest way to <span class=\"gt\">launch your company</span>.",
+    "h-lead":"Describe your project, choose your plan, sign online. We handle every step, from the certificat négatif to the trade register.",
+    "h-cta2":"See pricing", "h-cta1":"Create my company",
+    f1:"Certificat négatif", "st-ok":"Approved", d3k:"Court", f5:"Trade register", "st-wait":"Upcoming", d2k:"Articles", f2:"SARL articles of association", "st-sign":"To sign", seal1:"from", seal2:"MAD",
+    k1b:"7 to 15 days", k1:"up to the trade register", k2b:"100% online", k2:"no travel needed", k3b:"50 / 50 payment", k3:"in two instalments", k4b:"Anti-rejection", k4:"guarantee included",
+    "ch-name":"Nadia · Your lawyer", "ch-on":"● online",
+    m1:"Hello Yassine 👋 Your name « <bdi>Atlas Digital</bdi> » is reserved at the OMPIC.", m2:"Your articles of association are ready, you can sign them online:", m3:"Perfect, it's signed ✅", m4:"File submitted to the CRI. Trade register expected within 5 days.",
+    fa:"Name reserved", fb:"Articles signed", "ch-ex":"Example conversation",
+    "p-eye":"Why Charika Express", "p-title":"A real lawyer, <span class=\"gt\">as simple as an app</span>.",
+    p1:"A dedicated lawyer", w1p:"Reachable by phone and WhatsApp.", p2:"No travel needed", bn3:"Electronic signature of your documents.",
+    w3:"Every step notified", w3p:"You always know where your file stands.", w5:"Fixed, all-inclusive price", w5p:"From 2,900 MAD incl. tax, fees included.",
+    w6:"50 / 50 payment", w6p:"Half when you order, the rest at the trade register.", p4:"Anti-rejection guarantee", w4p:"A mistake on our side? Fixed at our cost.",
+    "s-eye":"Our services", "s-title":"Your company's <span class=\"gt\">whole life cycle</span>", popular:"Most popular",
+    s1:"SARL / SARL AU formation", s1p:"Tailored articles of association and full registration, from the certificat négatif to the legal notices.",
+    mad:"MAD incl. tax", x1:"Certificat négatif", si2:"Articles drafted by a lawyer", x3:"RC, IF, ICE and CNSS", x4:"Legal notices",
+    s2:"Self-employed (auto-entrepreneur)", sr2:"Registration in the national register", des:"from", cur:"MAD",
+    s3:"Public limited company (SA)", sr3:"Projects with several shareholders", s3f:"On quote",
+    s4:"Registered address", sr4:"Registered office and mail handling", curm:"MAD/month",
+    s5:"Changes to the articles", sr5:"Office, shares, manager, capital", s6:"Dissolution and liquidation", sr6:"Closure and removal from the trade register",
+    "lk-date":"Thursday 14 May", "lk-now":"now", lk1:"✍️ Your articles are ready", lk1p:"Sign them online in one click.", "lk-yday":"yesterday",
+    lk2:"Name reserved 🎉", lk2p:"« <bdi>Atlas Digital</bdi> » is reserved at the OMPIC.", "lk-mon":"Mon", lk3:"Request received", lk3p:"Nadia, your lawyer, takes care of everything.", "lk-ex":"Example of tracking",
+    "pr-eye":"How it works", "pr-title":"You're informed <span class=\"gt\">at every step</span>", "pr-lead":"No need to chase us. Every update on your file is sent to you on WhatsApp and by email.",
+    st1d:"10 min", ps1:"You fill in the request", st2d:"24–48 h", ps2:"Your name is reserved at the OMPIC", st3d:"1–2 days", ps3:"You sign your articles online", st4d:"5–10 days", ps4:"You receive your trade register",
+    "t-eye":"Pricing", "t-title":"Simple plans, no surprises", "t-lead":"Prices incl. tax to create a SARL or SARL AU, administrative fees included.",
+    pl1:"Essential", pl1s:"The essential formalities", x2:"Standard articles", x5:"Registered address", x6:"Dedicated lawyer", choose:"Choose Essential",
+    pl3:"Premium", best:"Most complete", pl3s:"To start with no hassle at all", y1:"Everything in Essential", y2:"Custom articles", y3:"Registered address for 12 months", y5:"Electronic signature", y6:"Accounting for 3 months",
+    z3:"Shareholders' agreement", z4:"Bank account opening", z5:"Priority processing", z6:"Legal assistance for 6 months", choose3:"Choose Premium",
+    "t-note":"Payment in two instalments: 50% when you order, 50% when the trade register is delivered. Indicative prices depending on city and capital.",
+    "g-title":"Rejected? We start again. At our cost.", "g-text":"If an administration rejects your file because of a mistake on our side, we fix it and file it again for free, or refund the fees concerned.",
+    "q-eye":"FAQ", "q-title":"Your questions, our answers", "q-lead":"Can't find your answer? A lawyer answers you by phone or WhatsApp.",
+    q1:"How long does it take to create a SARL?", q1a:"Usually 7 to 15 working days from the certificat négatif to the trade register, depending on the city and the time of year.",
+    q2:"What is the minimum capital for a SARL?", q2a:"There is no longer a legal minimum capital for a SARL. A capital of 10,000 MAD is still common to reassure banks and partners.",
+    q3:"Do I need to come in person?", q3a:"No. You sign your documents electronically and we handle the filings. Some documents may need a certified signature.",
+    q4:"Which documents do I need to provide?", q4a:"The national ID card (CNIE, or passport for foreigners) of each partner and manager, plus a lease if you already have premises.",
+    q5:"Can a foreigner create a company in Morocco?", q5a:"Yes. A foreigner can be a partner or manager of a Moroccan SARL. We'll tell you which specific documents to prepare.",
+    "c-eye":"Contact", "c-title":"Let's talk about your project", "c-lead":"Leave your details. A lawyer calls you back within the working day to review your project and send you a quote.",
+    ci1:"Phone", ci2:"Email", ci4:"Hours", hours:"Mon – Fri · 9:00 – 18:00",
+    "fm-title":"Request a call back", fm1:"Full name", fm2:"Phone", fm3:"Service needed", fm4:"Your project in a few words", "fm-btn":"Send my request",
+    "ft-about":"Company formation and legal management in Morocco, fully online.", "ft-co":"Charika Express", "ft-team":"Team space",
+    ci3v:"Casablanca, Morocco", "ft-copy":"© 2026 Charika Express. All rights reserved.", "ft-legal":"Legal notice · Privacy"
   };
   const MSG = {
     fr:{err:"Veuillez indiquer votre nom et un numéro de téléphone valide.", ok:n=>"Merci "+n+". Votre demande a bien été enregistrée. (Démonstration : reliez ce formulaire à votre e-mail ou CRM.)"},
-    ar:{err:"يرجى إدخال اسمك ورقم هاتف صحيح.", ok:n=>"شكراً "+n+". تمّ تسجيل طلبك. (نسخة تجريبية: اربط هذا النموذج ببريدك الإلكتروني أو نظام إدارة العملاء.)"}
+    en:{err:"Please enter your name and a valid phone number.", ok:n=>"Thank you "+n+". Your request has been received. (Demo: connect this form to your email or CRM.)"}
   };
   const root = document.documentElement;
   const nodes = [...document.querySelectorAll('[data-t],[data-th]')];
@@ -652,18 +630,18 @@ footer a:hover{color:var(--rose)}
   let lang = 'fr';
   function setLang(l){
     lang = l;
-    root.lang = l; root.dir = l === 'ar' ? 'rtl' : 'ltr';
+    root.lang = l;
     nodes.forEach(n => {
       const k = n.getAttribute('data-t') || n.getAttribute('data-th');
-      const v = l === 'ar' && AR[k] ? AR[k] : n._fr;
+      const v = l === 'en' && EN[k] ? EN[k] : n._fr;
       if (n.hasAttribute('data-th')) n.innerHTML = v; else n.textContent = v;
     });
-    phs.forEach(n => { const k = n.dataset.ph; n.placeholder = l === 'ar' && AR[k] ? AR[k] : n._fr; });
+    phs.forEach(n => { const k = n.dataset.ph; n.placeholder = l === 'en' && EN[k] ? EN[k] : n._fr; });
     document.querySelectorAll('[data-lang]').forEach(b => b.setAttribute('aria-pressed', b.dataset.lang === l));
     try { localStorage.setItem('ce-lang', l); } catch(e) {}
   }
   document.querySelectorAll('[data-lang]').forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
-  try { if (localStorage.getItem('ce-lang') === 'ar') setLang('ar'); } catch(e) {}
+  try { if (localStorage.getItem('ce-lang') === 'en') setLang('en'); } catch(e) {}
 
   // Mobile menu
   const burger = document.getElementById('burger'), mnav = document.getElementById('mnav');
