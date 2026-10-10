@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap">
 <style>
-/* Layout: "Coucher". Soft warm-white page with a living coral/pink/gold orb. Dark sticky navbar (logo left, phone menu). Hero pairs a start-request button with fanned document cards; dark key-facts ribbon; lawyer chat + benefits; services; process; pricing; warm guarantee band; FAQ; contact. Logical properties for RTL. Single deliberate light look. */
+/* Layout: "Coucher". Soft warm-white page with a living coral/pink/gold orb. Dark sticky navbar (logo left, phone menu). Hero pairs a start-request button with fanned document cards; dark key-facts ribbon; lawyer chat + benefits; services (featured + list); process; pricing; warm guarantee band; FAQ; contact. Logical properties for RTL. Single deliberate light look. */
 :root{
   color-scheme:light;
   --ink:#2b0f2e; --m:#6b5468; --bg:#fffaf7; --card:#ffffff; --blush:#fff0ec; --line:#f1e4e6;
@@ -164,19 +164,37 @@ section{padding-block:clamp(72px,9vw,120px)}
 @media (max-width:960px){.why{grid-template-columns:1fr;gap:40px}.chatwrap{order:2}}
 @media (max-width:560px){.ben{grid-template-columns:1fr}}
 
-/* ---------- Services ---------- */
+/* ---------- Services: featured + list ---------- */
 .services{background:#fff;border-block:1px solid var(--line)}
-.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-.svc{background:var(--bg);border-radius:24px;padding:28px;display:flex;flex-direction:column;gap:14px;border:1px solid var(--line);transition:transform .25s,box-shadow .25s,background .25s}
-.svc:hover{transform:translateY(-6px);background:#fff;box-shadow:0 30px 50px -32px rgba(43,15,46,.4)}
-.svc .ic{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;color:#fff}
-.svc .ic svg{width:24px;height:24px}
-.svc p{color:var(--m);font-size:.95rem;flex:1}
-.svc .foot{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line);padding-top:16px;font-weight:700;font-size:.94rem}
-.svc .foot a{width:36px;height:36px;border-radius:12px;background:#fff;display:grid;place-items:center;text-decoration:none;transition:background .2s,color .2s}
-.svc:hover .foot a{background:var(--ink);color:#fff}
-@media (max-width:960px){.svc-grid{grid-template-columns:1fr 1fr}}
-@media (max-width:600px){.svc-grid{grid-template-columns:1fr}}
+.feat{display:grid;grid-template-columns:1fr 1.1fr;gap:20px}
+.star{background:var(--ink);color:#fff;border-radius:26px;padding:32px;position:relative;overflow:hidden;display:flex;flex-direction:column;gap:18px}
+.star::after{content:"";position:absolute;width:340px;height:340px;border-radius:50%;background:var(--grad3);filter:blur(70px);opacity:.4;inset-inline-end:-120px;bottom:-150px;pointer-events:none}
+.star > *{position:relative;z-index:1}
+.star .tag{align-self:flex-start;background:var(--grad);font-size:.74rem;font-weight:800;padding:5px 12px;border-radius:99px}
+.star h3{font-size:1.8rem;font-weight:800}
+.star p{color:#d9c6d5}
+.star .price{font-size:3rem;font-weight:800;letter-spacing:-.05em;line-height:1}
+.star .price{display:block}
+.star .price span{font-size:inherit;color:#fff;font-weight:800;letter-spacing:inherit}
+.star .price small{font-size:.85rem;letter-spacing:0;color:#d9c6d5;margin-inline-start:8px}
+.star ul{list-style:none;padding:0;margin:0;display:grid;gap:9px;font-size:.93rem}
+.star li{display:flex;gap:10px;align-items:center}
+.star li::before{content:"✓";width:20px;height:20px;border-radius:50%;background:rgba(255,193,69,.2);color:var(--gold);display:grid;place-items:center;font-size:.7rem;font-weight:800;flex:none}
+.star .btn{align-self:flex-start;margin-top:auto}
+.slist{display:grid;gap:12px;align-content:start}
+.srow{display:grid;grid-template-columns:48px 1fr auto 38px;gap:16px;align-items:center;padding:18px;border:1px solid var(--line);border-radius:20px;background:var(--bg);text-decoration:none;color:inherit;transition:background .2s,transform .2s,box-shadow .2s}
+.srow:hover{background:#fff;transform:translateX(4px);box-shadow:0 20px 40px -30px rgba(43,15,46,.5)}
+:root[dir="rtl"] .srow:hover{transform:translateX(-4px)}
+.srow .ic{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;color:#fff}
+.srow .ic svg{width:22px;height:22px}
+.srow b{display:block;font-size:1.02rem}
+.srow span.d{color:var(--m);font-size:.87rem}
+.srow .pr{font-weight:800;font-size:.95rem;white-space:nowrap;text-align:end}
+.srow .pr small{display:block;color:var(--m);font-weight:600;font-size:.72rem}
+.srow .arrow{width:38px;height:38px;border-radius:12px;background:#fff;display:grid;place-items:center;font-weight:700;transition:background .2s,color .2s}
+.srow:hover .arrow{background:var(--ink);color:#fff}
+@media (max-width:960px){.feat{grid-template-columns:1fr}}
+@media (max-width:520px){.srow{grid-template-columns:44px 1fr auto;gap:12px;padding:14px}.srow .arrow{display:none}.star{padding:24px}.star h3{font-size:1.5rem}}
 
 /* ---------- Process ---------- */
 .proc{display:grid;grid-template-columns:.85fr 1.15fr;gap:56px;align-items:start}
@@ -384,18 +402,26 @@ footer a:hover{color:var(--rose)}
   <!-- SERVICES -->
   <section class="services" id="services">
     <div class="wrap">
-      <div class="head center">
+      <div class="head">
         <span class="eyebrow" data-t="s-eye">Nos services</span>
-        <h2 data-t="s-title">Tout le cycle de vie de votre entreprise</h2>
-        <p data-t="s-lead">De la création à la dissolution, nous gérons vos formalités avec rigueur et transparence.</p>
+        <h2 data-th="s-title">Tout le cycle de vie de <span class="gt">votre entreprise</span></h2>
       </div>
-      <div class="svc-grid">
-        <article class="svc"><span class="ic" style="background:linear-gradient(135deg,#ff9a76,#ff7a59)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21V9l8-5 8 5v12M9 21v-6h6v6"/></svg></span><h3 data-t="s1">Création SARL / SARL AU</h3><p data-t="s1p">Statuts sur mesure et immatriculation complète, du certificat négatif aux annonces légales.</p><div class="foot"><span data-t="s1f">Dès 2 900 MAD</span><a href="demande.html?service=sarl" aria-label="→"><span class="flip">→</span></a></div></article>
-        <article class="svc"><span class="ic" style="background:linear-gradient(135deg,#ff7ab6,#ff4f9a)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4.5-6 8-6s7 2 8 6"/></svg></span><h3 data-t="s2">Auto-entrepreneur</h3><p data-t="s2p">Inscription au registre national et accompagnement fiscal et social.</p><div class="foot"><span data-t="s2f">Dès 900 MAD</span><a href="demande.html?service=ae" aria-label="→"><span class="flip">→</span></a></div></article>
-        <article class="svc"><span class="ic" style="background:linear-gradient(135deg,#ffd36b,#ffb020)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V4h8v3M3 12h18"/></svg></span><h3 data-t="s3">Société anonyme</h3><p data-t="s3p">Constitution de SA pour les projets à plusieurs actionnaires.</p><div class="foot"><span data-t="s3f">Sur devis</span><a href="demande.html?service=sa" aria-label="→"><span class="flip">→</span></a></div></article>
-        <article class="svc"><span class="ic" style="background:linear-gradient(135deg,#ff8f8f,#ff5c7a)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></span><h3 data-t="s4">Domiciliation</h3><p data-t="s4p">Adresse de siège social conforme, réception et numérisation du courrier.</p><div class="foot"><span data-t="s4f">Dès 150 MAD / mois</span><a href="#contact" aria-label="→"><span class="flip">→</span></a></div></article>
-        <article class="svc"><span class="ic" style="background:linear-gradient(135deg,#c58bff,#9b5cf0)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20h4L19 9l-4-4L4 16v4zM13.5 6.5l4 4"/></svg></span><h3 data-t="s5">Modifications statutaires</h3><p data-t="s5p">Transfert de siège, cession de parts, changement de gérant ou de capital.</p><div class="foot"><span data-t="s5f">Dès 1 500 MAD</span><a href="#contact" aria-label="→"><span class="flip">→</span></a></div></article>
-        <article class="svc"><span class="ic" style="background:linear-gradient(135deg,#6e4a6c,#2b0f2e)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4h9l3 3v13H6z"/><path d="M9 12h6M9 16h4"/></svg></span><h3 data-t="s6">Dissolution et liquidation</h3><p data-t="s6p">Clôture de votre société et radiation du registre de commerce.</p><div class="foot"><span data-t="s6f">Dès 2 500 MAD</span><a href="#contact" aria-label="→"><span class="flip">→</span></a></div></article>
+      <div class="feat">
+        <div class="star">
+          <span class="tag" data-t="popular">Le plus demandé</span>
+          <h3 data-t="s1">Création SARL / SARL AU</h3>
+          <p data-t="s1p">Statuts sur mesure et immatriculation complète, du certificat négatif aux annonces légales.</p>
+          <div class="price"><span class="ltr">2 900</span><small data-t="mad">MAD TTC</small></div>
+          <ul><li data-t="x1">Certificat négatif</li><li data-t="si2">Statuts rédigés par un juriste</li><li data-t="x3">RC, IF, ICE et CNSS</li><li data-t="x4">Annonces légales</li></ul>
+          <a class="btn btn-grad" href="demande.html?service=sarl"><span data-t="start">Commencer ma demande</span> <span class="flip">→</span></a>
+        </div>
+        <div class="slist">
+          <a class="srow" href="demande.html?service=ae"><span class="ic" style="background:linear-gradient(135deg,#ff7ab6,#ff4f9a)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4.5-6 8-6s7 2 8 6"/></svg></span><div><b data-t="s2">Auto-entrepreneur</b><span class="d" data-t="sr2">Inscription au registre national</span></div><span class="pr"><small data-t="des">dès</small><span class="ltr">900</span> <span data-t="cur">MAD</span></span><span class="arrow"><span class="flip">→</span></span></a>
+          <a class="srow" href="demande.html?service=sa"><span class="ic" style="background:linear-gradient(135deg,#ffd36b,#ffb020)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V4h8v3M3 12h18"/></svg></span><div><b data-t="s3">Société anonyme</b><span class="d" data-t="sr3">Projets à plusieurs actionnaires</span></div><span class="pr"><small>&nbsp;</small><span data-t="s3f">Sur devis</span></span><span class="arrow"><span class="flip">→</span></span></a>
+          <a class="srow" href="#contact"><span class="ic" style="background:linear-gradient(135deg,#ff8f8f,#ff5c7a)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></span><div><b data-t="s4">Domiciliation</b><span class="d" data-t="sr4">Siège social et gestion du courrier</span></div><span class="pr"><small data-t="des">dès</small><span class="ltr">150</span> <span data-t="curm">MAD/mois</span></span><span class="arrow"><span class="flip">→</span></span></a>
+          <a class="srow" href="#contact"><span class="ic" style="background:linear-gradient(135deg,#c58bff,#9b5cf0)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20h4L19 9l-4-4L4 16v4zM13.5 6.5l4 4"/></svg></span><div><b data-t="s5">Modifications statutaires</b><span class="d" data-t="sr5">Siège, parts, gérant, capital</span></div><span class="pr"><small data-t="des">dès</small><span class="ltr">1 500</span> <span data-t="cur">MAD</span></span><span class="arrow"><span class="flip">→</span></span></a>
+          <a class="srow" href="#contact"><span class="ic" style="background:linear-gradient(135deg,#6e4a6c,#2b0f2e)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4h9l3 3v13H6z"/><path d="M9 12h6M9 16h4"/></svg></span><div><b data-t="s6">Dissolution et liquidation</b><span class="d" data-t="sr6">Clôture et radiation du RC</span></div><span class="pr"><small data-t="des">dès</small><span class="ltr">2 500</span> <span data-t="cur">MAD</span></span><span class="arrow"><span class="flip">→</span></span></a>
+        </div>
       </div>
     </div>
   </section>
@@ -556,7 +582,8 @@ footer a:hover{color:var(--rose)}
     p2:"دون أي تنقّل", bn3:"توقيع إلكتروني لوثائقك.",
     p4:"ضمان ضد الرفض", bn4:"رفضٌ بسبب خطأ منّا؟ نُصحّحه على نفقتنا.",
     p3:"أسعار شفافة", bn5:"الأداء على دفعتين: 50% عند الطلب و50% عند تسليم السجل التجاري.",
-    "s-eye":"خدماتنا", "s-title":"كل مراحل حياة مقاولتك", "s-lead":"من التأسيس إلى الحلّ، نُدبّر إجراءاتك بدقّة وشفافية.",
+    "s-eye":"خدماتنا", "s-title":"كل مراحل حياة <span class=\"gt\">مقاولتك</span>", "s-lead":"من التأسيس إلى الحلّ، نُدبّر إجراءاتك بدقّة وشفافية.",
+    popular:"الأكثر طلباً", si2:"نظام أساسي يصوغه مستشار قانوني", des:"ابتداءً من", cur:"درهم", curm:"درهم/شهرياً", sr2:"التسجيل في السجل الوطني", sr3:"مشاريع بعدة مساهمين", sr4:"مقرّ اجتماعي وتدبير البريد", sr5:"المقر، الحصص، المسيّر، الرأسمال", sr6:"الإغلاق والتشطيب من السجل التجاري",
     s1:"تأسيس SARL / SARL AU", s1p:"نظام أساسي على المقاس وتسجيل كامل، من الشهادة السلبية إلى الإعلانات القانونية.", s1f:"ابتداءً من 2 900 درهم",
     s2:"المقاول الذاتي", s2p:"التسجيل في السجل الوطني ومواكبة جبائية واجتماعية.", s2f:"ابتداءً من 900 درهم",
     s3:"شركة المساهمة", s3p:"تأسيس شركات المساهمة للمشاريع متعددة المساهمين.", s3f:"حسب الطلب",
