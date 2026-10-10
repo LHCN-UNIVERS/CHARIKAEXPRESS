@@ -251,8 +251,9 @@ body{font-family:var(--font);color:#fff;-webkit-font-smoothing:antialiased}
       <div class="logo" id="s8logo" style="font-size:110px;color:#fff"><i style="width:38px;height:38px"></i>Charika <span>Express</span></div>
     </div>
     <div class="abs cap" id="s8t" style="left:0;right:0;top:430px;text-align:center;font-size:76px">Lancez votre société <span class="gt">aujourd'hui.</span></div>
-    <div class="abs" id="s8c" style="left:0;right:0;top:600px;display:flex;justify-content:center"><div class="cta" id="s8cta">Commencer ma demande <span>→</span></div></div>
-    <div class="abs pills" id="s8p" style="left:0;right:0;top:820px"><span>Juriste dédié</span><span>100% en ligne</span><span>Paiement 50 / 50</span></div>
+    <div class="abs" id="s8c" style="left:0;right:0;top:580px;display:flex;justify-content:center"><div class="cta" id="s8cta">Commencer ma demande <span>→</span></div></div>
+    <div class="abs" id="s8u" style="left:0;right:0;top:770px;text-align:center;font-size:40px;font-weight:700;letter-spacing:-.01em;color:#fff">charikaexpress<span class="gt">.ma</span></div>
+    <div class="abs pills" id="s8p" style="left:0;right:0;top:880px"><span>Juriste dédié</span><span>100% en ligne</span><span>Paiement 50 / 50</span></div>
   </section>
 
   <div id="flash"></div>
@@ -381,6 +382,7 @@ function render(t){
     const cc = E(lt, .9, 1.5, back); css($('s8c'), { opacity: clamp(E(lt, .9, 1.2)), transform: `scale(${mix(.8, 1, clamp(cc))})` });
     $('s8cta').style.setProperty('--sh', `${mix(-200, 760, E(lt, 1.8, 2.6, eio))}px`);
     css($('s8p'), { opacity: E(lt, 1.4, 2.0) });
+    const u = E(lt, 1.2, 1.8); css($('s8u'), { opacity: u, transform: `translateY(${(1 - u) * 20}px)` });
     css($('s8b1'), { transform: `scale(${1 + Math.sin(lt * 2) * .05})` });
   }
   // impact flashes on the logo reveal and the end card
