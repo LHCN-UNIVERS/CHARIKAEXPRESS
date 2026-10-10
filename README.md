@@ -10,3 +10,8 @@ Single-page marketing site (French + Arabic, RTL) for an online company-formatio
 - Replace the placeholders: brand name "Sahl", phone `+212 5 00 00 00 00`, email `contact@votre-domaine.ma`, and prices.
 - Connect the callback form (`#form`) to your email or CRM. It is currently a demo and sends nothing.
 - Have a native speaker review the Arabic text.
+
+## Pages
+- `index.html`: homepage. The "Commencer ma demande", "Démarrer" and plan buttons open the request page.
+- `demande.html`: 5-step request form (service, company, partners, plan, contact) with a live price summary, a review step and a confirmation reference. Drafts are kept in the visitor's browser. Supports `?plan=essentiel|confort|premium` and `?service=sarlau|sarl|ae|sa`.
+  - To receive requests, send the data to your backend in the `finish()` function (see the comment there).

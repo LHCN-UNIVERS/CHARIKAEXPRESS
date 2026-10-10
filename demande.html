@@ -1,0 +1,560 @@
+<!doctype html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Démarrez votre demande de création de société au Maroc en quelques minutes.">
+<title>Ma demande · Sahl Juridique</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap">
+<style>
+/* Request page: same "Coucher" tokens as the homepage. Two-column layout: sticky summary on the side, step-by-step form card in the main column. */
+:root{
+  color-scheme:light;
+  --ink:#2b0f2e; --m:#6b5468; --bg:#fffaf7; --blush:#fff0ec; --line:#f1e4e6;
+  --coral:#ff7a59; --pink:#ff4f9a; --gold:#ffc145; --rose:#ff5c7a; --ok:#0e8a5f; --err:#c0362c;
+  --font:"Sora",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --grad:linear-gradient(100deg,var(--coral),var(--pink));
+}
+:root[dir="rtl"]{--font:"Tajawal","Noto Sans Arabic",ui-sans-serif,system-ui,sans-serif}
+*{box-sizing:border-box}
+html{overflow-x:clip}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 var(--font);overflow-x:clip}
+:root[dir="rtl"] body{font-size:17px;line-height:1.8}
+a{color:inherit}
+p{margin:0}
+h1,h2,h3{margin:0;line-height:1.1;letter-spacing:-.035em;text-wrap:balance}
+:root[dir="rtl"] h1,:root[dir="rtl"] h2,:root[dir="rtl"] h3{letter-spacing:0;line-height:1.4}
+:focus-visible{outline:3px solid var(--rose);outline-offset:3px;border-radius:8px}
+.wrap{max-width:1160px;margin-inline:auto;padding-inline:clamp(16px,4vw,40px)}
+.flip{display:inline-block}
+:root[dir="rtl"] .flip{transform:scaleX(-1)}
+.ltr{direction:ltr;unicode-bidi:isolate}
+[hidden]{display:none!important}
+
+.orb-clip{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.orb{position:absolute;width:640px;height:640px;inset-inline-end:-260px;top:-300px;border-radius:50%;overflow:hidden;pointer-events:none;filter:blur(8px);opacity:.55;z-index:0}
+.orb::before{content:"";position:absolute;inset:-30%;background:radial-gradient(40% 45% at 30% 30%,#ff7a59,transparent 62%),radial-gradient(40% 45% at 70% 35%,#ff4f9a,transparent 62%),radial-gradient(45% 50% at 50% 75%,#ffc145,transparent 62%),#ff8fa3;filter:blur(40px);animation:drift 14s ease-in-out infinite alternate}
+@keyframes drift{to{transform:translate(6%,4%) rotate(10deg) scale(1.08)}}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:700 .95rem var(--font);padding:13px 22px;border-radius:14px;border:0;text-decoration:none;cursor:pointer;transition:transform .2s,box-shadow .2s,opacity .2s}
+.btn:hover{transform:translateY(-1px)}
+.btn-grad{background:var(--grad);color:#fff;box-shadow:0 14px 30px -14px rgba(255,79,154,.75)}
+.btn-ink{background:var(--ink);color:#fff}
+.btn-soft{background:#fff;color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
+.btn-link{background:none;color:var(--m);padding:8px 4px;font-weight:600}
+
+header{position:relative;z-index:2}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:16px;height:72px}
+.logo{display:flex;align-items:center;gap:9px;font-weight:800;font-size:1.4rem;letter-spacing:-.05em;text-decoration:none}
+.logo i{width:16px;height:16px;border-radius:50%;background:var(--grad);display:block}
+.nav-r{display:flex;align-items:center;gap:12px}
+.back{font-weight:600;font-size:.92rem;color:var(--m);text-decoration:none}
+.back:hover{color:var(--ink)}
+.lang{display:inline-flex;background:#fff;border-radius:12px;padding:4px;box-shadow:0 4px 12px -6px rgba(43,15,46,.25)}
+.lang button{border:0;background:transparent;font:700 .8rem var(--font);color:var(--m);padding:7px 11px;border-radius:9px;cursor:pointer}
+.lang button[aria-pressed="true"]{background:var(--ink);color:#fff}
+
+main{position:relative;z-index:1;padding-block:16px 72px}
+.title{display:grid;gap:10px;margin-bottom:28px;max-width:640px}
+.title h1{font-size:clamp(2rem,4.4vw,3rem);font-weight:800}
+.title h1 span{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.title p{color:var(--m);font-size:1.05rem}
+.layout{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
+@media (max-width:920px){.layout{grid-template-columns:1fr}}
+
+/* Stepper */
+.stepper{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;list-style:none;margin:0 0 18px;padding:0}
+.stepper li{display:grid;gap:8px;font-size:.78rem;font-weight:600;color:var(--m)}
+.stepper .bar{height:6px;border-radius:99px;background:var(--line);overflow:hidden}
+.stepper .bar i{display:block;height:100%;width:0;background:var(--grad);transition:width .4s}
+.stepper li.done .bar i,.stepper li.on .bar i{width:100%}
+.stepper li.on{color:var(--ink)}
+@media (max-width:600px){.stepper span{display:none}}
+
+.card{background:#fff;border:1px solid var(--line);border-radius:26px;padding:clamp(20px,4vw,36px);box-shadow:0 30px 60px -44px rgba(43,15,46,.45);min-width:0}
+.step-h{display:grid;gap:6px;margin-bottom:24px}
+.step-h small{font-weight:700;font-size:.82rem;color:var(--rose)}
+.step-h h2{font-size:clamp(1.4rem,2.6vw,1.8rem);font-weight:800}
+.step-h p{color:var(--m)}
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:1fr 1fr}
+.g3{grid-template-columns:repeat(3,1fr)}
+@media (max-width:620px){.g2,.g3{grid-template-columns:1fr}}
+label,.lbl{display:block;font-weight:700;font-size:.86rem;margin-bottom:6px}
+label small,.lbl small{font-weight:500;color:var(--m)}
+input,select,textarea{width:100%;font:inherit;font-size:.97rem;padding:13px 15px;border:1px solid var(--line);border-radius:14px;background:var(--bg);color:var(--ink)}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--rose);background:#fff;box-shadow:0 0 0 4px rgba(255,92,122,.15)}
+textarea{min-height:96px;resize:vertical}
+.invalid{border-color:var(--err)!important;background:#fff6f5!important}
+.ferr{color:var(--err);font-size:.82rem;font-weight:600;margin-top:5px}
+
+/* Choice tiles */
+.tiles{display:grid;gap:12px}
+.t2{grid-template-columns:repeat(2,1fr)}
+.t3{grid-template-columns:repeat(3,1fr)}
+@media (max-width:620px){.t2,.t3{grid-template-columns:1fr}}
+.tile{position:relative;display:grid;gap:4px;padding:16px 18px;border:1.5px solid var(--line);border-radius:18px;background:#fff;cursor:pointer;transition:border-color .2s,box-shadow .2s,background .2s;margin:0}
+.tile input{position:absolute;opacity:0;pointer-events:none}
+.tile b{font-size:1rem}
+.tile span{color:var(--m);font-size:.86rem;font-weight:500}
+.tile em{font-style:normal;font-weight:800;font-size:1.05rem;margin-top:4px}
+.tile:hover{border-color:#e8c9cf}
+.tile:has(input:checked){border-color:var(--rose);background:#fff7f8;box-shadow:0 0 0 4px rgba(255,92,122,.12)}
+.tile:has(input:focus-visible){outline:3px solid var(--rose);outline-offset:2px}
+.tile .tag{position:absolute;top:-10px;inset-inline-end:14px;background:var(--grad);color:#fff;font-size:.7rem;font-weight:800;padding:3px 10px;border-radius:99px}
+.chk{display:flex;gap:10px;align-items:center;padding:12px 14px;border:1px solid var(--line);border-radius:14px;background:var(--bg);cursor:pointer;margin:0;font-weight:600;font-size:.92rem}
+.chk input{width:18px;height:18px;accent-color:var(--rose);flex:none}
+.chk span + span:last-child{margin-inline-start:auto;color:var(--m);font-weight:600;font-size:.85rem}
+
+/* Partners */
+.partner{border:1px dashed #ecd2d8;border-radius:18px;padding:16px;display:grid;gap:12px;background:var(--bg)}
+.partner-h{display:flex;justify-content:space-between;align-items:center;font-weight:700;font-size:.92rem}
+.rm{border:0;background:none;color:var(--err);font:600 .85rem var(--font);cursor:pointer}
+.add{justify-self:start}
+.share{font-size:.85rem;font-weight:700;color:var(--m)}
+.share.bad{color:var(--err)}
+.share.good{color:var(--ok)}
+
+.nav-btns{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:28px;padding-top:20px;border-top:1px solid var(--line);flex-wrap:wrap}
+
+/* Review */
+.review{display:grid;gap:12px}
+.rv{border:1px solid var(--line);border-radius:16px;padding:14px 16px;display:grid;gap:6px}
+.rv-h{display:flex;justify-content:space-between;align-items:center;font-weight:700}
+.rv-h button{border:0;background:none;color:var(--rose);font:700 .85rem var(--font);cursor:pointer}
+.rv dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:.92rem}
+.rv dt{color:var(--m)}
+.rv dd{margin:0;font-weight:600;overflow-wrap:anywhere}
+
+/* Summary */
+.sum{position:sticky;top:20px;background:var(--ink);color:#fff;border-radius:26px;padding:24px;display:grid;gap:14px;overflow:hidden}
+.sum::after{content:"";position:absolute;width:260px;height:260px;border-radius:50%;background:var(--grad);filter:blur(60px);opacity:.45;inset-inline-end:-120px;bottom:-130px}
+.sum > *{position:relative}
+.sum h3{font-size:1.1rem}
+.sum ul{list-style:none;margin:0;padding:0;display:grid;gap:8px;font-size:.9rem}
+.sum li{display:flex;justify-content:space-between;gap:10px}
+.sum li span:first-child{color:#cdb8c9}
+.sum li span:last-child{font-weight:600;text-align:end}
+.total{border-top:1px solid rgba(255,255,255,.15);padding-top:14px;display:flex;justify-content:space-between;align-items:baseline}
+.total b{font-size:2rem;font-weight:800;letter-spacing:-.04em}
+.dep{font-size:.84rem;color:#cdb8c9}
+.help{font-size:.84rem;color:#cdb8c9;border-top:1px solid rgba(255,255,255,.12);padding-top:12px}
+@media (max-width:920px){.sum{position:static}}
+
+/* Success */
+.success{text-align:center;display:grid;justify-items:center;gap:14px;padding-block:20px}
+.success .ic{width:84px;height:84px;border-radius:50%;background:var(--grad);display:grid;place-items:center;color:#fff;box-shadow:0 20px 40px -16px rgba(255,79,154,.7)}
+.success .ic svg{width:40px;height:40px}
+.success h2{font-size:clamp(1.6rem,3vw,2.2rem);font-weight:800}
+.success p{color:var(--m);max-width:52ch}
+.ref{font-weight:800;font-size:1.3rem;background:var(--blush);padding:8px 18px;border-radius:12px}
+.next{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:10px;text-align:start;max-width:460px;width:100%}
+.next li{display:grid;grid-template-columns:32px 1fr;gap:12px;align-items:center;background:var(--bg);border-radius:14px;padding:10px 12px;font-size:.92rem}
+.next li b{width:32px;height:32px;border-radius:10px;background:#fff;display:grid;place-items:center;color:var(--rose)}
+.demo{font-size:.8rem;color:var(--m);background:var(--bg);border-radius:10px;padding:8px 12px}
+@media (prefers-reduced-motion:reduce){*,*::before{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="orb-clip" aria-hidden="true"><div class="orb"></div></div>
+
+<header>
+  <div class="wrap nav">
+    <a class="logo" href="index.html"><i></i><span data-t="brand">sahl</span></a>
+    <div class="nav-r">
+      <a class="back" href="index.html"><span class="flip">←</span> <span data-t="back">Retour au site</span></a>
+      <div class="lang" role="group" aria-label="Langue">
+        <button type="button" data-lang="fr" aria-pressed="true">FR</button>
+        <button type="button" data-lang="ar" aria-pressed="false">ع</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="title">
+    <h1 data-th="title">Votre demande de <span>création de société</span></h1>
+    <p data-t="subtitle">5 étapes, environ 5 minutes. Votre juriste vous contacte ensuite pour valider le dossier.</p>
+  </div>
+
+  <div class="layout">
+    <div>
+      <ol class="stepper" id="stepper">
+        <li><div class="bar"><i></i></div><span data-t="sp1">Service</span></li>
+        <li><div class="bar"><i></i></div><span data-t="sp2">Société</span></li>
+        <li><div class="bar"><i></i></div><span data-t="sp3">Associés</span></li>
+        <li><div class="bar"><i></i></div><span data-t="sp4">Formule</span></li>
+        <li><div class="bar"><i></i></div><span data-t="sp5">Coordonnées</span></li>
+      </ol>
+
+      <form class="card" id="wizard" novalidate>
+        <!-- STEP 1 -->
+        <section class="step" data-step="1">
+          <div class="step-h"><small data-t="st">Étape 1 sur 5</small><h2 data-t="s1h">Quelle forme juridique ?</h2><p data-t="s1p">Pas sûr ? Choisissez SARL AU si vous êtes seul, SARL si vous êtes plusieurs.</p></div>
+          <div class="tiles t2" role="radiogroup">
+            <label class="tile"><input type="radio" name="forme" value="sarlau" checked><b data-t="fo1">SARL AU</b><span data-t="fo1d">Un seul associé</span></label>
+            <label class="tile"><input type="radio" name="forme" value="sarl"><b data-t="fo2">SARL</b><span data-t="fo2d">2 associés ou plus</span></label>
+            <label class="tile"><input type="radio" name="forme" value="ae"><b data-t="fo3">Auto-entrepreneur</b><span data-t="fo3d">Activité individuelle</span></label>
+            <label class="tile"><input type="radio" name="forme" value="sa"><b data-t="fo4">Société anonyme</b><span data-t="fo4d">Plusieurs actionnaires, sur devis</span></label>
+          </div>
+        </section>
+
+        <!-- STEP 2 -->
+        <section class="step" data-step="2" hidden>
+          <div class="step-h"><small data-t="st">Étape 2 sur 5</small><h2 data-t="s2h">Votre future société</h2><p data-t="s2p">Proposez jusqu'à 3 noms, par ordre de préférence. Nous vérifierons leur disponibilité auprès de l'OMPIC.</p></div>
+          <div class="grid">
+            <div class="grid g3">
+              <div><label for="n1"><span data-t="n1">Nom 1</span> *</label><input id="n1" name="n1" required></div>
+              <div><label for="n2"><span data-t="n2">Nom 2</span> <small data-t="opt">(facultatif)</small></label><input id="n2" name="n2"></div>
+              <div><label for="n3"><span data-t="n3">Nom 3</span> <small data-t="opt">(facultatif)</small></label><input id="n3" name="n3"></div>
+            </div>
+            <div><label for="act"><span data-t="act">Activité principale</span> *</label><textarea id="act" name="act" required data-ph="actph" placeholder="Ex. : agence de marketing digital, conseil, import-export…"></textarea></div>
+            <div class="grid g2">
+              <div><label for="ville"><span data-t="ville">Ville du siège</span> *</label>
+                <select id="ville" name="ville" required>
+                  <option value="" data-t="choose">Choisir…</option>
+                  <option data-t="c1">Casablanca</option><option data-t="c2">Rabat</option><option data-t="c3">Marrakech</option><option data-t="c4">Tanger</option><option data-t="c5">Agadir</option><option data-t="c6">Fès</option><option data-t="c7">Autre ville</option>
+                </select>
+              </div>
+              <div class="cap"><label for="capital"><span data-t="capital">Capital social (MAD)</span> *</label><input id="capital" name="capital" type="number" min="1000" step="1000" value="10000" required class="ltr"></div>
+            </div>
+            <div><span class="lbl" data-t="siege">Siège social</span>
+              <div class="tiles t2">
+                <label class="tile"><input type="radio" name="siege" value="dom" checked><b data-t="sg1">J'ai besoin d'une domiciliation</b><span data-t="sg1d">Nous vous fournissons une adresse</span></label>
+                <label class="tile"><input type="radio" name="siege" value="local"><b data-t="sg2">J'ai déjà un local</b><span data-t="sg2d">Contrat de bail ou titre de propriété</span></label>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- STEP 3 -->
+        <section class="step" data-step="3" hidden>
+          <div class="step-h"><small data-t="st">Étape 3 sur 5</small><h2 data-t="s3h">Associés et gérant</h2><p data-t="s3p">Indiquez chaque associé et sa part du capital. Le total doit faire 100%.</p></div>
+          <div class="grid" id="partners"></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:14px;flex-wrap:wrap">
+            <button type="button" class="btn btn-soft add" id="addP">+ <span data-t="addp">Ajouter un associé</span></button>
+            <span class="share" id="share"></span>
+          </div>
+          <div style="margin-top:18px"><label for="gerant"><span data-t="gerant">Gérant</span> *</label>
+            <select id="gerant" name="gerant"></select>
+          </div>
+        </section>
+
+        <!-- STEP 4 -->
+        <section class="step" data-step="4" hidden>
+          <div class="step-h"><small data-t="st">Étape 4 sur 5</small><h2 data-t="s4h">Choisissez votre formule</h2><p data-t="s4p">Prix TTC, frais administratifs inclus. Paiement en deux fois.</p></div>
+          <div class="tiles t3" role="radiogroup">
+            <label class="tile"><input type="radio" name="plan" value="essentiel" data-price="2900"><b data-t="pl1">Essentiel</b><span data-t="pl1d">Formalités indispensables</span><em class="ltr">2 900 MAD</em></label>
+            <label class="tile"><span class="tag" data-t="rec">Le plus choisi</span><input type="radio" name="plan" value="confort" data-price="4900" checked><b data-t="pl2">Confort</b><span data-t="pl2d">Domiciliation 12 mois + juriste dédié</span><em class="ltr">4 900 MAD</em></label>
+            <label class="tile"><input type="radio" name="plan" value="premium" data-price="8900"><b data-t="pl3">Premium</b><span data-t="pl3d">Comptabilité 3 mois + compte bancaire</span><em class="ltr">8 900 MAD</em></label>
+          </div>
+          <span class="lbl" style="margin-top:22px" data-t="opts">Options</span>
+          <div class="grid">
+            <label class="chk"><input type="checkbox" name="o_prio" data-price="900"><span data-t="o1">Traitement prioritaire</span><span class="ltr">+900 MAD</span></label>
+            <label class="chk"><input type="checkbox" name="o_logo" data-price="1500"><span data-t="o2">Logo et carte de visite</span><span class="ltr">+1 500 MAD</span></label>
+            <label class="chk"><input type="checkbox" name="o_pacte" data-price="1200"><span data-t="o3">Pacte d'associés</span><span class="ltr">+1 200 MAD</span></label>
+          </div>
+        </section>
+
+        <!-- STEP 5 -->
+        <section class="step" data-step="5" hidden>
+          <div class="step-h"><small data-t="st">Étape 5 sur 5</small><h2 data-t="s5h">Vos coordonnées</h2><p data-t="s5p">Votre juriste vous contacte sous un jour ouvré pour valider le dossier.</p></div>
+          <div class="grid">
+            <div class="grid g2">
+              <div><label for="nom"><span data-t="fn">Nom complet</span> *</label><input id="nom" name="nom" autocomplete="name" required></div>
+              <div><label for="tel"><span data-t="ft">Téléphone / WhatsApp</span> *</label><input id="tel" name="tel" type="tel" autocomplete="tel" placeholder="06 12 34 56 78" dir="ltr" required></div>
+            </div>
+            <div><label for="email"><span data-t="fe">E-mail</span> *</label><input id="email" name="email" type="email" autocomplete="email" dir="ltr" required></div>
+            <div><label for="note"><span data-t="fm">Informations complémentaires</span> <small data-t="opt">(facultatif)</small></label><textarea id="note" name="note"></textarea></div>
+            <span class="lbl" data-t="recap">Récapitulatif</span>
+            <div class="review" id="review"></div>
+            <label class="chk"><input type="checkbox" id="cgu" required><span data-t="cgu">J'accepte d'être contacté au sujet de ma demande.</span></label>
+          </div>
+        </section>
+
+        <!-- SUCCESS -->
+        <section class="success" id="done" hidden>
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+          <h2 data-t="okh">Demande envoyée !</h2>
+          <p id="okp"></p>
+          <span class="ref ltr" id="ref">SJ-000000</span>
+          <ol class="next">
+            <li><b>1</b><span data-t="nx1">Votre juriste vous appelle sous un jour ouvré.</span></li>
+            <li><b>2</b><span data-t="nx2">Vous envoyez vos pièces (CNIE) et réglez l'acompte de 50%.</span></li>
+            <li><b>3</b><span data-t="nx3">Nous lançons le certificat négatif auprès de l'OMPIC.</span></li>
+          </ol>
+          <p class="demo" data-t="demo">Version de démonstration : reliez ce formulaire à votre e-mail ou CRM pour recevoir les demandes.</p>
+          <a class="btn btn-ink" href="index.html" data-t="home">Retour à l'accueil</a>
+        </section>
+
+        <div class="nav-btns" id="navBtns">
+          <button type="button" class="btn btn-link" id="prev"><span class="flip">←</span> <span data-t="prev">Retour</span></button>
+          <button type="submit" class="btn btn-grad" id="next"><span id="nextTxt" data-t="next">Continuer</span> <span class="flip">→</span></button>
+        </div>
+      </form>
+    </div>
+
+    <aside class="sum" aria-live="polite">
+      <h3 data-t="sumh">Votre demande</h3>
+      <ul>
+        <li><span data-t="sf">Forme</span><span id="sForme">SARL AU</span></li>
+        <li><span data-t="sn">Nom</span><span id="sNom">—</span></li>
+        <li><span data-t="sv">Ville</span><span id="sVille">—</span></li>
+        <li><span data-t="sp">Formule</span><span id="sPlan">Confort</span></li>
+        <li><span data-t="so">Options</span><span id="sOpts">—</span></li>
+      </ul>
+      <div class="total"><span data-t="tot">Total TTC</span><b class="ltr" id="sTotal">4 900</b></div>
+      <p class="dep"><span data-t="dep">Acompte à la commande (50%) :</span> <span class="ltr" id="sDep">2 450 MAD</span></p>
+      <p class="help" data-t="help">Une question ? Un juriste vous répond au +212 5 00 00 00 00 ou sur WhatsApp.</p>
+    </aside>
+  </div>
+</main>
+
+<script>
+(function(){
+  const AR = {
+    brand:"سهل", back:"العودة إلى الموقع",
+    title:"طلب <span>تأسيس شركتك</span>", subtitle:"5 مراحل، حوالي 5 دقائق. بعدها يتصل بك مستشارك القانوني للمصادقة على الملف.",
+    sp1:"الخدمة", sp2:"الشركة", sp3:"الشركاء", sp4:"الباقة", sp5:"معلوماتك",
+    s1h:"ما هو الشكل القانوني؟", s1p:"لست متأكداً؟ اختر SARL AU إذا كنت وحدك، وSARL إذا كنتم عدة شركاء.",
+    fo1:"SARL AU", fo1d:"شريك واحد", fo2:"SARL", fo2d:"شريكان أو أكثر", fo3:"المقاول الذاتي", fo3d:"نشاط فردي", fo4:"شركة المساهمة", fo4d:"عدة مساهمين، حسب الطلب",
+    s2h:"شركتك المستقبلية", s2p:"اقترح حتى 3 أسماء حسب الأفضلية. سنتحقّق من توفّرها لدى OMPIC.",
+    n1:"الاسم 1", n2:"الاسم 2", n3:"الاسم 3", opt:"(اختياري)", act:"النشاط الرئيسي", actph:"مثال: وكالة تسويق رقمي، استشارات، استيراد وتصدير…",
+    ville:"مدينة المقر", choose:"اختر…", c1:"الدار البيضاء", c2:"الرباط", c3:"مراكش", c4:"طنجة", c5:"أكادير", c6:"فاس", c7:"مدينة أخرى",
+    capital:"الرأسمال (درهم)", siege:"المقر الاجتماعي", sg1:"أحتاج إلى توطين", sg1d:"نوفّر لك عنواناً", sg2:"لدي محلّ", sg2d:"عقد كراء أو سند ملكية",
+    s3h:"الشركاء والمسيّر", s3p:"أدخل كل شريك وحصّته من الرأسمال. يجب أن يكون المجموع 100%.",
+    addp:"إضافة شريك", gerant:"المسيّر", pname:"الاسم الكامل", pcin:"رقم البطاقة الوطنية أو الجواز", ppct:"الحصة (%)", pttl:"شريك", rm:"حذف", other:"شخص آخر",
+    s4h:"اختر باقتك", s4p:"الأسعار شاملة للضريبة والمصاريف الإدارية. الأداء على دفعتين.",
+    pl1:"الأساسية", pl1d:"الإجراءات الضرورية", pl2:"المريحة", pl2d:"توطين 12 شهراً + مستشار مخصّص", pl3:"المميّزة", pl3d:"محاسبة 3 أشهر + حساب بنكي", rec:"الأكثر طلباً",
+    opts:"خيارات", o1:"معالجة ذات أولوية", o2:"شعار وبطاقة زيارة", o3:"ميثاق الشركاء",
+    s5h:"معلوماتك", s5p:"يتصل بك مستشارك خلال يوم عمل للمصادقة على الملف.",
+    fn:"الاسم الكامل", ft:"الهاتف / واتساب", fe:"البريد الإلكتروني", fm:"معلومات إضافية", recap:"ملخّص", cgu:"أوافق على أن يتم الاتصال بي بخصوص طلبي.",
+    okh:"تمّ إرسال الطلب!", nx1:"يتصل بك مستشارك خلال يوم عمل.", nx2:"ترسل وثائقك (البطاقة الوطنية) وتؤدي تسبيق 50%.", nx3:"نُطلق طلب الشهادة السلبية لدى OMPIC.",
+    demo:"نسخة تجريبية: اربط هذا النموذج ببريدك الإلكتروني أو نظام إدارة العملاء لاستقبال الطلبات.", home:"العودة إلى الرئيسية",
+    prev:"رجوع", next:"متابعة", send:"إرسال طلبي",
+    sumh:"طلبك", sf:"الشكل", sn:"الاسم", sv:"المدينة", sp:"الباقة", so:"الخيارات", tot:"المجموع", dep:"التسبيق عند الطلب (50%):",
+    help:"سؤال؟ يجيبك مستشار قانوني على ‎+212 5 00 00 00 00‎ أو عبر واتساب.",
+    edit:"تعديل", rv1:"الخدمة", rv2:"الشركة", rv3:"الشركاء", rv4:"الباقة", none:"بدون", quote:"حسب الطلب"
+  };
+  const T = {
+    fr:{st:n=>`Étape ${n} sur 5`, req:"Ce champ est obligatoire.", email:"Adresse e-mail invalide.", tel:"Numéro de téléphone invalide.", cap:"Minimum 1 000 MAD.",
+        pct:"Le total des parts doit faire 100%.", shareTxt:t=>`Total des parts : ${t}%`, cgu:"Merci de cocher cette case.",
+        ok:(n,e)=>`Merci ${n}. Nous avons bien reçu votre demande. Un récapitulatif sera envoyé à ${e}.`,
+        edit:"Modifier", rv1:"Service", rv2:"Société", rv3:"Associés", rv4:"Formule", none:"Aucune", quote:"Sur devis",
+        pname:"Nom complet", pcin:"N° CNIE ou passeport", ppct:"Part (%)", pttl:"Associé", rm:"Retirer", other:"Une autre personne", next:"Continuer", send:"Envoyer ma demande",
+        k:{forme:"Forme",noms:"Noms",act:"Activité",ville:"Ville",capital:"Capital",siege:"Siège",plan:"Formule",opts:"Options",total:"Total"},
+        siege:{dom:"Domiciliation",local:"Local existant"}},
+    ar:{st:n=>`المرحلة ${n} من 5`, req:"هذا الحقل إلزامي.", email:"بريد إلكتروني غير صالح.", tel:"رقم هاتف غير صالح.", cap:"الحد الأدنى 1 000 درهم.",
+        pct:"يجب أن يكون مجموع الحصص 100%.", shareTxt:t=>`مجموع الحصص: ${t}%`, cgu:"يرجى تحديد هذه الخانة.",
+        ok:(n,e)=>`شكراً ${n}. توصّلنا بطلبك. سيُرسل ملخّص إلى ${e}.`,
+        edit:"تعديل", rv1:"الخدمة", rv2:"الشركة", rv3:"الشركاء", rv4:"الباقة", none:"بدون", quote:"حسب الطلب",
+        pname:"الاسم الكامل", pcin:"رقم البطاقة الوطنية أو الجواز", ppct:"الحصة (%)", pttl:"شريك", rm:"حذف", other:"شخص آخر", next:"متابعة", send:"إرسال طلبي",
+        k:{forme:"الشكل",noms:"الأسماء",act:"النشاط",ville:"المدينة",capital:"الرأسمال",siege:"المقر",plan:"الباقة",opts:"الخيارات",total:"المجموع"},
+        siege:{dom:"توطين",local:"محلّ موجود"}}
+  };
+  const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+  const fmt = n => n.toLocaleString('fr-FR').replace(/[  ]/g,' ');
+  const root = document.documentElement;
+  let lang = 'fr', step = 1;
+
+  // ---------- i18n ----------
+  const nodes = $$('[data-t],[data-th]');
+  nodes.forEach(n => { n._fr = n.hasAttribute('data-th') ? n.innerHTML : n.textContent; });
+  const phs = $$('[data-ph]'); phs.forEach(n => n._fr = n.placeholder);
+  function setLang(l){
+    lang = l; root.lang = l; root.dir = l === 'ar' ? 'rtl' : 'ltr';
+    nodes.forEach(n => {
+      const k = n.dataset.t || n.dataset.th;
+      if (k === 'st') return;
+      const v = l === 'ar' && AR[k] ? AR[k] : n._fr;
+      n.hasAttribute('data-th') ? n.innerHTML = v : n.textContent = v;
+    });
+    phs.forEach(n => n.placeholder = l === 'ar' && AR[n.dataset.ph] ? AR[n.dataset.ph] : n._fr);
+    $$('[data-lang]').forEach(b => b.setAttribute('aria-pressed', b.dataset.lang === l));
+    try { localStorage.setItem('sj-lang', l); } catch(e) {}
+    renderPartners(); show(step, true); summary();
+  }
+  $$('[data-lang]').forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
+
+  // ---------- Partners ----------
+  let partners = [{ name:'', cin:'', pct:100 }];
+  const pBox = $('#partners');
+  function isSolo(){ const f = val('forme'); return f === 'sarlau' || f === 'ae'; }
+  function renderPartners(){
+    const t = T[lang];
+    if (isSolo()) partners = [partners[0] || { name:'', cin:'', pct:100 }], partners[0].pct = 100;
+    pBox.innerHTML = '';
+    partners.forEach((p, i) => {
+      const d = document.createElement('div'); d.className = 'partner';
+      d.innerHTML = `<div class="partner-h"><span>${t.pttl} ${i+1}</span>${partners.length > 1 ? `<button type="button" class="rm" data-i="${i}">${t.rm}</button>` : ''}</div>
+        <div class="grid g3">
+          <div><label for="pn${i}">${t.pname} *</label><input id="pn${i}" data-i="${i}" data-k="name" required></div>
+          <div><label for="pc${i}">${t.pcin} *</label><input id="pc${i}" data-i="${i}" data-k="cin" required dir="ltr"></div>
+          <div><label for="pp${i}">${t.ppct} *</label><input id="pp${i}" data-i="${i}" data-k="pct" type="number" min="1" max="100" required class="ltr" ${isSolo() ? 'readonly' : ''}></div>
+        </div>`;
+      pBox.appendChild(d);
+      d.querySelector('[data-k=name]').value = p.name;
+      d.querySelector('[data-k=cin]').value = p.cin;
+      d.querySelector('[data-k=pct]').value = p.pct;
+    });
+    $('#addP').hidden = isSolo();
+    renderGerant(); shareInfo();
+  }
+  pBox.addEventListener('input', e => {
+    const el = e.target; if (!el.dataset.k) return;
+    partners[+el.dataset.i][el.dataset.k] = el.dataset.k === 'pct' ? +el.value : el.value;
+    el.classList.remove('invalid'); el.parentElement.querySelector('.ferr')?.remove();
+    if (el.dataset.k === 'name') renderGerant(); shareInfo(); save();
+  });
+  pBox.addEventListener('click', e => {
+    if (!e.target.classList.contains('rm')) return;
+    partners.splice(+e.target.dataset.i, 1); renderPartners(); save();
+  });
+  $('#addP').addEventListener('click', () => {
+    const rest = Math.max(0, 100 - partners.reduce((s, p) => s + (+p.pct || 0), 0));
+    partners.push({ name:'', cin:'', pct:rest }); renderPartners(); save();
+  });
+  function renderGerant(){
+    const g = $('#gerant'), cur = g.value;
+    g.innerHTML = partners.map((p, i) => `<option value="${i}">${p.name || T[lang].pttl + ' ' + (i+1)}</option>`).join('') + `<option value="other">${T[lang].other}</option>`;
+    if ([...g.options].some(o => o.value === cur)) g.value = cur;
+  }
+  function shareTotal(){ return partners.reduce((s, p) => s + (+p.pct || 0), 0); }
+  function shareInfo(){
+    const t = shareTotal(), el = $('#share');
+    el.textContent = T[lang].shareTxt(t);
+    el.className = 'share ' + (t === 100 ? 'good' : 'bad');
+  }
+
+  // ---------- Steps ----------
+  const steps = $$('.step');
+  function show(n, keepScroll){
+    step = n;
+    steps.forEach(s => s.hidden = +s.dataset.step !== n);
+    $$('#stepper li').forEach((li, i) => { li.classList.toggle('done', i < n - 1); li.classList.toggle('on', i === n - 1); });
+    $$('.step [data-t=st]').forEach(s => s.textContent = T[lang].st(+s.closest('.step').dataset.step));
+    $('#prev').style.visibility = n === 1 ? 'hidden' : 'visible';
+    $('#nextTxt').textContent = n === 5 ? T[lang].send : T[lang].next;
+    if (n === 5) review();
+    if (!keepScroll) $('#wizard').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  function val(name){ const el = document.querySelector(`[name="${name}"]:checked`); return el ? el.value : ''; }
+  function label(name){ const el = document.querySelector(`[name="${name}"]:checked`); return el ? el.closest('.tile').querySelector('b').textContent : ''; }
+
+  function fieldErr(el, msg){
+    el.classList.add('invalid');
+    if (!el.parentElement.querySelector('.ferr')) { const p = document.createElement('p'); p.className = 'ferr'; p.textContent = msg; el.parentElement.appendChild(p); }
+  }
+  function clearErrs(scope){ scope.querySelectorAll('.invalid').forEach(e => e.classList.remove('invalid')); scope.querySelectorAll('.ferr').forEach(e => e.remove()); }
+  function validate(n){
+    const s = steps[n - 1], t = T[lang]; clearErrs(s); let ok = true;
+    s.querySelectorAll('[required]').forEach(el => {
+      if (el.type === 'checkbox') { if (!el.checked) { ok = false; fieldErr(el.closest('.chk'), t.cgu); } return; }
+      if (!el.value.trim()) { ok = false; fieldErr(el, t.req); }
+    });
+    if (n === 2 && +$('#capital').value < 1000) { ok = false; fieldErr($('#capital'), t.cap); }
+    if (n === 3 && shareTotal() !== 100) { ok = false; $('#share').textContent = t.pct; $('#share').className = 'share bad'; }
+    if (n === 5) {
+      const e = $('#email'), p = $('#tel');
+      if (e.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e.value)) { ok = false; fieldErr(e, t.email); }
+      if (p.value && !/^[+0-9 ().-]{8,}$/.test(p.value)) { ok = false; fieldErr(p, t.tel); }
+    }
+    if (!ok) s.querySelector('.invalid, .share.bad')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return ok;
+  }
+  document.addEventListener('input', e => { if (e.target.classList.contains('invalid')) { e.target.classList.remove('invalid'); e.target.parentElement.querySelector('.ferr')?.remove(); } });
+
+  $('#wizard').addEventListener('submit', e => {
+    e.preventDefault();
+    if (!validate(step)) return;
+    if (step < 5) { show(step + 1); return; }
+    finish();
+  });
+  $('#prev').addEventListener('click', () => step > 1 && show(step - 1));
+  $('#wizard').addEventListener('change', e => { if (e.target.name === 'forme') renderPartners(); summary(); save(); });
+  $('#wizard').addEventListener('input', () => { summary(); save(); });
+
+  // ---------- Summary & review ----------
+  function total(){
+    if (val('forme') === 'sa') return null;
+    const plan = document.querySelector('[name=plan]:checked');
+    let t = plan ? +plan.dataset.price : 0;
+    if (val('forme') === 'ae') t = 900;
+    $$('#wizard input[type=checkbox][data-price]:checked').forEach(c => t += +c.dataset.price);
+    return t;
+  }
+  function optsText(){ const o = $$('#wizard input[type=checkbox][data-price]:checked').map(c => c.nextElementSibling.textContent); return o.length ? o.join(', ') : T[lang].none; }
+  function summary(){
+    $('#sForme').textContent = label('forme');
+    $('#sNom').textContent = $('#n1').value.trim() || '—';
+    $('#sVille').textContent = $('#ville').value ? $('#ville').selectedOptions[0].textContent : '—';
+    $('#sPlan').textContent = val('forme') === 'ae' ? (lang === 'ar' ? AR.fo3 : 'Auto-entrepreneur') : label('plan');
+    $('#sOpts').textContent = optsText();
+    const t = total();
+    $('#sTotal').textContent = t === null ? T[lang].quote : fmt(t);
+    $('#sDep').textContent = t === null ? '—' : fmt(Math.round(t / 2)) + ' MAD';
+  }
+  function review(){
+    const t = T[lang], k = t.k;
+    const noms = ['n1','n2','n3'].map(id => $('#'+id).value.trim()).filter(Boolean).join(' · ');
+    const row = (a, b) => `<dt>${a}</dt><dd>${escapeHtml(b)}</dd>`;
+    const blocks = [
+      [t.rv1, 1, row(k.forme, label('forme'))],
+      [t.rv2, 2, row(k.noms, noms) + row(k.act, $('#act').value.trim()) + row(k.ville, $('#ville').selectedOptions[0]?.textContent || '') + row(k.capital, fmt(+$('#capital').value) + ' MAD') + row(k.siege, t.siege[val('siege')])],
+      [t.rv3, 3, partners.map((p, i) => row(`${t.pttl} ${i+1}`, `${p.name} · ${p.cin} · ${p.pct}%`)).join('')],
+      [t.rv4, 4, row(k.plan, $('#sPlan').textContent) + row(k.opts, optsText()) + row(k.total, $('#sTotal').textContent + (total() === null ? '' : ' MAD'))]
+    ];
+    $('#review').innerHTML = blocks.map(([h, n, body]) => `<div class="rv"><div class="rv-h"><span>${h}</span><button type="button" data-go="${n}">${t.edit}</button></div><dl>${body}</dl></div>`).join('');
+  }
+  $('#review').addEventListener('click', e => { const g = e.target.dataset.go; if (g) show(+g); });
+  function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+  // ---------- Finish ----------
+  function finish(){
+    const ref = 'SJ-' + String(Date.now()).slice(-6);
+    steps.forEach(s => s.hidden = true);
+    $('#navBtns').hidden = true;
+    $$('#stepper li').forEach(li => { li.classList.add('done'); li.classList.remove('on'); });
+    $('#ref').textContent = ref;
+    $('#okp').textContent = T[lang].ok($('#nom').value.trim(), $('#email').value.trim());
+    $('#done').hidden = false;
+    $('#wizard').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    try { localStorage.removeItem('sj-demande'); } catch(e) {}
+    // Demo only. To receive requests, send the data to your backend here, e.g.:
+    // fetch('/api/demande', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(collect(ref)) });
+  }
+
+  // ---------- Draft save ----------
+  function save(){
+    try {
+      const data = {}; new FormData($('#wizard')).forEach((v, k) => data[k] = v);
+      $$('#wizard input[type=checkbox][name]').forEach(c => data[c.name] = c.checked);
+      data.partners = partners; data.step = step;
+      localStorage.setItem('sj-demande', JSON.stringify(data));
+    } catch(e) {}
+  }
+  function load(){
+    try {
+      const d = JSON.parse(localStorage.getItem('sj-demande') || 'null'); if (!d) return;
+      Object.entries(d).forEach(([k, v]) => {
+        const els = document.querySelectorAll(`#wizard [name="${k}"]`);
+        els.forEach(el => { if (el.type === 'radio') el.checked = el.value === v; else if (el.type === 'checkbox') el.checked = !!v; else el.value = v; });
+      });
+      if (Array.isArray(d.partners) && d.partners.length) partners = d.partners;
+    } catch(e) {}
+  }
+
+  // ---------- Init ----------
+  load();
+  const q = new URLSearchParams(location.search);
+  const plan = q.get('plan'); if (plan && document.querySelector(`[name=plan][value="${plan}"]`)) document.querySelector(`[name=plan][value="${plan}"]`).checked = true;
+  const svc = q.get('service'); if (svc && document.querySelector(`[name=forme][value="${svc}"]`)) document.querySelector(`[name=forme][value="${svc}"]`).checked = true;
+  let startLang = 'fr'; try { if (localStorage.getItem('sj-lang') === 'ar') startLang = 'ar'; } catch(e) {}
+  setLang(startLang);
+  show(1, true);
+})();
+</script>
+</body>
+</html>
