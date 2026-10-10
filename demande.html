@@ -88,6 +88,7 @@ main{position:relative;z-index:1;padding-block:28px 72px}
 @media (max-width:920px){.layout{grid-template-columns:1fr}}
 .layout.sent{grid-template-columns:minmax(0,760px);justify-content:center}
 .layout.sent .sum{display:none}
+main.sent .title,.layout.sent .stepper{display:none}
 
 /* Stepper */
 .stepper{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;list-style:none;margin:0 0 18px;padding:0}
@@ -702,6 +703,7 @@ textarea{min-height:96px;resize:vertical}
     $('#okPay').textContent = $('#sPay').textContent;
     $('#okAmt').textContent = $('#sDep').textContent;
     $('#done').hidden = false;
+    $('main').classList.add('sent');
     $('.layout').classList.add('sent'); // summary is no longer needed once the request is sent
     $('#wizard').scrollIntoView({ behavior: 'smooth', block: 'start' });
     try { localStorage.removeItem('ce-demande'); } catch(e) {}
