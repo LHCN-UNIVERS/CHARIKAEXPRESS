@@ -4,7 +4,13 @@ Single-page marketing site (French + English) for an online company-formation se
 
 - `index.html` is self-contained. It only loads Google Fonts from the network.
 - The language switch (FR / EN) is built in. English strings live in the `EN` object at the bottom of each page; French is the text in the HTML.
-- Open `index.html` in a browser, or serve the folder with any static host (Vercel, Netlify, GitHub Pages).
+- Open `index.html` in a browser, or serve the folder with any static host.
+
+## Hosting on Cloudflare Pages
+- Build command: `sh build.sh` · Build output directory: `dist` · Framework preset: None · Production branch: `main`.
+- `build.sh` publishes only the website (`index.html`, `demande.html`, `admin.html`, `og-image.jpg`, `robots.txt`, `sitemap.xml`, `_headers`); videos, sources and docs are not served.
+- `_headers` adds security headers, keeps `/admin` out of search engines and uncached, and marks the `*.pages.dev` preview address `noindex`.
+- Every push to `main` redeploys automatically.
 
 ## Before going live
 - Replace the placeholders: phone `+212 5 00 00 00 00` and email `contact@charikaexpress.ma` (create this mailbox).

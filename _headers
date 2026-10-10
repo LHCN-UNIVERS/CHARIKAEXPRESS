@@ -1,0 +1,16 @@
+# Cloudflare Pages response headers (copied into dist/ by build.sh)
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+
+# Team space: never indexed, never cached
+/admin*
+  X-Robots-Tag: noindex, nofollow
+  Cache-Control: no-store
+
+# The preview address (*.pages.dev) must not compete with charikaexpress.ma on Google
+https://:project.pages.dev/*
+  X-Robots-Tag: noindex
