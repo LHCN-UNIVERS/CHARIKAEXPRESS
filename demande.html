@@ -305,10 +305,9 @@ textarea{min-height:96px;resize:vertical}
         <!-- STEP 4 -->
         <section class="step" data-step="4" hidden>
           <div class="step-h"><small data-t="st">Étape 4 sur 5</small><h2 data-t="s4h">Choisissez votre formule</h2><p data-t="s4p">Prix TTC, frais administratifs inclus. Paiement en deux fois.</p></div>
-          <div class="tiles t3" role="radiogroup">
-            <label class="tile"><input type="radio" name="plan" value="essentiel" data-price="2900"><b data-t="pl1">Essentiel</b><span data-t="pl1d">Formalités indispensables</span><em class="ltr">2 900 MAD</em></label>
-            <label class="tile"><span class="tag" data-t="rec">Le plus choisi</span><input type="radio" name="plan" value="confort" data-price="4900" checked><b data-t="pl2">Confort</b><span data-t="pl2d">Domiciliation 12 mois + juriste dédié</span><em class="ltr">4 900 MAD</em></label>
-            <label class="tile"><input type="radio" name="plan" value="premium" data-price="8900"><b data-t="pl3">Premium</b><span data-t="pl3d">Comptabilité 3 mois + compte bancaire</span><em class="ltr">8 900 MAD</em></label>
+          <div class="tiles t2" role="radiogroup">
+            <label class="tile"><input type="radio" name="plan" value="essentiel" data-price="2900" checked><b data-t="pl1">Essentiel</b><span data-t="pl1d">Formalités indispensables</span><em class="ltr">2 900 MAD</em></label>
+            <label class="tile"><span class="tag" data-t="best">Le plus complet</span><input type="radio" name="plan" value="premium" data-price="8900"><b data-t="pl3">Premium</b><span data-t="pl3d">Domiciliation 12 mois, juriste dédié, comptabilité 3 mois, compte bancaire</span><em class="ltr">8 900 MAD</em></label>
           </div>
           <span class="lbl" style="margin-top:22px" data-t="opts">Options</span>
           <div class="grid">
@@ -400,12 +399,12 @@ textarea{min-height:96px;resize:vertical}
         <li><span data-t="sf">Forme</span><span id="sForme">SARL AU</span></li>
         <li><span data-t="sn">Nom</span><span id="sNom">—</span></li>
         <li><span data-t="sv">Ville</span><span id="sVille">—</span></li>
-        <li><span data-t="sp">Formule</span><span id="sPlan">Confort</span></li>
+        <li><span data-t="sp">Formule</span><span id="sPlan">Essentiel</span></li>
         <li><span data-t="so">Options</span><span id="sOpts">—</span></li>
         <li><span data-t="spay">Paiement</span><span id="sPay">—</span></li>
       </ul>
-      <div class="total"><span data-t="tot">Total TTC</span><b class="ltr" id="sTotal">4 900</b></div>
-      <p class="dep"><span data-t="dep">À régler maintenant :</span> <span class="ltr" id="sDep">2 450 MAD</span></p>
+      <div class="total"><span data-t="tot">Total TTC</span><b class="ltr" id="sTotal">2 900</b></div>
+      <p class="dep"><span data-t="dep">À régler maintenant :</span> <span class="ltr" id="sDep">1 450 MAD</span></p>
       <p class="help" data-t="help">Une question ? Un juriste vous répond au +212 5 00 00 00 00 ou sur WhatsApp.</p>
     </aside>
   </div>
@@ -426,7 +425,7 @@ textarea{min-height:96px;resize:vertical}
     s3h:"الشركاء والمسيّر", s3p:"أدخل كل شريك وحصّته من الرأسمال. يجب أن يكون المجموع 100%.",
     addp:"إضافة شريك", gname:"الاسم الكامل للمسيّر", pcin2:"رقم البطاقة الوطنية أو الجواز", gerant:"المسيّر", pname:"الاسم الكامل", pcin:"رقم البطاقة الوطنية أو الجواز", ppct:"الحصة (%)", pttl:"شريك", rm:"حذف", other:"شخص آخر",
     s4h:"اختر باقتك", s4p:"الأسعار شاملة للضريبة والمصاريف الإدارية. الأداء على دفعتين.",
-    pl1:"الأساسية", pl1d:"الإجراءات الضرورية", pl2:"المريحة", pl2d:"توطين 12 شهراً + مستشار مخصّص", pl3:"المميّزة", pl3d:"محاسبة 3 أشهر + حساب بنكي", rec:"الأكثر طلباً",
+    pl1:"الأساسية", pl1d:"الإجراءات الضرورية", pl3:"المميّزة", pl3d:"توطين 12 شهراً، مستشار مخصّص، محاسبة 3 أشهر، حساب بنكي", best:"الأكثر شمولاً", rec:"الأكثر طلباً",
     opts:"خيارات", o1:"معالجة ذات أولوية", o2:"شعار وبطاقة زيارة", o3:"ميثاق الشركاء",
     s5h:"معلوماتك",
     s6h:"طريقة الأداء", s6p:"اختر المبلغ وطريقة الأداء. اذكر مرجعك كسبب للأداء.", amt:"المبلغ المطلوب", am2:"50 / 50", am2d:"50% الآن و50% عند تسليم السجل التجاري", am1:"المبلغ كاملاً", am1d:"100% الآن، دفعة واحدة",
@@ -689,6 +688,7 @@ textarea{min-height:96px;resize:vertical}
   const q = new URLSearchParams(location.search);
   const plan = q.get('plan'); if (plan && document.querySelector(`[name=plan][value="${plan}"]`)) document.querySelector(`[name=plan][value="${plan}"]`).checked = true;
   const svc = q.get('service'); if (svc && document.querySelector(`[name=forme][value="${svc}"]`)) document.querySelector(`[name=forme][value="${svc}"]`).checked = true;
+  if (!document.querySelector('[name=plan]:checked')) document.querySelector('[name=plan][value=essentiel]').checked = true;
   let startLang = 'fr'; try { if (localStorage.getItem('ce-lang') === 'ar') startLang = 'ar'; } catch(e) {}
   setLang(startLang);
   show(1, true);

@@ -226,7 +226,7 @@ section{padding-block:clamp(72px,9vw,120px)}
 @media (max-width:360px){.lock{width:280px}}
 
 /* ---------- Pricing ---------- */
-.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:stretch}
+.plans{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;align-items:stretch;max-width:880px;margin-inline:auto}
 .plan{border-radius:26px;padding:32px 28px;border:1px solid var(--line);background:#fff;display:flex;flex-direction:column;gap:18px}
 .plan.top{background:var(--ink);color:#fff;border-color:var(--ink);position:relative;overflow:hidden;box-shadow:0 40px 70px -40px rgba(43,15,46,.8)}
 .plan.top .orb{width:340px;height:340px;inset-inline-end:-150px;top:-160px;opacity:.75}
@@ -239,7 +239,7 @@ section{padding-block:clamp(72px,9vw,120px)}
 .price b{font-size:3.1rem;font-weight:800;letter-spacing:-.05em;line-height:1;font-variant-numeric:tabular-nums}
 .price span{color:var(--m);font-weight:600;font-size:.88rem}
 .plan.top .price span{color:#cdb8c9}
-.plan ul{list-style:none;margin:0;padding:18px 0 0;border-top:1px solid var(--line);display:grid;gap:11px;flex:1;font-size:.95rem}
+.plan ul{list-style:none;margin:0;padding:18px 0 0;border-top:1px solid var(--line);display:grid;gap:11px;flex:1;align-content:start;font-size:.95rem}
 .plan.top ul{border-color:rgba(255,255,255,.14)}
 .plan li{display:grid;grid-template-columns:22px 1fr;gap:10px;align-items:start}
 .plan li::before{content:"";width:20px;height:20px;border-radius:50%;margin-top:3px;background:#ffe6ec url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='%23ff5c7a' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round' d='M6 12.5l4 4L18 8'/%3E%3C/svg%3E") center/12px no-repeat}
@@ -490,16 +490,10 @@ footer a:hover{color:var(--rose)}
         </article>
         <article class="plan top">
           <span class="orb" aria-hidden="true"></span>
-          <div class="ph"><h3 data-t="pl2">Confort</h3><span class="tag" data-t="rec">Le plus choisi</span></div><p class="sub" data-t="pl2s">L'accompagnement complet</p>
-          <div class="price"><b class="ltr">4 900</b><span data-t="mad">MAD TTC</span></div>
-          <ul><li data-t="y1">Tout le pack Essentiel</li><li data-t="y2">Statuts personnalisés</li><li data-t="y3">Domiciliation 12 mois</li><li data-t="x6">Juriste dédié</li><li data-t="y5">Signature électronique</li><li class="no" data-t="y6">Comptabilité 3 mois</li></ul>
-          <a class="btn btn-grad" href="demande.html?plan=confort" data-t="choose2">Choisir Confort</a>
-        </article>
-        <article class="plan">
-          <div class="ph"><h3 data-t="pl3">Premium</h3></div><p class="sub" data-t="pl3s">Pour démarrer sans aucune contrainte</p>
+          <div class="ph"><h3 data-t="pl3">Premium</h3><span class="tag" data-t="best">Le plus complet</span></div><p class="sub" data-t="pl3s">Pour démarrer sans aucune contrainte</p>
           <div class="price"><b class="ltr">8 900</b><span data-t="mad">MAD TTC</span></div>
-          <ul><li data-t="z1">Tout le pack Confort</li><li data-t="y6">Comptabilité 3 mois</li><li data-t="z3">Pacte d'associés</li><li data-t="z4">Ouverture de compte bancaire</li><li data-t="z5">Traitement prioritaire</li><li data-t="z6">Assistance juridique 6 mois</li></ul>
-          <a class="btn btn-soft" href="demande.html?plan=premium" data-t="choose3">Choisir Premium</a>
+          <ul><li data-t="y1">Tout le pack Essentiel</li><li data-t="y2">Statuts personnalisés</li><li data-t="y3">Domiciliation 12 mois</li><li data-t="x6">Juriste dédié</li><li data-t="y5">Signature électronique</li><li data-t="y6">Comptabilité 3 mois</li><li data-t="z3">Pacte d'associés</li><li data-t="z4">Ouverture de compte bancaire</li><li data-t="z5">Traitement prioritaire</li><li data-t="z6">Assistance juridique 6 mois</li></ul>
+          <a class="btn btn-grad" href="demande.html?plan=premium" data-t="choose3">Choisir Premium</a>
         </article>
       </div>
       <p class="plans-note" data-t="t-note">Paiement en deux fois : 50% à la commande, 50% à la remise du RC. Tarifs indicatifs selon la ville et le capital.</p>
@@ -629,7 +623,7 @@ footer a:hover{color:var(--rose)}
     "t-eye":"الأسعار", "t-title":"باقات بسيطة دون مفاجآت", "t-lead":"الأسعار شاملة للضريبة لتأسيس SARL أو SARL AU، مع المصاريف الإدارية.",
     pl1:"الأساسية", pl1s:"الإجراءات الضرورية", mad:"درهم شامل الضريبة",
     x1:"الشهادة السلبية", x2:"نظام أساسي نموذجي", x3:"السجل التجاري، التعريف الضريبي، ICE وCNSS", x4:"الإعلانات القانونية", x5:"التوطين", x6:"مستشار قانوني مخصّص",
-    choose:"اختر الأساسية", choose2:"اختر المريحة", choose3:"اختر المميّزة", rec:"الأكثر طلباً",
+    choose:"اختر الأساسية", choose3:"اختر المميّزة", rec:"الأكثر طلباً", best:"الأكثر شمولاً",
     pl2:"المريحة", pl2s:"المواكبة الكاملة", y1:"كل ما في الباقة الأساسية", y2:"نظام أساسي على المقاس", y3:"توطين لمدة 12 شهراً", y5:"التوقيع الإلكتروني", y6:"المحاسبة لمدة 3 أشهر",
     pl3:"المميّزة", pl3s:"لانطلاقة دون أي عناء", z1:"كل ما في الباقة المريحة", z3:"ميثاق الشركاء", z4:"فتح حساب بنكي", z5:"معالجة ذات أولوية", z6:"مساعدة قانونية لمدة 6 أشهر",
     "t-note":"الأداء على دفعتين: 50% عند الطلب و50% عند تسليم السجل التجاري. الأسعار إرشادية حسب المدينة والرأسمال.",
