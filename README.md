@@ -1,4 +1,4 @@
-# CHARIKAEXPRESS: Sahl Juridique website
+# Charika Express: website
 
 Single-page marketing site (French + Arabic, RTL) for an online company-formation service in Morocco.
 
@@ -7,7 +7,7 @@ Single-page marketing site (French + Arabic, RTL) for an online company-formatio
 - Open `index.html` in a browser, or serve the folder with any static host (Vercel, Netlify, GitHub Pages).
 
 ## Before going live
-- Replace the placeholders: brand name "Sahl", phone `+212 5 00 00 00 00`, email `contact@votre-domaine.ma`, and prices.
+- Replace the placeholders: phone `+212 5 00 00 00 00`, email `contact@votre-domaine.ma`, and prices.
 - Connect the callback form (`#form`) to your email or CRM. It is currently a demo and sends nothing.
 - Have a native speaker review the Arabic text.
 

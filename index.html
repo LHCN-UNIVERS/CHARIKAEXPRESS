@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="Créez votre société au Maroc en ligne : certificat négatif, statuts, RC, IF, ICE, CNSS. Juriste dédié, dès 2 900 MAD.">
-<title>Sahl Juridique</title>
+<title>Charika Express</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap">
@@ -57,6 +57,8 @@ section{padding-block:clamp(72px,9vw,120px)}
 .logo{display:flex;align-items:center;gap:9px;font-weight:800;font-size:1.45rem;letter-spacing:-.05em;text-decoration:none}
 :root[dir="rtl"] .logo{letter-spacing:0}
 .logo i{width:16px;height:16px;border-radius:50%;background:var(--grad);display:block}
+.logo b{font-weight:800;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;margin-inline-start:.24em}
+@media (max-width:420px){.navbar .logo{font-size:1.08rem}}
 /* ---------- Header: dark bar, logo on the left ---------- */
 .topbar{position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px);z-index:60;margin-top:12px}
 .navbar{position:relative;display:flex;align-items:center;gap:20px;background:var(--ink);color:#fff;border-radius:22px;padding:10px;padding-inline-start:22px;box-shadow:0 24px 50px -28px rgba(43,15,46,.8);overflow:hidden}
@@ -82,7 +84,9 @@ section{padding-block:clamp(72px,9vw,120px)}
 .mnav .cta{margin-top:8px}
 @media (max-width:1080px){.links{display:none}.burger{display:grid}.navbar .cta{display:none}}
 @media (min-width:1081px){.mnav{display:none!important}}
-@media (max-width:360px){.navbar .lang{display:none}}
+.mnav[hidden]{display:none!important}
+@media (max-width:420px){.navbar .wa-ico{display:none}.navbar{gap:10px;padding-inline-start:16px}}
+@media (max-width:340px){.navbar .lang{display:none}}
 
 /* ---------- Hero ---------- */
 .hero{position:relative;padding-block:44px 64px;overflow-x:clip}
@@ -273,7 +277,7 @@ footer a:hover{color:var(--rose)}
 <header class="topbar" id="hdr">
   <div class="wrap">
     <nav class="navbar" aria-label="Navigation">
-      <a class="logo" href="#top"><i></i><span data-t="brand">sahl</span></a>
+      <a class="logo" href="#top"><i></i><span data-th="brand">Charika<b>Express</b></span></a>
       <ul class="links">
         <li><a href="#services" data-t="n1">Services</a></li>
         <li><a href="#processus" data-t="n2">Processus</a></li>
@@ -282,7 +286,7 @@ footer a:hover{color:var(--rose)}
         <li><a href="#contact" data-t="n5">Contact</a></li>
       </ul>
       <div class="bar-r">
-        <a class="ico" href="https://wa.me/212500000000" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.5-3.9-4.7-4.1-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1c.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.1 1.4z"/></svg></a>
+        <a class="ico wa-ico" href="https://wa.me/212500000000" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.5-3.9-4.7-4.1-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1c.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.1 1.4z"/></svg></a>
         <div class="lang" role="group" aria-label="Langue">
           <button type="button" data-lang="fr" aria-pressed="true">FR</button>
           <button type="button" data-lang="ar" aria-pressed="false">ع</button>
@@ -297,6 +301,7 @@ footer a:hover{color:var(--rose)}
       <a href="#tarifs" data-t="n3">Tarifs</a>
       <a href="#faq" data-t="n4">FAQ</a>
       <a href="#contact" data-t="n5">Contact</a>
+      <a href="https://wa.me/212500000000" target="_blank" rel="noopener">WhatsApp</a>
       <a class="cta" href="demande.html"><span data-t="start">Commencer ma demande</span> <span class="flip">→</span></a>
     </div>
   </div>
@@ -338,14 +343,14 @@ footer a:hover{color:var(--rose)}
   <section>
     <div class="wrap">
       <div class="head">
-        <span class="eyebrow" data-t="p-eye">Pourquoi Sahl</span>
+        <span class="eyebrow" data-t="p-eye">Pourquoi Charika Express</span>
         <h2 data-th="p-title">Un vrai juriste, <span class="gt">la simplicité d'une app</span>.</h2>
       </div>
       <div class="bento">
         <div class="b ink w2 h2"><span class="orb" aria-hidden="true"></span><small data-t="s1">Création SARL / SARL AU</small><div><div class="big ltr">2 900<span>MAD</span></div><p style="margin-top:14px" data-t="bn1">Tout compris : certificat négatif, statuts, RC, IF, ICE, CNSS et annonces légales. Frais administratifs inclus.</p></div><a class="btn btn-white" href="#tarifs" style="align-self:flex-start" data-t="h-cta2">Voir les tarifs</a></div>
         <div class="b w2"><small data-t="p1">Un juriste dédié</small><div class="avatars"><i style="background:#ff7a59">S</i><i style="background:#ff4f9a">N</i><i style="background:#2b0f2e">Y</i></div><p data-t="p1p">Un interlocuteur unique qui connaît votre dossier, joignable par téléphone et WhatsApp.</p></div>
         <div class="b"><small data-t="bn2">Suivi</small><div class="dots" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div><h3 data-t="bn2v">Chaque étape notifiée</h3></div>
-        <div class="b"><small data-t="p2">Aucun déplacement</small><div class="sigline">Sahl</div><p data-t="bn3">Signature électronique de vos documents.</p></div>
+        <div class="b"><small data-t="p2">Aucun déplacement</small><div class="sigline">Charika</div><p data-t="bn3">Signature électronique de vos documents.</p></div>
         <div class="b warm w2"><small data-t="p4">Garantie anti-rejet</small><h3 style="font-size:1.75rem" data-t="bn4">Un rejet dû à notre erreur ? On corrige à nos frais.</h3></div>
         <div class="b w2"><small data-t="p3">Tarifs transparents</small><h3 data-t="bn5">Paiement en deux fois : 50% à la commande, 50% à la remise du RC.</h3></div>
       </div>
@@ -493,12 +498,12 @@ footer a:hover{color:var(--rose)}
 <footer>
   <div class="wrap">
     <div class="f-grid">
-      <div><a class="logo" href="#top"><i></i><span data-t="brand">sahl</span></a><p style="margin-top:14px;max-width:34ch" data-t="ft-about">Création et gestion juridique d'entreprises au Maroc, entièrement en ligne.</p></div>
+      <div><a class="logo" href="#top"><i></i><span data-th="brand">Charika<b>Express</b></span></a><p style="margin-top:14px;max-width:34ch" data-t="ft-about">Création et gestion juridique d'entreprises au Maroc, entièrement en ligne.</p></div>
       <div><h4 data-t="n1">Services</h4><ul><li><a href="#services" data-t="s1">Création SARL / SARL AU</a></li><li><a href="#services" data-t="s2">Auto-entrepreneur</a></li><li><a href="#services" data-t="s4">Domiciliation</a></li><li><a href="#services" data-t="s5">Modifications statutaires</a></li></ul></div>
-      <div><h4 data-t="ft-co">Sahl</h4><ul><li><a href="#processus" data-t="n2">Processus</a></li><li><a href="#tarifs" data-t="n3">Tarifs</a></li><li><a href="#faq" data-t="n4">FAQ</a></li></ul></div>
+      <div><h4 data-t="ft-co">Charika Express</h4><ul><li><a href="#processus" data-t="n2">Processus</a></li><li><a href="#tarifs" data-t="n3">Tarifs</a></li><li><a href="#faq" data-t="n4">FAQ</a></li></ul></div>
       <div><h4 data-t="n5">Contact</h4><ul><li class="ltr">+212 5 00 00 00 00</li><li class="ltr">contact@votre-domaine.ma</li><li data-t="ci3v">Casablanca, Maroc</li></ul></div>
     </div>
-    <div class="f-bottom"><span data-t="ft-copy">© 2026 Sahl Juridique. Tous droits réservés.</span><span data-t="ft-legal">Mentions légales · Confidentialité</span></div>
+    <div class="f-bottom"><span data-t="ft-copy">© 2026 Charika Express. Tous droits réservés.</span><span data-t="ft-legal">Mentions légales · Confidentialité</span></div>
   </div>
 </footer>
 
@@ -507,7 +512,7 @@ footer a:hover{color:var(--rose)}
 <script>
 (function(){
   const AR = {
-    brand:"سهل", hours:"الإثنين – الجمعة · 9:00 – 18:00",
+    brand:"شركة<b>إكسبريس</b>", hours:"الإثنين – الجمعة · 9:00 – 18:00",
     n1:"خدماتنا", n2:"المراحل", n3:"الأسعار", n4:"الأسئلة الشائعة", n5:"اتصل بنا", navcta:"ابدأ",
     "h-new":"عن بُعد 100%", "h-eye":"مستشار قانوني مخصّص",
     "h-title":"الطريقة الأبسط <span class=\"gt\">لإطلاق شركتك</span>.",
@@ -516,7 +521,7 @@ footer a:hover{color:var(--rose)}
     f1:"الشهادة السلبية", f5:"السجل التجاري", f2:"النظام الأساسي للشركة", d3k:"المحكمة", d2k:"النظام الأساسي",
     "st-ok":"تمّ", "st-wait":"قريباً", "st-sign":"للتوقيع", seal1:"ابتداءً من", seal2:"درهم",
     k1b:"من 7 إلى 15 يوماً", k1:"حتى السجل التجاري", k2b:"100% عن بُعد", k2:"دون أي تنقّل", k3b:"الأداء 50 / 50", k3:"على دفعتين", k4b:"ضد الرفض", k4:"ضمان مشمول",
-    "p-eye":"لماذا سهل", "p-title":"مستشار قانوني حقيقي، <span class=\"gt\">وبساطة التطبيق</span>.",
+    "p-eye":"لماذا شركة إكسبريس", "p-title":"مستشار قانوني حقيقي، <span class=\"gt\">وبساطة التطبيق</span>.",
     bn1:"كل شيء مشمول: الشهادة السلبية، النظام الأساسي، السجل التجاري، التعريف الضريبي، ICE، CNSS والإعلانات القانونية. المصاريف الإدارية مشمولة.",
     "h-cta2":"اطّلع على الأسعار", "h-cta1":"أنشئ شركتك",
     p1:"مستشار قانوني مخصّص", p1p:"مخاطَب واحد يعرف ملفك، متاح عبر الهاتف وواتساب.",
@@ -553,8 +558,8 @@ footer a:hover{color:var(--rose)}
     "c-eye":"اتصل بنا", "c-title":"لنتحدّث عن مشروعك", "c-lead":"اترك معلوماتك، وسيتّصل بك مستشار قانوني خلال يوم العمل لدراسة مشروعك وتقديم عرض سعر.",
     ci1:"الهاتف", ci2:"البريد الإلكتروني", ci4:"أوقات العمل", ci3v:"الدار البيضاء، المغرب",
     "fm-title":"اطلب معاودة الاتصال", fm1:"الاسم الكامل", fm2:"الهاتف", fm3:"الخدمة المطلوبة", fm4:"مشروعك في بضع كلمات", "fm-btn":"أرسل طلبي",
-    "ft-about":"تأسيس وتدبير قانوني للمقاولات بالمغرب، عبر الإنترنت بالكامل.", "ft-co":"سهل",
-    "ft-copy":"© 2026 سهل للاستشارات القانونية. جميع الحقوق محفوظة.", "ft-legal":"الإشعارات القانونية · السرية"
+    "ft-about":"تأسيس وتدبير قانوني للمقاولات بالمغرب، عبر الإنترنت بالكامل.", "ft-co":"شركة إكسبريس",
+    "ft-copy":"© 2026 شركة إكسبريس. جميع الحقوق محفوظة.", "ft-legal":"الإشعارات القانونية · السرية"
   };
   const MSG = {
     fr:{err:"Veuillez indiquer votre nom et un numéro de téléphone valide.", ok:n=>"Merci "+n+". Votre demande a bien été enregistrée. (Démonstration : reliez ce formulaire à votre e-mail ou CRM.)"},
@@ -576,10 +581,10 @@ footer a:hover{color:var(--rose)}
     });
     phs.forEach(n => { const k = n.dataset.ph; n.placeholder = l === 'ar' && AR[k] ? AR[k] : n._fr; });
     document.querySelectorAll('[data-lang]').forEach(b => b.setAttribute('aria-pressed', b.dataset.lang === l));
-    try { localStorage.setItem('sj-lang', l); } catch(e) {}
+    try { localStorage.setItem('ce-lang', l); } catch(e) {}
   }
   document.querySelectorAll('[data-lang]').forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
-  try { if (localStorage.getItem('sj-lang') === 'ar') setLang('ar'); } catch(e) {}
+  try { if (localStorage.getItem('ce-lang') === 'ar') setLang('ar'); } catch(e) {}
 
   // Mobile menu
   const burger = document.getElementById('burger'), mnav = document.getElementById('mnav');
