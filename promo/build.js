@@ -1,0 +1,43 @@
+// Renders promo.html frame by frame and encodes promo.mp4 (1920×1080, 30 fps, H.264 + AAC).
+// Needs Node with Playwright, Python 3 with numpy, and ffmpeg.
+// Usage: node build.js [out.mp4]
+const { chromium } = require('playwright');
+const { spawn, execFileSync } = require('child_process');
+const path = require('path');
+const fs = require('fs');
+const os = require('os');
+
+const FPS = 30;
+const out = path.resolve(process.argv[2] || path.join(__dirname, 'promo.mp4'));
+const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'promo-'));
+const wav = path.join(tmp, 'music.wav');
+
+(async () => {
+  execFileSync('python3', [path.join(__dirname, 'music.py'), wav], { stdio: 'inherit' });
+
+  const browser = await chromium.launch();
+  const page = await browser.newPage({ viewport: { width: 1920, height: 1080 } });
+  await page.goto('file://' + path.join(__dirname, 'promo.html') + '?capture');
+  await page.evaluate(() => document.fonts.ready);
+  await page.waitForTimeout(800);
+  const dur = await page.evaluate(() => window.DUR);
+  const frames = Math.round(dur * FPS);
+
+  const ff = spawn('ffmpeg', ['-y', '-loglevel', 'error',
+    '-f', 'image2pipe', '-framerate', String(FPS), '-i', '-',
+    '-i', wav,
+    '-c:v', 'libx264', '-preset', 'slow', '-crf', '17', '-pix_fmt', 'yuv420p', '-profile:v', 'high',
+    '-c:a', 'aac', '-b:a', '192k', '-shortest', '-movflags', '+faststart', out], { stdio: ['pipe', 'inherit', 'inherit'] });
+
+  for (let i = 0; i < frames; i++) {
+    await page.evaluate(t => window.render(t), i / FPS);
+    const buf = await page.screenshot({ type: 'jpeg', quality: 95 });
+    if (!ff.stdin.write(buf)) await new Promise(r => ff.stdin.once('drain', r));
+    if (i % 90 === 0) process.stdout.write(`frame ${i}/${frames}\n`);
+  }
+  ff.stdin.end();
+  await new Promise((res, rej) => ff.on('close', c => c ? rej(new Error('ffmpeg exited ' + c)) : res()));
+  await browser.close();
+  fs.rmSync(tmp, { recursive: true, force: true });
+  console.log('done:', out);
+})();

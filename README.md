@@ -34,3 +34,9 @@ Never put a secret (service-role) key in these pages: only the public "anon" key
 
 ## Planned: client space
 Client accounts (follow their file, upload documents, message their juriste, download company documents) are described in [`docs/client-space.md`](docs/client-space.md), with 3 models to choose from. Not built yet.
+
+## Promo video
+`promo/charika-express-promo.mp4`: 36 s promo (1920×1080, 30 fps, French), with an original synthesised soundtrack.
+- `promo/promo.html`: the animation. Open it in a browser to preview in real time; every frame is drawn by `render(t)`.
+- `promo/music.py`: the soundtrack (120 bpm, numpy only, no licensed audio).
+- `promo/build.js`: re-renders the MP4 (`node promo/build.js`). Needs Playwright, Python 3 with numpy, and ffmpeg.
