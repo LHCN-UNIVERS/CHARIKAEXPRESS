@@ -1,7 +1,7 @@
 """French voiceover for promo.html, generated offline with Kokoro TTS (open-source, Apache-2.0).
 Each line is fitted inside its scene window, then mixed over the music with the music ducked under the voice.
 
-Usage: python3 voice.py music.wav out.wav MODEL_DIR
+Usage: python3 voice.py music.wav out.wav MODEL_DIR [lines.json]
 MODEL_DIR holds kokoro-v1.0.onnx and voices-v1.0.bin from
 https://github.com/thewh1teagle/kokoro-onnx/releases/tag/model-files-v1.0
 Needs: pip install kokoro-onnx soundfile
@@ -36,13 +36,17 @@ def resample(x, sr_in):
     n = int(len(x) * SR / sr_in)
     return np.interp(np.linspace(0, len(x) - 1, n), np.arange(len(x)), x)
 
-def main(music_path, out_path, model_dir):
+def main(music_path, out_path, model_dir, lines_path=None):
+    lines = LINES
+    if lines_path:                              # another video's script, as JSON [[start, end, text], …]
+        import json
+        lines = json.load(open(lines_path, encoding='utf-8'))
     k = Kokoro(os.path.join(model_dir, 'kokoro-v1.0.onnx'), os.path.join(model_dir, 'voices-v1.0.bin'))
     music, msr = sf.read(music_path, always_2d=True)
     assert msr == SR
     n = len(music)
     voice = np.zeros(n)
-    for start, end, text in LINES:
+    for start, end, text in lines:
         speed = 1.0
         for _ in range(4):                      # speed up a little if the line is longer than its window
             s, sr = k.create(text, voice=VOICE, speed=speed, lang=LANG)
@@ -83,4 +87,4 @@ def main(music_path, out_path, model_dir):
     print('ok', out_path)
 
 if __name__ == '__main__':
-    main(*sys.argv[1:4])
+    main(*sys.argv[1:5])

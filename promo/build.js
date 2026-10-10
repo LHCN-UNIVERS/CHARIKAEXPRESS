@@ -2,6 +2,8 @@
 // Needs Node with Playwright, Python 3 with numpy, and ffmpeg.
 // Voiceover: set KOKORO_DIR to a folder with the Kokoro model files (see voice.py); without it the video has music only.
 // Usage: [KOKORO_DIR=/path/to/models] node build.js [out.mp4]
+// Other videos: PAGE=reel.html MUSIC=reel_music.py LINES=reel_voice.json node build.js reel.mp4
+// (the page sets window.SIZE = [width, height]; default 1920×1080)
 const { chromium } = require('playwright');
 const { spawn, execFileSync } = require('child_process');
 const path = require('path');
@@ -16,15 +18,18 @@ const mixed = path.join(tmp, 'mix.wav');
 let wav = music;
 
 (async () => {
-  execFileSync('python3', [path.join(__dirname, 'music.py'), music], { stdio: 'inherit' });
+  const PAGE = process.env.PAGE || 'promo.html', MUSIC = process.env.MUSIC || 'music.py';
+  execFileSync('python3', [path.join(__dirname, MUSIC), music], { stdio: 'inherit' });
   if (process.env.KOKORO_DIR) {
-    execFileSync('python3', [path.join(__dirname, 'voice.py'), music, mixed, process.env.KOKORO_DIR], { stdio: 'inherit' });
+    execFileSync('python3', [path.join(__dirname, 'voice.py'), music, mixed, process.env.KOKORO_DIR, ...(process.env.LINES ? [path.join(__dirname, process.env.LINES)] : [])], { stdio: 'inherit' });
     wav = mixed;
   }
 
   const browser = await chromium.launch();
-  const page = await browser.newPage({ viewport: { width: 1920, height: 1080 } });
-  await page.goto('file://' + path.join(__dirname, 'promo.html') + '?capture');
+  let page = await browser.newPage({ viewport: { width: 1920, height: 1080 } });
+  await page.goto('file://' + path.join(__dirname, PAGE) + '?capture');
+  const [W, H] = await page.evaluate(() => window.SIZE || [1920, 1080]);
+  if (W !== 1920 || H !== 1080) await page.setViewportSize({ width: W, height: H });
   await page.evaluate(() => document.fonts.ready);
   await page.waitForTimeout(800);
   const dur = await page.evaluate(() => window.DUR);
