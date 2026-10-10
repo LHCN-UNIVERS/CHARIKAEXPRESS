@@ -59,6 +59,8 @@ h1,h2,h3{margin:0;line-height:1.1;letter-spacing:-.035em;text-wrap:balance}
 @media (max-width:420px){.navbar .logo{font-size:1.08rem}}
 /* ---------- Header: dark bar, logo on the left ---------- */
 .topbar{position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px);z-index:60;margin-top:12px}
+.topbar::before{content:"";position:absolute;left:50%;width:100vw;transform:translateX(-50%);top:calc(-12px - env(safe-area-inset-top,0px));bottom:-14px;background:linear-gradient(var(--bg) 72%,rgba(255,250,247,0));opacity:0;transition:opacity .2s;pointer-events:none;z-index:-1}
+.topbar.scrolled::before{opacity:1}
 .navbar{position:relative;display:flex;align-items:center;gap:20px;background:var(--ink);color:#fff;border-radius:22px;padding:10px;padding-inline-start:22px;box-shadow:0 24px 50px -28px rgba(43,15,46,.8);overflow:hidden}
 .navbar::before{content:"";position:absolute;width:300px;height:300px;border-radius:50%;background:linear-gradient(120deg,#ffc145,#ff7a59 45%,#ff4f9a);filter:blur(60px);opacity:.35;inset-inline-end:-60px;top:-180px;pointer-events:none}
 .navbar > *{position:relative}
@@ -83,7 +85,8 @@ h1,h2,h3{margin:0;line-height:1.1;letter-spacing:-.035em;text-wrap:balance}
 @media (max-width:1080px){.links{display:none}.burger{display:grid}.navbar .cta{display:none}}
 @media (min-width:1081px){.mnav{display:none!important}}
 .mnav[hidden]{display:none!important}
-@media (max-width:420px){.navbar .wa-ico{display:none}.navbar{gap:10px;padding-inline-start:16px}}
+@media (max-width:560px){.navbar .wa-ico{display:none}.navbar{gap:10px;padding-inline-start:16px}}
+.bar-r{min-width:0}.navbar .logo{min-width:0}
 @media (max-width:340px){.navbar .lang{display:none}}
 
 
@@ -782,6 +785,8 @@ textarea{min-height:96px;resize:vertical}
   setLang(startLang);
   show(1, true);
 })();
+  // Opaque strip behind the floating navbar once the page scrolls (so text doesn't show above it)
+  (() => { const tb = document.querySelector('.topbar'); if (!tb) return; const f = () => tb.classList.toggle('scrolled', scrollY > 8); addEventListener('scroll', f, { passive:true }); f(); })();
 </script>
 </body>
 </html>

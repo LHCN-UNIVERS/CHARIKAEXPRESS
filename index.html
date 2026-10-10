@@ -68,6 +68,8 @@ section{padding-block:clamp(72px,9vw,120px)}
 @media (max-width:420px){.navbar .logo{font-size:1.08rem}}
 /* ---------- Header: dark bar, logo on the left ---------- */
 .topbar{position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px);z-index:60;margin-top:12px}
+.topbar::before{content:"";position:absolute;left:50%;width:100vw;transform:translateX(-50%);top:calc(-12px - env(safe-area-inset-top,0px));bottom:-14px;background:linear-gradient(var(--bg) 72%,rgba(255,250,247,0));opacity:0;transition:opacity .2s;pointer-events:none;z-index:-1}
+.topbar.scrolled::before{opacity:1}
 .navbar{position:relative;display:flex;align-items:center;gap:20px;background:var(--ink);color:#fff;border-radius:22px;padding:10px;padding-inline-start:22px;box-shadow:0 24px 50px -28px rgba(43,15,46,.8);overflow:hidden}
 .navbar::before{content:"";position:absolute;width:300px;height:300px;border-radius:50%;background:linear-gradient(120deg,#ffc145,#ff7a59 45%,#ff4f9a);filter:blur(60px);opacity:.35;inset-inline-end:-60px;top:-180px;pointer-events:none}
 .navbar > *{position:relative}
@@ -92,8 +94,14 @@ section{padding-block:clamp(72px,9vw,120px)}
 @media (max-width:1080px){.links{display:none}.burger{display:grid}.navbar .cta{display:none}}
 @media (min-width:1081px){.mnav{display:none!important}}
 .mnav[hidden]{display:none!important}
-@media (max-width:420px){.navbar .wa-ico{display:none}.navbar{gap:10px;padding-inline-start:16px}}
+@media (max-width:560px){.navbar .wa-ico{display:none}.navbar{gap:10px;padding-inline-start:16px}}
+.bar-r{min-width:0}.navbar .logo{min-width:0}
 @media (max-width:340px){.navbar .lang{display:none}}
+@media (max-width:400px){.navbar{gap:8px;padding-inline-start:14px}.navbar .lang button{padding:6px 8px}.navbar .logo{font-size:1rem}}
+/* small phones: shrink the hero card fan so the side cards stay on screen */
+@media (min-width:961px) and (max-width:1200px){.fan{transform:scale(.84)}}
+@media (max-width:400px){.fan{transform:scale(.82);height:300px}}
+@media (max-width:340px){.fan{transform:scale(.72);height:270px}}
 
 /* ---------- Hero ---------- */
 .hero{position:relative;padding-block:44px 64px;overflow-x:clip}
@@ -115,8 +123,7 @@ section{padding-block:clamp(72px,9vw,120px)}
 .d1{transform:translate(-125px,22px) rotate(-12deg)}
 .d2{transform:translate(0,-12px)}
 .d3{transform:translate(125px,32px) rotate(11deg)}
-.fan:hover .d1{transform:translate(-160px,10px) rotate(-16deg)}
-.fan:hover .d3{transform:translate(160px,20px) rotate(15deg)}
+@media (hover:hover) and (min-width:1100px){.fan:hover .d1{transform:translate(-160px,10px) rotate(-16deg)}.fan:hover .d3{transform:translate(160px,20px) rotate(15deg)}}
 .seal{position:absolute;inset-inline-end:4%;bottom:14px;width:118px;height:118px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;text-align:center;font-size:.74rem;font-weight:700;line-height:1.2;box-shadow:0 22px 44px -20px rgba(43,15,46,.7);z-index:2}
 .seal b{display:block;font-size:1.45rem}
 @media (max-width:960px){.hero-grid{grid-template-columns:1fr}.fan{height:400px}}
@@ -138,8 +145,8 @@ section{padding-block:clamp(72px,9vw,120px)}
 /* ---------- Why: lawyer chat + benefits ---------- */
 .why{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:center}
 .why .head{margin-bottom:0}
-.chatwrap{position:relative;justify-self:center}
-.chatphone{width:min(300px,100%);border-radius:40px;background:var(--ink);padding:12px;box-shadow:0 50px 90px -40px rgba(43,15,46,.75)}
+.chatwrap{position:relative;justify-self:center;width:100%}
+.chatphone{width:min(300px,100%);margin-inline:auto;border-radius:40px;background:var(--ink);padding:12px;box-shadow:0 50px 90px -40px rgba(43,15,46,.75)}
 .chatscr{border-radius:30px;background:#f7efed;overflow:hidden}
 .chat-h{background:#fff;padding:14px 16px;display:flex;gap:10px;align-items:center;border-bottom:1px solid var(--line)}
 .chat-h i{width:38px;height:38px;border-radius:50%;background:var(--grad);display:grid;place-items:center;color:#fff;font-style:normal;font-weight:800;flex:none}
@@ -636,7 +643,7 @@ footer a:hover{color:var(--rose)}
   </div>
 </footer>
 
-<a class="wa" href="#contact" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.5-3.9-4.7-4.1-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1c.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.1 1.4z"/></svg></a>
+<a class="wa" href="https://wa.me/212500000000" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.5-3.9-4.7-4.1-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1c.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.1 1.4z"/></svg></a>
 
 <script>
 (function(){
@@ -737,6 +744,8 @@ footer a:hover{color:var(--rose)}
     err.hidden = true; ok.textContent = MSG[lang].ok(nom); ok.hidden = false;
   });
 })();
+  // Opaque strip behind the floating navbar once the page scrolls (so text doesn't show above it)
+  (() => { const tb = document.querySelector('.topbar'); if (!tb) return; const f = () => tb.classList.toggle('scrolled', scrollY > 8); addEventListener('scroll', f, { passive:true }); f(); })();
 </script>
 
 </body>
