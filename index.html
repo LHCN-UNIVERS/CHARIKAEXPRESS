@@ -218,7 +218,10 @@ section{padding-block:clamp(72px,9vw,120px)}
 .psteps{list-style:none;padding:0;margin:24px 0 28px;display:grid;gap:12px}
 .psteps li{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center;font-weight:600}
 .psteps li span{font-size:.78rem;font-weight:800;color:var(--rose);background:var(--blush);border-radius:10px;padding:6px 10px;white-space:nowrap;min-width:74px;text-align:center}
-@media (max-width:960px){.e9{grid-template-columns:1fr;gap:40px}.lockwrap{order:2}}
+.e9{direction:ltr}
+:root[dir="rtl"] .e9 > div:last-child,:root[dir="rtl"] .ntf,:root[dir="rtl"] .ltime small,:root[dir="rtl"] .lock-ex{direction:rtl}
+@media (max-width:1100px){.e9{grid-template-columns:auto 1fr;gap:40px}.lock{width:280px}.lscr{min-height:540px}}
+@media (max-width:760px){.e9{grid-template-columns:1fr;gap:32px}}
 @media (max-width:360px){.lock{width:280px}}
 
 /* ---------- Pricing ---------- */
