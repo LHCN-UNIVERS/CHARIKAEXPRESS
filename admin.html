@@ -110,6 +110,14 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
 .rejb small{color:#a5524a}.rejb .ra{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
 .rejf{display:grid;gap:8px;background:#fffaf7;border:1px dashed var(--line);border-radius:14px;padding:12px;font-size:.8rem}
 .rejbtn{justify-self:start;color:#a5524a}
+.msgb.todo{border-color:#bfeccf;box-shadow:inset 4px 0 0 #25d366}
+.mrow{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.mrow select{flex:1;min-width:180px}
+.mseg{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:3px}
+.mseg button{font:inherit;font-size:.75rem;font-weight:600;border:0;background:none;color:var(--m);padding:5px 11px;border-radius:999px;cursor:pointer}
+.mseg button.on{background:var(--ink);color:#fff}
+.mprev{background:#e7f8dc;color:#1d3a12;border-radius:14px 14px 14px 4px;padding:10px 12px;font-size:.8rem;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere;max-height:260px;overflow:auto}
+.mprev[dir="rtl"]{border-radius:14px 14px 4px 14px;font-size:.88rem}
+.msgb .ra{display:flex;gap:8px;flex-wrap:wrap}
 .lgrp{border-top:1px dashed var(--line);padding-top:10px}.lgrp h5{margin:0 0 8px;font-size:.74rem;color:var(--m);text-transform:uppercase;letter-spacing:.05em}
 .lgrp.now h5{color:var(--rose)}
 .li small.rej{color:var(--err);font-weight:600}
@@ -223,6 +231,7 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
 
 <div class="toast" id="toast" hidden></div>
 
+<script src="messages.js"></script>
 <script>
 (() => {
   'use strict';
@@ -400,7 +409,7 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
       log(r, r.step >= DONE ? 'Dossier livré au client. ✓' : `Étape terminée : ${WORKFLOW[r.step - 1].name} → ${WORKFLOW[r.step].name}.`);
       if (r.step < DONE) WORKFLOW[r.step].tasks.forEach(tk => { if (tk.t === 'doc' && !r.livrables[tk.k]) r.livrables[tk.k] = 1; });
     }
-    if (moved) toast(r.step >= DONE ? 'Dossier terminé ✓' : `Étape suivante : ${WORKFLOW[r.step].name}`);
+    if (moved) { msgSel = null; toast((r.step >= DONE ? 'Dossier terminé ✓' : `Étape suivante : ${WORKFLOW[r.step].name}`) + ' · message client prêt'); }
   }
   function docsOf(r){
     const d = [{ k:'pay', label:'Preuve de paiement' }];
@@ -415,6 +424,32 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
     if (n.startsWith('0')) n = '212' + n.slice(1);
     return `https://wa.me/${n}?text=${encodeURIComponent(text)}`;
   };
+  // ---------- Client messages (texts in messages.js) ----------
+  const CM = window.CE_MSG;
+  const STEP_MSG = ['avance', 'cn', 'legal', 'legalOk', 'enr', 'accepte', 'rc', 'bo', 'complet', 'livre'];   // message sent when step i is finished
+  const LIBRE = { title:'Message libre', fr:{ wa:"Bonjour {prenom}, c'est {moi} de Charika Express au sujet de votre demande {ref}." }, ar:{ wa:'السلام عليكم {prenom}، معاكم {moi} من Charika Express بخصوص الطلب ديالكم {ref}.' } };
+  const msgOf = k => k === 'libre' ? LIBRE : CM.MSG[k];
+  // The message that matches the file right now: the step just finished, or the rejection to fix.
+  function msgKey(r){
+    const w = WORKFLOW[r.step];
+    if (w && w.reject && r.reject && r.reject.cause === 'client') return 'rejet';
+    return r.step === 0 ? 'recu' : STEP_MSG[r.step - 1];
+  }
+  function msgVals(r, key, lang){
+    const payKey = { recu:'avance', legal:'second', legalOk:'second', complet:'final' }[key];
+    const a = payKey && !r.paid.full ? amounts(r).find(x => x.k === payKey) : null;
+    const askPay = ['recu', 'legal', 'complet'].includes(key) && !r.paid.full;
+    return { prenom:(r.client?.nom || '').trim().split(/\s+/)[0], societe:title(r), ref:r.ref, forme:FORMES[r.forme] || '', pack:PLANS[r.plan] || '',
+      montant:a && a.v != null ? fmt(a.v) : '', paiement:askPay ? (CM.PAY_INFO[r.payMethod] || CM.PAY_INFO.virement)[lang] : '',
+      motif:r.reject?.motif || '', suivi:CM.SUIVI_URL, sig:CM.SIG[lang], moi:me.name };
+  }
+  // Fill the {placeholders}; a line whose placeholder has no value is left out.
+  function fill(tpl, vals){
+    return tpl.split('\n').filter(l => !(l.match(/\{\w+\}/g) || []).some(m => vals[m.slice(1, -1)] === ''))
+      .join('\n').replace(/\{(\w+)\}/g, (m, k) => vals[k] ?? m).replace(/\n{3,}/g, '\n\n').trim();
+  }
+  const msgText = (r, key, lang, part = 'wa') => fill(msgOf(key)[lang][part] || '', msgVals(r, key, lang));
+  let msgSel = null;                                     // message picked by hand in the open file, if any
   function toast(t){ const el = $('#toast'); el.textContent = t; el.hidden = false; clearTimeout(toast.h); toast.h = setTimeout(() => el.hidden = true, 1800); }
 
   // ---------- Auth (demo) ----------
@@ -500,7 +535,7 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
 
   function renderDetail(){
     const r = current && get(current);
-    if (current !== renderDetail.last) { rejectOpen = false; renderDetail.last = current; }
+    if (current !== renderDetail.last) { rejectOpen = false; msgSel = null; renderDetail.last = current; }
     if (!r || !allowed(r)) {
       $('#detail').innerHTML = '<div class="ctr"><div class="blank"><b>Sélectionnez un dossier</b><span>La liste des demandes est à gauche.</span></div></div>';
       return;
@@ -509,7 +544,14 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
     const paidSum = am.filter(a => payDone(r, a.k) && a.v != null).reduce((x, a) => x + a.v, 0);
     const piecesOk = docs.filter(d => r.docs[d.k]).length, livOk = docsOk(r);
     const canEdit = me.role === 'admin' || r.juriste === me.id;
-    const waMsg = `Bonjour ${r.client?.nom || ''}, c'est ${me.name} de Charika Express au sujet de votre demande ${r.ref}.`;
+    const auto = msgKey(r), mk = msgSel || auto, lang = r.msgLang || 'fr', waText = msgText(r, mk, lang);
+    const sentAt = (r.sent || {})[mk];
+    const waBtn = (label, cls, key = mk, text = waText) => `<a class="btn b-wa ${cls}" data-wasend="${key}" href="${waLink(r.client?.tel, text)}" target="_blank" rel="noopener">${label}</a>`;
+    const msgBox = `<div class="box msgb ${mk === auto && !sentAt && mk !== 'libre' ? 'todo' : ''}"><h4>Message au client <small>${sentAt ? 'Envoyé ✓ · ' + when(sentAt) : mk === 'libre' ? 'Message libre' : 'À envoyer'}</small></h4>
+        <div class="mrow"><select class="f" id="msgPick" aria-label="Message">${Object.entries(CM.MSG).map(([k, m]) => `<option value="${k}" ${k === mk ? 'selected' : ''}>${esc(m.n)}. ${esc(m.title)}${k === auto ? ' · étape actuelle' : ''}${(r.sent || {})[k] ? ' ✓' : ''}</option>`).join('')}<option value="libre" ${mk === 'libre' ? 'selected' : ''}>Message libre</option></select>
+          <div class="mseg" role="group" aria-label="Langue"><button data-ml="fr" class="${lang === 'fr' ? 'on' : ''}">Français</button><button data-ml="ar" class="${lang === 'ar' ? 'on' : ''}">الدارجة</button></div></div>
+        <div class="mprev" ${lang === 'ar' ? 'dir="rtl"' : ''}>${esc(waText)}</div>
+        <div class="ra">${waBtn('Envoyer sur WhatsApp', '')}${msgOf(mk)[lang].mail ? '<button class="btn b-soft" id="mailCopy">Copier l\'e-mail</button>' : ''}</div></div>`;
     const docBtn = k => { const st = r.livrables[k] || 0; return `<button class="lst s${st}" data-liv="${k}" ${canEdit ? '' : 'disabled'}>${DOC_ST[st]}</button>`; };
     const taskRow = tk => {
       const done = taskDone(r, tk);
@@ -525,9 +567,8 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
       const left = w.tasks.filter(tk => !taskDone(r, tk)).length;
       let rej = '';
       if (w.reject && r.reject) {
-        const msg = `Bonjour ${r.client?.nom || ''}, votre dossier ${r.ref} a été rejeté par l'administration pour le motif suivant : ${r.reject.motif}. Merci de nous envoyer les éléments corrigés pour que nous puissions le redéposer.`;
         rej = `<div class="rejb"><b>⚠ Dossier rejeté</b><span>Motif : ${esc(r.reject.motif)}</span><small>${r.reject.cause === 'client' ? 'Problème côté client' : 'Problème côté cabinet'} · ${when(r.reject.at)}</small>
-          <div class="ra">${r.reject.cause === 'client' ? `<a class="btn b-wa b-sm" href="${waLink(r.client?.tel, msg)}" target="_blank" rel="noopener">Notifier le client</a>` : ''}${canEdit ? '<button class="btn b-soft b-sm" id="redepot">Dossier corrigé et redéposé</button>' : ''}</div></div>`;
+          <div class="ra">${r.reject.cause === 'client' ? waBtn('Notifier le client', 'b-sm', 'rejet', msgText(r, 'rejet', lang)) : ''}${canEdit ? '<button class="btn b-soft b-sm" id="redepot">Dossier corrigé et redéposé</button>' : ''}</div></div>`;
       } else if (w.reject && canEdit) {
         rej = rejectOpen ? `<form class="rejf" id="rejForm"><b>Signaler un rejet</b><input class="f" id="rejMotif" placeholder="Motif du rejet (ex. CIN expirée, erreur de légalisation…)" required autocomplete="off">
           <div class="cmp"><select class="f" id="rejCause"><option value="client">Problème côté client (le client sera notifié)</option><option value="cabinet">Problème côté cabinet</option></select><button class="btn b-ink">Enregistrer</button><button type="button" class="btn b-soft" id="rejCancel">Annuler</button></div></form>`
@@ -542,7 +583,7 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
         <button class="btn b-soft b-sm back" id="back">← Liste</button>
         <div><h2>${esc(title(r))}</h2><small class="mono">${esc(r.ref)} · ${esc(FORMES[r.forme] || '')} · ${esc(r.ville || '')} · ${esc(PLANS[r.plan] || '')}</small></div>
         <div class="r">
-          <a class="btn b-wa" href="${waLink(r.client?.tel, waMsg)}" target="_blank" rel="noopener">WhatsApp</a>
+          ${waBtn('WhatsApp', '')}
           ${r.client?.tel ? `<a class="btn b-soft" href="tel:${esc(r.client.tel.replace(/\s/g, ''))}">Appeler</a>` : ''}
           ${!r.juriste ? '<button class="btn b-ink" id="take">Prendre le dossier</button>' : ''}
           ${r.step >= DONE ? '<span class="pill p-ok">✓ Dossier livré</span>' : ''}
@@ -550,6 +591,7 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
       </div>
       <div class="trackw"><div class="track" role="list">${WORKFLOW.map((x, i) => `<button role="listitem" data-step="${i}" class="${i < r.step ? 'ok' : i === r.step ? (r.reject && x.reject ? 'cur rj' : 'cur') : ''}" ${me.role === 'admin' ? '' : 'disabled'} title="${esc(x.name)}${me.role === 'admin' ? ' · cliquer pour déplacer le dossier' : ''}"><i>${i < r.step ? '✓' : r.reject && x.reject && i === r.step ? '!' : i + 1}</i>${esc(x.short)}</button>`).join('')}</div></div>
       ${curBox}
+      ${msgBox}
       <div class="box"><h4>Documents de la société <small>${livOk}/${docsTotal} obtenus</small></h4>
         <div class="prog"><i style="width:${livOk / docsTotal * 100}%"></i></div>
         ${WORKFLOW.map((x, i) => { const ds = x.tasks.filter(tk => tk.t === 'doc'); if (!ds.length) return ''; return `<div class="lgrp ${i === r.step ? 'now' : ''}"><h5>${i + 1}. ${esc(x.name)}</h5><div class="livs">${ds.map(tk => `<div class="lv">${docBtn(tk.k)}<div><b>${esc(DOCS[tk.k][0])}</b></div></div>`).join('')}</div></div>`; }).join('')}
@@ -592,7 +634,20 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
   let rejectOpen = false;
   $('#detail').addEventListener('click', e => {
     const r = current && get(current); if (!r) return;
+    const wa = e.target.closest('[data-wasend]');
+    if (wa) {                                             // the link opens WhatsApp; keep a trace in the file
+      const k = wa.dataset.wasend;
+      if (k !== 'libre') { r.sent = r.sent || {}; r.sent[k] = new Date().toISOString(); log(r, `Message WhatsApp envoyé au client : ${msgOf(k).title} (${(r.msgLang || 'fr') === 'ar' ? 'darija' : 'français'}).`); }
+      setTimeout(() => { renderList(); renderDetail(); }, 0);
+      return;
+    }
     const t = e.target.closest('button'); if (!t || t.disabled) return;
+    if (t.dataset.ml) { r.msgLang = t.dataset.ml; persist(); renderDetail(); return; }
+    if (t.id === 'mailCopy') {
+      const k = msgSel || msgKey(r), lang = r.msgLang || 'fr', txt = msgText(r, k, lang, 'subj') + '\n\n' + msgText(r, k, lang, 'mail');
+      navigator.clipboard?.writeText(txt).then(() => toast('E-mail copié : collez-le dans votre messagerie'), () => toast('Copie impossible'));
+      return;
+    }
     if (t.id === 'back') { $('#body').classList.remove('open'); return; }
     if (t.id === 'rejOpen' || t.id === 'rejCancel') { rejectOpen = t.id === 'rejOpen'; renderDetail(); if (rejectOpen) $('#rejMotif').focus(); return; }
     if (t.closest('#rejForm')) return;                  // the form's own submit
@@ -634,6 +689,7 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
     log(r, v, 'note'); renderList(); renderDetail(); $('#noteIn').focus();
   });
   $('#detail').addEventListener('change', e => {
+    if (e.target.id === 'msgPick') { msgSel = e.target.value; renderDetail(); return; }
     if (e.target.id !== 'assign') return;
     const r = get(current); r.juriste = e.target.value || null;
     log(r, r.juriste ? `Dossier assigné à ${member(r.juriste).name}.` : 'Dossier désassigné.');
