@@ -200,8 +200,8 @@ textarea{min-height:96px;resize:vertical}
         <li><div class="bar"><i></i></div><span data-t="sp2">Société</span></li>
         <li><div class="bar"><i></i></div><span data-t="sp3">Associés</span></li>
         <li><div class="bar"><i></i></div><span data-t="sp4">Formule</span></li>
-        <li><div class="bar"><i></i></div><span data-t="sp5">Paiement</span></li>
-        <li><div class="bar"><i></i></div><span data-t="sp6">Coordonnées</span></li>
+        <li><div class="bar"><i></i></div><span data-t="sp5">Coordonnées</span></li>
+        <li><div class="bar"><i></i></div><span data-t="sp6">Paiement</span></li>
       </ol>
 
       <form class="card" id="wizard" novalidate>
@@ -277,9 +277,22 @@ textarea{min-height:96px;resize:vertical}
           </div>
         </section>
 
-        <!-- STEP 5: PAYMENT -->
+        <!-- STEP 5: CONTACT -->
         <section class="step" data-step="5" hidden>
-          <div class="step-h"><small data-t="st">Étape 5 sur 6</small><h2 data-t="s6h">Mode de paiement</h2><p data-t="s6p">Choisissez le montant et le moyen de paiement. Indiquez votre référence comme motif du paiement.</p></div>
+          <div class="step-h"><small data-t="st">Étape 5 sur 6</small><h2 data-t="s5h">Vos coordonnées</h2><p data-t="s5p">Votre juriste vous contacte sous un jour ouvré pour valider le dossier.</p></div>
+          <div class="grid">
+            <div class="grid g2">
+              <div><label for="nom"><span data-t="fn">Nom complet</span> *</label><input id="nom" name="nom" autocomplete="name" required></div>
+              <div><label for="tel"><span data-t="ft">Téléphone / WhatsApp</span> *</label><input id="tel" name="tel" type="tel" autocomplete="tel" placeholder="06 12 34 56 78" dir="ltr" required></div>
+            </div>
+            <div><label for="email"><span data-t="fe">E-mail</span> *</label><input id="email" name="email" type="email" autocomplete="email" dir="ltr" required></div>
+            <div><label for="note"><span data-t="fm">Informations complémentaires</span> <small data-t="opt">(facultatif)</small></label><textarea id="note" name="note"></textarea></div>
+          </div>
+        </section>
+
+        <!-- STEP 6: PAYMENT -->
+        <section class="step" data-step="6" hidden>
+          <div class="step-h"><small data-t="st">Étape 6 sur 6</small><h2 data-t="s6h">Mode de paiement</h2><p data-t="s6p">Choisissez le montant et le moyen de paiement. Indiquez votre référence comme motif du paiement.</p></div>
           <span class="lbl" data-t="amt">Montant à régler</span>
           <div class="tiles t2" role="radiogroup">
             <label class="tile"><input type="radio" name="pay_amount" value="half" checked><b data-t="am2">50 / 50</b><span data-t="am2d">50% maintenant, 50% à la remise du RC</span><em class="ltr" id="amtHalf">—</em></label>
@@ -311,21 +324,10 @@ textarea{min-height:96px;resize:vertical}
             <p class="pnote" data-t="pnote">Après le paiement, envoyez la photo du reçu par WhatsApp en indiquant votre référence.</p>
             <p class="pdemo" data-t="pdemo">Coordonnées de démonstration : remplacez-les par vos vrais RIB et bénéficiaire Cash Plus.</p>
           </div>
-        </section>
-
-        <!-- STEP 6 -->
-        <section class="step" data-step="6" hidden>
-          <div class="step-h"><small data-t="st">Étape 6 sur 6</small><h2 data-t="s5h">Vos coordonnées</h2><p data-t="s5p">Votre juriste vous contacte sous un jour ouvré pour valider le dossier.</p></div>
-          <div class="grid">
-            <div class="grid g2">
-              <div><label for="nom"><span data-t="fn">Nom complet</span> *</label><input id="nom" name="nom" autocomplete="name" required></div>
-              <div><label for="tel"><span data-t="ft">Téléphone / WhatsApp</span> *</label><input id="tel" name="tel" type="tel" autocomplete="tel" placeholder="06 12 34 56 78" dir="ltr" required></div>
-            </div>
-            <div><label for="email"><span data-t="fe">E-mail</span> *</label><input id="email" name="email" type="email" autocomplete="email" dir="ltr" required></div>
-            <div><label for="note"><span data-t="fm">Informations complémentaires</span> <small data-t="opt">(facultatif)</small></label><textarea id="note" name="note"></textarea></div>
-            <span class="lbl" data-t="recap">Récapitulatif</span>
-            <div class="review" id="review"></div>
-            <label class="chk"><input type="checkbox" id="cgu" required><span data-t="cgu">J'accepte d'être contacté au sujet de ma demande.</span></label>
+          <div class="grid" style="margin-top:22px">
+              <span class="lbl" data-t="recap">Récapitulatif</span>
+              <div class="review" id="review"></div>
+              <label class="chk"><input type="checkbox" id="cgu" required><span data-t="cgu">J'accepte d'être contacté au sujet de ma demande.</span></label>
           </div>
         </section>
 
@@ -373,7 +375,7 @@ textarea{min-height:96px;resize:vertical}
   const AR = {
     brand:"سهل", back:"العودة إلى الموقع",
     title:"طلب <span>تأسيس شركتك</span>", subtitle:"6 مراحل، حوالي 5 دقائق. بعدها يتصل بك مستشارك القانوني للمصادقة على الملف.",
-    sp1:"الخدمة", sp2:"الشركة", sp3:"الشركاء", sp4:"الباقة", sp5:"الأداء", sp6:"معلوماتك",
+    sp1:"الخدمة", sp2:"الشركة", sp3:"الشركاء", sp4:"الباقة", sp5:"معلوماتك", sp6:"الأداء",
     s1h:"ما هو الشكل القانوني؟", s1p:"لست متأكداً؟ اختر SARL AU إذا كنت وحدك، وSARL إذا كنتم عدة شركاء.",
     fo1:"SARL AU", fo1d:"شريك واحد", fo2:"SARL", fo2d:"شريكان أو أكثر", fo3:"المقاول الذاتي", fo3d:"نشاط فردي", fo4:"شركة المساهمة", fo4d:"عدة مساهمين، حسب الطلب",
     s2h:"شركتك المستقبلية", s2p:"اقترح 3 أسماء حسب الأفضلية. سنتحقّق من توفّرها لدى OMPIC.",
@@ -399,14 +401,14 @@ textarea{min-height:96px;resize:vertical}
     edit:"تعديل", rv1:"الخدمة", rv2:"الشركة", rv3:"الشركاء", rv4:"الباقة", none:"بدون", quote:"حسب الطلب"
   };
   const T = {
-    fr:{st:n=>`Étape ${n} sur 6`, copied:"Copié !", copy:"Copier", pm:{virement:"Virement",cashplus:"Cash Plus"}, pa:{half:"50 / 50",full:"Totalité"}, rv5:"Paiement", gl:"Gérant", req:"Ce champ est obligatoire.", email:"Adresse e-mail invalide.", tel:"Numéro de téléphone invalide.", cap:"Minimum 1 000 MAD.",
+    fr:{st:n=>`Étape ${n} sur 6`, copied:"Copié !", copy:"Copier", pm:{virement:"Virement",cashplus:"Cash Plus"}, pa:{half:"50 / 50",full:"Totalité"}, rv5:"Paiement", rv6:"Coordonnées", gl:"Gérant", cn:{nom:"Nom",tel:"Téléphone",email:"E-mail"}, req:"Ce champ est obligatoire.", email:"Adresse e-mail invalide.", tel:"Numéro de téléphone invalide.", cap:"Minimum 1 000 MAD.",
         pct:"Le total des parts doit faire 100%.", shareTxt:t=>`Total des parts : ${t}%`, cgu:"Merci de cocher cette case.",
         ok:(n,e)=>`Merci ${n}. Nous avons bien reçu votre demande. Un récapitulatif sera envoyé à ${e}.`,
         edit:"Modifier", rv1:"Service", rv2:"Société", rv3:"Associés", rv4:"Formule", none:"Aucune", quote:"Sur devis",
         pname:"Nom complet", pcin:"N° CNIE ou passeport", ppct:"Part (%)", pttl:"Associé", rm:"Retirer", other:"Une autre personne", next:"Continuer", send:"Envoyer ma demande",
         k:{forme:"Forme",noms:"Noms",act:"Activité",ville:"Ville",capital:"Capital",siege:"Siège",plan:"Formule",opts:"Options",total:"Total",method:"Moyen",amount:"Montant",ref:"Référence",now:"À régler maintenant"},
         siege:{dom:"Domiciliation",local:"Local existant"}},
-    ar:{st:n=>`المرحلة ${n} من 6`, copied:"تمّ النسخ!", copy:"نسخ", pm:{virement:"تحويل بنكي",cashplus:"كاش بلوس"}, pa:{half:"50 / 50",full:"المبلغ كاملاً"}, rv5:"الأداء", gl:"المسيّر", req:"هذا الحقل إلزامي.", email:"بريد إلكتروني غير صالح.", tel:"رقم هاتف غير صالح.", cap:"الحد الأدنى 1 000 درهم.",
+    ar:{st:n=>`المرحلة ${n} من 6`, copied:"تمّ النسخ!", copy:"نسخ", pm:{virement:"تحويل بنكي",cashplus:"كاش بلوس"}, pa:{half:"50 / 50",full:"المبلغ كاملاً"}, rv5:"الأداء", rv6:"معلوماتك", gl:"المسيّر", cn:{nom:"الاسم",tel:"الهاتف",email:"البريد الإلكتروني"}, req:"هذا الحقل إلزامي.", email:"بريد إلكتروني غير صالح.", tel:"رقم هاتف غير صالح.", cap:"الحد الأدنى 1 000 درهم.",
         pct:"يجب أن يكون مجموع الحصص 100%.", shareTxt:t=>`مجموع الحصص: ${t}%`, cgu:"يرجى تحديد هذه الخانة.",
         ok:(n,e)=>`شكراً ${n}. توصّلنا بطلبك. سيُرسل ملخّص إلى ${e}.`,
         edit:"تعديل", rv1:"الخدمة", rv2:"الشركة", rv3:"الشركاء", rv4:"الباقة", none:"بدون", quote:"حسب الطلب",
@@ -504,8 +506,7 @@ textarea{min-height:96px;resize:vertical}
     $$('.step [data-t=st]').forEach(s => s.textContent = T[lang].st(+s.closest('.step').dataset.step));
     $('#prev').style.visibility = n === 1 ? 'hidden' : 'visible';
     $('#nextTxt').textContent = n === 6 ? T[lang].send : T[lang].next;
-    if (n === 5) payment();
-    if (n === 6) review();
+    if (n === 6) { payment(); review(); }
     if (!keepScroll) $('#wizard').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
   function val(name){ const el = document.querySelector(`[name="${name}"]:checked`); return el ? el.value : ''; }
@@ -517,14 +518,14 @@ textarea{min-height:96px;resize:vertical}
   }
   function clearErrs(scope){ scope.querySelectorAll('.invalid').forEach(e => e.classList.remove('invalid')); scope.querySelectorAll('.ferr').forEach(e => e.remove()); }
   function validate(n){
-    const s = steps[n - 1], t = T[lang]; clearErrs(s); let ok = true;
+    const s = document.querySelector(`.step[data-step="${n}"]`), t = T[lang]; clearErrs(s); let ok = true;
     s.querySelectorAll('[required]').forEach(el => {
       if (el.type === 'checkbox') { if (!el.checked) { ok = false; fieldErr(el.closest('.chk'), t.cgu); } return; }
       if (!el.value.trim()) { ok = false; fieldErr(el, t.req); }
     });
     if (n === 2 && +$('#capital').value < 1000) { ok = false; fieldErr($('#capital'), t.cap); }
     if (n === 3 && shareTotal() !== 100) { ok = false; $('#share').textContent = t.pct; $('#share').className = 'share bad'; }
-    if (n === 6) {
+    if (n === 5) {
       const e = $('#email'), p = $('#tel');
       if (e.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e.value)) { ok = false; fieldErr(e, t.email); }
       if (p.value && !/^[+0-9 ().-]{8,}$/.test(p.value)) { ok = false; fieldErr(p, t.tel); }
@@ -533,6 +534,7 @@ textarea{min-height:96px;resize:vertical}
     return ok;
   }
   document.addEventListener('input', e => { if (e.target.classList.contains('invalid')) { e.target.classList.remove('invalid'); e.target.parentElement.querySelector('.ferr')?.remove(); } });
+  document.addEventListener('change', e => { const c = e.target.closest('.chk.invalid'); if (c && e.target.checked) { c.classList.remove('invalid'); c.parentElement.querySelector('.ferr')?.remove(); } });
 
   $('#wizard').addEventListener('submit', e => {
     e.preventDefault();
@@ -581,7 +583,7 @@ textarea{min-height:96px;resize:vertical}
     const n = payNow();
     $('#sDep').textContent = n === null ? '—' : fmt(n) + ' MAD';
     $('#sPay').textContent = T[lang].pm[val('pay_method')] + ' · ' + T[lang].pa[val('pay_amount')];
-    if (step === 5) payment();
+    if (step === 6) { payment(); review(); }
   }
   function review(){
     const t = T[lang], k = t.k;
@@ -592,7 +594,8 @@ textarea{min-height:96px;resize:vertical}
       [t.rv2, 2, row(k.noms, noms) + row(k.act, $('#act').value.trim()) + row(k.ville, $('#ville').selectedOptions[0]?.textContent || '') + row(k.capital, fmt(+$('#capital').value) + ' MAD') + row(k.siege, t.siege[val('siege')])],
       [t.rv3, 3, partners.map((p, i) => row(`${t.pttl} ${i+1}`, `${p.name} · ${p.cin} · ${p.pct}%`)).join('') + row(t.gl, $('#gerant').value === 'other' ? `${$('#gn').value.trim()} · ${$('#gc').value.trim()}` : (partners[+$('#gerant').value]?.name || ''))],
       [t.rv4, 4, row(k.plan, $('#sPlan').textContent) + row(k.opts, optsText()) + row(k.total, $('#sTotal').textContent + (total() === null ? '' : ' MAD'))],
-      [t.rv5, 5, row(k.method, t.pm[val('pay_method')]) + row(k.amount, t.pa[val('pay_amount')]) + row(k.now, $('#sDep').textContent) + row(k.ref, ref)]
+      [t.rv6, 5, row(t.cn.nom, $('#nom').value.trim()) + row(t.cn.tel, $('#tel').value.trim()) + row(t.cn.email, $('#email').value.trim())],
+      [t.rv5, 6, row(k.method, t.pm[val('pay_method')]) + row(k.amount, t.pa[val('pay_amount')]) + row(k.now, $('#sDep').textContent) + row(k.ref, ref)]
     ];
     $('#review').innerHTML = blocks.map(([h, n, body]) => `<div class="rv"><div class="rv-h"><span>${h}</span><button type="button" data-go="${n}">${t.edit}</button></div><dl>${body}</dl></div>`).join('');
   }
