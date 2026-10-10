@@ -20,7 +20,7 @@ Single-page marketing site (French + English) for an online company-formation se
 - `admin.html`: team space ("Dossier 360°"), not linked from the site and marked `noindex`.
   - Login with roles: the admin sees every file, can assign juristes and export CSV; a juriste sees their own files plus unassigned ones and can take a file.
   - Inbox-style list (À traiter / Mes dossiers / Tous / Terminés, search by ref, name, phone, CIN), unread and late (J+n) markers.
-  - File view: 7-step tracker (Reçue → Paiement → Pièces → Certificat négatif → Statuts → RC · IF · CNSS → Livré), documents checklist with WhatsApp reminders, deposit and balance tracking, team notes and an automatic history of every change, client, company and partners details.
+  - File view: 7-step tracker (Reçue → Paiement → Pièces → Certificat négatif → Statuts → RC · IF · CNSS → Livré), documents checklist with WhatsApp reminders, the 13 company documents produced during the creation (statuts, RC, IF, TP, ICE, CNSS…) each with a status (En attente / En cours / Obtenu), deposit and balance tracking, team notes and an automatic history of every change, client, company and partners details.
 
 ## Team space: demo mode and going live
 `admin.html` currently runs in **demo mode**: demo accounts (password `demo`), example files, and all data saved in the browser only. Each team member would see a different copy, so this is for trying the workflow, not for real use.

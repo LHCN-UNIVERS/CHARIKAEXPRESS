@@ -107,6 +107,13 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
 .st.y{background:#e3f5ec;color:var(--ok)}.st.n{background:#ffe9e0;color:#c4502c}
 .tg{all:unset;cursor:pointer;font-size:.72rem;font-weight:700;padding:5px 10px;border-radius:999px;background:#fff;border:1px solid var(--line)}
 .tg.y{background:#e3f5ec;border-color:#c5ead7;color:var(--ok)}
+.livs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.lv{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start;padding:10px;border-radius:12px;background:#fffaf7;font-size:.78rem}
+.lv b{display:block;font-size:.8rem}.lv small{color:var(--m);font-size:.7rem;line-height:1.35;display:block;margin-top:2px}
+.lst{all:unset;box-sizing:border-box;min-width:78px;text-align:center;cursor:pointer;font-size:.66rem;font-weight:800;padding:4px 9px;border-radius:999px;white-space:nowrap;background:#f4eef1;color:var(--m);margin-top:1px}
+.lst[disabled]{cursor:default}
+.lst.s1{background:#fff4d6;color:#a06d00}.lst.s2{background:#e3f5ec;color:var(--ok)}
+@media (max-width:1180px){.livs{grid-template-columns:1fr}}
 .prog{height:6px;background:var(--blush);border-radius:9px;overflow:hidden}.prog i{display:block;height:100%;background:var(--grad);transition:width .3s}
 .feed{display:grid;gap:10px;max-height:320px;overflow:auto}
 .msg{display:flex;gap:10px;font-size:.8rem}
@@ -217,6 +224,23 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
     { id:'hajar',   name:'Hajar',   email:'hajar@charikaexpress.ma', role:'juriste', c:'#e0a100' }
   ];
   const DEMO_PASS = 'demo';
+  // Documents produced during the company creation, tracked per file (0 en attente, 1 en cours, 2 obtenu)
+  const LIVRABLES = [
+    ['statuts', 'Statuts', 'Définissent le fonctionnement juridique de la société (associés, gérants, capital, objet social…).'],
+    ['domiciliation', 'Contrat de domiciliation', "Prouve que la société dispose d'une adresse légale pour recevoir son courrier et exercer son activité."],
+    ['procuration', 'Procuration', 'Autorisation donnée à un tiers pour recevoir et gérer le courrier au nom de la société.'],
+    ['enr-statuts', "Attestation d'enregistrement des statuts", "Confirme que les statuts ont été enregistrés auprès de l'administration fiscale."],
+    ['enr-domiciliation', "Attestation d'enregistrement du contrat de domiciliation", 'Preuve que le contrat de domiciliation a été enregistré auprès de la Direction des Impôts.'],
+    ['tp', "Attestation d'inscription à la Taxe Professionnelle (TP)", 'Document fiscal permettant de déclarer et payer la taxe professionnelle.'],
+    ['if', "Bulletin de notification de l'Identifiant Fiscal (IF)", "L'identifiant fiscal unique pour toutes les démarches fiscales."],
+    ['rc', 'Registre de Commerce (RC)', "La carte d'identité juridique de la société, indispensable pour exercer légalement."],
+    ['bo', 'Publication au Bulletin Officiel', 'Obligatoire pour rendre publique la création de la société.'],
+    ['annonce', 'Annonce légale', 'Obligatoire pour rendre publique la création de la société.'],
+    ['cnss', 'Affiliation à la CNSS', 'Immatricule la société à la CNSS, obligatoire pour déclarer les salariés.'],
+    ['identifiants', 'Document des identifiants', 'Numéros attribués après immatriculation (RC, ICE, IF, CNSS).'],
+    ['ice', 'Attestation ICE', "Atteste de l'identifiant commun de l'entreprise (ICE), utilisé auprès des administrations."]
+  ];
+  const LIV_ST = ['En attente', 'En cours', 'Obtenu'];
   const STEPS = ['Reçue', 'Paiement', 'Pièces', 'Certificat négatif', 'Statuts', 'RC · IF · CNSS', 'Livré'];
   const FORMES = { sarlau:'SARL AU', sarl:'SARL', sas:'SAS', ae:'Auto-entrepreneur', sa:'Société anonyme' };
   const PLANS = { essentiel:'Pack Essentiel', pro:'Pack Pro', premium:'Pack Premium', ae:'Auto-entrepreneur' };
@@ -275,7 +299,9 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
         client:{ nom:'Hamza Ouali', tel:'0622334455', email:'hamza@exemple.ma' }, step:7, juriste:'salma', paid:{ first:true, second:true },
         docs:{ pay:true, 'cin-0':true } })
     ];
+    const done = [0, 0, 0, 0, 3, 8, 11, 13];
     list.forEach(r => {
+      r.livrables = {}; LIVRABLES.forEach(([k], i) => { if (i < done[r.step]) r.livrables[k] = 2; else if (i === done[r.step] && r.step >= 3 && r.step < 7) r.livrables[k] = 1; });
       r.notes.push({ t:'sys', at:r.createdAt, text:'Demande reçue depuis le site.' });
       if (r.step >= 2) r.notes.push({ t:'note', by:r.juriste, at:new Date(Date.parse(r.createdAt) + DAY).toISOString(), text:'Paiement vérifié, client informé.' });
     });
@@ -289,7 +315,7 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
     if (!box.length) return;
     box.forEach(r => {
       if (db.requests.some(x => x.ref === r.ref)) return;
-      db.requests.unshift(Object.assign({ seen:false, juriste:null, step:1, docs:{}, paid:{ first:false, second:false },
+      db.requests.unshift(Object.assign({ seen:false, juriste:null, step:1, docs:{}, livrables:{}, paid:{ first:false, second:false },
         updatedAt:r.createdAt, notes:[{ t:'sys', at:r.createdAt, text:'Demande reçue depuis le site.' }] }, r));
     });
     store.write(INBOX_KEY, []); persist();
@@ -415,6 +441,7 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
     const j = member(r.juriste), am = amounts(r), docs = docsOf(r);
     const paidSum = am ? am.filter(a => r.paid[a.k]).reduce((s, a) => s + a.v, 0) : 0;
     const docsOk = docs.filter(d => r.docs[d.k]).length;
+    const livOk = LIVRABLES.filter(([k]) => (r.livrables || {})[k] === 2).length;
     const canEdit = me.role === 'admin' || r.juriste === me.id;
     const next = r.step < 7 ? (r.step === 6 ? 'Marquer livré ✓' : `Étape suivante : ${STEPS[r.step + 1]} →`) : null;
     const waMsg = `Bonjour ${r.client?.nom || ''}, c'est ${me.name} de Charika Express au sujet de votre demande ${r.ref}.`;
@@ -442,6 +469,10 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
             `<div class="prog"><i style="width:${r.total ? paidSum / r.total * 100 : 0}%"></i></div><div style="display:flex;justify-content:space-between;font-size:.76rem;color:var(--m)"><span>Payé</span><b style="color:var(--ink)">${fmt(paidSum)} / ${fmt(r.total)} MAD</b></div>`
           : '<div class="row"><span>Société anonyme : montant sur devis.</span></div>'}
         </div>
+      </div>
+      <div class="box"><h4>Documents de la société <small>${livOk}/${LIVRABLES.length} obtenus${canEdit ? ' · cliquez sur un statut pour le changer' : ''}</small></h4>
+        <div class="prog"><i style="width:${livOk / LIVRABLES.length * 100}%"></i></div>
+        <div class="livs">${LIVRABLES.map(([k, t, d]) => { const st = (r.livrables || {})[k] || 0; return `<div class="lv"><button class="lst s${st}" data-liv="${k}" ${canEdit ? '' : 'disabled'}>${LIV_ST[st]}</button><div><b>${esc(t)}</b><small>${esc(d)}</small></div></div>`; }).join('')}</div>
       </div>
       <div class="box"><h4>Historique et notes de l'équipe <small>visibles par l'équipe seulement</small></h4>
         <div class="feed" id="feed">${r.notes.map(n => { const w = member(n.by); return `<div class="msg ${n.t === 'sys' ? 'sys' : ''}"><span class="av" style="--c:${w ? w.c : '#c9b6c4'}">${n.t === 'sys' && !w ? '•' : esc((w?.name || '?')[0])}</span><div><small>${n.t === 'sys' ? 'Suivi' : 'Note'}${w ? ' · ' + esc(w.name) : ''} · ${when(n.at)}</small>${esc(n.text)}</div></div>`; }).join('')}</div>
@@ -476,6 +507,10 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
     else if (t.dataset.step != null) {
       const s = +t.dataset.step; if (s === r.step) return;
       r.step = s; log(r, `Dossier placé à l'étape : ${STEPS[s]}.`);
+    }
+    else if (t.dataset.liv) {
+      const k = t.dataset.liv; r.livrables = r.livrables || {}; r.livrables[k] = ((r.livrables[k] || 0) + 1) % 3;
+      log(r, `${LIVRABLES.find(x => x[0] === k)[1]} : ${LIV_ST[r.livrables[k]].toLowerCase()}.`);
     }
     else if (t.dataset.doc) { const k = t.dataset.doc; r.docs[k] = !r.docs[k]; const d = docsOf(r).find(x => x.k === k); log(r, `${d ? d.label : 'Pièce'} : ${r.docs[k] ? 'reçue ✓' : 'marquée manquante'}.`); }
     else if (t.dataset.pay) { const k = t.dataset.pay; r.paid[k] = !r.paid[k]; const a = amounts(r).find(x => x.k === k); log(r, `${a.label} (${fmt(a.v)} MAD) : ${r.paid[k] ? 'reçu ✓' : 'remis en attente'}.`); }

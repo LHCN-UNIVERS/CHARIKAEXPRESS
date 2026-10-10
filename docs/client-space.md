@@ -20,6 +20,26 @@ Each client gets their own account to follow their company creation. It is conne
 - At the end, all their company documents to download: certificat négatif, statuts, RC, IF/ICE/CNSS.
 - Later: other services, such as a change to the statuts or a domiciliation renewal.
 
+## Company documents the client follows
+
+The same 13 documents the team tracks in `admin.html` (status: En attente → En cours → Obtenu). In the client space each one becomes downloadable once obtained.
+
+| Document | What it is |
+|---|---|
+| Statuts | Define how the company works legally (partners, managers, capital, business purpose…). |
+| Contrat de domiciliation | Proves the company has a legal address to receive mail and operate. |
+| Procuration | Authorises a third party to receive and handle mail on the company's behalf. |
+| Attestation d'enregistrement des statuts | Confirms the statuts were registered with the tax administration. |
+| Attestation d'enregistrement du contrat de domiciliation | Proves the domiciliation contract was registered with the Direction des Impôts. |
+| Attestation d'inscription à la Taxe Professionnelle (TP) | Tax document used to declare and pay the business tax. |
+| Bulletin de notification de l'Identifiant Fiscal (IF) | The company's unique tax ID for all tax procedures. |
+| Registre de Commerce (RC) | The company's legal identity card, required to operate legally. |
+| Publication au Bulletin Officiel | Required to make the company's creation public. |
+| Annonce légale | Required to make the company's creation public. |
+| Affiliation à la CNSS | Registers the company with the CNSS, required before declaring employees. |
+| Document des identifiants | The numbers assigned after registration (RC, ICE, IF, CNSS). |
+| Attestation ICE | Official certificate of the company's common identifier (ICE). |
+
 ## Models
 
 Screenshots show example data only.
