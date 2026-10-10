@@ -58,9 +58,8 @@ h1,h2,h3{margin:0;line-height:1.1;letter-spacing:-.035em;text-wrap:balance}
 .logo b{font-weight:800;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;margin-inline-start:.24em}
 @media (max-width:420px){.navbar .logo{font-size:1.08rem}}
 /* ---------- Header: dark bar, logo on the left ---------- */
-.topbar{position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px);z-index:60;margin-top:12px}
-.topfade{position:fixed;left:0;right:0;top:0;height:calc(env(safe-area-inset-top,0px) + 12px + var(--navh,64px) + 14px);background:linear-gradient(var(--bg) 78%,rgba(255,250,247,0));z-index:59;pointer-events:none;opacity:0;transition:opacity .2s}
-.topfade.on{opacity:1}
+/* The sticky header paints its own band (solid, fading out under the navbar) so content never shows around the floating navbar; works in Safari without overlays or scroll scripts */
+.topbar{position:sticky;top:0;z-index:60;padding-top:calc(env(safe-area-inset-top,0px) + 12px);padding-bottom:30px;margin-bottom:-30px;background:linear-gradient(var(--bg),var(--bg) 58%,rgba(255,250,247,.9) 72%,rgba(255,250,247,0))}
 .navbar{position:relative;display:flex;align-items:center;gap:20px;background:var(--ink);color:#fff;border-radius:22px;padding:10px;padding-inline-start:22px;box-shadow:0 24px 50px -28px rgba(43,15,46,.8);overflow:hidden}
 .navbar::before{content:"";position:absolute;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(255,122,89,.55),rgba(255,79,154,.3) 38%,rgba(255,79,154,0) 68%);opacity:.75;inset-inline-end:-120px;top:-240px;pointer-events:none}
 .navbar{isolation:isolate}
@@ -785,14 +784,6 @@ textarea{min-height:96px;resize:vertical}
   setLang(startLang);
   show(1, true);
 })();
-  // Opaque strip behind the floating navbar once the page scrolls (so text doesn't show above it)
-  (() => {
-    const nav = document.querySelector('.navbar'); if (!nav) return;
-    const fade = document.createElement('div'); fade.className = 'topfade'; fade.setAttribute('aria-hidden', 'true'); document.body.prepend(fade);
-    const size = () => document.documentElement.style.setProperty('--navh', nav.offsetHeight + 'px');
-    const f = () => fade.classList.toggle('on', scrollY > 8);
-    addEventListener('scroll', f, { passive:true }); addEventListener('resize', size); size(); f();
-  })();
 </script>
 </body>
 </html>
