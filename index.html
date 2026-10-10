@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap">
 <style>
-/* Layout: "Coucher". Soft warm-white page with a living coral/pink/gold orb. Hero pairs a working company-name check with fanned document cards; facts strip; bento of reasons; services; process; pricing; warm guarantee band; FAQ; contact. Logical properties for RTL. Single deliberate light look. */
+/* Layout: "Coucher". Soft warm-white page with a living coral/pink/gold orb. Hero pairs a start-request button with fanned document cards; facts strip; bento of reasons; services; process; pricing; warm guarantee band; FAQ; contact. Logical properties for RTL. Single deliberate light look. */
 :root{
   color-scheme:light;
   --ink:#2b0f2e; --m:#6b5468; --bg:#fffaf7; --card:#ffffff; --blush:#fff0ec; --line:#f1e4e6;
@@ -82,18 +82,9 @@ header.solid{background:rgba(255,250,247,.86);backdrop-filter:blur(14px);box-sha
 .hero h1{font-size:clamp(2.8rem,6vw,5rem);line-height:.98;font-weight:800;letter-spacing:-.055em;margin-top:20px}
 :root[dir="rtl"] .hero h1{letter-spacing:0;line-height:1.3;font-size:clamp(2.4rem,5vw,4.2rem)}
 .hero .lead{color:var(--m);font-size:1.1rem;max-width:44ch;margin-top:18px}
-.check{margin-top:28px;display:flex;gap:8px;background:#fff;border-radius:18px;padding:8px;max-width:500px;box-shadow:0 22px 44px -24px rgba(43,15,46,.45)}
-.check input{flex:1;min-width:0;border:0;background:transparent;font:500 1rem var(--font);padding:12px 14px;color:var(--ink)}
-.check input:focus{outline:none}
-.check:focus-within{box-shadow:0 0 0 3px rgba(255,92,122,.35),0 22px 44px -24px rgba(43,15,46,.45)}
-.check .btn{padding:12px 20px;border-radius:12px}
-.res{margin-top:12px;display:inline-flex;gap:8px;align-items:center;font-size:.88rem;font-weight:600;color:var(--ok);min-height:1.6em}
-.res i{width:18px;height:18px;border-radius:50%;background:var(--ok);color:#fff;display:grid;place-items:center;font-size:.65rem;font-style:normal;flex:none}
-.res.warn{color:#b4531b}
-.res.warn i{background:#e0802c}
-.mini{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:22px;font-size:.88rem;color:var(--m);font-weight:600}
-.mini a{color:var(--ink)}
 
+.ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+.btn-lg{padding:17px 28px;font-size:1.02rem;border-radius:16px}
 .fan{position:relative;height:460px}
 .doc{position:absolute;left:50%;top:50%;width:240px;height:310px;margin:-155px 0 0 -120px;background:#fff;border-radius:22px;box-shadow:0 34px 64px -30px rgba(43,15,46,.55);padding:22px;display:grid;align-content:start;gap:10px;transition:transform .5s cubic-bezier(.2,.8,.2,1)}
 .doc small{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--m)}
@@ -289,14 +280,11 @@ footer a:hover{color:var(--rose)}
       <div>
         <span class="pill"><b data-t="h-new">100% en ligne</b><span data-t="h-eye">Juriste dédié inclus</span></span>
         <h1 data-th="h-title">Le plus simple pour <span class="gt">lancer votre société</span>.</h1>
-        <p class="lead" data-t="h-lead">Vérifiez votre nom, choisissez votre formule, signez en ligne. Nous nous occupons de toutes les démarches, du certificat négatif au registre de commerce.</p>
-        <form class="check" id="check" novalidate>
-          <label for="cname" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)" data-t="ck-label">Nom de votre future société</label>
-          <input id="cname" type="text" value="Atlas Digital" autocomplete="off" data-ph="ck-ph" placeholder="Nom de votre future société">
-          <button class="btn btn-ink" type="submit" data-t="ck-btn">Vérifier</button>
-        </form>
-        <p class="res" id="cres" aria-live="polite"><i>✓</i><span id="cmsg" data-t="ck-init">Tapez un nom pour lancer une pré-vérification.</span></p>
-        <p class="mini"><span data-t="mini1">Déjà décidé ?</span> <a href="#tarifs" data-t="mini2">Voir les formules →</a></p>
+        <p class="lead" data-t="h-lead">Décrivez votre projet, choisissez votre formule, signez en ligne. Nous nous occupons de toutes les démarches, du certificat négatif au registre de commerce.</p>
+        <div class="ctas">
+          <a class="btn btn-grad btn-lg" href="#contact"><span data-t="start">Commencer ma demande</span> <span class="flip">→</span></a>
+          <a class="btn btn-white btn-lg" href="#tarifs" data-t="h-cta2">Voir les tarifs</a>
+        </div>
       </div>
       <div class="fan" aria-hidden="true">
         <div class="doc d1"><small>OMPIC</small><b data-t="f1">Certificat négatif</b><span class="l"></span><span class="l" style="width:80%"></span><span class="l" style="width:60%"></span><span class="st" style="background:#e3f6ee;color:#0e8a5f" data-t="st-ok">Validé</span></div>
@@ -491,9 +479,8 @@ footer a:hover{color:var(--rose)}
     n1:"خدماتنا", n2:"المراحل", n3:"الأسعار", n4:"الأسئلة الشائعة", n5:"اتصل بنا", navcta:"ابدأ",
     "h-new":"عن بُعد 100%", "h-eye":"مستشار قانوني مخصّص",
     "h-title":"الطريقة الأبسط <span class=\"gt\">لإطلاق شركتك</span>.",
-    "h-lead":"تحقّق من الاسم، اختر باقتك، ووقّع عبر الإنترنت. نتكفّل بجميع الإجراءات، من الشهادة السلبية إلى السجل التجاري.",
-    "ck-label":"اسم شركتك المستقبلية", "ck-ph":"اسم شركتك المستقبلية", "ck-btn":"تحقّق", "ck-init":"اكتب اسماً لبدء تحقّق أوّلي.",
-    mini1:"هل قرّرت؟", mini2:"اطّلع على الباقات ←",
+    "h-lead":"صِف مشروعك، اختر باقتك، ووقّع عبر الإنترنت. نتكفّل بجميع الإجراءات، من الشهادة السلبية إلى السجل التجاري.",
+    start:"ابدأ طلبي",
     f1:"الشهادة السلبية", f5:"السجل التجاري", f2:"النظام الأساسي للشركة", d3k:"المحكمة", d2k:"النظام الأساسي",
     "st-ok":"تمّ", "st-wait":"قريباً", "st-sign":"للتوقيع", seal1:"ابتداءً من", seal2:"درهم",
     k1:"حتى السجل التجاري", k2:"تنقّل", k3:"الأداء على دفعتين", k4b:"ضد الرفض", k4:"ضمان مشمول",
@@ -538,10 +525,8 @@ footer a:hover{color:var(--rose)}
     "ft-copy":"© 2026 سهل للاستشارات القانونية. جميع الحقوق محفوظة.", "ft-legal":"الإشعارات القانونية · السرية"
   };
   const MSG = {
-    fr:{err:"Veuillez indiquer votre nom et un numéro de téléphone valide.", ok:n=>"Merci "+n+". Votre demande a bien été enregistrée. (Démonstration : reliez ce formulaire à votre e-mail ou CRM.)",
-        short:"Le nom doit contenir au moins 3 caractères.", avail:n=>"« "+n+" » : pré-vérification OK. Votre juriste confirmera la disponibilité auprès de l'OMPIC."},
-    ar:{err:"يرجى إدخال اسمك ورقم هاتف صحيح.", ok:n=>"شكراً "+n+". تمّ تسجيل طلبك. (نسخة تجريبية: اربط هذا النموذج ببريدك الإلكتروني أو نظام إدارة العملاء.)",
-        short:"يجب أن يتكوّن الاسم من 3 أحرف على الأقل.", avail:n=>"« "+n+" »: التحقّق الأوّلي سليم. سيؤكّد مستشارك توفّر الاسم لدى OMPIC."}
+    fr:{err:"Veuillez indiquer votre nom et un numéro de téléphone valide.", ok:n=>"Merci "+n+". Votre demande a bien été enregistrée. (Démonstration : reliez ce formulaire à votre e-mail ou CRM.)"},
+    ar:{err:"يرجى إدخال اسمك ورقم هاتف صحيح.", ok:n=>"شكراً "+n+". تمّ تسجيل طلبك. (نسخة تجريبية: اربط هذا النموذج ببريدك الإلكتروني أو نظام إدارة العملاء.)"}
   };
   const root = document.documentElement;
   const nodes = [...document.querySelectorAll('[data-t],[data-th]')];
@@ -568,15 +553,6 @@ footer a:hover{color:var(--rose)}
   const onScroll = () => hdr.classList.toggle('solid', scrollY > 20);
   addEventListener('scroll', onScroll, { passive: true }); onScroll();
 
-  // Name pre-check (demo: format only; real availability is confirmed with OMPIC)
-  const cres = document.getElementById('cres'), cmsg = document.getElementById('cmsg');
-  function check(){
-    const v = document.getElementById('cname').value.trim();
-    if (v.length < 3) { cres.classList.add('warn'); cres.querySelector('i').textContent = '!'; cmsg.textContent = MSG[lang].short; return; }
-    cres.classList.remove('warn'); cres.querySelector('i').textContent = '✓'; cmsg.textContent = MSG[lang].avail(v);
-  }
-  document.getElementById('check').addEventListener('submit', e => { e.preventDefault(); check(); });
-  check();
 
   document.getElementById('form').addEventListener('submit', e => {
     e.preventDefault();
