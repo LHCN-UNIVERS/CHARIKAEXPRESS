@@ -195,16 +195,32 @@ textarea{min-height:96px;resize:vertical}
 .help a{color:var(--rose);font-weight:700;text-decoration:none}
 @media (max-width:920px){.sum{position:static}}
 
-/* Success */
-.success{text-align:center;display:grid;justify-items:center;gap:14px;padding-block:20px}
-.success .ic{width:84px;height:84px;border-radius:50%;background:var(--grad);display:grid;place-items:center;color:#fff;box-shadow:0 20px 40px -16px rgba(255,79,154,.7)}
-.success .ic svg{width:40px;height:40px}
-.success h2{font-size:clamp(1.6rem,3vw,2.2rem);font-weight:800}
-.success p{color:var(--m);max-width:52ch}
-.ref{font-weight:800;font-size:1.3rem;background:var(--blush);padding:8px 18px;border-radius:12px}
-.next{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:10px;text-align:start;max-width:460px;width:100%}
-.next li{display:grid;grid-template-columns:32px 1fr;gap:12px;align-items:center;background:var(--bg);border-radius:14px;padding:10px 12px;font-size:.92rem}
-.next li b{width:32px;height:32px;border-radius:10px;background:#fff;display:grid;place-items:center;color:var(--rose)}
+/* Success — file tracking: step 1 done, current step highlighted */
+.success{display:grid;gap:0}
+.ok-hd{display:flex;gap:16px;align-items:center;padding-bottom:20px;border-bottom:1px solid var(--line)}
+.ok-ic{width:58px;height:58px;border-radius:18px;background:#e7f6ef;color:var(--ok);display:grid;place-items:center;flex:none}
+.ok-ic svg{width:28px;height:28px}
+.ok-hd h2{font-size:clamp(1.4rem,3vw,1.9rem);font-weight:800;letter-spacing:-.03em}
+.ok-hd p{color:var(--m);font-size:.9rem;margin-top:4px;line-height:1.5;overflow-wrap:anywhere}
+.ok-ref{margin-top:18px;display:flex;justify-content:space-between;align-items:center;gap:12px;background:var(--ink);color:#fff;border-radius:18px;padding:14px 16px}
+.ok-ref small{font-size:.74rem;color:#cdb8c9;display:block}
+.ok-ref b{font:800 1.25rem ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.03em}
+.ok-ref .copy{background:rgba(255,255,255,.12);color:#fff;padding:9px 14px;border-radius:999px;font-size:.82rem}
+.tl{list-style:none;margin:0;padding:22px 0 6px;display:grid}
+.tl > li{display:grid;grid-template-columns:30px 1fr;gap:14px;position:relative;padding-bottom:18px}
+.tl > li:not(:last-child)::before{content:"";position:absolute;inset-inline-start:14px;top:30px;bottom:0;width:2px;background:var(--line)}
+.tl > li.done::before{background:var(--ok)}
+.tl .d{width:30px;height:30px;border-radius:50%;border:2px solid var(--line);background:#fff;display:grid;place-items:center;font-size:.78rem;font-weight:800;font-style:normal;color:var(--m);position:relative}
+.tl .d svg{width:14px;height:14px}
+.tl li.done .d{background:var(--ok);border-color:var(--ok);color:#fff}
+.tl li.now .d{border-color:var(--pink);color:var(--pink);box-shadow:0 0 0 6px rgba(255,79,154,.15)}
+.tl h3{margin:4px 0 3px;font-size:1rem}
+.tl p{font-size:.86rem;color:var(--m);line-height:1.5}
+.tl .when{font-size:.72rem;font-weight:700;color:var(--ok);margin-inline-start:8px}
+.tl .box{margin-top:10px;background:var(--blush);border-radius:14px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:.86rem}
+.tl .box b{font-size:1.05rem}
+.btn-wa{background:#25d366;color:#fff;margin-top:10px;padding:9px 16px;border-radius:999px;font-size:.84rem}
+.ok-foot{display:grid;gap:12px}
 .demo{font-size:.8rem;color:var(--m);background:var(--bg);border-radius:10px;padding:8px 12px}
 @media (prefers-reduced-motion:reduce){*,*::before{animation:none!important;transition:none!important}}
 </style>
@@ -388,17 +404,21 @@ textarea{min-height:96px;resize:vertical}
 
         <!-- SUCCESS -->
         <section class="success" id="done" hidden>
-          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
-          <h2 data-t="okh">Demande envoyée !</h2>
-          <p id="okp"></p>
-          <span class="ref ltr" id="ref">CE-000000</span>
-          <ol class="next">
-            <li><b>1</b><span data-t="nx1">Effectuez votre paiement en indiquant votre référence comme motif.</span></li>
-            <li><b>2</b><span data-t="nx2">Envoyez la preuve de paiement et vos pièces (CNIE) par WhatsApp.</span></li>
-            <li><b>3</b><span data-t="nx3">Votre juriste vous appelle et lance le certificat négatif auprès de l'OMPIC.</span></li>
+          <div class="ok-hd">
+            <span class="ok-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+            <div><h2 data-t="okh">Demande envoyée !</h2><p id="okp"></p></div>
+          </div>
+          <div class="ok-ref"><div><small data-t="refl">Référence du dossier</small><b class="ltr" id="ref">CE-000000</b></div><button type="button" class="btn copy" id="copyRef2" data-t="copy">Copier</button></div>
+          <ol class="tl">
+            <li class="done"><i class="d"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></i><div><h3><span data-t="t0h">Demande reçue</span><span class="when" data-t="t0w">à l'instant</span></h3><p data-t="t0p">Votre dossier est enregistré.</p></div></li>
+            <li class="now"><i class="d">2</i><div><h3 data-t="nx1h">Effectuez votre paiement</h3><p data-t="nx1">Indiquez votre référence comme motif.</p><div class="box"><span id="okPay">Virement · 50 / 50</span><b class="ltr" id="okAmt">1 450 MAD</b></div></div></li>
+            <li><i class="d">3</i><div><h3 data-t="nx2h">Envoyez vos pièces</h3><p data-t="nx2">Preuve de paiement + CNIE par WhatsApp.</p><a class="btn btn-wa" href="https://wa.me/212500000000" target="_blank" rel="noopener" data-t="wao">Ouvrir WhatsApp</a></div></li>
+            <li><i class="d">4</i><div><h3 data-t="nx3h">Votre juriste vous appelle</h3><p data-t="nx3">Il lance le certificat négatif auprès de l'OMPIC.</p></div></li>
           </ol>
-          <p class="demo" data-t="demo">Version de démonstration : reliez ce formulaire à votre e-mail ou CRM pour recevoir les demandes.</p>
-          <a class="btn btn-ink" href="index.html" data-t="home">Retour à l'accueil</a>
+          <div class="ok-foot">
+            <a class="btn btn-grad" href="index.html" data-t="home">Retour à l'accueil</a>
+            <p class="demo" data-t="demo">Version de démonstration : reliez ce formulaire à votre e-mail ou CRM pour recevoir les demandes.</p>
+          </div>
         </section>
 
         <div class="nav-btns" id="navBtns">
@@ -451,7 +471,7 @@ textarea{min-height:96px;resize:vertical}
     refl:"مرجع الأداء الخاص بك", copy:"نسخ", now:"المبلغ المطلوب الآن", bf:"المستفيد", bk:"البنك", bkv:"بنكك", motif:"سبب الأداء", cpn:"اسم المستفيد", cin:"البطاقة الوطنية", tel:"الهاتف",
     pnote:"بعد الأداء، أرسل صورة الوصل عبر واتساب مع ذكر مرجعك.", pdemo:"معلومات تجريبية: استبدلها برقم حسابك البنكي (RIB) ومعلومات المستفيد في كاش بلوس.", spay:"الأداء", s5p:"يتصل بك مستشارك خلال يوم عمل للمصادقة على الملف.",
     fn:"الاسم الكامل", ft:"الهاتف / واتساب", fe:"البريد الإلكتروني", fm:"معلومات إضافية", recap:"ملخّص", cgu:"أوافق على أن يتم الاتصال بي بخصوص طلبي.",
-    okh:"تمّ إرسال الطلب!", nx1:"أدِّ المبلغ مع ذكر مرجعك كسبب للأداء.", nx2:"أرسل إثبات الأداء ووثائقك (البطاقة الوطنية) عبر واتساب.", nx3:"يتصل بك مستشارك ويُطلق طلب الشهادة السلبية لدى OMPIC.",
+    okh:"تمّ إرسال الطلب!", refl:"مرجع الملف", t0h:"تمّ استلام الطلب", t0w:"الآن", t0p:"تمّ تسجيل ملفك.", nx1h:"أدِّ المبلغ", nx1:"اذكر مرجعك كسبب للأداء.", nx2h:"أرسل وثائقك", nx2:"إثبات الأداء + البطاقة الوطنية عبر واتساب.", wao:"فتح واتساب", nx3h:"مستشارك يتصل بك", nx3:"يُطلق طلب الشهادة السلبية لدى OMPIC.",
     demo:"نسخة تجريبية: اربط هذا النموذج ببريدك الإلكتروني أو نظام إدارة العملاء لاستقبال الطلبات.", home:"العودة إلى الرئيسية",
     prev:"رجوع", next:"متابعة", send:"إرسال طلبي",
     sumh:"طلبك", sf:"الشكل", sn:"الاسم", sv:"المدينة", sp:"الباقة", so:"الخيارات", tot:"المجموع", dep:"المبلغ المطلوب الآن:", snow:"الآن", slater:"لاحقاً",
@@ -625,11 +645,13 @@ textarea{min-height:96px;resize:vertical}
     const cash = val('pay_method') === 'cashplus';
     $('#payVir').hidden = cash; $('#payCash').hidden = !cash;
   }
-  $('#copyRef').addEventListener('click', () => {
-    const b = $('#copyRef'), done = () => { b.textContent = T[lang].copied; setTimeout(() => b.textContent = T[lang].copy, 1500); };
-    navigator.clipboard?.writeText(ref).then(done, () => { const r = document.createRange(); r.selectNodeContents($('#payRef')); getSelection().removeAllRanges(); getSelection().addRange(r); });
-    if (!navigator.clipboard) { const r = document.createRange(); r.selectNodeContents($('#payRef')); getSelection().removeAllRanges(); getSelection().addRange(r); }
-  });
+  function copyRef(b, el){
+    const done = () => { b.textContent = T[lang].copied; setTimeout(() => b.textContent = T[lang].copy, 1500); };
+    const sel = () => { const r = document.createRange(); r.selectNodeContents(el); getSelection().removeAllRanges(); getSelection().addRange(r); };
+    if (navigator.clipboard) navigator.clipboard.writeText(ref).then(done, sel); else sel();
+  }
+  $('#copyRef').addEventListener('click', e => copyRef(e.currentTarget, $('#payRef')));
+  $('#copyRef2').addEventListener('click', e => copyRef(e.currentTarget, $('#ref')));
   function summary(){
     const nom = $('#n1').value.trim(), ville = $('#ville').value;
     $('#sForme').textContent = label('forme');
@@ -675,6 +697,8 @@ textarea{min-height:96px;resize:vertical}
     $$('#stepper li').forEach(li => { li.classList.add('done'); li.classList.remove('on'); });
     $('#ref').textContent = ref;
     $('#okp').textContent = T[lang].ok($('#nom').value.trim(), $('#email').value.trim());
+    $('#okPay').textContent = $('#sPay').textContent;
+    $('#okAmt').textContent = $('#sDep').textContent;
     $('#done').hidden = false;
     $('#wizard').scrollIntoView({ behavior: 'smooth', block: 'start' });
     try { localStorage.removeItem('ce-demande'); } catch(e) {}
