@@ -218,8 +218,8 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
   ];
   const DEMO_PASS = 'demo';
   const STEPS = ['Reçue', 'Paiement', 'Pièces', 'Certificat négatif', 'Statuts', 'RC · IF · CNSS', 'Livré'];
-  const FORMES = { sarlau:'SARL AU', sarl:'SARL', ae:'Auto-entrepreneur', sa:'Société anonyme' };
-  const PLANS = { essentiel:'Essentiel', premium:'Premium', ae:'Auto-entrepreneur' };
+  const FORMES = { sarlau:'SARL AU', sarl:'SARL', sas:'SAS', ae:'Auto-entrepreneur', sa:'Société anonyme' };
+  const PLANS = { essentiel:'Pack Essentiel', pro:'Pack Pro', premium:'Pack Premium', ae:'Auto-entrepreneur' };
   const OPTS = { o_prio:'Traitement prioritaire', o_logo:'Logo et carte de visite', o_pacte:"Pacte d'associés" };
   const PAY = { virement:'Virement', cashplus:'Cash Plus' };
   const member = id => TEAM.find(t => t.id === id);
@@ -241,35 +241,35 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
     }, o);
     const P = (name, cin, pct) => ({ name, cin, pct });
     const list = [
-      mk({ ref:'CE-446366', createdAt:ago(.02), updatedAt:ago(.02), seen:false, forme:'sarlau', plan:'essentiel', total:2900, payMethod:'cashplus',
+      mk({ ref:'CE-446366', createdAt:ago(.02), updatedAt:ago(.02), seen:false, forme:'sarlau', plan:'essentiel', total:4680, payMethod:'cashplus',
         noms:['Atlas Digital','Atlas Media','Atlas Group'], activite:'Agence de marketing digital', ville:'Casablanca', capital:10000,
         partners:[P('Lahcen Tazi','BE123456',100)], gerant:{ name:'Lahcen Tazi', cin:'BE123456' },
         client:{ nom:'Lahcen Tazi', tel:'0612345678', email:'lahcen@exemple.ma' }, step:1 }),
-      mk({ ref:'CE-446201', createdAt:ago(.3), updatedAt:ago(.3), seen:false, forme:'sarl', plan:'premium', total:8900, payMethod:'virement', payAmount:'full',
+      mk({ ref:'CE-446201', createdAt:ago(.3), updatedAt:ago(.3), seen:false, forme:'sarl', plan:'premium', total:9980, payMethod:'virement', payAmount:'full',
         noms:['Nour Food','Nour Traiteur','Nour Gourmet'], activite:'Restauration et traiteur', ville:'Rabat', capital:50000,
         partners:[P('Nadia Benali','A654321',60), P('Omar Benali','A112233',40)], gerant:{ name:'Nadia Benali', cin:'A654321' },
         client:{ nom:'Nadia Benali', tel:'0661122334', email:'nadia@exemple.ma' }, step:1, juriste:'karim' }),
-      mk({ ref:'CE-445812', createdAt:ago(4), updatedAt:ago(3), forme:'sarl', plan:'essentiel', total:2900, payMethod:'virement',
+      mk({ ref:'CE-445812', createdAt:ago(4), updatedAt:ago(3), forme:'sarl', plan:'essentiel', total:4680, payMethod:'virement',
         noms:['Sahara Trans'], activite:'Transport de marchandises', ville:'Agadir', capital:20000,
         partners:[P('Rachid Amrani','J998877',50), P('Samir Amrani','J887766',50)], gerant:{ name:'Rachid Amrani', cin:'J998877' },
         client:{ nom:'Rachid Amrani', tel:'0677889900', email:'rachid@exemple.ma' }, step:2, juriste:'salma', paid:{ first:true, second:false },
         docs:{ pay:true, 'cin-0':true } }),
-      mk({ ref:'CE-445610', createdAt:ago(6), updatedAt:ago(2.5), forme:'sarl', plan:'premium', total:10100, options:['o_pacte'], payMethod:'cashplus',
+      mk({ ref:'CE-445610', createdAt:ago(6), updatedAt:ago(2.5), forme:'sarl', plan:'pro', total:7180, options:['o_pacte'], payMethod:'cashplus',
         noms:['Kech Events'], activite:"Organisation d'événements", ville:'Marrakech', capital:30000, siege:'local',
         partners:[P('Hind Alaoui','E445566',50), P('Yassine Alaoui','E556677',30), P('Sara Alaoui','E667788',20)], gerant:{ name:'Hind Alaoui', cin:'E445566' },
         client:{ nom:'Hind Alaoui', tel:'0655443322', email:'hind@exemple.ma' }, step:2, juriste:'salma', paid:{ first:true, second:false },
         docs:{ pay:true, 'cin-0':true, 'cin-1':true } }),
-      mk({ ref:'CE-445320', createdAt:ago(8), updatedAt:ago(1), forme:'sarl', plan:'essentiel', total:2900, payMethod:'virement', payAmount:'full',
+      mk({ ref:'CE-445320', createdAt:ago(8), updatedAt:ago(1), forme:'sarl', plan:'essentiel', total:4680, payMethod:'virement', payAmount:'full',
         noms:['Rif Agro'], activite:'Agriculture et export', ville:'Autre ville', capital:100000,
         partners:[P('Karim Haddou','S334455',70), P('Ali Haddou','S445566',30)], gerant:{ name:'Karim Haddou', cin:'S334455' },
         client:{ nom:'Karim Haddou', tel:'0644556677', email:'k.haddou@exemple.ma' }, step:3, juriste:'hajar', paid:{ first:true, second:true },
         docs:{ pay:true, 'cin-0':true, 'cin-1':true } }),
-      mk({ ref:'CE-444980', createdAt:ago(12), updatedAt:ago(.5), forme:'sarl', plan:'premium', total:8900, payMethod:'virement',
+      mk({ ref:'CE-444980', createdAt:ago(12), updatedAt:ago(.5), forme:'sarl', plan:'premium', total:9980, payMethod:'virement',
         noms:['Medina Craft'], activite:'Artisanat', ville:'Fès', capital:20000,
         partners:[P('Fatima Idrissi','C223344',50), P('Mehdi Idrissi','C334455',50)], gerant:{ name:'Fatima Idrissi', cin:'C223344' },
         client:{ nom:'Fatima Idrissi', tel:'0633221100', email:'fatima@exemple.ma' }, step:4, juriste:'karim', paid:{ first:true, second:false },
         docs:{ pay:true, 'cin-0':true, 'cin-1':true } }),
-      mk({ ref:'CE-444512', createdAt:ago(22), updatedAt:ago(10), forme:'sarlau', plan:'essentiel', total:2900, payMethod:'cashplus',
+      mk({ ref:'CE-444512', createdAt:ago(22), updatedAt:ago(10), forme:'sarlau', plan:'essentiel', total:4680, payMethod:'cashplus',
         noms:['Souss Fresh'], activite:'Distribution de fruits', ville:'Agadir', capital:10000,
         partners:[P('Hamza Ouali','JK12345',100)], gerant:{ name:'Hamza Ouali', cin:'JK12345' },
         client:{ nom:'Hamza Ouali', tel:'0622334455', email:'hamza@exemple.ma' }, step:7, juriste:'salma', paid:{ first:true, second:true },

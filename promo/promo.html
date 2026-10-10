@@ -166,9 +166,9 @@ body{font-family:var(--font);color:#fff;-webkit-font-smoothing:antialiased}
           <div class="lbl">Ville</div><div class="inp" id="f2i3"></div>
         </div>
         <div class="fstep" id="f3"><small>ÉTAPE 4</small><h4>Choisissez votre formule</h4>
-          <div class="tile" id="f3a"><div><b>Essentiel</b><span>Formalités indispensables</span></div><em>2 900</em></div>
-          <div class="tile" id="f3b"><div><b>Premium</b><span>Juriste, domiciliation, compta</span></div><em>8 900</em></div>
-          <div class="tile" id="f3c" style="border-style:dashed"><div><b>Paiement 50 / 50</b><span>1 450 MAD maintenant</span></div><i class="radio"></i></div>
+          <div class="tile" id="f3a"><div><b>Pack Essentiel</b><span>12 mois de domiciliation</span></div><em>4 680</em></div>
+          <div class="tile" id="f3b"><div><b>Pack Pro</b><span>24 mois + cachet</span></div><em>5 980</em></div>
+          <div class="tile" id="f3c" style="border-style:dashed"><div><b>Paiement 50 / 50</b><span>2 340 MAD maintenant</span></div><i class="radio"></i></div>
         </div>
         <div class="fbtn" id="s3btn">Continuer →</div>
         <div class="tap" id="s3tap"></div>
@@ -235,12 +235,13 @@ body{font-family:var(--font);color:#fff;-webkit-font-smoothing:antialiased}
     <div class="blob" style="width:700px;height:700px;right:-200px;bottom:-300px;background:#9b5cf0;opacity:.35"></div>
     <div class="abs" style="left:0;right:0;top:170px;text-align:center">
       <div style="font-size:52px;font-weight:600" id="s7a">Tout compris, dès</div>
-      <div class="cap" style="font-size:300px;line-height:1;margin-top:10px;letter-spacing:-.06em" id="s7p"><span id="s7n">2 900</span><span style="font-size:90px;letter-spacing:-.02em;margin-left:24px">MAD</span></div>
-      <div style="font-size:30px;font-weight:500;opacity:.95;margin-top:18px" id="s7b">Certificat négatif · Statuts · RC · IF · ICE · CNSS</div>
+      <div class="cap" style="font-size:300px;line-height:1;margin-top:10px;letter-spacing:-.06em" id="s7p"><span id="s7n">4 680</span><span style="font-size:90px;letter-spacing:-.02em;margin-left:24px">MAD</span></div>
+      <div style="font-size:30px;font-weight:500;opacity:.95;margin-top:18px" id="s7b">Statuts · RC · IF · CNSS · 12 mois de domiciliation offerts</div>
     </div>
     <div class="abs" style="left:0;right:0;top:800px;display:flex;gap:30px;justify-content:center">
-      <div class="plan" id="s7c" style="position:relative"><small>Essentiel</small><b>2 900 MAD</b></div>
-      <div class="plan" id="s7d" style="position:relative"><small>Premium</small><b>8 900 MAD</b></div>
+      <div class="plan" id="s7c" style="position:relative"><small>Pack Essentiel</small><b>4 680 MAD</b></div>
+      <div class="plan" id="s7d" style="position:relative"><small>Pack Pro</small><b>5 980 MAD</b></div>
+      <div class="plan" id="s7e" style="position:relative"><small>Pack Premium</small><b>9 980 MAD</b></div>
     </div>
   </section>
 
@@ -370,9 +371,9 @@ function render(t){
     css($('s7'), { opacity: al });
     css($('s7a'), { opacity: E(lt, .1, .6), transform: `translateY(${(1 - E(lt, .1, .6)) * 30}px)` });
     const p = E(lt, .3, 1.0, back); css($('s7p'), { opacity: clamp(E(lt, .3, .6)), transform: `scale(${mix(.8, 1, clamp(p))})` });
-    $('s7n').textContent = fmt(mix(0, 2900, E(lt, .3, 1.5)));
+    $('s7n').textContent = fmt(mix(0, 4680, E(lt, .3, 1.5)));
     css($('s7b'), { opacity: E(lt, 1.0, 1.6) });
-    ['s7c', 's7d'].forEach((id, i) => { const q = E(lt, 1.5 + i * .15, 2.1 + i * .15, back); css($(id), { opacity: clamp(E(lt, 1.5 + i * .15, 1.8 + i * .15)), transform: `translateY(${(1 - q) * 60}px)` }); });
+    ['s7c', 's7d', 's7e'].forEach((id, i) => { const q = E(lt, 1.5 + i * .15, 2.1 + i * .15, back); css($(id), { opacity: clamp(E(lt, 1.5 + i * .15, 1.8 + i * .15)), transform: `translateY(${(1 - q) * 60}px)` }); });
   }
   // ---- S8 end card
   { const [a, b] = S.s8, al = sceneAlpha(t, S.s8, .3, 0, false, true); const lt = t - a;

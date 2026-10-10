@@ -7,7 +7,8 @@ Single-page marketing site (French + English) for an online company-formation se
 - Open `index.html` in a browser, or serve the folder with any static host (Vercel, Netlify, GitHub Pages).
 
 ## Before going live
-- Replace the placeholders: phone `+212 5 00 00 00 00`, email `contact@charikaexpress.ma` (create this mailbox), and prices.
+- Replace the placeholders: phone `+212 5 00 00 00 00` and email `contact@charikaexpress.ma` (create this mailbox).
+- Prices: SARL packs Essentiel 4 680, Pro 5 980, Premium 9 980 MAD TTC (50% deposit). SAS packs show "Sur devis" until SAS prices are set (`#plans-sas` in `index.html`; `sas` is priced on quote in `total()` in `demande.html`).
 - Connect the callback form (`#form`) to your email or CRM. It is currently a demo and sends nothing.
 - Have the English text proofread.
 

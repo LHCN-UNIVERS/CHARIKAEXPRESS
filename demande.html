@@ -134,6 +134,7 @@ textarea{min-height:96px;resize:vertical}
 .tile b{font-size:1rem}
 .tile span{color:var(--m);font-size:.86rem;font-weight:500}
 .tile em{font-style:normal;font-weight:800;font-size:1.05rem;margin-top:4px}
+.t3 .tile{grid-template-rows:auto 1fr auto}.t3 .tile em{align-self:end}
 .tile:hover{border-color:#e8c9cf}
 .tile:has(input:checked){border-color:var(--rose);background:#fff7f8;box-shadow:0 0 0 4px rgba(255,92,122,.12)}
 .tile:has(input:focus-visible){outline:3px solid var(--rose);outline-offset:2px}
@@ -295,6 +296,7 @@ textarea{min-height:96px;resize:vertical}
             <label class="tile"><input type="radio" name="forme" value="sarlau" checked><b data-t="fo1">SARL AU</b><span data-t="fo1d">Un seul associé</span></label>
             <label class="tile"><input type="radio" name="forme" value="sarl"><b data-t="fo2">SARL</b><span data-t="fo2d">2 associés ou plus</span></label>
             <label class="tile"><input type="radio" name="forme" value="ae"><b data-t="fo3">Auto-entrepreneur</b><span data-t="fo3d">Activité individuelle</span></label>
+            <label class="tile"><input type="radio" name="forme" value="sas"><b data-t="fo5">SAS</b><span data-t="fo5d">Société par actions simplifiée, sur devis</span></label>
             <label class="tile"><input type="radio" name="forme" value="sa"><b data-t="fo4">Société anonyme</b><span data-t="fo4d">Plusieurs actionnaires, sur devis</span></label>
           </div>
         </section>
@@ -347,9 +349,10 @@ textarea{min-height:96px;resize:vertical}
         <!-- STEP 4 -->
         <section class="step" data-step="4" hidden>
           <div class="step-h"><small data-t="st">Étape 4 sur 5</small><h2 data-t="s4h">Choisissez votre formule</h2><p data-t="s4p">Prix TTC, frais administratifs inclus. Paiement en deux fois.</p></div>
-          <div class="tiles t2" role="radiogroup">
-            <label class="tile"><input type="radio" name="plan" value="essentiel" data-price="2900" checked><b data-t="pl1">Essentiel</b><span data-t="pl1d">Formalités indispensables</span><em class="ltr">2 900 MAD</em></label>
-            <label class="tile"><span class="tag" data-t="best">Le plus complet</span><input type="radio" name="plan" value="premium" data-price="8900"><b data-t="pl3">Premium</b><span data-t="pl3d">Domiciliation 12 mois, juriste dédié, comptabilité 3 mois, compte bancaire</span><em class="ltr">8 900 MAD</em></label>
+          <div class="tiles t3" role="radiogroup">
+            <label class="tile"><input type="radio" name="plan" value="essentiel" data-price="4680" checked><b data-t="pl1">Pack Essentiel</b><span data-t="pl1d">12 mois de domiciliation offerts</span><em class="ltr">4 680 MAD</em></label>
+            <label class="tile"><span class="tag" data-t="pkrec">Recommandé</span><input type="radio" name="plan" value="pro" data-price="5980"><b data-t="pl2">Pack Pro</b><span data-t="pl2d">24 mois de domiciliation et cachet de la société</span><em class="ltr">5 980 MAD</em></label>
+            <label class="tile"><input type="radio" name="plan" value="premium" data-price="9980"><b data-t="pl3">Pack Premium</b><span data-t="pl3d">24 mois de domiciliation, cachet et protection de la marque (2 classes)</span><em class="ltr">9 980 MAD</em></label>
           </div>
           <span class="lbl" style="margin-top:22px" data-t="opts">Options</span>
           <div class="grid">
@@ -451,8 +454,8 @@ textarea{min-height:96px;resize:vertical}
         <li><i class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg></i><span data-t="spay">Paiement</span><span id="sPay">—</span></li>
       </ol>
       <div class="total">
-        <div class="r"><span data-t="tot">Total TTC</span><b class="ltr" id="sTotal">2 900</b></div>
-        <div class="split"><div class="now"><span data-t="snow">Maintenant</span><b class="ltr" id="sDep">1 450 MAD</b></div><div><span data-t="slater">Plus tard</span><b class="ltr" id="sLater">1 450 MAD</b></div></div>
+        <div class="r"><span data-t="tot">Total TTC</span><b class="ltr" id="sTotal">4 680</b></div>
+        <div class="split"><div class="now"><span data-t="snow">Maintenant</span><b class="ltr" id="sDep">2 340 MAD</b></div><div><span data-t="slater">Plus tard</span><b class="ltr" id="sLater">2 340 MAD</b></div></div>
       </div>
       <p class="help"><span class="av">N</span><span data-th="help">Une question ? Un juriste vous répond au <bdi dir="ltr">+212 5 00 00 00 00</bdi> ou sur <a href="https://wa.me/212500000000" target="_blank" rel="noopener">WhatsApp</a>.</span></p>
     </aside>
@@ -466,7 +469,7 @@ textarea{min-height:96px;resize:vertical}
     title:"Your <span>company formation</span> request", subtitle:"6 steps, about 5 minutes. Your legal advisor will then contact you to confirm your file.",
     sp1:"Service", sp2:"Company", sp3:"Partners", sp4:"Plan", sp5:"Contact details", sp6:"Payment",
     s1h:"Which legal form?", s1p:"Not sure? Choose SARL AU if you're on your own, SARL if there are several of you.",
-    fo1:"SARL AU", fo1d:"One partner", fo2:"SARL", fo2d:"Two or more partners", fo3:"Self-employed", fo3d:"Individual activity", fo4:"Public limited company (SA)", fo4d:"Several shareholders, custom quote",
+    fo1:"SARL AU", fo1d:"One partner", fo2:"SARL", fo2d:"Two or more partners", fo3:"Self-employed", fo3d:"Individual activity", fo4:"Public limited company (SA)", fo4d:"Several shareholders, custom quote", fo5:"SAS", fo5d:"Simplified joint-stock company, custom quote",
     s2h:"Your future company", s2p:"Suggest 3 names, in order of preference. We'll check their availability with OMPIC.",
     nm1:"Name 1", nm2:"Name 2", nm3:"Name 3", opt:"(optional)", act:"Main activity", actph:"E.g. digital marketing agency, consulting, import-export…",
     ville:"City of the registered office", choose:"Choose…", c1:"Casablanca", c2:"Rabat", c3:"Marrakech", c4:"Tangier", c5:"Agadir", c6:"Fez", c7:"Other city",
@@ -474,7 +477,7 @@ textarea{min-height:96px;resize:vertical}
     s3h:"Partners and manager", s3p:"Enter each partner and their share of the capital. The total must be 100%.",
     addp:"Add a partner", gerant:"Manager", gname:"Manager's full name", pcin2:"National ID (CNIE) or passport number",
     s4h:"Choose your plan", s4p:"Prices include VAT and administrative fees. Pay in two instalments.",
-    pl1:"Essential", pl1d:"All the required formalities", best:"Most complete", pl3:"Premium", pl3d:"12-month business address, dedicated legal advisor, 3 months of accounting, bank account",
+    pl1:"Essential Pack", pl1d:"12 months of business address, free", pkrec:"Recommended", pl2:"Pro Pack", pl2d:"24 months of business address and company stamp", pl3:"Premium Pack", pl3d:"24 months of business address, company stamp and trademark protection (2 classes)",
     opts:"Options", o1:"Priority processing", o2:"Logo and business card", o3:"Shareholders' agreement",
     s5h:"Your contact details", s5p:"Your legal advisor will contact you within one working day to confirm your file.",
     fn:"Full name", ft:"Phone / WhatsApp", fe:"Email", fm:"Additional information",
@@ -640,7 +643,7 @@ textarea{min-height:96px;resize:vertical}
 
   // ---------- Summary & review ----------
   function total(){
-    if (val('forme') === 'sa') return null;
+    if (['sa', 'sas'].includes(val('forme'))) return null;   // SA and SAS are priced on quote
     const plan = document.querySelector('[name=plan]:checked');
     let t = plan ? +plan.dataset.price : 0;
     if (val('forme') === 'ae') t = 900;
