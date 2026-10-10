@@ -65,7 +65,7 @@ main{position:relative;z-index:1;padding-block:16px 72px}
 @media (max-width:920px){.layout{grid-template-columns:1fr}}
 
 /* Stepper */
-.stepper{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;list-style:none;margin:0 0 18px;padding:0}
+.stepper{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;list-style:none;margin:0 0 18px;padding:0}
 .stepper li{display:grid;gap:8px;font-size:.78rem;font-weight:600;color:var(--m)}
 .stepper .bar{height:6px;border-radius:99px;background:var(--line);overflow:hidden}
 .stepper .bar i{display:block;height:100%;width:0;background:var(--grad);transition:width .4s}
@@ -118,6 +118,20 @@ textarea{min-height:96px;resize:vertical}
 .share.good{color:var(--ok)}
 
 .nav-btns{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:28px;padding-top:20px;border-top:1px solid var(--line);flex-wrap:wrap}
+
+/* Payment */
+.paybox{margin-top:22px;border-radius:20px;background:var(--bg);border:1px solid var(--line);padding:18px;display:grid;gap:14px}
+.pref{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;background:#fff;border-radius:14px;padding:14px 16px;border:1.5px dashed #f0b9c4}
+.pref small{display:block;color:var(--m);font-weight:600;font-size:.82rem}
+.pref b{font-size:1.5rem;font-weight:800;letter-spacing:.02em}
+.copy{padding:9px 14px;font-size:.85rem}
+.pnow{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-weight:700}
+.pnow b{font-size:1.4rem;font-weight:800;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.pinfo{margin:0;display:grid;grid-template-columns:auto 1fr;gap:6px 16px;font-size:.93rem;background:#fff;border-radius:14px;padding:14px 16px}
+.pinfo dt{color:var(--m)}
+.pinfo dd{margin:0;font-weight:700;overflow-wrap:anywhere}
+.pnote{font-size:.88rem;color:var(--ink);font-weight:600}
+.pdemo{font-size:.78rem;color:var(--m)}
 
 /* Review */
 .review{display:grid;gap:12px}
@@ -176,7 +190,7 @@ textarea{min-height:96px;resize:vertical}
 <main class="wrap">
   <div class="title">
     <h1 data-th="title">Votre demande de <span>création de société</span></h1>
-    <p data-t="subtitle">5 étapes, environ 5 minutes. Votre juriste vous contacte ensuite pour valider le dossier.</p>
+    <p data-t="subtitle">6 étapes, environ 5 minutes. Votre juriste vous contacte ensuite pour valider le dossier.</p>
   </div>
 
   <div class="layout">
@@ -186,7 +200,8 @@ textarea{min-height:96px;resize:vertical}
         <li><div class="bar"><i></i></div><span data-t="sp2">Société</span></li>
         <li><div class="bar"><i></i></div><span data-t="sp3">Associés</span></li>
         <li><div class="bar"><i></i></div><span data-t="sp4">Formule</span></li>
-        <li><div class="bar"><i></i></div><span data-t="sp5">Coordonnées</span></li>
+        <li><div class="bar"><i></i></div><span data-t="sp5">Paiement</span></li>
+        <li><div class="bar"><i></i></div><span data-t="sp6">Coordonnées</span></li>
       </ol>
 
       <form class="card" id="wizard" novalidate>
@@ -203,12 +218,12 @@ textarea{min-height:96px;resize:vertical}
 
         <!-- STEP 2 -->
         <section class="step" data-step="2" hidden>
-          <div class="step-h"><small data-t="st">Étape 2 sur 5</small><h2 data-t="s2h">Votre future société</h2><p data-t="s2p">Proposez jusqu'à 3 noms, par ordre de préférence. Nous vérifierons leur disponibilité auprès de l'OMPIC.</p></div>
+          <div class="step-h"><small data-t="st">Étape 2 sur 5</small><h2 data-t="s2h">Votre future société</h2><p data-t="s2p">Proposez 3 noms, par ordre de préférence. Nous vérifierons leur disponibilité auprès de l'OMPIC.</p></div>
           <div class="grid">
             <div class="grid g3">
               <div><label for="n1"><span data-t="n1">Nom 1</span> *</label><input id="n1" name="n1" required></div>
-              <div><label for="n2"><span data-t="n2">Nom 2</span> <small data-t="opt">(facultatif)</small></label><input id="n2" name="n2"></div>
-              <div><label for="n3"><span data-t="n3">Nom 3</span> <small data-t="opt">(facultatif)</small></label><input id="n3" name="n3"></div>
+              <div><label for="n2"><span data-t="n2">Nom 2</span> *</label><input id="n2" name="n2" required></div>
+              <div><label for="n3"><span data-t="n3">Nom 3</span> *</label><input id="n3" name="n3" required></div>
             </div>
             <div><label for="act"><span data-t="act">Activité principale</span> *</label><textarea id="act" name="act" required data-ph="actph" placeholder="Ex. : agence de marketing digital, conseil, import-export…"></textarea></div>
             <div class="grid g2">
@@ -240,6 +255,10 @@ textarea{min-height:96px;resize:vertical}
           <div style="margin-top:18px"><label for="gerant"><span data-t="gerant">Gérant</span> *</label>
             <select id="gerant" name="gerant"></select>
           </div>
+          <div class="grid g2" id="gerantOther" style="margin-top:14px" hidden>
+            <div><label for="gn"><span data-t="gname">Nom complet du gérant</span> *</label><input id="gn" name="g_nom" autocomplete="off"></div>
+            <div><label for="gc"><span data-t="pcin2">N° CNIE ou passeport</span> *</label><input id="gc" name="g_cin" dir="ltr" autocomplete="off"></div>
+          </div>
         </section>
 
         <!-- STEP 4 -->
@@ -258,9 +277,45 @@ textarea{min-height:96px;resize:vertical}
           </div>
         </section>
 
-        <!-- STEP 5 -->
+        <!-- STEP 5: PAYMENT -->
         <section class="step" data-step="5" hidden>
-          <div class="step-h"><small data-t="st">Étape 5 sur 5</small><h2 data-t="s5h">Vos coordonnées</h2><p data-t="s5p">Votre juriste vous contacte sous un jour ouvré pour valider le dossier.</p></div>
+          <div class="step-h"><small data-t="st">Étape 5 sur 6</small><h2 data-t="s6h">Mode de paiement</h2><p data-t="s6p">Choisissez le montant et le moyen de paiement. Indiquez votre référence comme motif du paiement.</p></div>
+          <span class="lbl" data-t="amt">Montant à régler</span>
+          <div class="tiles t2" role="radiogroup">
+            <label class="tile"><input type="radio" name="pay_amount" value="half" checked><b data-t="am2">50 / 50</b><span data-t="am2d">50% maintenant, 50% à la remise du RC</span><em class="ltr" id="amtHalf">—</em></label>
+            <label class="tile"><input type="radio" name="pay_amount" value="full"><b data-t="am1">Totalité</b><span data-t="am1d">100% maintenant, en une seule fois</span><em class="ltr" id="amtFull">—</em></label>
+          </div>
+          <span class="lbl" style="margin-top:22px" data-t="meth">Moyen de paiement</span>
+          <div class="tiles t2" role="radiogroup">
+            <label class="tile"><input type="radio" name="pay_method" value="virement" checked><b data-t="pm1">Virement bancaire</b><span data-t="pm1d">Depuis votre banque ou votre application</span></label>
+            <label class="tile"><input type="radio" name="pay_method" value="cashplus"><b data-t="pm2">Cash Plus</b><span data-t="pm2d">En espèces, dans une agence Cash Plus</span></label>
+          </div>
+          <div class="paybox">
+            <div class="pref">
+              <div><small data-t="refl">Votre référence de paiement</small><b class="ltr" id="payRef">SJ-000000</b></div>
+              <button type="button" class="btn btn-soft copy" id="copyRef" data-t="copy">Copier</button>
+            </div>
+            <div class="pnow"><span data-t="now">À régler maintenant</span><b class="ltr" id="payNow">—</b></div>
+            <dl class="pinfo" id="payVir">
+              <dt data-t="bf">Bénéficiaire</dt><dd>SAHL JURIDIQUE SARL</dd>
+              <dt data-t="bk">Banque</dt><dd data-t="bkv">Votre banque</dd>
+              <dt>RIB</dt><dd class="ltr">000 000 0000000000000000 00</dd>
+              <dt data-t="motif">Motif</dt><dd class="ltr refv">SJ-000000</dd>
+            </dl>
+            <dl class="pinfo" id="payCash" hidden>
+              <dt data-t="bf">Bénéficiaire</dt><dd data-t="cpn">Nom du bénéficiaire</dd>
+              <dt data-t="cin">CIN</dt><dd class="ltr">XX000000</dd>
+              <dt data-t="tel">Téléphone</dt><dd class="ltr">+212 6 00 00 00 00</dd>
+              <dt data-t="motif">Motif</dt><dd class="ltr refv">SJ-000000</dd>
+            </dl>
+            <p class="pnote" data-t="pnote">Après le paiement, envoyez la photo du reçu par WhatsApp en indiquant votre référence.</p>
+            <p class="pdemo" data-t="pdemo">Coordonnées de démonstration : remplacez-les par vos vrais RIB et bénéficiaire Cash Plus.</p>
+          </div>
+        </section>
+
+        <!-- STEP 6 -->
+        <section class="step" data-step="6" hidden>
+          <div class="step-h"><small data-t="st">Étape 6 sur 6</small><h2 data-t="s5h">Vos coordonnées</h2><p data-t="s5p">Votre juriste vous contacte sous un jour ouvré pour valider le dossier.</p></div>
           <div class="grid">
             <div class="grid g2">
               <div><label for="nom"><span data-t="fn">Nom complet</span> *</label><input id="nom" name="nom" autocomplete="name" required></div>
@@ -281,9 +336,9 @@ textarea{min-height:96px;resize:vertical}
           <p id="okp"></p>
           <span class="ref ltr" id="ref">SJ-000000</span>
           <ol class="next">
-            <li><b>1</b><span data-t="nx1">Votre juriste vous appelle sous un jour ouvré.</span></li>
-            <li><b>2</b><span data-t="nx2">Vous envoyez vos pièces (CNIE) et réglez l'acompte de 50%.</span></li>
-            <li><b>3</b><span data-t="nx3">Nous lançons le certificat négatif auprès de l'OMPIC.</span></li>
+            <li><b>1</b><span data-t="nx1">Effectuez votre paiement en indiquant votre référence comme motif.</span></li>
+            <li><b>2</b><span data-t="nx2">Envoyez la preuve de paiement et vos pièces (CNIE) par WhatsApp.</span></li>
+            <li><b>3</b><span data-t="nx3">Votre juriste vous appelle et lance le certificat négatif auprès de l'OMPIC.</span></li>
           </ol>
           <p class="demo" data-t="demo">Version de démonstration : reliez ce formulaire à votre e-mail ou CRM pour recevoir les demandes.</p>
           <a class="btn btn-ink" href="index.html" data-t="home">Retour à l'accueil</a>
@@ -304,9 +359,10 @@ textarea{min-height:96px;resize:vertical}
         <li><span data-t="sv">Ville</span><span id="sVille">—</span></li>
         <li><span data-t="sp">Formule</span><span id="sPlan">Confort</span></li>
         <li><span data-t="so">Options</span><span id="sOpts">—</span></li>
+        <li><span data-t="spay">Paiement</span><span id="sPay">—</span></li>
       </ul>
       <div class="total"><span data-t="tot">Total TTC</span><b class="ltr" id="sTotal">4 900</b></div>
-      <p class="dep"><span data-t="dep">Acompte à la commande (50%) :</span> <span class="ltr" id="sDep">2 450 MAD</span></p>
+      <p class="dep"><span data-t="dep">À régler maintenant :</span> <span class="ltr" id="sDep">2 450 MAD</span></p>
       <p class="help" data-t="help">Une question ? Un juriste vous répond au +212 5 00 00 00 00 ou sur WhatsApp.</p>
     </aside>
   </div>
@@ -316,42 +372,46 @@ textarea{min-height:96px;resize:vertical}
 (function(){
   const AR = {
     brand:"سهل", back:"العودة إلى الموقع",
-    title:"طلب <span>تأسيس شركتك</span>", subtitle:"5 مراحل، حوالي 5 دقائق. بعدها يتصل بك مستشارك القانوني للمصادقة على الملف.",
-    sp1:"الخدمة", sp2:"الشركة", sp3:"الشركاء", sp4:"الباقة", sp5:"معلوماتك",
+    title:"طلب <span>تأسيس شركتك</span>", subtitle:"6 مراحل، حوالي 5 دقائق. بعدها يتصل بك مستشارك القانوني للمصادقة على الملف.",
+    sp1:"الخدمة", sp2:"الشركة", sp3:"الشركاء", sp4:"الباقة", sp5:"الأداء", sp6:"معلوماتك",
     s1h:"ما هو الشكل القانوني؟", s1p:"لست متأكداً؟ اختر SARL AU إذا كنت وحدك، وSARL إذا كنتم عدة شركاء.",
     fo1:"SARL AU", fo1d:"شريك واحد", fo2:"SARL", fo2d:"شريكان أو أكثر", fo3:"المقاول الذاتي", fo3d:"نشاط فردي", fo4:"شركة المساهمة", fo4d:"عدة مساهمين، حسب الطلب",
-    s2h:"شركتك المستقبلية", s2p:"اقترح حتى 3 أسماء حسب الأفضلية. سنتحقّق من توفّرها لدى OMPIC.",
+    s2h:"شركتك المستقبلية", s2p:"اقترح 3 أسماء حسب الأفضلية. سنتحقّق من توفّرها لدى OMPIC.",
     n1:"الاسم 1", n2:"الاسم 2", n3:"الاسم 3", opt:"(اختياري)", act:"النشاط الرئيسي", actph:"مثال: وكالة تسويق رقمي، استشارات، استيراد وتصدير…",
     ville:"مدينة المقر", choose:"اختر…", c1:"الدار البيضاء", c2:"الرباط", c3:"مراكش", c4:"طنجة", c5:"أكادير", c6:"فاس", c7:"مدينة أخرى",
     capital:"الرأسمال (درهم)", siege:"المقر الاجتماعي", sg1:"أحتاج إلى توطين", sg1d:"نوفّر لك عنواناً", sg2:"لدي محلّ", sg2d:"عقد كراء أو سند ملكية",
     s3h:"الشركاء والمسيّر", s3p:"أدخل كل شريك وحصّته من الرأسمال. يجب أن يكون المجموع 100%.",
-    addp:"إضافة شريك", gerant:"المسيّر", pname:"الاسم الكامل", pcin:"رقم البطاقة الوطنية أو الجواز", ppct:"الحصة (%)", pttl:"شريك", rm:"حذف", other:"شخص آخر",
+    addp:"إضافة شريك", gname:"الاسم الكامل للمسيّر", pcin2:"رقم البطاقة الوطنية أو الجواز", gerant:"المسيّر", pname:"الاسم الكامل", pcin:"رقم البطاقة الوطنية أو الجواز", ppct:"الحصة (%)", pttl:"شريك", rm:"حذف", other:"شخص آخر",
     s4h:"اختر باقتك", s4p:"الأسعار شاملة للضريبة والمصاريف الإدارية. الأداء على دفعتين.",
     pl1:"الأساسية", pl1d:"الإجراءات الضرورية", pl2:"المريحة", pl2d:"توطين 12 شهراً + مستشار مخصّص", pl3:"المميّزة", pl3d:"محاسبة 3 أشهر + حساب بنكي", rec:"الأكثر طلباً",
     opts:"خيارات", o1:"معالجة ذات أولوية", o2:"شعار وبطاقة زيارة", o3:"ميثاق الشركاء",
-    s5h:"معلوماتك", s5p:"يتصل بك مستشارك خلال يوم عمل للمصادقة على الملف.",
+    s5h:"معلوماتك",
+    s6h:"طريقة الأداء", s6p:"اختر المبلغ وطريقة الأداء. اذكر مرجعك كسبب للأداء.", amt:"المبلغ المطلوب", am2:"50 / 50", am2d:"50% الآن و50% عند تسليم السجل التجاري", am1:"المبلغ كاملاً", am1d:"100% الآن، دفعة واحدة",
+    meth:"طريقة الأداء", pm1:"تحويل بنكي", pm1d:"من بنكك أو تطبيقك البنكي", pm2:"كاش بلوس", pm2d:"نقداً، في وكالة كاش بلوس",
+    refl:"مرجع الأداء الخاص بك", copy:"نسخ", now:"المبلغ المطلوب الآن", bf:"المستفيد", bk:"البنك", bkv:"بنكك", motif:"سبب الأداء", cpn:"اسم المستفيد", cin:"البطاقة الوطنية", tel:"الهاتف",
+    pnote:"بعد الأداء، أرسل صورة الوصل عبر واتساب مع ذكر مرجعك.", pdemo:"معلومات تجريبية: استبدلها برقم حسابك البنكي (RIB) ومعلومات المستفيد في كاش بلوس.", spay:"الأداء", s5p:"يتصل بك مستشارك خلال يوم عمل للمصادقة على الملف.",
     fn:"الاسم الكامل", ft:"الهاتف / واتساب", fe:"البريد الإلكتروني", fm:"معلومات إضافية", recap:"ملخّص", cgu:"أوافق على أن يتم الاتصال بي بخصوص طلبي.",
-    okh:"تمّ إرسال الطلب!", nx1:"يتصل بك مستشارك خلال يوم عمل.", nx2:"ترسل وثائقك (البطاقة الوطنية) وتؤدي تسبيق 50%.", nx3:"نُطلق طلب الشهادة السلبية لدى OMPIC.",
+    okh:"تمّ إرسال الطلب!", nx1:"أدِّ المبلغ مع ذكر مرجعك كسبب للأداء.", nx2:"أرسل إثبات الأداء ووثائقك (البطاقة الوطنية) عبر واتساب.", nx3:"يتصل بك مستشارك ويُطلق طلب الشهادة السلبية لدى OMPIC.",
     demo:"نسخة تجريبية: اربط هذا النموذج ببريدك الإلكتروني أو نظام إدارة العملاء لاستقبال الطلبات.", home:"العودة إلى الرئيسية",
     prev:"رجوع", next:"متابعة", send:"إرسال طلبي",
-    sumh:"طلبك", sf:"الشكل", sn:"الاسم", sv:"المدينة", sp:"الباقة", so:"الخيارات", tot:"المجموع", dep:"التسبيق عند الطلب (50%):",
+    sumh:"طلبك", sf:"الشكل", sn:"الاسم", sv:"المدينة", sp:"الباقة", so:"الخيارات", tot:"المجموع", dep:"المبلغ المطلوب الآن:",
     help:"سؤال؟ يجيبك مستشار قانوني على ‎+212 5 00 00 00 00‎ أو عبر واتساب.",
     edit:"تعديل", rv1:"الخدمة", rv2:"الشركة", rv3:"الشركاء", rv4:"الباقة", none:"بدون", quote:"حسب الطلب"
   };
   const T = {
-    fr:{st:n=>`Étape ${n} sur 5`, req:"Ce champ est obligatoire.", email:"Adresse e-mail invalide.", tel:"Numéro de téléphone invalide.", cap:"Minimum 1 000 MAD.",
+    fr:{st:n=>`Étape ${n} sur 6`, copied:"Copié !", copy:"Copier", pm:{virement:"Virement",cashplus:"Cash Plus"}, pa:{half:"50 / 50",full:"Totalité"}, rv5:"Paiement", gl:"Gérant", req:"Ce champ est obligatoire.", email:"Adresse e-mail invalide.", tel:"Numéro de téléphone invalide.", cap:"Minimum 1 000 MAD.",
         pct:"Le total des parts doit faire 100%.", shareTxt:t=>`Total des parts : ${t}%`, cgu:"Merci de cocher cette case.",
         ok:(n,e)=>`Merci ${n}. Nous avons bien reçu votre demande. Un récapitulatif sera envoyé à ${e}.`,
         edit:"Modifier", rv1:"Service", rv2:"Société", rv3:"Associés", rv4:"Formule", none:"Aucune", quote:"Sur devis",
         pname:"Nom complet", pcin:"N° CNIE ou passeport", ppct:"Part (%)", pttl:"Associé", rm:"Retirer", other:"Une autre personne", next:"Continuer", send:"Envoyer ma demande",
-        k:{forme:"Forme",noms:"Noms",act:"Activité",ville:"Ville",capital:"Capital",siege:"Siège",plan:"Formule",opts:"Options",total:"Total"},
+        k:{forme:"Forme",noms:"Noms",act:"Activité",ville:"Ville",capital:"Capital",siege:"Siège",plan:"Formule",opts:"Options",total:"Total",method:"Moyen",amount:"Montant",ref:"Référence",now:"À régler maintenant"},
         siege:{dom:"Domiciliation",local:"Local existant"}},
-    ar:{st:n=>`المرحلة ${n} من 5`, req:"هذا الحقل إلزامي.", email:"بريد إلكتروني غير صالح.", tel:"رقم هاتف غير صالح.", cap:"الحد الأدنى 1 000 درهم.",
+    ar:{st:n=>`المرحلة ${n} من 6`, copied:"تمّ النسخ!", copy:"نسخ", pm:{virement:"تحويل بنكي",cashplus:"كاش بلوس"}, pa:{half:"50 / 50",full:"المبلغ كاملاً"}, rv5:"الأداء", gl:"المسيّر", req:"هذا الحقل إلزامي.", email:"بريد إلكتروني غير صالح.", tel:"رقم هاتف غير صالح.", cap:"الحد الأدنى 1 000 درهم.",
         pct:"يجب أن يكون مجموع الحصص 100%.", shareTxt:t=>`مجموع الحصص: ${t}%`, cgu:"يرجى تحديد هذه الخانة.",
         ok:(n,e)=>`شكراً ${n}. توصّلنا بطلبك. سيُرسل ملخّص إلى ${e}.`,
         edit:"تعديل", rv1:"الخدمة", rv2:"الشركة", rv3:"الشركاء", rv4:"الباقة", none:"بدون", quote:"حسب الطلب",
         pname:"الاسم الكامل", pcin:"رقم البطاقة الوطنية أو الجواز", ppct:"الحصة (%)", pttl:"شريك", rm:"حذف", other:"شخص آخر", next:"متابعة", send:"إرسال طلبي",
-        k:{forme:"الشكل",noms:"الأسماء",act:"النشاط",ville:"المدينة",capital:"الرأسمال",siege:"المقر",plan:"الباقة",opts:"الخيارات",total:"المجموع"},
+        k:{forme:"الشكل",noms:"الأسماء",act:"النشاط",ville:"المدينة",capital:"الرأسمال",siege:"المقر",plan:"الباقة",opts:"الخيارات",total:"المجموع",method:"الطريقة",amount:"المبلغ",ref:"المرجع",now:"المطلوب الآن"},
         siege:{dom:"توطين",local:"محلّ موجود"}}
   };
   const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
@@ -416,10 +476,17 @@ textarea{min-height:96px;resize:vertical}
     const rest = Math.max(0, 100 - partners.reduce((s, p) => s + (+p.pct || 0), 0));
     partners.push({ name:'', cin:'', pct:rest }); renderPartners(); save();
   });
+  function toggleGerant(){
+    const other = $('#gerant').value === 'other';
+    $('#gerantOther').hidden = !other;
+    ['#gn','#gc'].forEach(id => { const el = $(id); el.required = other; if (!other) { el.classList.remove('invalid'); el.parentElement.querySelector('.ferr')?.remove(); } });
+  }
+  $('#gerant').addEventListener('change', () => { toggleGerant(); save(); });
   function renderGerant(){
-    const g = $('#gerant'), cur = g.value;
+    const g = $('#gerant'), cur = g.dataset.want || g.value; delete g.dataset.want;
     g.innerHTML = partners.map((p, i) => `<option value="${i}">${p.name || T[lang].pttl + ' ' + (i+1)}</option>`).join('') + `<option value="other">${T[lang].other}</option>`;
     if ([...g.options].some(o => o.value === cur)) g.value = cur;
+    toggleGerant();
   }
   function shareTotal(){ return partners.reduce((s, p) => s + (+p.pct || 0), 0); }
   function shareInfo(){
@@ -436,8 +503,9 @@ textarea{min-height:96px;resize:vertical}
     $$('#stepper li').forEach((li, i) => { li.classList.toggle('done', i < n - 1); li.classList.toggle('on', i === n - 1); });
     $$('.step [data-t=st]').forEach(s => s.textContent = T[lang].st(+s.closest('.step').dataset.step));
     $('#prev').style.visibility = n === 1 ? 'hidden' : 'visible';
-    $('#nextTxt').textContent = n === 5 ? T[lang].send : T[lang].next;
-    if (n === 5) review();
+    $('#nextTxt').textContent = n === 6 ? T[lang].send : T[lang].next;
+    if (n === 5) payment();
+    if (n === 6) review();
     if (!keepScroll) $('#wizard').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
   function val(name){ const el = document.querySelector(`[name="${name}"]:checked`); return el ? el.value : ''; }
@@ -456,7 +524,7 @@ textarea{min-height:96px;resize:vertical}
     });
     if (n === 2 && +$('#capital').value < 1000) { ok = false; fieldErr($('#capital'), t.cap); }
     if (n === 3 && shareTotal() !== 100) { ok = false; $('#share').textContent = t.pct; $('#share').className = 'share bad'; }
-    if (n === 5) {
+    if (n === 6) {
       const e = $('#email'), p = $('#tel');
       if (e.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e.value)) { ok = false; fieldErr(e, t.email); }
       if (p.value && !/^[+0-9 ().-]{8,}$/.test(p.value)) { ok = false; fieldErr(p, t.tel); }
@@ -469,7 +537,7 @@ textarea{min-height:96px;resize:vertical}
   $('#wizard').addEventListener('submit', e => {
     e.preventDefault();
     if (!validate(step)) return;
-    if (step < 5) { show(step + 1); return; }
+    if (step < 6) { show(step + 1); return; }
     finish();
   });
   $('#prev').addEventListener('click', () => step > 1 && show(step - 1));
@@ -486,6 +554,22 @@ textarea{min-height:96px;resize:vertical}
     return t;
   }
   function optsText(){ const o = $$('#wizard input[type=checkbox][data-price]:checked').map(c => c.nextElementSibling.textContent); return o.length ? o.join(', ') : T[lang].none; }
+  let ref = 'SJ-' + String(Math.floor(100000 + Math.random() * 900000));
+  function payNow(){ const t = total(); if (t === null) return null; return val('pay_amount') === 'full' ? t : Math.round(t / 2); }
+  function payment(){
+    const t = total();
+    $('#amtFull').textContent = t === null ? T[lang].quote : fmt(t) + ' MAD';
+    $('#amtHalf').textContent = t === null ? T[lang].quote : fmt(Math.round(t / 2)) + ' MAD';
+    $('#payRef').textContent = ref; $$('.refv').forEach(e => e.textContent = ref);
+    const n = payNow(); $('#payNow').textContent = n === null ? T[lang].quote : fmt(n) + ' MAD';
+    const cash = val('pay_method') === 'cashplus';
+    $('#payVir').hidden = cash; $('#payCash').hidden = !cash;
+  }
+  $('#copyRef').addEventListener('click', () => {
+    const b = $('#copyRef'), done = () => { b.textContent = T[lang].copied; setTimeout(() => b.textContent = T[lang].copy, 1500); };
+    navigator.clipboard?.writeText(ref).then(done, () => { const r = document.createRange(); r.selectNodeContents($('#payRef')); getSelection().removeAllRanges(); getSelection().addRange(r); });
+    if (!navigator.clipboard) { const r = document.createRange(); r.selectNodeContents($('#payRef')); getSelection().removeAllRanges(); getSelection().addRange(r); }
+  });
   function summary(){
     $('#sForme').textContent = label('forme');
     $('#sNom').textContent = $('#n1').value.trim() || '—';
@@ -494,7 +578,10 @@ textarea{min-height:96px;resize:vertical}
     $('#sOpts').textContent = optsText();
     const t = total();
     $('#sTotal').textContent = t === null ? T[lang].quote : fmt(t);
-    $('#sDep').textContent = t === null ? '—' : fmt(Math.round(t / 2)) + ' MAD';
+    const n = payNow();
+    $('#sDep').textContent = n === null ? '—' : fmt(n) + ' MAD';
+    $('#sPay').textContent = T[lang].pm[val('pay_method')] + ' · ' + T[lang].pa[val('pay_amount')];
+    if (step === 5) payment();
   }
   function review(){
     const t = T[lang], k = t.k;
@@ -503,8 +590,9 @@ textarea{min-height:96px;resize:vertical}
     const blocks = [
       [t.rv1, 1, row(k.forme, label('forme'))],
       [t.rv2, 2, row(k.noms, noms) + row(k.act, $('#act').value.trim()) + row(k.ville, $('#ville').selectedOptions[0]?.textContent || '') + row(k.capital, fmt(+$('#capital').value) + ' MAD') + row(k.siege, t.siege[val('siege')])],
-      [t.rv3, 3, partners.map((p, i) => row(`${t.pttl} ${i+1}`, `${p.name} · ${p.cin} · ${p.pct}%`)).join('')],
-      [t.rv4, 4, row(k.plan, $('#sPlan').textContent) + row(k.opts, optsText()) + row(k.total, $('#sTotal').textContent + (total() === null ? '' : ' MAD'))]
+      [t.rv3, 3, partners.map((p, i) => row(`${t.pttl} ${i+1}`, `${p.name} · ${p.cin} · ${p.pct}%`)).join('') + row(t.gl, $('#gerant').value === 'other' ? `${$('#gn').value.trim()} · ${$('#gc').value.trim()}` : (partners[+$('#gerant').value]?.name || ''))],
+      [t.rv4, 4, row(k.plan, $('#sPlan').textContent) + row(k.opts, optsText()) + row(k.total, $('#sTotal').textContent + (total() === null ? '' : ' MAD'))],
+      [t.rv5, 5, row(k.method, t.pm[val('pay_method')]) + row(k.amount, t.pa[val('pay_amount')]) + row(k.now, $('#sDep').textContent) + row(k.ref, ref)]
     ];
     $('#review').innerHTML = blocks.map(([h, n, body]) => `<div class="rv"><div class="rv-h"><span>${h}</span><button type="button" data-go="${n}">${t.edit}</button></div><dl>${body}</dl></div>`).join('');
   }
@@ -513,7 +601,6 @@ textarea{min-height:96px;resize:vertical}
 
   // ---------- Finish ----------
   function finish(){
-    const ref = 'SJ-' + String(Date.now()).slice(-6);
     steps.forEach(s => s.hidden = true);
     $('#navBtns').hidden = true;
     $$('#stepper li').forEach(li => { li.classList.add('done'); li.classList.remove('on'); });
@@ -531,7 +618,7 @@ textarea{min-height:96px;resize:vertical}
     try {
       const data = {}; new FormData($('#wizard')).forEach((v, k) => data[k] = v);
       $$('#wizard input[type=checkbox][name]').forEach(c => data[c.name] = c.checked);
-      data.partners = partners; data.step = step;
+      data.partners = partners; data.step = step; data.ref = ref;
       localStorage.setItem('sj-demande', JSON.stringify(data));
     } catch(e) {}
   }
@@ -543,6 +630,8 @@ textarea{min-height:96px;resize:vertical}
         els.forEach(el => { if (el.type === 'radio') el.checked = el.value === v; else if (el.type === 'checkbox') el.checked = !!v; else el.value = v; });
       });
       if (Array.isArray(d.partners) && d.partners.length) partners = d.partners;
+      if (d.ref) ref = d.ref;
+      if (d.gerant) $('#gerant').dataset.want = d.gerant;
     } catch(e) {}
   }
 
