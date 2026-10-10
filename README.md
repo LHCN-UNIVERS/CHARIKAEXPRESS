@@ -36,7 +36,8 @@ Never put a secret (service-role) key in these pages: only the public "anon" key
 Client accounts (follow their file, upload documents, message their juriste, download company documents) are described in [`docs/client-space.md`](docs/client-space.md), with 3 models to choose from. Not built yet.
 
 ## Promo video
-`promo/charika-express-promo.mp4`: 36 s promo (1920×1080, 30 fps, French), with an original synthesised soundtrack.
+`promo/charika-express-promo.mp4`: 36 s promo (1920×1080, 30 fps, French) with a French voiceover and an original synthesised soundtrack, loudness-normalised to -14 LUFS. `promo/charika-express-promo-music-only.mp4` is the same video without the voice.
 - `promo/promo.html`: the animation. Open it in a browser to preview in real time; every frame is drawn by `render(t)`.
 - `promo/music.py`: the soundtrack (120 bpm, numpy only, no licensed audio).
-- `promo/build.js`: re-renders the MP4 (`node promo/build.js`). Needs Playwright, Python 3 with numpy, and ffmpeg.
+- `promo/voice.py`: the voiceover script and mix. Generated offline with Kokoro TTS (open-source, Apache-2.0, French voice `ff_siwis`); the music is ducked under the voice. Some words are respelled for French pronunciation (see the comment in the file).
+- `promo/build.js`: re-renders the MP4. Needs Playwright, Python 3 with numpy, and ffmpeg. For the voiceover also `pip install kokoro-onnx soundfile` and download `kokoro-v1.0.onnx` and `voices-v1.0.bin` from https://github.com/thewh1teagle/kokoro-onnx/releases/tag/model-files-v1.0 into a folder, then run `KOKORO_DIR=/that/folder node promo/build.js`.

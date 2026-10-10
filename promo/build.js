@@ -1,6 +1,7 @@
 // Renders promo.html frame by frame and encodes promo.mp4 (1920×1080, 30 fps, H.264 + AAC).
 // Needs Node with Playwright, Python 3 with numpy, and ffmpeg.
-// Usage: node build.js [out.mp4]
+// Voiceover: set KOKORO_DIR to a folder with the Kokoro model files (see voice.py); without it the video has music only.
+// Usage: [KOKORO_DIR=/path/to/models] node build.js [out.mp4]
 const { chromium } = require('playwright');
 const { spawn, execFileSync } = require('child_process');
 const path = require('path');
@@ -10,10 +11,16 @@ const os = require('os');
 const FPS = 30;
 const out = path.resolve(process.argv[2] || path.join(__dirname, 'promo.mp4'));
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'promo-'));
-const wav = path.join(tmp, 'music.wav');
+const music = path.join(tmp, 'music.wav');
+const mixed = path.join(tmp, 'mix.wav');
+let wav = music;
 
 (async () => {
-  execFileSync('python3', [path.join(__dirname, 'music.py'), wav], { stdio: 'inherit' });
+  execFileSync('python3', [path.join(__dirname, 'music.py'), music], { stdio: 'inherit' });
+  if (process.env.KOKORO_DIR) {
+    execFileSync('python3', [path.join(__dirname, 'voice.py'), music, mixed, process.env.KOKORO_DIR], { stdio: 'inherit' });
+    wav = mixed;
+  }
 
   const browser = await chromium.launch();
   const page = await browser.newPage({ viewport: { width: 1920, height: 1080 } });
@@ -27,7 +34,7 @@ const wav = path.join(tmp, 'music.wav');
     '-f', 'image2pipe', '-framerate', String(FPS), '-i', '-',
     '-i', wav,
     '-c:v', 'libx264', '-preset', 'slow', '-crf', '17', '-pix_fmt', 'yuv420p', '-profile:v', 'high',
-    '-c:a', 'aac', '-b:a', '192k', '-shortest', '-movflags', '+faststart', out], { stdio: ['pipe', 'inherit', 'inherit'] });
+    '-af', 'loudnorm=I=-14:TP=-1.5:LRA=11', '-ar', '48000', '-c:a', 'aac', '-b:a', '192k', '-shortest', '-movflags', '+faststart', out], { stdio: ['pipe', 'inherit', 'inherit'] });
 
   for (let i = 0; i < frames; i++) {
     await page.evaluate(t => window.render(t), i / FPS);
