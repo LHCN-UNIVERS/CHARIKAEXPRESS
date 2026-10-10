@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap">
 <style>
-/* Layout: "Coucher". Soft warm-white page with a living coral/pink/gold orb. Hero pairs a start-request button with fanned document cards; facts strip; bento of reasons; services; process; pricing; warm guarantee band; FAQ; contact. Logical properties for RTL. Single deliberate light look. */
+/* Layout: "Coucher". Soft warm-white page with a living coral/pink/gold orb. Hero pairs a start-request button with fanned document cards; dark key-facts ribbon; bento of reasons; services; process; pricing; warm guarantee band; FAQ; contact. Logical properties for RTL. Single deliberate light look. */
 :root{
   color-scheme:light;
   --ink:#2b0f2e; --m:#6b5468; --bg:#fffaf7; --card:#ffffff; --blush:#fff0ec; --line:#f1e4e6;
@@ -102,12 +102,18 @@ header.solid{background:rgba(255,250,247,.86);backdrop-filter:blur(14px);box-sha
 @media (max-width:960px){.hero-grid{grid-template-columns:1fr}.fan{height:400px}}
 @media (max-width:520px){.fan{height:340px}.doc{width:190px;height:250px;margin:-125px 0 0 -95px;padding:16px}.d1{transform:translate(-80px,18px) rotate(-12deg)}.d3{transform:translate(80px,26px) rotate(11deg)}.seal{width:96px;height:96px}}
 
-.strip{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border-block:1px solid var(--line)}
-.strip div{background:var(--bg);padding:24px clamp(16px,3vw,36px)}
-.strip b{font-size:1.5rem;letter-spacing:-.04em;display:block}
-:root[dir="rtl"] .strip b{letter-spacing:0}
-.strip span{color:var(--m);font-size:.88rem}
-@media (max-width:760px){.strip{grid-template-columns:1fr 1fr}}
+/* ---------- Key facts ribbon ---------- */
+.ribbon-wrap{position:relative;margin-top:-8px}
+.ribbon{background:var(--ink);color:#fff;border-radius:24px;display:grid;grid-template-columns:repeat(4,1fr);position:relative;overflow:hidden;box-shadow:0 30px 60px -36px rgba(43,15,46,.7)}
+.ribbon::after{content:"";position:absolute;width:320px;height:320px;border-radius:50%;background:var(--grad3);filter:blur(70px);opacity:.35;inset-inline-end:-80px;top:-160px;pointer-events:none}
+.ribbon .it{position:relative;z-index:1;display:flex;gap:14px;align-items:center;padding:22px 24px}
+.ribbon .it + .it{border-inline-start:1px solid rgba(255,255,255,.12)}
+.ribbon .ic{width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.08);display:grid;place-items:center;color:var(--gold);flex:none;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
+.ribbon .ic svg{width:22px;height:22px}
+.ribbon b{display:block;font-size:1.06rem;font-weight:700;line-height:1.25}
+.ribbon span{display:block;margin-top:2px;color:#cdb8c9;font-size:.85rem;line-height:1.4}
+@media (max-width:960px){.ribbon{grid-template-columns:1fr 1fr}.ribbon .it:nth-child(3){border-inline-start:0}.ribbon .it:nth-child(n+3){border-top:1px solid rgba(255,255,255,.12)}}
+@media (max-width:520px){.ribbon{grid-template-columns:1fr}.ribbon .it + .it{border-inline-start:0;border-top:1px solid rgba(255,255,255,.12)}.ribbon .it{padding:16px 20px}}
 
 /* ---------- Bento ---------- */
 .bento{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:minmax(190px,auto);gap:16px}
@@ -295,11 +301,13 @@ footer a:hover{color:var(--rose)}
     </div>
   </section>
 
-  <div class="strip">
-    <div><b class="ltr">7–15 j</b><span data-t="k1">jusqu'au registre de commerce</span></div>
-    <div><b>0</b><span data-t="k2">déplacement</span></div>
-    <div><b class="ltr">50 / 50</b><span data-t="k3">paiement en deux fois</span></div>
-    <div><b data-t="k4b">Anti-rejet</b><span data-t="k4">garantie incluse</span></div>
+  <div class="wrap ribbon-wrap">
+    <div class="ribbon">
+      <div class="it"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><div><b data-t="k1b">7 à 15 jours</b><span data-t="k1">jusqu'au registre de commerce</span></div></div>
+      <div class="it"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="11" rx="2"/><path d="M2 19h20"/></svg></span><div><b data-t="k2b">100% en ligne</b><span data-t="k2">zéro déplacement</span></div></div>
+      <div class="it"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a1 1 0 0 1-1-1V7z"/><path d="M4 7l11-3v3"/><circle cx="16" cy="13.5" r="1.3" fill="currentColor"/></svg></span><div><b data-t="k3b">Paiement 50 / 50</b><span data-t="k3">en deux fois</span></div></div>
+      <div class="it"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.4 8.2-8 9-4.6-.8-8-4.5-8-9V6l8-3z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg></span><div><b data-t="k4b">Anti-rejet</b><span data-t="k4">garantie incluse</span></div></div>
+    </div>
   </div>
 
   <!-- BENTO -->
@@ -483,7 +491,7 @@ footer a:hover{color:var(--rose)}
     start:"ابدأ طلبي",
     f1:"الشهادة السلبية", f5:"السجل التجاري", f2:"النظام الأساسي للشركة", d3k:"المحكمة", d2k:"النظام الأساسي",
     "st-ok":"تمّ", "st-wait":"قريباً", "st-sign":"للتوقيع", seal1:"ابتداءً من", seal2:"درهم",
-    k1:"حتى السجل التجاري", k2:"تنقّل", k3:"الأداء على دفعتين", k4b:"ضد الرفض", k4:"ضمان مشمول",
+    k1b:"من 7 إلى 15 يوماً", k1:"حتى السجل التجاري", k2b:"100% عن بُعد", k2:"دون أي تنقّل", k3b:"الأداء 50 / 50", k3:"على دفعتين", k4b:"ضد الرفض", k4:"ضمان مشمول",
     "p-eye":"لماذا سهل", "p-title":"مستشار قانوني حقيقي، <span class=\"gt\">وبساطة التطبيق</span>.",
     bn1:"كل شيء مشمول: الشهادة السلبية، النظام الأساسي، السجل التجاري، التعريف الضريبي، ICE، CNSS والإعلانات القانونية. المصاريف الإدارية مشمولة.",
     "h-cta2":"اطّلع على الأسعار", "h-cta1":"أنشئ شركتك",
