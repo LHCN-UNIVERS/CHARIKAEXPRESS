@@ -156,6 +156,14 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
 .dl{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;font-size:.76rem;margin:0}
 .dl dt{color:var(--m)}
 .dl dd{margin:0;font-weight:600;text-align:end;overflow-wrap:anywhere}
+.fiche-h{display:flex;justify-content:space-between;align-items:center;gap:8px}.fiche-h b{font-size:.95rem}
+.fiche-sub{color:var(--m);font-size:.72rem;margin-top:-8px}
+.info h4{padding-top:10px;border-top:1px solid var(--line)}
+.dl.fiche dd{display:flex;justify-content:flex-end;align-items:flex-start;gap:6px}
+.dl.fiche dd.ltr{direction:ltr}
+.na{color:#b98a95;font-weight:500;font-style:italic}
+.cp{border:0;background:none;color:var(--m);cursor:pointer;font-size:.8rem;line-height:1;padding:2px;border-radius:4px;flex:none}
+.cp:hover,.cp:focus-visible{color:var(--pink);background:#fff1f6}
 .blank{display:grid;place-items:center;color:var(--m);text-align:center;padding:40px;gap:8px}
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:12px;font-size:.82rem;font-weight:600;z-index:9;box-shadow:0 12px 30px -12px rgba(43,15,46,.6)}
 
@@ -533,6 +541,29 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
   }
   function log(r, text, t = 'sys'){ r.notes.push({ t, by:me.id, at:new Date().toISOString(), text }); r.updatedAt = new Date().toISOString(); persist(); }
 
+  // ---------- Client sheet: everything the client filled in the request form ----------
+  const LANGS = { fr:'Français', en:'English', ar:'Darija' };
+  const OPT_PRICE = { o_prio:900, o_logo:1500, o_pacte:1200 };
+  function ficheData(r){
+    const g = r.gerant || {}, isPartner = (r.partners || []).some(p => p.name && p.name === g.name);
+    return [
+      ['Client', [['Nom', r.client?.nom], ['Téléphone', r.client?.tel, 'ltr'], ['E-mail', r.client?.email, 'ltr'], ['Langue', LANGS[r.lang] || r.lang], ['Message', r.message]]],
+      ['Forme juridique', [['Forme', FORMES[r.forme] || r.forme]]],
+      ['Noms proposés', (r.noms || []).map((n, i) => [['1er choix', '2e choix', '3e choix'][i] || (i + 1) + 'e choix', n])],
+      ['Société', [['Activité', r.activite], ['Ville du siège', r.ville], ['Capital', r.capital != null ? fmt(r.capital) + ' MAD' : ''], ['Siège', r.siege === 'local' ? 'Local du client (bail ou titre)' : r.siege === 'dom' ? 'Domiciliation Charika Express' : r.siege]]],
+      ['Associés', (r.partners || []).flatMap((p, i) => [[`Associé ${i + 1}`, p.name], ['CIN', p.cin, 'ltr'], ['Parts', p.pct != null ? p.pct + ' %' : '']])],
+      ['Gérant', [['Nom', g.name ? g.name + (isPartner ? ' (associé)' : ' (non associé)') : ''], ['CIN', g.cin, 'ltr']]],
+      ['Formule et paiement', [['Formule', PLANS[r.plan] || r.plan], ['Options', (r.options || []).length ? r.options.map(o => (OPTS[o] || o) + (OPT_PRICE[o] ? ` (+${fmt(OPT_PRICE[o])} MAD)` : '')).join(', ') : 'Aucune'],
+        ['Total TTC', r.total == null ? 'Sur devis' : fmt(r.total) + ' MAD'], ['Paiement choisi', r.payAmount === 'full' ? 'Totalité à la commande' : 'Avance de 700 MAD, puis 2 tranches'], ['Moyen de paiement', PAY[r.payMethod] || r.payMethod],
+        ['Conditions générales', r.cgu === false ? 'Non acceptées' : 'Acceptées']]]
+    ];
+  }
+  function ficheHtml(r){
+    return ficheData(r).map(([h, rows]) => `<h4>${esc(h)}</h4><dl class="dl fiche">${rows.length ? rows.map(([k, v, cls]) => `<dt>${esc(k)}</dt><dd class="${cls || ''}">${v === '' || v == null ? '<span class="na">Non renseigné</span>' : esc(v)}${v ? `<button class="cp" data-cp="${esc(v)}" title="Copier" aria-label="Copier ${esc(k)}">⧉</button>` : ''}</dd>`).join('') : '<dt>—</dt><dd><span class="na">Non renseigné</span></dd>'}</dl>`).join('');
+  }
+  const ficheText = r => `Demande ${r.ref} · reçue le ${new Date(r.createdAt).toLocaleString('fr-FR')}\n` + ficheData(r).map(([h, rows]) => `\n${h.toUpperCase()}\n` + rows.map(([k, v]) => `${k} : ${v || '—'}`).join('\n')).join('\n');
+  const copyText = (txt, ok) => navigator.clipboard?.writeText(txt).then(() => toast(ok), () => toast('Copie impossible'));
+
   function renderDetail(){
     const r = current && get(current);
     if (current !== renderDetail.last) { rejectOpen = false; msgSel = null; renderDetail.last = current; }
@@ -613,15 +644,9 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
       </div>
     </section>
     <aside class="info">
-      <h4>Client</h4>
-      <div class="cl"><span class="av">${esc((r.client?.nom || '?')[0])}</span><div><b>${esc(r.client?.nom)}</b><small class="mono" style="font-weight:600">${esc(r.client?.tel)}</small><small>${esc(r.client?.email)}</small></div></div>
-      ${r.message ? `<div class="row" style="font-size:.76rem"><span>« ${esc(r.message)} »</span></div>` : ''}
-      <h4>Société</h4>
-      <dl class="dl"><dt>Noms</dt><dd>${esc((r.noms || []).join(' · '))}</dd><dt>Activité</dt><dd>${esc(r.activite)}</dd><dt>Ville</dt><dd>${esc(r.ville)}</dd><dt>Capital</dt><dd>${fmt(r.capital)} MAD</dd><dt>Siège</dt><dd>${r.siege === 'local' ? 'Local du client' : 'Domiciliation'}</dd></dl>
-      <h4>Associés</h4>
-      <dl class="dl">${(r.partners || []).map(p => `<dt>${esc(p.name)} <span class="mono" style="font-weight:500">${esc(p.cin)}</span></dt><dd>${p.pct} %</dd>`).join('')}<dt>Gérant</dt><dd>${esc(r.gerant?.name)}</dd></dl>
-      <h4>Formule</h4>
-      <dl class="dl"><dt>Formule</dt><dd>${esc(PLANS[r.plan] || '')}</dd><dt>Options</dt><dd>${r.options?.length ? r.options.map(o => esc(OPTS[o] || o)).join(', ') : 'Aucune'}</dd><dt>Total TTC</dt><dd>${r.total == null ? 'Sur devis' : fmt(r.total) + ' MAD'}</dd><dt>Reçue le</dt><dd>${new Date(r.createdAt).toLocaleString('fr-FR', { dateStyle:'short', timeStyle:'short' })}</dd></dl>
+      <div class="fiche-h"><b>Demande du client</b><button class="btn b-soft b-sm" id="ficheCopy">Copier la fiche</button></div>
+      <small class="fiche-sub">Reçue le ${esc(new Date(r.createdAt).toLocaleString('fr-FR', { dateStyle:'short', timeStyle:'short' }))} · ${esc(r.ref)}</small>
+      ${ficheHtml(r)}
       <h4>Juriste assigné</h4>
       ${me.role === 'admin'
         ? `<select class="f" id="assign"><option value="">Non assigné</option>${TEAM.map(t => `<option value="${t.id}" ${r.juriste === t.id ? 'selected' : ''}>${t.name}</option>`).join('')}</select>`
@@ -642,6 +667,8 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
       return;
     }
     const t = e.target.closest('button'); if (!t || t.disabled) return;
+    if (t.dataset.cp != null) { copyText(t.dataset.cp, 'Copié : ' + t.dataset.cp.slice(0, 40)); return; }
+    if (t.id === 'ficheCopy') { copyText(ficheText(r), 'Fiche complète copiée'); return; }
     if (t.dataset.ml) { r.msgLang = t.dataset.ml; persist(); renderDetail(); return; }
     if (t.id === 'mailCopy') {
       const k = msgSel || msgKey(r), lang = r.msgLang || 'fr', txt = msgText(r, k, lang, 'subj') + '\n\n' + msgText(r, k, lang, 'mail');
@@ -698,9 +725,9 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
 
   // ---------- Export (admin) ----------
   $('#exportBtn').addEventListener('click', () => {
-    const cols = ['Référence','Date','Société','Forme','Formule','Total MAD','Payé MAD','Paiement','Étape','Rejet','Documents obtenus','Juriste','Client','Téléphone','E-mail','Ville'];
+    const cols = ['Référence','Date','Société','Forme','Formule','Total MAD','Payé MAD','Paiement','Étape','Rejet','Documents obtenus','Juriste','Client','Téléphone','E-mail','Ville','Noms proposés','Activité','Capital MAD','Siège','Associés (nom · CIN · parts)','Gérant','CIN gérant','Options','Paiement choisi','Langue','Message'];
     const q = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
-    const rows = visible().map(r => { const am = amounts(r); return [r.ref, new Date(r.createdAt).toLocaleDateString('fr-FR'), title(r), FORMES[r.forme], PLANS[r.plan], r.total ?? 'Sur devis', am.filter(a => payDone(r, a.k) && a.v != null).reduce((x, a) => x + a.v, 0), PAY[r.payMethod], stepName(r.step), r.reject ? r.reject.motif : '', `${docsOk(r)}/${docsTotal}`, member(r.juriste)?.name || '', r.client?.nom, r.client?.tel, r.client?.email, r.ville]; });
+    const rows = visible().map(r => { const am = amounts(r); return [r.ref, new Date(r.createdAt).toLocaleDateString('fr-FR'), title(r), FORMES[r.forme], PLANS[r.plan], r.total ?? 'Sur devis', am.filter(a => payDone(r, a.k) && a.v != null).reduce((x, a) => x + a.v, 0), PAY[r.payMethod], stepName(r.step), r.reject ? r.reject.motif : '', `${docsOk(r)}/${docsTotal}`, member(r.juriste)?.name || '', r.client?.nom, r.client?.tel, r.client?.email, r.ville, (r.noms || []).join(' / '), r.activite, r.capital, r.siege === 'local' ? 'Local du client' : 'Domiciliation', (r.partners || []).map(p => `${p.name} · ${p.cin} · ${p.pct} %`).join(' / '), r.gerant?.name, r.gerant?.cin, (r.options || []).map(o => OPTS[o] || o).join(', '), r.payAmount === 'full' ? 'Totalité' : 'Avance + 2 tranches', LANGS[r.lang] || r.lang, r.message]; });
     const csv = '﻿' + [cols, ...rows].map(x => x.map(q).join(';')).join('\n');
     const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type:'text/csv;charset=utf-8' }));
     a.download = 'demandes-charika-express.csv'; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);

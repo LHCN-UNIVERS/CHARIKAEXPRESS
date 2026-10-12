@@ -744,7 +744,7 @@ textarea{min-height:96px;resize:vertical}
       partners: partners.map(p => ({ name: p.name.trim(), cin: p.cin.trim(), pct: +p.pct || 0 })),
       gerant: g === 'other' ? { name: $('#gn').value.trim(), cin: $('#gc').value.trim() } : { name: partners[+g]?.name || '', cin: partners[+g]?.cin || '' },
       client: { nom: $('#nom').value.trim(), tel: $('#tel').value.trim(), email: $('#email').value.trim() },
-      message: $('#note').value.trim()
+      message: $('#note').value.trim(), cgu: $('#cgu').checked
     };
   }
   function save(){
