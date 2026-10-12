@@ -63,6 +63,7 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
 .demo-bar{background:#fff4d6;color:#7a5400;font-size:.76rem;padding:7px 20px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .demo-bar button{all:unset;cursor:pointer;font-weight:700;text-decoration:underline}
 .body{display:grid;grid-template-columns:320px 1fr 290px;min-height:0}
+@media (min-width:1181px){.body.nofiche{grid-template-columns:320px 1fr}}
 .detail{display:contents}
 
 /* List */
@@ -156,7 +157,7 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
 .dl{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;font-size:.76rem;margin:0}
 .dl dt{color:var(--m)}
 .dl dd{margin:0;font-weight:600;text-align:end;overflow-wrap:anywhere}
-.fiche-h{display:flex;justify-content:space-between;align-items:center;gap:8px}.fiche-h b{font-size:.95rem}
+.fiche-h{display:flex;justify-content:space-between;align-items:center;gap:8px}.fiche-a{display:flex;gap:6px}.fiche-h b{font-size:.95rem}
 .fiche-sub{color:var(--m);font-size:.72rem;margin-top:-8px}
 .info h4{padding-top:10px;border-top:1px solid var(--line)}
 .dl.fiche dd{display:flex;justify-content:flex-end;align-items:flex-start;gap:6px}
@@ -469,6 +470,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
       .join('\n').replace(/\{(\w+)\}/g, (m, k) => vals[k] ?? m).replace(/\n{3,}/g, '\n\n').trim();
   }
   const msgText = (r, key, lang, part = 'wa') => fill(msgOf(key)[lang][part] || '', msgVals(r, key, lang));
+  let ficheOn = (() => { try { return localStorage.getItem('ce-admin-fiche') !== 'hide'; } catch(e) { return true; } })();   // client sheet shown or hidden, remembered per browser
   let msgSel = null;                                     // message picked by hand in the open file, if any
   function toast(t){ const el = $('#toast'); el.textContent = t; el.hidden = false; clearTimeout(toast.h); toast.h = setTimeout(() => el.hidden = true, 1800); }
 
@@ -626,6 +628,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
         <button class="btn b-soft b-sm back" id="back">← Liste</button>
         <div><h2>${esc(title(r))}${isPrio(r) ? ' <em class="prio">⚡ Prioritaire</em>' : ''}</h2><small class="mono">${esc(r.ref)} · ${esc(FORMES[r.forme] || '')} · ${esc(r.ville || '')} · ${esc(PLANS[r.plan] || '')}</small></div>
         <div class="r">
+          <button class="btn b-soft" id="ficheToggle" aria-pressed="${ficheOn}">${ficheOn ? 'Masquer la demande' : 'Voir la demande'}</button>
           ${waBtn('WhatsApp', '')}
           ${r.client?.tel ? `<a class="btn b-soft" href="tel:${esc(r.client.tel.replace(/\s/g, ''))}">Appeler</a>` : ''}
           ${!r.juriste ? '<button class="btn b-ink" id="take">Prendre le dossier</button>' : ''}
@@ -655,8 +658,8 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
         <form class="cmp" id="noteForm"><input class="f" id="noteIn" placeholder="Ajouter une note pour l'équipe…" autocomplete="off"><button class="btn b-grad">Ajouter</button></form>
       </div>
     </section>
-    <aside class="info">
-      <div class="fiche-h"><b>Demande du client</b><button class="btn b-soft b-sm" id="ficheCopy">Copier la fiche</button></div>
+    <aside class="info" ${ficheOn ? '' : 'hidden'}>
+      <div class="fiche-h"><b>Demande du client</b><span class="fiche-a"><button class="btn b-soft b-sm" id="ficheCopy">Copier la fiche</button><button class="btn b-soft b-sm" id="ficheHide" aria-label="Masquer la demande du client" title="Masquer">✕</button></span></div>
       <small class="fiche-sub">Reçue le ${esc(new Date(r.createdAt).toLocaleString('fr-FR', { dateStyle:'short', timeStyle:'short' }))} · ${esc(r.ref)}</small>
       ${ficheHtml(r)}
       <h4>Juriste assigné</h4>
@@ -664,6 +667,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
         ? `<select class="f" id="assign"><option value="">Non assigné</option>${TEAM.map(t => `<option value="${t.id}" ${r.juriste === t.id ? 'selected' : ''}>${t.name}</option>`).join('')}</select>`
         : `<div class="cl"><span class="av" style="--c:${j ? j.c : '#c9b6c4'};width:32px;height:32px">${j ? j.name[0] : '?'}</span><b>${j ? j.name : 'Non assigné'}</b></div>`}
     </aside>`;
+    $('#body').classList.toggle('nofiche', !ficheOn);
     const feed = $('#feed'); feed.scrollTop = feed.scrollHeight;
   }
 
@@ -680,6 +684,13 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     }
     const t = e.target.closest('button'); if (!t || t.disabled) return;
     if (t.dataset.cp != null) { copyText(t.dataset.cp, 'Copié : ' + t.dataset.cp.slice(0, 40)); return; }
+    if (t.id === 'ficheToggle' || t.id === 'ficheHide') {
+      ficheOn = t.id === 'ficheToggle' ? !ficheOn : false;
+      try { localStorage.setItem('ce-admin-fiche', ficheOn ? 'show' : 'hide'); } catch(err) {}
+      renderDetail();
+      if (ficheOn && matchMedia('(max-width:1180px)').matches) $('.info').scrollIntoView({ behavior:'smooth', block:'start' });
+      return;
+    }
     if (t.id === 'ficheCopy') { copyText(ficheText(r), 'Fiche complète copiée'); return; }
     if (t.dataset.ml) { r.msgLang = t.dataset.ml; persist(); renderDetail(); return; }
     if (t.id === 'mailCopy') {
