@@ -164,6 +164,9 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
 .na{color:#b98a95;font-weight:500;font-style:italic}
 .cp{border:0;background:none;color:var(--m);cursor:pointer;font-size:.8rem;line-height:1;padding:2px;border-radius:4px;flex:none}
 .cp:hover,.cp:focus-visible{color:var(--pink);background:#fff1f6}
+.optb{font-style:normal;font-size:.62rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#7b3fd0;background:#f1e8ff;border-radius:6px;padding:1px 6px;vertical-align:1px;text-decoration:none;display:inline-block}
+.prio{font-style:normal;font-size:.66rem;font-weight:700;color:#9a5b00;background:#fff1d6;border-radius:6px;padding:1px 6px;white-space:nowrap}
+h2 .prio{font-size:.7rem;vertical-align:3px}
 .blank{display:grid;place-items:center;color:var(--m);text-align:center;padding:40px;gap:8px}
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:12px;font-size:.82rem;font-weight:600;z-index:9;box-shadow:0 12px 30px -12px rgba(43,15,46,.6)}
 
@@ -272,22 +275,25 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
     'rc': ['Registre de Commerce (RC)', "La carte d'identité juridique de la société, indispensable pour exercer légalement."],
     'cnss': ['Affiliation à la CNSS', 'Immatricule la société à la CNSS, obligatoire pour déclarer les salariés.'],
     'bo': ['Publication au Bulletin Officiel', 'Obligatoire pour rendre publique la création de la société.'],
-    'annonce': ['Annonce légale (PDF du journal)', 'Obligatoire pour rendre publique la création de la société.']
+    'annonce': ['Annonce légale (PDF du journal)', 'Obligatoire pour rendre publique la création de la société.'],
+    // Option documents: only in files where the client chose the option (see OPT_DOC)
+    'pacte': ["Pacte d'associés", "Option choisie par le client. Rédigé avec les statuts et envoyé avec eux pour signature."],
+    'logo': ['Logo et carte de visite', 'Option choisie par le client. À lancer dès que le nom est réservé, validé par le client, remis avec le dossier.']
   };
   const DOC_ST = ['En attente', 'En cours', 'Obtenu'];
   const AVANCE = 700;
   // The creation workflow. A step is finished when all its tasks are done; the file then moves on by itself.
   // Task types: doc (a document above, done when "Obtenu"), check (an action ticked by the team), pay (a payment received).
   const WORKFLOW = [
-    { name:'Demande reçue', short:'Reçue', hint:"Le client règle l'avance de 700 MAD. Le certificat négatif démarre dès réception.", tasks:[{ t:'pay', k:'avance' }] },
+    { name:'Demande reçue', short:'Reçue', hint:"Le client règle l'avance de 700 MAD. Le certificat négatif démarre dès réception.", tasks:[{ t:'check', k:'prio', opt:'o_prio', label:'Traitement prioritaire : dossier signalé en priorité à l\'équipe' }, { t:'pay', k:'avance' }] },
     { name:'Certificat négatif', short:'Certificat', hint:"Demande du certificat négatif à l'OMPIC pour réserver le nom.", tasks:[{ t:'doc', k:'cn' }] },
-    { name:'Rédaction', short:'Rédaction', hint:'Préparation des documents, puis envoi au client pour légalisation.', tasks:[{ t:'doc', k:'statuts' }, { t:'doc', k:'domiciliation' }, { t:'doc', k:'procuration' }, { t:'check', k:'form-rc', label:"Formulaire RC (déclaration d'immatriculation) préparé" }, { t:'check', k:'sent-legal', label:'Documents envoyés au client pour légalisation' }] },
+    { name:'Rédaction', short:'Rédaction', hint:'Préparation des documents, puis envoi au client pour légalisation.', tasks:[{ t:'doc', k:'statuts' }, { t:'doc', k:'pacte', opt:'o_pacte' }, { t:'doc', k:'domiciliation' }, { t:'doc', k:'procuration' }, { t:'check', k:'form-rc', label:"Formulaire RC (déclaration d'immatriculation) préparé" }, { t:'check', k:'sent-legal', label:'Documents envoyés au client pour légalisation' }] },
     { name:'Légalisation', short:'Légalisation', hint:'Le client légalise les documents, les renvoie et règle 50 % du reste.', tasks:[{ t:'check', k:'legal-back', label:'Documents légalisés reçus du client' }, { t:'pay', k:'second' }] },
     { name:'Enregistrement', short:'Enregistrement', hint:'Enregistrement des statuts et du contrat de domiciliation.', tasks:[{ t:'doc', k:'enr-statuts' }, { t:'doc', k:'enr-domiciliation' }] },
     { name:'Dépôt OMPIC · Impôts', short:'OMPIC · Impôts', hint:"Dépôt à l'OMPIC, traitement par les Impôts. En cas de rejet, indiquez le motif.", reject:true, tasks:[{ t:'check', k:'depot', label:"Dossier déposé à l'OMPIC" }, { t:'doc', k:'ice' }, { t:'doc', k:'tp' }, { t:'doc', k:'if' }, { t:'doc', k:'identifiants' }] },
     { name:'Tribunal', short:'Tribunal', hint:'Immatriculation au registre de commerce, puis affiliation CNSS.', tasks:[{ t:'doc', k:'rc' }, { t:'doc', k:'cnss' }] },
     { name:'Bulletin Officiel', short:'BO', hint:'Publication de la création au Bulletin Officiel.', tasks:[{ t:'doc', k:'bo' }] },
-    { name:'Annonce légale', short:'Annonce', hint:"Rédaction de l'annonce, envoi au journal, réception du PDF.", tasks:[{ t:'check', k:'annonce-sent', label:'Annonce envoyée au journal' }, { t:'doc', k:'annonce' }] },
+    { name:'Annonce légale', short:'Annonce', hint:"Rédaction de l'annonce, envoi au journal, réception du PDF.", tasks:[{ t:'check', k:'annonce-sent', label:'Annonce envoyée au journal' }, { t:'doc', k:'annonce' }, { t:'doc', k:'logo', opt:'o_logo' }] },
     { name:'Dossier complet', short:'Complet', hint:'Le client règle le solde, puis on lui envoie tous les documents.', tasks:[{ t:'pay', k:'final' }, { t:'check', k:'delivered', label:'Tous les documents envoyés au client' }] }
   ];
   const DONE = WORKFLOW.length;           // step index of a delivered file
@@ -312,7 +318,7 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
 
   // Mark everything before `step` as done, and the current step's documents as in progress (demo data)
   function progress(r, step){
-    WORKFLOW.forEach((w, i) => w.tasks.forEach(tk => {
+    WORKFLOW.forEach((w, i) => tasksOf(r, i).forEach(tk => {
       if (i < step) { if (tk.t === 'doc') r.livrables[tk.k] = 2; else if (tk.t === 'check') r.checks[tk.k] = true; else r.paid[tk.k] = true; }
       else if (i === step && tk.t === 'doc') r.livrables[tk.k] = 1;
     }));
@@ -324,7 +330,7 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
     const mk = (o) => Object.assign(fresh(), { lang:'fr', options:[], payAmount:'avance', siege:'dom', message:'', seen:true, juriste:null, notes:[] }, o);
     const P = (name, cin, pct) => ({ name, cin, pct });
     const list = [
-      mk({ ref:'CE-446366', createdAt:ago(.02), updatedAt:ago(.02), seen:false, forme:'sarlau', plan:'essentiel', total:4680, payMethod:'cashplus',
+      mk({ ref:'CE-446366', createdAt:ago(.02), updatedAt:ago(.02), seen:false, forme:'sarlau', plan:'essentiel', total:7080, options:['o_prio', 'o_logo'], payMethod:'cashplus',
         noms:['Atlas Digital','Atlas Media','Atlas Group'], activite:'Agence de marketing digital', ville:'Casablanca', capital:10000,
         partners:[P('Lahcen Tazi','BE123456',100)], gerant:{ name:'Lahcen Tazi', cin:'BE123456' },
         client:{ nom:'Lahcen Tazi', tel:'0612345678', email:'lahcen@exemple.ma' } }),
@@ -402,12 +408,18 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
     const av = t == null ? AVANCE : Math.min(AVANCE, t), rest = t == null ? null : t - av, second = rest == null ? null : Math.round(rest / 2);
     return [{ k:'avance', label:'Avance (à la commande)', v:av }, { k:'second', label:'50 % du reste (après légalisation)', v:second }, { k:'final', label:'Solde (dossier complet)', v:rest == null ? null : rest - second }];
   }
+  // Option tasks (opt) only count in files where the client chose that option.
+  const OPT_DOC = { pacte:'o_pacte', logo:'o_logo' };
+  const hasOpt = (r, o) => (r.options || []).includes(o);
+  const tasksOf = (r, i) => WORKFLOW[i].tasks.filter(tk => !tk.opt || hasOpt(r, tk.opt));
+  const docKeys = r => Object.keys(DOCS).filter(k => !OPT_DOC[k] || hasOpt(r, OPT_DOC[k]));
+  const isPrio = r => hasOpt(r, 'o_prio');
   const payDone = (r, k) => !!(r.paid.full || r.paid[k]);
   const payLabel = k => ({ avance:'Avance de 700 MAD reçue', second:'50 % du reste reçu', final:'Solde reçu' })[k];
   const taskDone = (r, tk) => tk.t === 'doc' ? r.livrables[tk.k] === 2 : tk.t === 'check' ? !!r.checks[tk.k] : payDone(r, tk.k);
-  const stepDone = (r, i) => WORKFLOW[i].tasks.every(tk => taskDone(r, tk)) && !(WORKFLOW[i].reject && r.reject);
-  const docsTotal = Object.keys(DOCS).length;
-  const docsOk = r => Object.keys(DOCS).filter(k => r.livrables[k] === 2).length;
+  const stepDone = (r, i) => tasksOf(r, i).every(tk => taskDone(r, tk)) && !(WORKFLOW[i].reject && r.reject);
+  const docsTotal = r => docKeys(r).length;
+  const docsOk = r => docKeys(r).filter(k => r.livrables[k] === 2).length;
 
   // Move the file forward while its current step is finished; the next step's documents become "En cours".
   function advance(r){
@@ -415,7 +427,7 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
     while (r.step < DONE && stepDone(r, r.step)) {
       r.step++; moved++;
       log(r, r.step >= DONE ? 'Dossier livré au client. ✓' : `Étape terminée : ${WORKFLOW[r.step - 1].name} → ${WORKFLOW[r.step].name}.`);
-      if (r.step < DONE) WORKFLOW[r.step].tasks.forEach(tk => { if (tk.t === 'doc' && !r.livrables[tk.k]) r.livrables[tk.k] = 1; });
+      if (r.step < DONE) tasksOf(r, r.step).forEach(tk => { if (tk.t === 'doc' && !r.livrables[tk.k]) r.livrables[tk.k] = 1; });
     }
     if (moved) { msgSel = null; toast((r.step >= DONE ? 'Dossier terminé ✓' : `Étape suivante : ${WORKFLOW[r.step].name}`) + ' · message client prêt'); }
   }
@@ -501,7 +513,7 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
       if (!q) return true;
       const hay = [r.ref, ...(r.noms || []), r.client?.nom, r.client?.tel, r.client?.email, ...(r.partners || []).flatMap(p => [p.name, p.cin])].join(' ').toLowerCase();
       return hay.includes(q);
-    }).sort((a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt));
+    }).sort((a, b) => (isPrio(b) && b.step < DONE) - (isPrio(a) && a.step < DONE) || Date.parse(b.updatedAt) - Date.parse(a.updatedAt));   // open priority files first
   }
   function statusLine(r){
     if (r.step >= DONE) return '✓ Livré';
@@ -515,7 +527,7 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
       const j = member(r.juriste);
       return `<button class="li ${r.ref === current ? 'on' : ''}" data-ref="${esc(r.ref)}">
         <span class="av" style="--c:${j ? j.c : '#c9b6c4'}">${esc(title(r)[0] || '?')}</span>
-        <div><b>${esc(title(r))}</b><small><span class="mono">${esc(r.ref)}</span> · ${esc(FORMES[r.forme] || '')}</small><small class="${r.reject && r.step < DONE ? 'rej' : ''}">${esc(statusLine(r))}</small></div>
+        <div><b>${esc(title(r))}</b><small><span class="mono">${esc(r.ref)}</span> · ${esc(FORMES[r.forme] || '')}${isPrio(r) && r.step < DONE ? ' <em class="prio">⚡ Prioritaire</em>' : ''}</small><small class="${r.reject && r.step < DONE ? 'rej' : ''}">${esc(statusLine(r))}</small></div>
         <div class="r"><span>${when(r.updatedAt)}</span>${!r.seen ? '<span class="dot" title="Non lue"></span>' : isLate(r) ? `<span class="pill p-late">J+${days(r.updatedAt)}</span>` : ''}</div>
       </button>`;
     }).join('') : '<p class="empty">Aucun dossier ici.</p>';
@@ -586,8 +598,8 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
     const docBtn = k => { const st = r.livrables[k] || 0; return `<button class="lst s${st}" data-liv="${k}" ${canEdit ? '' : 'disabled'}>${DOC_ST[st]}</button>`; };
     const taskRow = tk => {
       const done = taskDone(r, tk);
-      if (tk.t === 'doc') return `<div class="tk ${done ? 'done' : ''}"><i class="st ${done ? 'y' : 'n'}">${done ? '✓' : '•'}</i><span><b>${esc(DOCS[tk.k][0])}</b><small>${esc(DOCS[tk.k][1])}</small></span>${docBtn(tk.k)}</div>`;
-      if (tk.t === 'check') return `<div class="tk ${done ? 'done' : ''}"><i class="st ${done ? 'y' : 'n'}">${done ? '✓' : '•'}</i><span><b>${esc(tk.label)}</b></span><button class="tg ${done ? 'y' : ''}" data-check="${tk.k}" ${canEdit ? '' : 'disabled'}>${done ? 'Fait ✓' : 'Marquer fait'}</button></div>`;
+      if (tk.t === 'doc') return `<div class="tk ${done ? 'done' : ''}"><i class="st ${done ? 'y' : 'n'}">${done ? '✓' : '•'}</i><span><b>${esc(DOCS[tk.k][0])}${tk.opt ? ' <em class="optb">Option</em>' : ''}</b><small>${esc(DOCS[tk.k][1])}</small></span>${docBtn(tk.k)}</div>`;
+      if (tk.t === 'check') return `<div class="tk ${done ? 'done' : ''}"><i class="st ${done ? 'y' : 'n'}">${done ? '✓' : '•'}</i><span><b>${esc(tk.label)}${tk.opt ? ' <em class="optb">Option</em>' : ''}</b></span><button class="tg ${done ? 'y' : ''}" data-check="${tk.k}" ${canEdit ? '' : 'disabled'}>${done ? 'Fait ✓' : 'Marquer fait'}</button></div>`;
       const a = am.find(x => x.k === tk.k) || am[0];
       return `<div class="tk ${done ? 'done' : ''}"><i class="st ${done ? 'y' : 'n'}">${done ? '✓' : '•'}</i><span><b>${esc(payLabel(tk.k))}</b><small>${r.paid.full ? 'Totalité payée à la commande' : a.v == null ? 'Montant sur devis' : fmt(a.v) + ' MAD · ' + esc(PAY[r.payMethod] || '')}</small></span>${r.paid.full ? '<span class="pill p-ok">Payé</span>' : `<button class="tg ${done ? 'y' : ''}" data-pay="${tk.k}" ${canEdit ? '' : 'disabled'}>${done ? 'Reçu ✓' : 'Marquer reçu'}</button>`}</div>`;
     };
@@ -595,7 +607,7 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
     let curBox = '';
     if (r.step >= DONE) curBox = `<div class="box cur-step okb"><h4>✓ Dossier livré <small>Tous les documents ont été envoyés au client.</small></h4></div>`;
     else {
-      const left = w.tasks.filter(tk => !taskDone(r, tk)).length;
+      const left = tasksOf(r, r.step).filter(tk => !taskDone(r, tk)).length;
       let rej = '';
       if (w.reject && r.reject) {
         rej = `<div class="rejb"><b>⚠ Dossier rejeté</b><span>Motif : ${esc(r.reject.motif)}</span><small>${r.reject.cause === 'client' ? 'Problème côté client' : 'Problème côté cabinet'} · ${when(r.reject.at)}</small>
@@ -606,13 +618,13 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
           : '<button class="btn b-soft b-sm rejbtn" id="rejOpen">⚠ Signaler un rejet</button>';
       }
       curBox = `<div class="box cur-step"><h4>Étape ${r.step + 1}/${DONE} · ${esc(w.name)} <small>${left ? `${left} élément${left > 1 ? 's' : ''} restant${left > 1 ? 's' : ''} · l'étape suivante démarre automatiquement` : 'terminée'}</small></h4>
-        <p class="hint">${esc(w.hint)}</p>${rej}${w.tasks.map(taskRow).join('')}</div>`;
+        <p class="hint">${esc(w.hint)}</p>${rej}${tasksOf(r, r.step).map(taskRow).join('')}</div>`;
     }
     $('#detail').innerHTML = `
     <section class="ctr">
       <div class="h">
         <button class="btn b-soft b-sm back" id="back">← Liste</button>
-        <div><h2>${esc(title(r))}</h2><small class="mono">${esc(r.ref)} · ${esc(FORMES[r.forme] || '')} · ${esc(r.ville || '')} · ${esc(PLANS[r.plan] || '')}</small></div>
+        <div><h2>${esc(title(r))}${isPrio(r) ? ' <em class="prio">⚡ Prioritaire</em>' : ''}</h2><small class="mono">${esc(r.ref)} · ${esc(FORMES[r.forme] || '')} · ${esc(r.ville || '')} · ${esc(PLANS[r.plan] || '')}</small></div>
         <div class="r">
           ${waBtn('WhatsApp', '')}
           ${r.client?.tel ? `<a class="btn b-soft" href="tel:${esc(r.client.tel.replace(/\s/g, ''))}">Appeler</a>` : ''}
@@ -623,9 +635,9 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
       <div class="trackw"><div class="track" role="list">${WORKFLOW.map((x, i) => `<button role="listitem" data-step="${i}" class="${i < r.step ? 'ok' : i === r.step ? (r.reject && x.reject ? 'cur rj' : 'cur') : ''}" ${me.role === 'admin' ? '' : 'disabled'} title="${esc(x.name)}${me.role === 'admin' ? ' · cliquer pour déplacer le dossier' : ''}"><i>${i < r.step ? '✓' : r.reject && x.reject && i === r.step ? '!' : i + 1}</i>${esc(x.short)}</button>`).join('')}</div></div>
       ${curBox}
       ${msgBox}
-      <div class="box"><h4>Documents de la société <small>${livOk}/${docsTotal} obtenus</small></h4>
-        <div class="prog"><i style="width:${livOk / docsTotal * 100}%"></i></div>
-        ${WORKFLOW.map((x, i) => { const ds = x.tasks.filter(tk => tk.t === 'doc'); if (!ds.length) return ''; return `<div class="lgrp ${i === r.step ? 'now' : ''}"><h5>${i + 1}. ${esc(x.name)}</h5><div class="livs">${ds.map(tk => `<div class="lv">${docBtn(tk.k)}<div><b>${esc(DOCS[tk.k][0])}</b></div></div>`).join('')}</div></div>`; }).join('')}
+      <div class="box"><h4>Documents de la société <small>${livOk}/${docsTotal(r)} obtenus</small></h4>
+        <div class="prog"><i style="width:${livOk / docsTotal(r) * 100}%"></i></div>
+        ${WORKFLOW.map((x, i) => { const ds = tasksOf(r, i).filter(tk => tk.t === 'doc'); if (!ds.length) return ''; return `<div class="lgrp ${i === r.step ? 'now' : ''}"><h5>${i + 1}. ${esc(x.name)}</h5><div class="livs">${ds.map(tk => `<div class="lv">${docBtn(tk.k)}<div><b>${esc(DOCS[tk.k][0])}</b></div></div>`).join('')}</div></div>`; }).join('')}
       </div>
       <div class="two">
         <div class="box"><h4>Pièces du client <small>${piecesOk}/${docs.length}</small></h4>
@@ -727,7 +739,7 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
   $('#exportBtn').addEventListener('click', () => {
     const cols = ['Référence','Date','Société','Forme','Formule','Total MAD','Payé MAD','Paiement','Étape','Rejet','Documents obtenus','Juriste','Client','Téléphone','E-mail','Ville','Noms proposés','Activité','Capital MAD','Siège','Associés (nom · CIN · parts)','Gérant','CIN gérant','Options','Paiement choisi','Langue','Message'];
     const q = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
-    const rows = visible().map(r => { const am = amounts(r); return [r.ref, new Date(r.createdAt).toLocaleDateString('fr-FR'), title(r), FORMES[r.forme], PLANS[r.plan], r.total ?? 'Sur devis', am.filter(a => payDone(r, a.k) && a.v != null).reduce((x, a) => x + a.v, 0), PAY[r.payMethod], stepName(r.step), r.reject ? r.reject.motif : '', `${docsOk(r)}/${docsTotal}`, member(r.juriste)?.name || '', r.client?.nom, r.client?.tel, r.client?.email, r.ville, (r.noms || []).join(' / '), r.activite, r.capital, r.siege === 'local' ? 'Local du client' : 'Domiciliation', (r.partners || []).map(p => `${p.name} · ${p.cin} · ${p.pct} %`).join(' / '), r.gerant?.name, r.gerant?.cin, (r.options || []).map(o => OPTS[o] || o).join(', '), r.payAmount === 'full' ? 'Totalité' : 'Avance + 2 tranches', LANGS[r.lang] || r.lang, r.message]; });
+    const rows = visible().map(r => { const am = amounts(r); return [r.ref, new Date(r.createdAt).toLocaleDateString('fr-FR'), title(r), FORMES[r.forme], PLANS[r.plan], r.total ?? 'Sur devis', am.filter(a => payDone(r, a.k) && a.v != null).reduce((x, a) => x + a.v, 0), PAY[r.payMethod], stepName(r.step), r.reject ? r.reject.motif : '', `${docsOk(r)}/${docsTotal(r)}`, member(r.juriste)?.name || '', r.client?.nom, r.client?.tel, r.client?.email, r.ville, (r.noms || []).join(' / '), r.activite, r.capital, r.siege === 'local' ? 'Local du client' : 'Domiciliation', (r.partners || []).map(p => `${p.name} · ${p.cin} · ${p.pct} %`).join(' / '), r.gerant?.name, r.gerant?.cin, (r.options || []).map(o => OPTS[o] || o).join(', '), r.payAmount === 'full' ? 'Totalité' : 'Avance + 2 tranches', LANGS[r.lang] || r.lang, r.message]; });
     const csv = '﻿' + [cols, ...rows].map(x => x.map(q).join(';')).join('\n');
     const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type:'text/csv;charset=utf-8' }));
     a.download = 'demandes-charika-express.csv'; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
