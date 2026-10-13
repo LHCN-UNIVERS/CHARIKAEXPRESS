@@ -160,6 +160,15 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
 .fiche-h{display:flex;justify-content:space-between;align-items:center;gap:8px}.fiche-a{display:flex;gap:6px}.fiche-h b{font-size:.95rem}
 .fiche-sub{color:var(--m);font-size:.72rem;margin-top:-8px}
 .info h4{padding-top:10px;border-top:1px solid var(--line)}
+.blk{border:1px solid var(--line);border-radius:14px;background:#fff;flex:none}
+.blk-h{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:9px 10px;background:#fbf6f8;border-radius:13px 13px 0 0}
+.blk-h b{font-size:.8rem;display:block}
+.blk-h small{display:block;color:var(--m);font-size:.66rem;font-weight:500}
+.blk .dl{padding:10px 10px 4px}
+.blk-f{padding:4px 10px 10px}
+.blk.now{border-color:var(--pink);box-shadow:0 0 0 3px rgba(255,79,154,.12)}
+.blk.now .blk-h{background:#ffe9f2}
+.now-tag{flex:none;font-size:.6rem;font-weight:700;color:#fff;background:var(--grad);border-radius:999px;padding:2px 7px}
 .dl.fiche dd{display:flex;justify-content:flex-end;align-items:flex-start;gap:6px}
 .dl.fiche dd.ltr{direction:ltr}
 .na{color:#b98a95;font-weight:500;font-style:italic}
@@ -558,24 +567,44 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   // ---------- Client sheet: everything the client filled in the request form ----------
   const LANGS = { fr:'Français', en:'English', ar:'Darija' };
   const OPT_PRICE = { o_prio:900, o_logo:1500, o_pacte:1200 };
+  // Grouped by the paperwork the team fills in; the block for the file's current step comes first.
   function ficheData(r){
-    const g = r.gerant || {}, isPartner = (r.partners || []).some(p => p.name && p.name === g.name);
+    const g = r.gerant || {}, ps = r.partners || [], isPartner = ps.some(p => p.name && p.name === g.name);
+    const noms = r.noms || [], nom1 = noms[0] || '';
+    const cinOf = name => (ps.find(p => p.name === name) || {}).cin || (g.name === name ? g.cin : '');
+    const demandeur = r.client?.nom || g.name || ps[0]?.name || '';
+    const siege = r.siege === 'local' ? 'Local du client (bail ou titre)' : r.siege === 'dom' ? 'Domiciliation Charika Express' : r.siege;
+    const gerant = g.name ? `${g.name}${g.cin ? ' · ' + g.cin : ''} (${isPartner ? 'associé' : 'non associé'})` : '';
+    const capital = r.capital != null ? fmt(r.capital) + ' MAD' : '';
     return [
-      ['Client', [['Nom', r.client?.nom], ['Téléphone', r.client?.tel, 'ltr'], ['E-mail', r.client?.email, 'ltr'], ['Langue', LANGS[r.lang] || r.lang], ['Message', r.message]]],
-      ['Forme juridique', [['Forme', FORMES[r.forme] || r.forme]]],
-      ['Noms proposés', (r.noms || []).map((n, i) => [['1er choix', '2e choix', '3e choix'][i] || (i + 1) + 'e choix', n])],
-      ['Société', [['Activité', r.activite], ['Ville du siège', r.ville], ['Capital', r.capital != null ? fmt(r.capital) + ' MAD' : ''], ['Siège', r.siege === 'local' ? 'Local du client (bail ou titre)' : r.siege === 'dom' ? 'Domiciliation Charika Express' : r.siege]]],
-      ['Associés', (r.partners || []).flatMap((p, i) => [[`Associé ${i + 1}`, p.name], ['CIN', p.cin, 'ltr'], ['Parts', p.pct != null ? p.pct + ' %' : '']])],
-      ['Gérant', [['Nom', g.name ? g.name + (isPartner ? ' (associé)' : ' (non associé)') : ''], ['CIN', g.cin, 'ltr']]],
-      ['Formule et paiement', [['Formule', PLANS[r.plan] || r.plan], ['Options', (r.options || []).length ? r.options.map(o => (OPTS[o] || o) + (OPT_PRICE[o] ? ` (+${fmt(OPT_PRICE[o])} MAD)` : '')).join(', ') : 'Aucune'],
-        ['Total TTC', r.total == null ? 'Sur devis' : fmt(r.total) + ' MAD'], ['Paiement choisi', r.payAmount === 'full' ? 'Totalité à la commande' : 'Avance de 700 MAD, puis 2 tranches'], ['Moyen de paiement', PAY[r.payMethod] || r.payMethod],
-        ['Conditions générales', r.cgu === false ? 'Non acceptées' : 'Acceptées']]]
+      { k:'ompic', title:'Certificat négatif · OMPIC', sub:"À saisir sur le site de l'OMPIC", steps:[1], rows:[
+        ...noms.map((n, i) => [`Nom ${i + 1}`, n]), ['Activité', r.activite], ['Forme', FORMES[r.forme] || r.forme],
+        ['Demandeur', demandeur + (cinOf(demandeur) ? ' · ' + cinOf(demandeur) : '')]] },
+      { k:'statuts', title:'Statuts et documents', sub:'Rédaction et légalisation', steps:[2, 3], rows:[
+        ['Dénomination', nom1 ? nom1 + ' (1er choix)' : ''], ['Forme', FORMES[r.forme] || r.forme], ['Capital', capital],
+        ...ps.map((p, i) => [`Associé ${i + 1}`, [p.name, p.cin, p.pct != null ? p.pct + ' %' : ''].filter(Boolean).join(' · ')]),
+        ['Gérant', gerant], ['Siège', siege], ['Ville', r.ville], ['Activité', r.activite],
+        ...((r.options || []).includes('o_pacte') ? [["Pacte d'associés", 'Oui (option choisie)']] : [])] },
+      { k:'immat', title:'Immatriculation · RC, IF, ICE, CNSS', sub:'Enregistrement, dépôt, tribunal', steps:[4, 5, 6, 7, 8], rows:[
+        ['Dénomination', nom1], ['Forme', FORMES[r.forme] || r.forme], ['Activité', r.activite], ['Ville du siège', r.ville], ['Siège', siege], ['Capital', capital], ['Gérant', gerant]] },
+      { k:'client', title:'Client et commande', sub:'Contact, formule et paiement', steps:[0, 9, 10], rows:[
+        ['Nom', r.client?.nom], ['Téléphone', r.client?.tel, 'ltr'], ['E-mail', r.client?.email, 'ltr'], ['Langue', LANGS[r.lang] || r.lang], ['Message', r.message],
+        ['Formule', PLANS[r.plan] || r.plan], ['Options', (r.options || []).length ? r.options.map(o => (OPTS[o] || o) + (OPT_PRICE[o] ? ` (+${fmt(OPT_PRICE[o])} MAD)` : '')).join(', ') : 'Aucune'],
+        ['Total TTC', r.total == null ? 'Sur devis' : fmt(r.total) + ' MAD'], ['Paiement choisi', r.payAmount === 'full' ? 'Totalité à la commande' : 'Avance de 700 MAD, puis 2 tranches'],
+        ['Moyen de paiement', PAY[r.payMethod] || r.payMethod], ['Conditions générales', r.cgu === false ? 'Non acceptées' : 'Acceptées']] }
     ];
   }
+  const ficheBlocks = r => { const all = ficheData(r), now = all.find(b => b.steps.includes(Math.min(r.step, DONE))); return now ? [now, ...all.filter(b => b !== now)] : all; };
   function ficheHtml(r){
-    return ficheData(r).map(([h, rows]) => `<h4>${esc(h)}</h4><dl class="dl fiche">${rows.length ? rows.map(([k, v, cls]) => `<dt>${esc(k)}</dt><dd class="${cls || ''}">${v === '' || v == null ? '<span class="na">Non renseigné</span>' : esc(v)}${v ? `<button class="cp" data-cp="${esc(v)}" title="Copier" aria-label="Copier ${esc(k)}">⧉</button>` : ''}</dd>`).join('') : '<dt>—</dt><dd><span class="na">Non renseigné</span></dd>'}</dl>`).join('');
+    return ficheBlocks(r).map((b, i) => {
+      const cur = i === 0 && b.steps.includes(Math.min(r.step, DONE));
+      const rows = b.rows.map(([k, v, cls]) => `<dt>${esc(k)}</dt><dd class="${cls || ''}">${v === '' || v == null ? '<span class="na">Non renseigné</span>' : esc(v)}${v ? `<button class="cp" data-cp="${esc(v)}" title="Copier" aria-label="Copier ${esc(k)}">⧉</button>` : ''}</dd>`).join('');
+      return `<section class="blk${cur ? ' now' : ''}"><div class="blk-h"><span><b>${esc(b.title)}</b><small>${esc(b.sub)}</small></span>${cur ? '<span class="now-tag">Étape en cours</span>' : ''}</div>
+        <dl class="dl fiche">${rows}</dl><div class="blk-f"><button class="btn ${cur ? 'b-grad' : 'b-soft'} b-sm" data-cpb="${b.k}">Copier le bloc</button></div></section>`;
+    }).join('');
   }
-  const ficheText = r => `Demande ${r.ref} · reçue le ${new Date(r.createdAt).toLocaleString('fr-FR')}\n` + ficheData(r).map(([h, rows]) => `\n${h.toUpperCase()}\n` + rows.map(([k, v]) => `${k} : ${v || '—'}`).join('\n')).join('\n');
+  const blockText = b => `${b.title.toUpperCase()}\n` + b.rows.map(([k, v]) => `${k} : ${v || '—'}`).join('\n');
+  const ficheText = r => `Demande ${r.ref} · reçue le ${new Date(r.createdAt).toLocaleString('fr-FR')}\n\n` + ficheData(r).map(blockText).join('\n\n');
   const copyText = (txt, ok) => navigator.clipboard?.writeText(txt).then(() => toast(ok), () => toast('Copie impossible'));
 
   function renderDetail(){
@@ -659,7 +688,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
       </div>
     </section>
     <aside class="info" ${ficheOn ? '' : 'hidden'}>
-      <div class="fiche-h"><b>Demande du client</b><span class="fiche-a"><button class="btn b-soft b-sm" id="ficheCopy">Copier la fiche</button><button class="btn b-soft b-sm" id="ficheHide" aria-label="Masquer la demande du client" title="Masquer">✕</button></span></div>
+      <div class="fiche-h"><b>Demande du client</b><span class="fiche-a"><button class="btn b-soft b-sm" id="ficheCopy">Copier tout</button><button class="btn b-soft b-sm" id="ficheHide" aria-label="Masquer la demande du client" title="Masquer">✕</button></span></div>
       <small class="fiche-sub">Reçue le ${esc(new Date(r.createdAt).toLocaleString('fr-FR', { dateStyle:'short', timeStyle:'short' }))} · ${esc(r.ref)}</small>
       ${ficheHtml(r)}
       <h4>Juriste assigné</h4>
@@ -692,6 +721,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
       return;
     }
     if (t.id === 'ficheCopy') { copyText(ficheText(r), 'Fiche complète copiée'); return; }
+    if (t.dataset.cpb) { const b = ficheData(r).find(x => x.k === t.dataset.cpb); copyText(blockText(b), 'Bloc copié : ' + b.title); return; }
     if (t.dataset.ml) { r.msgLang = t.dataset.ml; persist(); renderDetail(); return; }
     if (t.id === 'mailCopy') {
       const k = msgSel || msgKey(r), lang = r.msgLang || 'fr', txt = msgText(r, k, lang, 'subj') + '\n\n' + msgText(r, k, lang, 'mail');
