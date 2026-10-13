@@ -1,8 +1,14 @@
-# Cloudflare Pages configuration (read by Pages at build time).
-# The site is built into dist/ by build.sh; the API lives in functions/.
+# Cloudflare Worker (Workers & Pages → the "charikaexpress" project, connected to GitHub).
+# Build command: sh build.sh  ·  Deploy command: npx wrangler deploy
+# The site is built into dist/ by build.sh and served as static assets; /api/* runs server/worker.js.
 name = "charikaexpress"
-pages_build_output_dir = "dist"
+main = "server/worker.js"
 compatibility_date = "2026-09-01"
+
+[assets]
+directory = "./dist"
+binding = "ASSETS"
+run_worker_first = ["/api/*"]
 
 # Shared database: client requests and team members
 [[d1_databases]]

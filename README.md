@@ -6,11 +6,12 @@ Single-page marketing site (French + English) for an online company-formation se
 - The language switch (FR / EN) is built in and remembered across pages (`ce-lang`). French is the text in the HTML; English lives in the `EN` object at the bottom of each page. On the homepage, `EN` maps each French text, as written on the page, to its English version, so a French text changed in the HTML needs the same change in `EN`.
 - Open `index.html` in a browser, or serve the folder with any static host.
 
-## Hosting on Cloudflare Pages
-- Build command: `sh build.sh` · Build output directory: `dist` · Framework preset: None · Production branch: `main`.
-- `build.sh` publishes only the website (`index.html`, `demande.html`, `admin.html`, `og-image.jpg`, `robots.txt`, `sitemap.xml`, `_headers`); videos, sources and docs are not served.
-- `_headers` adds security headers, keeps `/admin` out of search engines and uncached, and marks the `*.pages.dev` preview address `noindex`.
-- Every push to `main` redeploys automatically.
+## Hosting on Cloudflare (Worker with static assets)
+- Workers & Pages project `charikaexpress`, connected to GitHub. Build command: `sh build.sh` · Deploy command: `npx wrangler deploy` · Branch: `main`.
+- `wrangler.toml` holds the configuration. The site (`dist/`, built by `build.sh`) is served as static assets, and `/api/*` runs `server/worker.js`. The D1 database is bound as `DB`.
+- `build.sh` publishes only the website (`index.html`, `demande.html`, `admin.html`, `messages.js`, `og-image.jpg`, `robots.txt`, `sitemap.xml`, `_headers`); videos, sources and docs are not served.
+- `_headers` adds security headers and keeps `/admin` out of search engines and uncached.
+- Every push to `main` redeploys automatically. The same code also runs as a Pages project (`functions/` are thin wrappers around `server/`).
 
 ## Before going live
 - Replace the placeholders: phone `+212 5 00 00 00 00` and email `contact@charikaexpress.ma` (create this mailbox).
@@ -36,17 +37,17 @@ The site, the API and the database all run on Cloudflare.
 - **`POST /api/requests`** (`functions/api/requests.js`, public): receives the request form and the homepage call-back form (`kind: 'rappel'`). It keeps only known fields, caps sizes, ignores robots (hidden `website` field) and accepts at most 5 requests per 10 minutes from one connection.
 - **`/api/admin/*`** (`functions/api/admin/[[path]].js`, team only): `GET me`, `GET requests`, `PUT requests/:ref`. Every call must carry a valid **Cloudflare Access** login, checked in `server/access.js` (signature, audience, issuer, expiry). Saving a file that a colleague saved in the meantime returns 409; the team space then loads their version and keeps the notes written locally.
 - **Team members:** whoever Cloudflare Access lets in. The first person to open the team space becomes admin, the others juristes. To rename someone or change a role, run in D1 (Cloudflare dashboard → D1 → charikaexpress → Console): `UPDATE team SET name = 'Salma', role = 'admin' WHERE email = 'salma@…';`
-- **Modes:** `admin.html` and the forms use the server automatically when it answers, on charikaexpress.ma or the pages.dev address. Anywhere else (a preview, a file opened locally) they run in demo mode with example data saved in the browser. On the real site the team space never falls back to the demo.
+- **Modes:** `admin.html` and the forms use the server automatically when it answers, on charikaexpress.ma or the workers.dev address. Anywhere else (a preview, a file opened locally) they run in demo mode with example data saved in the browser. On the real site the team space never falls back to the demo.
 
 ### One-time setup in Cloudflare
-1. **Workers & Pages → Create → Pages → Connect to Git** → `CHARIKAEXPRESS`. Build command `sh build.sh`, output `dist`, branch `main`. The D1 binding comes from `wrangler.toml`.
+1. **Workers & Pages → Create → Import a repository** → `CHARIKAEXPRESS`. Build command `sh build.sh`, deploy command `npx wrangler deploy`. Then **Settings → Domains & Routes → Add → Custom domain** → `charikaexpress.ma` (and `www.charikaexpress.ma`). The D1 binding comes from `wrangler.toml`.
 2. **Zero Trust → Access → Applications → Add → Self-hosted.**
    - Domain `charikaexpress.ma`, two paths: `/admin*` and `/api/admin/*`.
    - Policy « Allow », with the e-mails of the team. Login method « One-time PIN » (a code sent by e-mail).
 3. In that application, copy the **Application Audience (AUD) tag**, and from Zero Trust → Settings copy your **team domain** (`xxx.cloudflareaccess.com`). Put both in `wrangler.toml` (`ACCESS_AUD`, `ACCESS_TEAM_DOMAIN`) and push. Until then the team API answers « accès non configuré ».
 
 ### Local test
-`npx wrangler d1 execute charikaexpress --local --file server/db.sql`, then `sh build.sh && npx wrangler pages dev dist --binding DEV_ACCESS_EMAIL=you@example.com`. `DEV_ACCESS_EMAIL` stands in for the Access login **only on localhost**.
+`npx wrangler d1 execute charikaexpress --local --file server/db.sql`, then `sh build.sh && npx wrangler dev --var DEV_ACCESS_EMAIL:you@example.com`. `DEV_ACCESS_EMAIL` stands in for the Access login **only on localhost**.
 
 ## Planned: client space
 Client accounts (follow their file, upload documents, message their juriste, download company documents) are described in [`docs/client-space.md`](docs/client-space.md), with 3 models to choose from. Not built yet.
