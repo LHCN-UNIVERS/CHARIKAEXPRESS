@@ -93,6 +93,7 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
 .ask .bt button{border:1px solid rgba(0,0,0,.1);background:#fff;border-radius:8px;padding:4px 9px;font-weight:600;font-size:.68rem;color:var(--ink)}
 .ask + .li,.ask + .gh{border-top:1px solid var(--line)}
 .li.has-ask{border-bottom:0}
+.armed{background:var(--err)!important;color:#fff!important;border-color:var(--err)!important}
 .sc{display:inline-flex;align-items:center;gap:4px;font-size:.6rem;font-weight:700;border-radius:999px;padding:1px 7px;white-space:nowrap}
 .sc::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
 .sc-ok{background:#e3f5ec;color:var(--ok)}.sc-mid{background:#fff4d6;color:#a06500}.sc-bad{background:#fdecea;color:var(--err)}
@@ -106,7 +107,9 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
 .sigs{display:flex;flex-wrap:wrap;gap:6px}
 .sig{font-size:.7rem;border-radius:8px;padding:4px 8px;background:#f2faf6;color:#145c3e}
 .sig.ko{background:#fff1f0;color:#9b2c22}
-.scb .ra{display:flex;gap:8px;flex-wrap:wrap}
+.scb .ra{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.askc{background:#eafaf0;border-radius:12px;padding:10px 12px;display:grid;gap:6px}
+.askc b{font-size:.8rem}.askc > span{font-size:.72rem;color:#3d5a49}
 .items{overflow:auto}
 .li{display:grid;grid-template-columns:36px 1fr auto;gap:10px;padding:12px 14px;border-bottom:1px solid var(--line);align-items:center;cursor:pointer;width:100%;background:none;border-inline:0;border-top:0;text-align:start}
 .li:hover{background:#fffaf7}
@@ -531,6 +534,13 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   const msgText = (r, key, lang, part = 'wa') => fill(msgOf(key)[lang][part] || '', msgVals(r, key, lang));
   let ficheOn = (() => { try { return localStorage.getItem('ce-admin-fiche') !== 'hide'; } catch(e) { return true; } })();   // client sheet shown or hidden, remembered per browser
   let msgSel = null;                                     // message picked by hand in the open file, if any
+  // Two-click confirmation (the preview and some browsers block confirm() pop-ups): the first click arms the button.
+  function armed(btn, label = 'Cliquez encore pour confirmer'){
+    if (btn.dataset.armed) return true;
+    btn.dataset.armed = '1'; btn._txt = btn.textContent; btn.textContent = label; btn.classList.add('armed');
+    setTimeout(() => { if (btn.isConnected) { delete btn.dataset.armed; btn.textContent = btn._txt; btn.classList.remove('armed'); } }, 4000);
+    return false;
+  }
   function toast(t){ const el = $('#toast'); el.textContent = t; el.hidden = false; clearTimeout(toast.h); toast.h = setTimeout(() => el.hidden = true, 1800); }
 
   // ---------- Auth (demo) ----------
@@ -692,7 +702,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     if (d.merge) {
       const c = [...dupClusters(db.requests.filter(r => allowed(r) && !r.archived && r.step < DONE)).values()].find(c => c.some(x => x.ref === d.merge)); if (!c) return;
       const keep = get(d.merge), rest = c.filter(x => x !== keep);
-      if (!confirm(`Garder ${keep.ref} et archiver ${rest.map(x => x.ref).join(', ')} ?`)) return;
+      if (!armed(t, `Confirmer : archiver ${rest.length} doublon${rest.length > 1 ? 's' : ''}`)) return;
       rest.forEach(x => archive(x, 'doublon de ' + keep.ref));
       log(keep, 'Doublons archivés : ' + rest.map(x => x.ref).join(', ') + '.');
       persist(); renderList(); return toast(`${c.length - 1} doublon${c.length > 2 ? 's' : ''} archivé${c.length > 2 ? 's' : ''}`);
@@ -761,10 +771,14 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   const copyText = (txt, ok) => navigator.clipboard?.writeText(txt).then(() => toast(ok), () => toast('Copie impossible'));
 
   function scoreBox(r, canEdit){
-    const s = serieux(r), ko = s.sig.filter(x => !x.ok), ok = s.sig.filter(x => x.ok);
+    const s = serieux(r), ko = s.sig.filter(x => !x.ok), ok = s.sig.filter(x => x.ok), lang = r.msgLang || 'fr';
+    const ask = !r.waConfirmed && s.score < 100 && s.sig[0].ok && s.sig[1].ok;   // valid phone and e-mail: worth asking
     return `<div class="box scb ${s.level}"><h4>Score de sérieux <span class="sc sc-${s.level}">${s.text}</span></h4>
       <div class="big"><b>${s.score}<small> /100</small></b><span class="bar"><i style="width:${s.score}%"></i></span></div>
       <div class="sigs">${[...ko, ...ok].map(x => `<span class="sig ${x.ok ? '' : 'ko'}">${x.ok ? '✓' : '✗'} ${esc(x.label)}</span>`).join('')}</div>
+      ${ask ? `<div class="askc"><b>Demander la confirmation au client</b><span>Coordonnées valides : un message poli pour qu'il confirme sa demande.${(r.sent || {}).confirmer ? ` Envoyé ${when(r.sent.confirmer)}.` : ''}</span>
+        <div class="ra"><a class="btn b-wa b-sm" data-wasend="confirmer" href="${waLink(r.client?.tel, msgText(r, 'confirmer', lang))}" target="_blank" rel="noopener">${(r.sent || {}).confirmer ? 'Relancer sur WhatsApp' : 'Demander sur WhatsApp'}</a><button class="btn b-soft b-sm" id="confMail">Copier l'e-mail</button>
+        <span class="mseg" role="group" aria-label="Langue"><button data-ml="fr" class="${lang === 'fr' ? 'on' : ''}">FR</button><button data-ml="ar" class="${lang === 'ar' ? 'on' : ''}">الدارجة</button></span></div></div>` : ''}
       ${canEdit || !r.juriste ? `<div class="ra"><button class="btn ${r.waConfirmed ? 'b-soft' : 'b-wa'} b-sm" id="waConf">${r.waConfirmed ? '✓ Confirmé sur WhatsApp · annuler' : 'Message de confirmation reçu sur WhatsApp'}</button>${s.paid ? '' : '<button class="btn b-soft b-sm" id="markFake">Faux client · archiver</button>'}</div>` : ''}
       ${r.waConfirmed ? '' : '<p class="hint" style="margin:0">Le client a reçu un bouton « Confirmer sur WhatsApp » après l\'envoi. Quand son message arrive, cliquez sur le bouton vert.</p>'}</div>`;
   }
@@ -876,7 +890,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     const t = e.target.closest('button'); if (!t || t.disabled) return;
     if (t.dataset.cp != null) { copyText(t.dataset.cp, 'Copié : ' + t.dataset.cp.slice(0, 40)); return; }
     if (t.id === 'waConf') { r.waConfirmed = !r.waConfirmed; log(r, r.waConfirmed ? 'Demande confirmée par le client sur WhatsApp.' : 'Confirmation WhatsApp annulée.'); renderList(); renderDetail(); return toast(r.waConfirmed ? 'Confirmée ✓' : 'Confirmation annulée'); }
-    if (t.id === 'markFake') { if (!confirm('Archiver cette demande comme faux client ? Elle reste visible dans « Tous » › Archivés.')) return; archive(r, 'faux client'); persist(); renderList(); return toast('Demande archivée'); }
+    if (t.id === 'markFake') { if (!armed(t, 'Confirmer : archiver comme faux client')) return; archive(r, 'faux client'); persist(); renderList(); return toast('Demande archivée'); }
     if (t.id === 'ficheToggle' || t.id === 'ficheHide') {
       ficheOn = t.id === 'ficheToggle' ? !ficheOn : false;
       try { localStorage.setItem('ce-admin-fiche', ficheOn ? 'show' : 'hide'); } catch(err) {}
@@ -887,6 +901,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     if (t.id === 'ficheCopy') { copyText(ficheText(r), 'Fiche complète copiée'); return; }
     if (t.dataset.cpb) { const b = ficheData(r).find(x => x.k === t.dataset.cpb); copyText(blockText(b), 'Bloc copié : ' + b.title); return; }
     if (t.dataset.ml) { r.msgLang = t.dataset.ml; persist(); renderDetail(); return; }
+    if (t.id === 'confMail') { const lang = r.msgLang || 'fr'; copyText(msgText(r, 'confirmer', lang, 'subj') + '\n\n' + msgText(r, 'confirmer', lang, 'mail'), 'E-mail copié : collez-le dans votre messagerie'); return; }
     if (t.id === 'mailCopy') {
       const k = msgSel || msgKey(r), lang = r.msgLang || 'fr', txt = msgText(r, k, lang, 'subj') + '\n\n' + msgText(r, k, lang, 'mail');
       navigator.clipboard?.writeText(txt).then(() => toast('E-mail copié : collez-le dans votre messagerie'), () => toast('Copie impossible'));
@@ -899,7 +914,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     else if (t.id === 'redepot') { log(r, `Dossier corrigé et redéposé (rejet précédent : ${r.reject.motif}).`); r.reject = null; toast('Dossier redéposé'); }
     else if (t.dataset.step != null) {
       const s2 = +t.dataset.step; if (s2 === r.step) return;
-      if (!confirm(`Déplacer manuellement le dossier à l'étape « ${WORKFLOW[s2].name} » ?`)) return;
+      if (!t.dataset.armed) { t.dataset.armed = '1'; setTimeout(() => t.isConnected && delete t.dataset.armed, 4000); toast(`Cliquez encore pour passer à « ${WORKFLOW[s2].name} »`); return; }
       r.step = s2; log(r, `Dossier déplacé manuellement à l'étape : ${WORKFLOW[s2].name}.`);
     }
     else if (t.dataset.liv) {
@@ -951,7 +966,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   });
 
   $('#resetDemo').addEventListener('click', () => {
-    if (!confirm('Remettre les données de démonstration ? Les modifications faites dans ce navigateur seront perdues.')) return;
+    if (!armed($('#resetDemo'), 'Cliquez encore : les modifications de ce navigateur seront perdues')) return;
     db = seed(); persist(); current = null; renderList(); renderDetail(); toast('Démo réinitialisée');
   });
 

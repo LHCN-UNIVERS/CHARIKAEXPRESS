@@ -10,6 +10,21 @@ window.CE_MSG = (() => {
   const SUIVI_URL = '';   // client tracking page, once it exists
   const SIG = { fr:"\n\nAvec nos salutations les plus cordiales,\nL'équipe Charika Express\nVotre société au Maroc, 100 % en ligne", ar:"\n\nمع أطيب التحيات،\nفريق Charika Express\nالشركة ديالكم فالمغرب، 100% أونلاين" };
   const MSG = {
+    // sent by hand from the score card to a new request that is not confirmed yet
+    confirmer: {
+      "n": "0",
+      "title": "Demande à confirmer",
+      "fr": {
+        "wa": "Bonjour {prenom} 👋\nC'est {moi}, votre juriste chez Charika Express. Nous avons bien reçu votre demande de création de *{societe}* (réf. {ref}), merci pour votre confiance !\n\nAvant de lancer les démarches, pouvez-vous simplement nous confirmer que vous souhaitez démarrer ? Répondez *OUI* à ce message et nous réservons tout de suite votre dossier.\n\nUne question sur les étapes, les tarifs ou les documents ? Écrivez-nous ici, nous vous répondons rapidement. 😊",
+        "subj": "Votre demande {ref} : une simple confirmation pour démarrer",
+        "mail": "Bonjour {prenom},\n\nMerci d'avoir choisi Charika Express pour créer {societe}. Votre demande est bien enregistrée sous la référence {ref}.\n\nAvant de lancer les démarches, nous avons simplement besoin de votre confirmation : répondez « OUI » à cet e-mail (ou sur WhatsApp), et votre juriste dédié réserve immédiatement votre dossier.\n\nUne question sur les étapes, les délais ou les documents à fournir ? Répondez à ce message : nous serons ravis de vous accompagner.\n\nÀ très bientôt,{sig}"
+      },
+      "ar": {
+        "wa": "السلام عليكم {prenom} 👋\nمعاكم {moi}، المستشار القانوني ديالكم فـ Charika Express. توصلنا بالطلب ديالكم باش نأسسو *{societe}* (المرجع {ref})، شكرا على الثقة!\n\nقبل ما نبداو الإجراءات، واش تقدرو تأكدو لينا بلي باغيين تبداو؟ جاوبو بـ *نعم* على هاد الرسالة ونحجزو الملف ديالكم ديريكت.\n\nإلا عندكم شي سؤال على المراحل، الأثمنة ولا الوثائق، كتبو لينا هنا ونجاوبوكم بسرعة. 😊",
+        "subj": "الطلب ديالكم {ref}: غير تأكيد صغير باش نبداو",
+        "mail": "السلام عليكم ورحمة الله {prenom}،\n\nشكرا حيت ختارتو Charika Express باش تأسسو {societe}. الطلب ديالكم تسجل تحت المرجع {ref}.\n\nقبل ما نبداو الإجراءات، خاصنا غير التأكيد ديالكم: جاوبو بـ « نعم » على هاد الإيميل (ولا فالواتساب)، والمستشار القانوني ديالكم يحجز الملف ديالكم ديريكت.\n\nإلا عندكم شي سؤال على المراحل، المدة ولا الوثائق اللي خاصكم توجدو، جاوبو على هاد الرسالة: متشرفين نعاونوكم.\n\nإلى اللقاء قريبا،{sig}"
+      }
+    },
     recu: {
       "n": "1",
       "title": "Demande reçue",
