@@ -3,7 +3,7 @@
 Single-page marketing site (French + English) for an online company-formation service in Morocco.
 
 - `index.html` is self-contained. It only loads Google Fonts from the network.
-- The language switch (FR / EN) is built in on the request page and the team space (English strings in the `EN` object at the bottom of each page; French is the text in the HTML). The redesigned homepage is French only for now: see `TODO.md`.
+- The language switch (FR / EN) is built in and remembered across pages (`ce-lang`). French is the text in the HTML; English lives in the `EN` object at the bottom of each page. On the homepage, `EN` maps each French text, as written on the page, to its English version, so a French text changed in the HTML needs the same change in `EN`.
 - Open `index.html` in a browser, or serve the folder with any static host.
 
 ## Hosting on Cloudflare Pages

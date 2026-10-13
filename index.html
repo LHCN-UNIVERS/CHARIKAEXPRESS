@@ -71,6 +71,9 @@ p{margin:0}
 .links{display:flex;gap:4px;margin-inline:auto}
 .links a{padding:8px 14px;border-radius:999px;font-size:.88rem;font-weight:500;color:#e8d6e3}
 .links a:hover,.links a.on{color:#fff;background:rgba(255,255,255,.08)}
+.lang{display:inline-flex;background:rgba(255,255,255,.08);border-radius:999px;padding:3px;flex:none}
+.lang button{border:0;background:none;color:#e8d6e3;font-weight:700;font-size:.78rem;padding:6px 11px;border-radius:999px;cursor:pointer}
+.lang button[aria-pressed="true"]{background:#fff;color:var(--plum)}
 .burger{display:none;width:44px;height:44px;border-radius:12px;border:0;background:rgba(255,255,255,.1);color:#fff;cursor:pointer;place-items:center}
 .mnav{margin-top:8px;background:var(--plum);border-radius:18px;padding:10px;display:grid;gap:2px}
 .mnav a{padding:12px 14px;border-radius:12px;color:#f3e6ef;font-weight:600}
@@ -143,6 +146,8 @@ p{margin:0}
 
 /* Services */
 .svc{display:grid;grid-template-columns:1.15fr 1fr;gap:24px;align-items:stretch}
+.svc > *,.feat > *,.srow > div{min-width:0}
+.feat .btn{white-space:normal;text-align:center}
 .feat{background:linear-gradient(150deg,var(--plum),#4a1a45 70%,#5d1f4f);color:#fff;border-radius:22px;padding:30px;display:grid;grid-template-columns:auto 1fr;gap:20px;box-shadow:0 30px 60px -36px rgba(48,16,47,.9)}
 .fic{width:60px;height:60px;border-radius:18px;background:var(--grad);display:grid;place-items:center}
 .fic svg{width:28px;height:28px}
@@ -268,6 +273,7 @@ footer a:hover{color:var(--pink)}
 @media (max-width:1240px){.hand{display:none}}
 @media (max-width:960px){
   .links{display:none}.burger{display:grid}.navbar .nav-cta{display:none}
+  .navbar .lang{margin-inline-start:auto}
   .navbar{justify-content:space-between}
   .hero-grid{grid-template-columns:1fr}
   .art{height:400px;max-width:520px;width:100%;margin-inline:auto}
@@ -283,6 +289,7 @@ footer a:hover{color:var(--pink)}
   .fc{grid-template-columns:1fr}
   .f-grid{grid-template-columns:1fr 1fr}
 }
+@media (max-width:420px){.navbar{gap:8px;padding-inline-start:14px}.logo{font-size:1rem;gap:8px}.logo i{width:24px;height:24px}.lang button{padding:6px 9px}}
 @media (max-width:560px){
   .hero h1{font-size:2.15rem}
   .cta-row .btn{flex:1 1 100%}
@@ -314,6 +321,7 @@ footer a:hover{color:var(--pink)}
         <a href="#pourquoi">À propos</a>
         <a href="#contact">Contact</a>
       </div>
+      <div class="lang" role="group" aria-label="Langue"><button type="button" data-lang="fr" aria-pressed="true">FR</button><button type="button" data-lang="en" aria-pressed="false">EN</button></div>
       <a class="btn btn-grad btn-sm nav-cta" href="demande.html">Créer ma société <span class="arr">→</span></a>
       <button class="burger" id="burger" aria-expanded="false" aria-controls="mnav" aria-label="Ouvrir le menu"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
     </nav>
@@ -616,6 +624,127 @@ footer a:hover{color:var(--pink)}
 
 <script>
 (function(){
+  // ---------- Language (FR / EN) ----------
+  // French is the text in the HTML. EN maps each French text (as written on the page) to its English version.
+  const EN = {
+    "Nos services":"Our services", "Tarifs":"Pricing", "FAQ":"FAQ", "À propos":"About", "Contact":"Contact", "Créer ma société":"Create my company",
+    "Création d'entreprise au Maroc":"Company formation in Morocco",
+    "Créez votre société au Maroc,":"Create your company in Morocco,", "simplement et en ligne.":"simply and online.",
+    "Préparez vos démarches de création d'entreprise avec un accompagnement juridique, des formalités simplifiées et un suivi de votre dossier à chaque étape.":"Prepare your company formation with legal support, simplified formalities and tracking of your file at every step.",
+    "Découvrir nos formules":"See our plans", "Démarches en ligne":"Online formalities", "Suivi personnalisé":"Personal follow-up", "Tarifs transparents":"Transparent pricing", "Accompagnement juridique":"Legal support",
+    "Statuts de la société":"Articles of association", "Registre de commerce":"Trade register", "Attestation de domiciliation":"Domiciliation certificate",
+    "Dossier en cours de traitement":"File being processed", "Votre dossier est entre les mains de votre juriste.":"Your file is in the hands of your legal advisor.",
+    "Documents reçus":"Documents received", "Nous avons bien reçu vos documents.":"We have received your documents.",
+    "Action requise":"Action required", "Une pièce complémentaire est nécessaire.":"An additional document is needed.", "Hier":"Yesterday",
+    "Votre société":"Your company", "en toute confiance":"in good hands",
+    "Faites votre demande à distance, sans déplacement.":"Make your request remotely, no travel needed.",
+    "Chaque étape vous est notifiée sur WhatsApp et par e-mail.":"You are notified of every step on WhatsApp and by e-mail.",
+    "Prix TTC, frais administratifs inclus.":"Prices include VAT and administrative fees.",
+    "Accompagnement":"Support", "Un juriste dédié, du début à la fin.":"A dedicated legal advisor, from start to finish.",
+    "Comment ça marche ?":"How it works", "Un processus simple en":"A simple process in", "3 étapes":"3 steps",
+    "De la sélection de votre formule jusqu'à la réception de vos documents, tout est pensé pour vous faire gagner du temps.":"From choosing your plan to receiving your documents, everything is designed to save you time.",
+    "Commencer ma demande":"Start my request",
+    "Choisissez votre formule":"Choose your plan", "Sélectionnez la forme juridique et le pack adaptés à votre projet.":"Select the legal form and the pack that fit your project.",
+    "Quelle forme juridique ?":"Which legal form?", "Auto-entrepreneur":"Self-employed",
+    "Transmettez vos informations":"Send your information", "Renseignez votre projet et vos associés en ligne, puis réglez l'avance de 700 MAD.":"Fill in your project and partners online, then pay the 700 MAD upfront.",
+    "Votre demande":"Your request", "Noms de la société":"Company names", "Associés et CIN":"Partners and ID", "Formulaire envoyé":"Form sent",
+    "Suivez votre dossier":"Track your file", "Recevez une notification à chaque étape et sachez toujours quelle est la prochaine action.":"Get a notification at every step and always know the next action.",
+    "Dossier en cours":"File in progress", "Certificat négatif":"Negative certificate", "Statuts rédigés":"Articles drafted", "Dépôt OMPIC · Impôts":"OMPIC · Tax filing",
+    "Tout le cycle de vie":"The whole life cycle", "de":"of", "votre entreprise":"your business",
+    "De la création à la gestion de votre société, nous vous accompagnons à chaque étape.":"From formation to running your company, we support you at every step.",
+    "Création SARL / SARL AU":"SARL / SARL AU formation",
+    "Statuts sur mesure et immatriculation complète, du certificat négatif aux annonces légales.":"Tailored articles of association and full registration, from the negative certificate to the legal notices.",
+    "À partir de":"From", "MAD TTC":"MAD incl. VAT",
+    "Statuts rédigés par un juriste":"Articles drafted by a legal advisor", "RC, IF, ICE et CNSS":"RC, IF, ICE and CNSS", "Annonces légales":"Legal notices",
+    "Inscription au registre national":"Registration in the national register", "Dès 900 MAD":"From 900 MAD",
+    "Société anonyme":"Public limited company", "Projets à plusieurs actionnaires":"Projects with several shareholders", "Sur devis":"On quote",
+    "Domiciliation":"Domiciliation", "Siège social et gestion du courrier":"Registered office and mail handling", "Dès 150 MAD/mois":"From 150 MAD/month",
+    "Modifications statutaires":"Amendments to the articles", "Siège, parts, gérant, capital":"Office, shares, manager, capital", "Dès 1 500 MAD":"From 1,500 MAD",
+    "Dissolution et liquidation":"Dissolution and liquidation", "Clôture et radiation du RC":"Closure and removal from the trade register", "Dès 2 500 MAD":"From 2,500 MAD",
+    "Pourquoi nous":"Why us", "Pourquoi choisir":"Why choose", "Charika Express ?":"Charika Express?",
+    "Un vrai juriste, la simplicité d'une application : vous savez toujours où en est votre dossier.":"A real legal advisor with the simplicity of an app: you always know where your file stands.",
+    "Un juriste dédié":"A dedicated legal advisor", "Joignable par téléphone et WhatsApp.":"Reachable by phone and WhatsApp.",
+    "Aucun déplacement":"No travel needed", "Signature électronique de vos documents.":"Electronic signature of your documents.",
+    "Chaque étape notifiée":"Every step notified", "Vous savez toujours où en est votre dossier.":"You always know where your file stands.",
+    "Prix fixe, tout compris":"Fixed price, all included", "Dès 4 680 MAD TTC, frais inclus.":"From 4,680 MAD incl. VAT, fees included.",
+    "Paiement en 3 fois":"Pay in 3 instalments", "700 MAD pour démarrer, puis le reste en deux fois.":"700 MAD to start, then the rest in two instalments.",
+    "Garantie anti-rejet":"Rejection guarantee", "Une erreur de notre part ? Corrigée à nos frais.":"A mistake on our side? Fixed at our expense.",
+    "Nos formules":"Our plans", "Des formules simples,":"Simple plans,", "sans surprise":"no surprises",
+    "Choisissez la formule qui correspond à vos besoins. Prix TTC, frais administratifs inclus.":"Choose the plan that fits your needs. Prices include VAT and administrative fees.",
+    "Pack Essentiel":"Essential Pack", "Pour démarrer":"To get started", "Seulement":"Only", "d'avance pour démarrer":"upfront to get started",
+    "12 mois de domiciliation offerts":"12 months of domiciliation included", "Inclus":"Included",
+    "Création de société":"Company formation", "Taxe professionnelle":"Business tax", "Identifiant fiscal":"Tax ID", "Statuts":"Articles of association",
+    "Contrat de domiciliation":"Domiciliation contract", "Enregistrement des contrats":"Registration of contracts", "Affiliation de la société à la CNSS":"Company registration with the CNSS",
+    "Publication dans un journal d'annonces légales":"Publication in a legal notices newspaper", "Publication au Bulletin Officiel":"Publication in the Official Bulletin",
+    "Choisir ce pack":"Choose this pack", "Pack Pro":"Pro Pack", "Le plus populaire":"Most popular", "Meilleur rapport qualité prix":"Best value for money",
+    "24 mois de domiciliation":"24 months of domiciliation", "Cachet de la société":"Company stamp",
+    "Pack Premium":"Premium Pack", "Le choix de la sérénité":"The peace-of-mind choice", "Protection de la marque (2 classes incluses)":"Trademark protection (2 classes included)",
+    "Tarif communiqué sous 24 h":"Price sent within 24 hours", "Demander un devis":"Request a quote",
+    "Paiement en 3 fois : 700 MAD d'avance à la commande, 50 % du reste après la légalisation des documents, le solde à la livraison du dossier.":"Pay in 3 instalments: 700 MAD upfront with the order, 50% of the rest after the documents are legalised, the balance when the file is delivered.",
+    "Rejeté ? On recommence.":"Rejected? We start again.", "À nos frais.":"At our expense.",
+    "Si une administration rejette votre dossier en raison d'une erreur de notre part, nous le corrigeons et le redéposons gratuitement, ou nous vous remboursons les honoraires concernés.":"If an authority rejects your file because of a mistake on our side, we correct it and file it again for free, or we refund the fees concerned.",
+    "Vos questions,":"Your questions,", "nos réponses":"our answers",
+    "Vous ne trouvez pas votre réponse ? Un juriste vous répond par téléphone ou WhatsApp.":"Can't find your answer? A legal advisor answers by phone or WhatsApp.",
+    "Poser une question":"Ask a question",
+    "Quels documents dois-je fournir pour créer ma société ?":"Which documents do I need to create my company?",
+    "La CNIE (ou le passeport pour les étrangers) de chaque associé et gérant, ainsi qu'un contrat de bail si vous disposez déjà d'un local.":"The national ID card (or passport for foreigners) of each partner and manager, and a lease if you already have premises.",
+    "Combien de temps faut-il pour créer une SARL ?":"How long does it take to create a SARL?",
+    "En général 7 à 15 jours ouvrés entre le certificat négatif et l'obtention du registre de commerce, selon la ville et la période.":"Usually 7 to 15 working days between the negative certificate and the trade register, depending on the city and the time of year.",
+    "Comment fonctionne le paiement en plusieurs fois ?":"How does paying in instalments work?",
+    "700 MAD d'avance à la commande pour lancer le certificat négatif, 50 % du reste après la légalisation des documents, puis le solde quand le dossier est complet. Paiement par virement ou Cash Plus.":"700 MAD upfront with the order to start the negative certificate, 50% of the rest after the documents are legalised, then the balance when the file is complete. Payment by bank transfer or Cash Plus.",
+    "Quel est le capital minimum d'une SARL ?":"What is the minimum capital for a SARL?",
+    "Il n'existe plus de capital minimum légal pour une SARL. Un capital de 10 000 MAD reste courant pour rassurer les banques et les partenaires.":"There is no longer a legal minimum capital for a SARL. A capital of 10,000 MAD is still common to reassure banks and partners.",
+    "Dois-je me déplacer ?":"Do I need to travel?",
+    "Non. Vous signez vos documents électroniquement et nous effectuons les dépôts. Certaines pièces peuvent nécessiter une légalisation de signature.":"No. You sign your documents electronically and we handle the filings. Some documents may need a legalised signature.",
+    "Que se passe-t-il si mon dossier est rejeté ?":"What happens if my file is rejected?",
+    "Nous vous indiquons le motif. Si l'erreur vient de nous, nous corrigeons et redéposons le dossier gratuitement. Si une pièce de votre côté doit être corrigée (CIN expirée, légalisation…), nous vous expliquons quoi faire.":"We tell you the reason. If the mistake is ours, we correct and refile it for free. If one of your documents needs fixing (expired ID, legalisation…), we explain what to do.",
+    "Un étranger peut-il créer une société au Maroc ?":"Can a foreigner create a company in Morocco?",
+    "Oui. Un étranger peut être associé ou gérant d'une SARL marocaine. Nous vous indiquons les pièces spécifiques à prévoir.":"Yes. A foreigner can be a partner or manager of a Moroccan SARL. We tell you which specific documents to prepare.",
+    "Parlons de votre projet":"Let's talk about your project",
+    "Laissez vos coordonnées : un juriste vous rappelle dans la journée ouvrée pour étudier votre projet.":"Leave your details: a legal advisor calls you back within the working day to discuss your project.",
+    "Nom complet *":"Full name *", "Téléphone *":"Phone *", "Service souhaité *":"Service needed *", "Sélectionnez un service":"Select a service", "Votre message (facultatif)":"Your message (optional)",
+    "En envoyant ce formulaire, vous acceptez d'être recontacté par Charika Express au sujet de votre demande.":"By sending this form, you agree to be contacted by Charika Express about your request.",
+    "Demander un rappel":"Request a call back", "Contacter sur WhatsApp":"Contact us on WhatsApp",
+    "Téléphone :":"Phone:", "E-mail :":"E-mail:", "Lun – Ven · 9h00 – 18h00":"Mon – Fri · 9:00 am – 6:00 pm",
+    "Création d'entreprise au Maroc, simple et rapide. Un juriste dédié, 100 % en ligne.":"Company formation in Morocco, simple and fast. A dedicated legal advisor, 100% online.",
+    "Informations":"Information", "Espace équipe":"Team space", "Casablanca, Maroc":"Casablanca, Morocco",
+    "© 2026 Charika Express. Tous droits réservés.":"© 2026 Charika Express. All rights reserved.",
+    "Mentions légales · Conditions générales · Confidentialité":"Legal notice · Terms and conditions · Privacy",
+    // attributes
+    "Navigation principale":"Main navigation", "Charika Express, accueil":"Charika Express, home", "Ouvrir le menu":"Open the menu", "Fermer le menu":"Close the menu",
+    "Forme juridique":"Legal form", "Votre projet en quelques mots…":"Your project in a few words…", "Nous écrire sur WhatsApp":"Write to us on WhatsApp", "Langue":"Language"
+  };
+  const MSG = {
+    fr:{ need:'Merci d\'indiquer ', f:{ nom:'votre nom', tel:'un numéro de téléphone valide', service:'le service souhaité' }, sending:'Envoi…',
+         ok:n => 'Merci ' + n + '. (Démonstration : ce formulaire sera relié à votre e-mail ou CRM avec le backend. Pour l\'instant, écrivez-nous sur WhatsApp.)' },
+    en:{ need:'Please enter ', f:{ nom:'your name', tel:'a valid phone number', service:'the service you need' }, sending:'Sending…',
+         ok:n => 'Thank you ' + n + '. (Demo: this form will be connected to your e-mail or CRM with the backend. For now, write to us on WhatsApp.)' }
+  };
+  let lang = 'fr';
+  const tr = s => {                                      // French → current language
+    if (lang === 'fr') return s;
+    const k = s.trim().replace(/\s+/g, ' ');
+    if (EN[k]) return s.replace(k, EN[k]);
+    const m = k.match(/^Voir toutes les inclusions \((\d+)\)$/); if (m) return `See all inclusions (${m[1]})`;
+    return s;
+  };
+  const texts = [];
+  (function collect(){
+    const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, { acceptNode:n => n.parentElement.closest('script,style') || !n.nodeValue.trim() ? 2 : 1 });
+    let n; while ((n = w.nextNode())) texts.push([n, n.nodeValue]);
+  })();
+  const attrs = [...document.querySelectorAll('[placeholder],[aria-label]')].map(el => [el, el.getAttribute('placeholder'), el.getAttribute('aria-label')]);
+  function setLang(l){
+    lang = l === 'en' ? 'en' : 'fr';
+    document.documentElement.lang = lang;
+    texts.forEach(([n, fr]) => { n.nodeValue = tr(fr); });
+    attrs.forEach(([el, ph, al]) => { if (ph) el.placeholder = tr(ph); if (al) el.setAttribute('aria-label', tr(al)); });
+    document.querySelectorAll('[data-lang]').forEach(b => b.setAttribute('aria-pressed', b.dataset.lang === lang));
+    try { localStorage.setItem('ce-lang', lang); } catch(e) {}
+  }
+  document.querySelectorAll('[data-lang]').forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
+  try { if (localStorage.getItem('ce-lang') === 'en') setLang('en'); } catch(e) {}
+
   // Pricing tabs (SARL / SAS)
   const ptabs = [...document.querySelectorAll('.ptabs [role=tab]')];
   ptabs.forEach(b => b.addEventListener('click', () => ptabs.forEach(x => {
@@ -624,7 +753,7 @@ footer a:hover{color:var(--pink)}
 
   // Mobile menu
   const burger = document.getElementById('burger'), mnav = document.getElementById('mnav');
-  burger.addEventListener('click', () => { const open = mnav.hidden; mnav.hidden = !open; burger.setAttribute('aria-expanded', open); burger.setAttribute('aria-label', open ? 'Fermer le menu' : 'Ouvrir le menu'); });
+  burger.addEventListener('click', () => { const open = mnav.hidden; mnav.hidden = !open; burger.setAttribute('aria-expanded', open); burger.setAttribute('aria-label', tr(open ? 'Fermer le menu' : 'Ouvrir le menu')); });
   mnav.addEventListener('click', e => { if (e.target.closest('a')) { mnav.hidden = true; burger.setAttribute('aria-expanded', 'false'); } });
 
   // Highlight the section in view
@@ -640,19 +769,20 @@ footer a:hover{color:var(--pink)}
     if (send.disabled) return;
     const f = { nom:document.getElementById('nom'), tel:document.getElementById('tel'), service:document.getElementById('service') };
     const bad = [];
-    if (!f.nom.value.trim()) bad.push([f.nom, 'votre nom']);
-    if (!/^[+0-9 ().-]{8,}$/.test(f.tel.value.trim())) bad.push([f.tel, 'un numéro de téléphone valide']);
-    if (!f.service.value) bad.push([f.service, 'le service souhaité']);
+    const t = MSG[lang];
+    if (!f.nom.value.trim()) bad.push([f.nom, t.f.nom]);
+    if (!/^[+0-9 ().-]{8,}$/.test(f.tel.value.trim())) bad.push([f.tel, t.f.tel]);
+    if (!f.service.value) bad.push([f.service, t.f.service]);
     Object.values(f).forEach(el => el.removeAttribute('aria-invalid'));
     if (bad.length) {
       bad.forEach(([el]) => el.setAttribute('aria-invalid', 'true'));
-      err.textContent = 'Merci d\'indiquer ' + bad.map(b => b[1]).join(', ') + '.'; err.hidden = false; ok.hidden = true; bad[0][0].focus(); return;
+      err.textContent = t.need + bad.map(b => b[1]).join(', ') + '.'; err.hidden = false; ok.hidden = true; bad[0][0].focus(); return;
     }
-    send.disabled = true; send.textContent = 'Envoi…';
+    send.disabled = true; send.textContent = t.sending;
     setTimeout(() => {
       err.hidden = true;
-      ok.textContent = 'Merci ' + f.nom.value.trim() + '. (Démonstration : ce formulaire sera relié à votre e-mail ou CRM avec le backend. Pour l\'instant, écrivez-nous sur WhatsApp.)';
-      ok.hidden = false; send.disabled = false; send.textContent = 'Demander un rappel';
+      ok.textContent = t.ok(f.nom.value.trim());
+      ok.hidden = false; send.disabled = false; send.textContent = tr('Demander un rappel');
     }, 400);
   });
 })();

@@ -9,7 +9,8 @@ Things left out of the homepage on purpose, because they would be false today. A
 - [ ] **Social media icons** in the footer (Facebook, Instagram, LinkedIn, YouTube). Add once the profiles exist, with their real links.
 - [ ] **"Voir les conditions" link** on the « Rejeté ? On recommence. À nos frais. » banner. Needs a conditions page that states the guarantee precisely.
 - [ ] **Legal pages**: Mentions légales, Conditions générales, Politique de confidentialité. They are plain text in the footer until the pages exist.
-- [ ] **English version of the new homepage.** The FR / EN switch still works on the request page and the team space; the redesigned homepage is French only for now.
+- [x] **English version of the new homepage.** Done: FR / EN switch in the navbar.
+- [ ] Have the English text proofread by a native speaker.
 
 ## Before going live
 
