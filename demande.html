@@ -21,7 +21,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap">
 <style>
-/* Request page: same tokens and navbar as the redesigned homepage. Two-column layout: sticky summary on the side, step-by-step form card in the main column. */
+/* Request page: same tokens and navbar as the redesigned homepage. One centred column: stepper, then the step-by-step form card. */
 :root{
   color-scheme:light;
   --ink:#30152f; --plum:#30102f; --m:#7a6474; --bg:#fffcfa; --blush:#fff1f5; --line:#f2e2e8;
@@ -88,7 +88,7 @@ h1,h2,h3{margin:0;line-height:1.1;letter-spacing:-.035em;text-wrap:balance}
 
 
 main{position:relative;z-index:1;padding-block:28px 72px}
-.title{display:grid;gap:10px;margin-bottom:28px;max-width:640px}
+.title{display:grid;gap:10px;margin:0 auto 28px;max-width:860px}
 .title h1{font-size:clamp(2rem,4.4vw,3rem);font-weight:800}
 .title h1 span{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 .title p{color:var(--m);font-size:1.05rem}
@@ -96,10 +96,7 @@ main{position:relative;z-index:1;padding-block:28px 72px}
 .checks{display:flex;flex-wrap:wrap;gap:8px 20px;list-style:none;margin:4px 0 0;padding:0;font-size:.86rem;font-weight:500;color:#4b3448}
 .checks li{display:flex;align-items:center;gap:8px}
 .tick{width:18px;height:18px;border-radius:50%;background:var(--ok);color:#fff;display:grid;place-items:center;font-size:.62rem;font-weight:800;flex:none}
-.layout{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
-@media (max-width:920px){.layout{grid-template-columns:1fr}}
-.layout.sent{grid-template-columns:minmax(0,760px);justify-content:center}
-.layout.sent .sum{display:none}
+.layout{display:grid;grid-template-columns:minmax(0,860px);justify-content:center}
 main.sent .title,.layout.sent .stepper{display:none}
 
 /* Stepper */
@@ -257,35 +254,6 @@ textarea{min-height:96px;resize:vertical}
 .rv dt{color:var(--m)}
 .rv dd{margin:0;font-weight:600;overflow-wrap:anywhere}
 
-/* Summary — checklist: each row ticks once filled, ring shows progress */
-.sum{position:sticky;top:96px;background:#fff;border:1px solid var(--line);border-radius:22px;padding:22px;display:grid;gap:0;box-shadow:0 22px 44px -30px rgba(43,15,46,.3)}
-.sum-hd{display:flex;justify-content:space-between;align-items:center;gap:12px}
-.sum h3{margin:0;font-size:1.1rem}
-.ring{--p:0%;width:46px;height:46px;border-radius:50%;background:conic-gradient(var(--pink) 0 var(--p),var(--blush) 0);display:grid;place-items:center;flex:none;transition:background .3s}
-.ring span{width:36px;height:36px;border-radius:50%;background:#fff;display:grid;place-items:center;font-size:.72rem;font-weight:800}
-.sum-sub{font-size:.78rem;color:var(--m);margin:2px 0 14px}
-.sum ol{list-style:none;margin:0;padding:0;display:grid;position:relative}
-.sum ol::before{content:"";position:absolute;inset-inline-start:11px;top:14px;bottom:14px;width:2px;background:var(--line)}
-.sum li{display:grid;grid-template-columns:24px auto 1fr;gap:12px;align-items:center;padding:8px 0;position:relative;font-size:.88rem}
-.sum .dot{width:24px;height:24px;border-radius:50%;border:2px solid var(--line);background:#fff;display:grid;place-items:center;color:#fff;transition:.25s}
-.sum .dot svg{width:12px;height:12px;opacity:0}
-.sum li.ok .dot{background:var(--ok);border-color:var(--ok)}
-.sum li.ok .dot svg{opacity:1}
-.sum li > span:nth-child(2){color:var(--m)}
-.sum li > span:last-child{font-weight:600;text-align:end;overflow-wrap:anywhere}
-.sum li:not(.ok) > span:last-child{color:#c9b6c4;font-weight:400;font-style:italic}
-.total{margin-top:14px;background:linear-gradient(160deg,var(--plum),#4b1a46);color:#fff;border-radius:20px;padding:16px 18px;display:grid;gap:10px}
-.total .r{display:flex;justify-content:space-between;align-items:baseline}
-.total .r b{font-size:1.8rem;font-weight:800;letter-spacing:-.04em}
-.split{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.split div{border-radius:12px;padding:8px 10px;font-size:.72rem;background:rgba(255,255,255,.08);color:#cdb8c9}
-.split div b{display:block;color:#fff;font-size:.92rem;margin-top:2px}
-.split div.now{background:var(--grad);color:#fff}
-.help{display:flex;gap:10px;align-items:center;margin:14px 0 0;font-size:.78rem;color:var(--m)}
-.help .av{width:36px;height:36px;border-radius:50%;background:var(--grad);color:#fff;display:grid;place-items:center;font-weight:800;flex:none}
-.help bdi{white-space:nowrap}
-.help a{color:var(--rose);font-weight:700;text-decoration:none}
-@media (max-width:920px){.sum{position:static}}
 
 /* Success — file tracking: step 1 done, current step highlighted */
 .success{display:grid;gap:0}
@@ -528,21 +496,6 @@ textarea{min-height:96px;resize:vertical}
       </form>
     </div>
 
-    <aside class="sum" aria-live="polite">
-      <ol>
-        <li><i class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg></i><span data-t="sf">Forme</span><span id="sForme">SARL AU</span></li>
-        <li><i class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg></i><span data-t="sn">Nom</span><span id="sNom">—</span></li>
-        <li><i class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg></i><span data-t="sv">Ville</span><span id="sVille">—</span></li>
-        <li><i class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg></i><span data-t="sp">Formule</span><span id="sPlan">Essentiel</span></li>
-        <li><i class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg></i><span data-t="so">Options</span><span id="sOpts">—</span></li>
-        <li><i class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg></i><span data-t="spay">Paiement</span><span id="sPay">—</span></li>
-      </ol>
-      <div class="total">
-        <div class="r"><span data-t="tot">Total TTC</span><b class="ltr" id="sTotal">4 680</b></div>
-        <div class="split"><div class="now"><span data-t="snow">Maintenant</span><b class="ltr" id="sDep">700 MAD</b></div><div><span data-t="slater">Plus tard</span><b class="ltr" id="sLater">3 980 MAD</b></div></div>
-      </div>
-      <p class="help"><span class="av">N</span><span data-th="help">Une question ? Un juriste vous répond au <bdi dir="ltr">+212 5 00 00 00 00</bdi> ou sur <a href="https://wa.me/212500000000" target="_blank" rel="noopener">WhatsApp</a>.</span></p>
-    </aside>
   </div>
 </main>
 
@@ -768,22 +721,9 @@ textarea{min-height:96px;resize:vertical}
   });
   $('#copyRef2').addEventListener('click', e => copyRef(e.currentTarget, $('#ref')));
   function summary(){
-    const nom = $('#n1').value.trim(), ville = $('#ville').value;
-    $('#sForme').textContent = label('forme');
-    $('#sNom').textContent = nom || T[lang].todo;
-    $('#sVille').textContent = ville ? $('#ville').selectedOptions[0].textContent : T[lang].todo;
-    $('#sPlan').textContent = val('forme') === 'ae' ? (lang === 'en' ? EN.fo3 : 'Auto-entrepreneur') : label('plan');
-    $('#sOpts').textContent = optsText();
-    const t = total();
-    $('#sTotal').textContent = t === null ? T[lang].quote : fmt(t);
+    const t = total(), n = payNow();
     $('#tbTotal').textContent = t === null ? T[lang].quote : fmt(t) + ' MAD';
-    const n = payNow();
-    $('#sDep').textContent = fmt(n) + ' MAD'; $('#tbNow').textContent = fmt(n) + ' MAD';
-    $('#sLater').textContent = t === null ? T[lang].quote : fmt(t - n) + ' MAD';
-    $('#sPay').textContent = T[lang].pm[val('pay_method')] + ' · ' + T[lang].pa[val('pay_amount')];
-    // Checklist: tick each row once it has a value
-    const filled = [!!val('forme'), !!nom, !!ville, !!document.querySelector('[name=plan]:checked') || val('forme') === 'ae', true, !!val('pay_method')];
-    $$('.sum li').forEach((li, i) => li.classList.toggle('ok', filled[i]));
+    $('#tbNow').textContent = fmt(n) + ' MAD';
     if (step === 6) { payment(); review(); }
   }
   function review(){
@@ -794,9 +734,9 @@ textarea{min-height:96px;resize:vertical}
       [t.rv1, 1, row(k.forme, label('forme'))],
       [t.rv2, 2, row(k.noms, noms) + row(k.act, $('#act').value.trim()) + row(k.ville, $('#ville').selectedOptions[0]?.textContent || '') + row(k.capital, fmt(+$('#capital').value) + ' MAD') + row(k.siege, t.siege[val('siege')])],
       [t.rv3, 3, partners.map((p, i) => row(`${t.pttl} ${i+1}`, `${p.name} · ${p.cin} · ${p.pct}%`)).join('') + row(t.gl, $('#gerant').value === 'other' ? `${$('#gn').value.trim()} · ${$('#gc').value.trim()}` : (partners[+$('#gerant').value]?.name || ''))],
-      [t.rv4, 4, row(k.plan, $('#sPlan').textContent) + row(k.opts, optsText()) + row(k.total, $('#sTotal').textContent + (total() === null ? '' : ' MAD'))],
+      [t.rv4, 4, row(k.plan, val('forme') === 'ae' ? (lang === 'en' ? EN.fo3 : 'Auto-entrepreneur') : label('plan')) + row(k.opts, optsText()) + row(k.total, total() === null ? T[lang].quote : fmt(total()) + ' MAD')],
       [t.rv6, 5, row(t.cn.nom, $('#nom').value.trim()) + row(t.cn.tel, $('#tel').value.trim()) + row(t.cn.email, $('#email').value.trim())],
-      [t.rv5, 6, row(k.method, t.pm[val('pay_method')]) + row(k.amount, t.pa[val('pay_amount')]) + row(k.now, $('#sDep').textContent) + row(k.ref, ref)]
+      [t.rv5, 6, row(k.method, t.pm[val('pay_method')]) + row(k.amount, t.pa[val('pay_amount')]) + row(k.now, (fmt(payNow()) + ' MAD')) + row(k.ref, ref)]
     ];
     $('#review').innerHTML = blocks.map(([h, n, body]) => `<div class="rv"><div class="rv-h"><span>${h}</span><button type="button" data-go="${n}">${t.edit}</button></div><dl>${body}</dl></div>`).join('');
   }
@@ -811,7 +751,7 @@ textarea{min-height:96px;resize:vertical}
     $('#ref').textContent = ref;
     $('#okp').textContent = T[lang].ok($('#nom').value.trim(), $('#email').value.trim());
     $('#okPay').textContent = T[lang].pm[val('pay_method')] + ' · ' + (val('pay_amount') === 'full' ? T[lang].pa.full : (lang === 'en' ? 'upfront' : 'avance'));
-    $('#okAmt').textContent = $('#sDep').textContent;
+    $('#okAmt').textContent = (fmt(payNow()) + ' MAD');
     $('#done').hidden = false;
     $('main').classList.add('sent');
     $('.layout').classList.add('sent'); // summary is no longer needed once the request is sent
