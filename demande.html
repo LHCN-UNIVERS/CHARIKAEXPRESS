@@ -119,6 +119,15 @@ main.sent .title,.layout.sent .stepper{display:none}
 @media (max-width:620px){.g2,.g3{grid-template-columns:1fr}}
 label,.lbl{display:block;font-weight:700;font-size:.86rem;margin-bottom:6px}
 label small,.lbl small{font-weight:500;color:var(--m)}
+.cbx{position:relative}
+.cbx input{padding-inline-end:40px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%237a6474' stroke-width='2.2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='M20 20l-3.5-3.5'/%3E%3C/svg%3E") no-repeat right 14px center}
+[dir=rtl] .cbx input{background-position:left 14px center}
+.cbx-list{position:absolute;z-index:30;inset-inline:0;top:calc(100% + 6px);max-height:264px;overflow:auto;margin:0;padding:6px;list-style:none;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 22px 44px -22px rgba(43,15,46,.45)}
+.cbx-list li{padding:9px 12px;border-radius:10px;cursor:pointer;font-size:.92rem}
+.cbx-list li b{color:var(--pink)}
+.cbx-list li.on{background:#fff1f5}
+.cbx-list li.free{color:var(--m);font-size:.85rem}
+.cbx-list li.none{color:var(--m);cursor:default;font-size:.85rem}
 input,select,textarea{width:100%;font:inherit;font-size:.97rem;padding:13px 15px;border:1.5px solid var(--line);border-radius:12px;background:#fff;color:var(--ink)}
 input:focus,select:focus,textarea:focus{outline:none;border-color:var(--rose);background:#fff;box-shadow:0 0 0 4px rgba(255,79,145,.15)}
 textarea{min-height:96px;resize:vertical}
@@ -413,13 +422,10 @@ button.vcheck{width:100%;margin-top:12px;border:0;cursor:pointer;text-align:star
             <div><label for="act"><span data-t="act">Activité principale</span> *</label><textarea id="act" name="act" required data-ph="actph" placeholder="Ex. : agence de marketing digital, conseil, import-export…"></textarea></div>
             <div class="grid g2">
               <div><label for="ville"><span data-t="ville">Ville du siège</span> *</label>
-                <select id="ville" name="ville" required>
-                  <option value="" data-t="choose">Choisir…</option>
-                  <option value="Casablanca" data-t="c1">Casablanca</option><option value="Rabat" data-t="c2">Rabat</option><option value="Marrakech" data-t="c3">Marrakech</option><option value="Tanger" data-t="c4">Tanger</option><option value="Agadir" data-t="c5">Agadir</option><option value="Fès" data-t="c6">Fès</option>
-                  <!-- every other city, by region -->
-                  <optgroup label="Casablanca-Settat"><option value="Azemmour">Azemmour</option><option value="Ben Ahmed">Ben Ahmed</option><option value="Benslimane">Benslimane</option><option value="Berrechid">Berrechid</option><option value="Bir Jdid">Bir Jdid</option><option value="Bouskoura">Bouskoura</option><option value="Dar Bouazza">Dar Bouazza</option><option value="El Jadida">El Jadida</option><option value="Had Soualem">Had Soualem</option><option value="Médiouna">Médiouna</option><option value="Mohammedia">Mohammedia</option><option value="Nouaceur">Nouaceur</option><option value="Oulad Abbou">Oulad Abbou</option><option value="Settat">Settat</option><option value="Sidi Bennour">Sidi Bennour</option><option value="Tit Mellil">Tit Mellil</option></optgroup><optgroup label="Rabat-Salé-Kénitra"><option value="Kénitra">Kénitra</option><option value="Khémisset">Khémisset</option><option value="Mechra Bel Ksiri">Mechra Bel Ksiri</option><option value="Mehdia">Mehdia</option><option value="Rommani">Rommani</option><option value="Salé">Salé</option><option value="Sidi Kacem">Sidi Kacem</option><option value="Sidi Slimane">Sidi Slimane</option><option value="Sidi Yahya El Gharb">Sidi Yahya El Gharb</option><option value="Skhirat">Skhirat</option><option value="Souk El Arbaa">Souk El Arbaa</option><option value="Témara">Témara</option><option value="Tiflet">Tiflet</option></optgroup><optgroup label="Marrakech-Safi"><option value="Aït Ourir">Aït Ourir</option><option value="Amizmiz">Amizmiz</option><option value="Ben Guerir">Ben Guerir</option><option value="Chichaoua">Chichaoua</option><option value="El Kelâa des Sraghna">El Kelâa des Sraghna</option><option value="Essaouira">Essaouira</option><option value="Safi">Safi</option><option value="Sebt Gzoula">Sebt Gzoula</option><option value="Tahannaout">Tahannaout</option><option value="Tamansourt">Tamansourt</option><option value="Youssoufia">Youssoufia</option></optgroup><optgroup label="Tanger-Tétouan-Al Hoceïma"><option value="Al Hoceïma">Al Hoceïma</option><option value="Asilah">Asilah</option><option value="Chefchaouen">Chefchaouen</option><option value="Fnideq">Fnideq</option><option value="Imzouren">Imzouren</option><option value="Ksar El Kébir">Ksar El Kébir</option><option value="Larache">Larache</option><option value="M&#x27;diq">M&#x27;diq</option><option value="Martil">Martil</option><option value="Ouazzane">Ouazzane</option><option value="Tétouan">Tétouan</option></optgroup><optgroup label="Fès-Meknès"><option value="Azrou">Azrou</option><option value="Boulemane">Boulemane</option><option value="El Hajeb">El Hajeb</option><option value="Guercif">Guercif</option><option value="Ifrane">Ifrane</option><option value="Imouzzer Kandar">Imouzzer Kandar</option><option value="Meknès">Meknès</option><option value="Missour">Missour</option><option value="Moulay Yacoub">Moulay Yacoub</option><option value="Sefrou">Sefrou</option><option value="Taounate">Taounate</option><option value="Taza">Taza</option></optgroup><optgroup label="L&#x27;Oriental"><option value="Ahfir">Ahfir</option><option value="Al Aroui">Al Aroui</option><option value="Berkane">Berkane</option><option value="Bouarfa">Bouarfa</option><option value="Driouch">Driouch</option><option value="Figuig">Figuig</option><option value="Jerada">Jerada</option><option value="Nador">Nador</option><option value="Oujda">Oujda</option><option value="Saïdia">Saïdia</option><option value="Selouane">Selouane</option><option value="Taourirt">Taourirt</option><option value="Zaïo">Zaïo</option></optgroup><optgroup label="Souss-Massa"><option value="Aït Melloul">Aït Melloul</option><option value="Biougra">Biougra</option><option value="Chtouka Aït Baha">Chtouka Aït Baha</option><option value="Dcheira El Jihadia">Dcheira El Jihadia</option><option value="Inezgane">Inezgane</option><option value="Oulad Teima">Oulad Teima</option><option value="Taghazout">Taghazout</option><option value="Taroudant">Taroudant</option><option value="Tata">Tata</option><option value="Tiznit">Tiznit</option></optgroup><optgroup label="Béni Mellal-Khénifra"><option value="Azilal">Azilal</option><option value="Béni Mellal">Béni Mellal</option><option value="Boujad">Boujad</option><option value="Fquih Ben Salah">Fquih Ben Salah</option><option value="Kasba Tadla">Kasba Tadla</option><option value="Khénifra">Khénifra</option><option value="Khouribga">Khouribga</option><option value="M&#x27;rirt">M&#x27;rirt</option><option value="Oued Zem">Oued Zem</option><option value="Souk Sebt Oulad Nemma">Souk Sebt Oulad Nemma</option></optgroup><optgroup label="Drâa-Tafilalet"><option value="Boumalne Dadès">Boumalne Dadès</option><option value="Erfoud">Erfoud</option><option value="Errachidia">Errachidia</option><option value="Goulmima">Goulmima</option><option value="Kelaat M&#x27;Gouna">Kelaat M&#x27;Gouna</option><option value="Midelt">Midelt</option><option value="Ouarzazate">Ouarzazate</option><option value="Rissani">Rissani</option><option value="Tinghir">Tinghir</option><option value="Zagora">Zagora</option></optgroup><optgroup label="Guelmim-Oued Noun"><option value="Assa">Assa</option><option value="Bouizakarne">Bouizakarne</option><option value="Guelmim">Guelmim</option><option value="Sidi Ifni">Sidi Ifni</option><option value="Tan-Tan">Tan-Tan</option></optgroup><optgroup label="Laâyoune-Sakia El Hamra"><option value="Boujdour">Boujdour</option><option value="El Marsa">El Marsa</option><option value="Es-Semara">Es-Semara</option><option value="Laâyoune">Laâyoune</option><option value="Tarfaya">Tarfaya</option></optgroup><optgroup label="Dakhla-Oued Ed-Dahab"><option value="Aousserd">Aousserd</option><option value="Bir Gandouz">Bir Gandouz</option><option value="Dakhla">Dakhla</option></optgroup>
-                  <option value="Autre ville" data-t="c7">Autre ville</option>
-                </select>
+                <div class="cbx">
+                  <input id="ville" name="ville" type="text" required autocomplete="off" spellcheck="false" placeholder="Tapez le nom de votre ville" data-ph="cityph" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="villeList">
+                  <ul class="cbx-list" id="villeList" role="listbox" hidden></ul>
+                </div>
               </div>
               <div class="cap"><label for="capital"><span data-t="capital">Capital social (MAD)</span> *</label><input id="capital" name="capital" type="number" min="1000" step="1000" value="10000" required class="ltr"></div>
             </div>
@@ -571,7 +577,7 @@ button.vcheck{width:100%;margin-top:12px;border:0;cursor:pointer;text-align:star
     fo1:"SARL AU", fo1d:"One partner", fo2:"SARL", fo2d:"Two or more partners", fo3:"Self-employed", fo3d:"Individual activity", fo4:"Public limited company (SA)", fo4d:"Several shareholders, custom quote", fo5:"SAS", fo5d:"Simplified joint-stock company, custom quote",
     s2h:"Your future company", s2p:"Suggest 3 names, in order of preference. We'll check their availability with OMPIC.",
     nm1:"Name 1", nm2:"Name 2", nm3:"Name 3", opt:"(optional)", act:"Main activity", actph:"E.g. digital marketing agency, consulting, import-export…",
-    ville:"City of the registered office", choose:"Choose…", c1:"Casablanca", c2:"Rabat", c3:"Marrakech", c4:"Tangier", c5:"Agadir", c6:"Fez", c7:"Other city",
+    ville:"City of the registered office", cityph:"Type the name of your city", cityfree:c=>`Use “${c}”`, choose:"Choose…", c1:"Casablanca", c2:"Rabat", c3:"Marrakech", c4:"Tangier", c5:"Agadir", c6:"Fez", c7:"Other city",
     capital:"Share capital (MAD)", siege:"Registered office", sg1:"I need a business address", sg1d:"We provide one for you", sg2:"I already have premises", sg2d:"Lease or title deed",
     s3h:"Partners and manager", s3p:"Enter each partner and their share of the capital. The total must be 100%.",
     addp:"Add a partner", gerant:"Manager", gname:"Manager's full name", pcin2:"National ID (CNIE) or passport number",
@@ -764,6 +770,37 @@ button.vcheck{width:100%;margin-top:12px;border:0;cursor:pointer;text-align:star
   $('#wizard').addEventListener('change', e => { if (e.target.name === 'forme') renderPartners(); summary(); save(); });
   $('#wizard').addEventListener('input', () => { summary(); save(); });
 
+  // ---------- City search: type a few letters, accents and dashes don't matter; any other town can be typed in full ----------
+  const CITIES = ['Agadir','Ahfir','Al Aroui','Al Hoceïma','Amizmiz','Aousserd','Asilah','Assa','Azemmour','Azilal','Azrou','Aït Melloul','Aït Ourir','Ben Ahmed','Ben Guerir','Benslimane','Berkane','Berrechid','Biougra','Bir Gandouz','Bir Jdid','Bouarfa','Bouizakarne','Boujad','Boujdour','Boulemane','Boumalne Dadès','Bouskoura','Béni Mellal','Casablanca','Chefchaouen','Chichaoua','Chtouka Aït Baha','Dakhla','Dar Bouazza','Dcheira El Jihadia','Driouch','El Hajeb','El Jadida','El Kelâa des Sraghna','El Marsa','Erfoud','Errachidia','Es-Semara','Essaouira','Figuig','Fnideq','Fquih Ben Salah','Fès','Goulmima','Guelmim','Guercif','Had Soualem','Ifrane','Imouzzer Kandar','Imzouren','Inezgane','Jerada','Kasba Tadla','Kelaat M\'Gouna','Khouribga','Khémisset','Khénifra','Ksar El Kébir','Kénitra','Larache','Laâyoune','M\'diq','M\'rirt','Marrakech','Martil','Mechra Bel Ksiri','Mehdia','Meknès','Midelt','Missour','Mohammedia','Moulay Yacoub','Médiouna','Nador','Nouaceur','Ouarzazate','Ouazzane','Oued Zem','Oujda','Oulad Abbou','Oulad Teima','Rabat','Rissani','Rommani','Safi','Salé','Saïdia','Sebt Gzoula','Sefrou','Selouane','Settat','Sidi Bennour','Sidi Ifni','Sidi Kacem','Sidi Slimane','Sidi Yahya El Gharb','Skhirat','Souk El Arbaa','Souk Sebt Oulad Nemma','Taghazout','Tahannaout','Tamansourt','Tan-Tan','Tanger','Taounate','Taourirt','Tarfaya','Taroudant','Tata','Taza','Tiflet','Tinghir','Tit Mellil','Tiznit','Témara','Tétouan','Youssoufia','Zagora','Zaïo'].sort((a, b) => a.localeCompare(b, 'fr'));
+  const cnorm = v => v.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z]/g, '');
+  (() => {
+    const inp = $('#ville'), list = $('#villeList'); let items = [], act = -1;
+    const mark = (c, q) => { if (!q) return escapeHtml(c); let i = 0, j = 0, out = '', on = false; const nc = cnorm(c), at = nc.indexOf(q);
+      for (const ch of c) { const k = cnorm(ch); const inQ = k && j >= at && j < at + q.length; if (inQ !== on) { out += inQ ? '<b>' : '</b>'; on = inQ; } out += escapeHtml(ch); j += k.length; i++; }
+      return out + (on ? '</b>' : ''); };
+    function render(){
+      const raw = inp.value.trim(), q = cnorm(raw);
+      const hits = q ? CITIES.filter(c => cnorm(c).includes(q)).sort((a, b) => cnorm(b).startsWith(q) - cnorm(a).startsWith(q)) : CITIES;
+      items = hits.slice();
+      const exact = hits.some(c => cnorm(c) === q);
+      let h = hits.map((c, i) => `<li role="option" data-i="${i}" id="vo${i}">${mark(c, q)}</li>`).join('');
+      if (raw && !exact) { items.push(raw); h += `<li role="option" class="free" data-i="${items.length - 1}" id="vo${items.length - 1}">${escapeHtml(lang === 'en' ? EN.cityfree(raw) : `Utiliser « ${raw} »`)}</li>`; }
+      list.innerHTML = h; act = q && hits.length ? 0 : -1; paint(); open(true);
+    }
+    function paint(){ $$('#villeList li').forEach((li, i) => li.classList.toggle('on', i === act)); const on = list.querySelector('li.on'); inp.setAttribute('aria-activedescendant', on ? on.id : ''); on?.scrollIntoView({ block:'nearest' }); }
+    function open(v){ list.hidden = !v; inp.setAttribute('aria-expanded', v); }
+    function pick(i){ const c = items[i]; if (c == null) return; inp.value = c; open(false); inp.dispatchEvent(new Event('input', { bubbles:true })); inp.dispatchEvent(new Event('change', { bubbles:true })); }
+    inp.addEventListener('focus', render);
+    inp.addEventListener('input', e => { if (e.isTrusted) render(); });
+    inp.addEventListener('keydown', e => {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); if (list.hidden) render(); act = Math.max(0, Math.min(items.length - 1, act + (e.key === 'ArrowDown' ? 1 : -1))); paint(); }
+      else if (e.key === 'Enter' && !list.hidden && act >= 0) { e.preventDefault(); pick(act); }
+      else if (e.key === 'Escape') open(false);
+    });
+    list.addEventListener('mousedown', e => { e.preventDefault(); const li = e.target.closest('li[data-i]'); if (li) pick(+li.dataset.i); });
+    inp.addEventListener('blur', () => { open(false); const q = cnorm(inp.value), c = q && CITIES.find(x => cnorm(x) === q); if (c && c !== inp.value) { inp.value = c; inp.dispatchEvent(new Event('change', { bubbles:true })); } });
+  })();
+
   // ---------- Summary & review ----------
   function total(){
     if (['sa', 'sas'].includes(val('forme'))) return null;   // SA and SAS are priced on quote
@@ -856,8 +893,8 @@ button.vcheck{width:100%;margin-top:12px;border:0;cursor:pointer;text-align:star
     const money = n => n === null ? t.quote : fmt(n) + ' MAD';
     return [
       [t.rv1, 1, label('forme') + (partners.length > 1 ? ' · ' + t.v.np(partners.length) : ''), [[k.forme, label('forme')]]],
-      [t.rv2, 2, [noms[0], $('#ville').selectedOptions[0]?.textContent, fmt(+$('#capital').value) + ' MAD'].filter(Boolean).join(' · '),
-        [[k.noms, noms.map((n, i) => (i + 1) + '. ' + n).join(' · ')], [k.act, $('#act').value.trim()], [k.ville, $('#ville').selectedOptions[0]?.textContent || ''], [k.capital, fmt(+$('#capital').value) + ' MAD'], [k.siege, t.siege[val('siege')]]]],
+      [t.rv2, 2, [noms[0], $('#ville').value.trim(), fmt(+$('#capital').value) + ' MAD'].filter(Boolean).join(' · '),
+        [[k.noms, noms.map((n, i) => (i + 1) + '. ' + n).join(' · ')], [k.act, $('#act').value.trim()], [k.ville, $('#ville').value.trim()], [k.capital, fmt(+$('#capital').value) + ' MAD'], [k.siege, t.siege[val('siege')]]]],
       [t.rv3, 3, t.v.np(partners.length) + ' · ' + partners.map(p => (+p.pct || 0) + ' %').join(' / ') + (gname ? ' · ' + t.gl.toLowerCase() + ' : ' + gname : ''),
         partners.map((p, i) => [`${t.pttl} ${i + 1}`, `${p.name} · ${p.cin} · ${p.pct} %`]).concat([[t.gl, gname + (gcin ? ' · ' + gcin : '')]])],
       [t.rv4, 4, plan + (optsText() !== t.none ? ' + ' + optsText() : '') + ' · ' + money(tt), [[k.plan, plan], [k.opts, optsText()], [k.total, money(tt)]]],
@@ -931,7 +968,7 @@ button.vcheck{width:100%;margin-top:12px;border:0;cursor:pointer;text-align:star
       options: $$('#wizard input[type=checkbox][data-price]:checked').map(c => c.name),
       total: total(), payMethod: val('pay_method'), payAmount: val('pay_amount'),
       noms: ['n1','n2','n3'].map(id => $('#'+id).value.trim()).filter(Boolean),
-      activite: $('#act').value.trim(), ville: $('#ville').value, capital: +$('#capital').value || 0, siege: val('siege'),
+      activite: $('#act').value.trim(), ville: $('#ville').value.trim(), capital: +$('#capital').value || 0, siege: val('siege'),
       partners: partners.map(p => ({ name: p.name.trim(), cin: p.cin.trim(), pct: +p.pct || 0 })),
       gerant: g === 'other' ? { name: $('#gn').value.trim(), cin: $('#gc').value.trim() } : { name: partners[+g]?.name || '', cin: partners[+g]?.cin || '' },
       client: { nom: $('#nom').value.trim(), tel: $('#tel').value.trim(), email: $('#email').value.trim() },
