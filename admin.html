@@ -62,8 +62,9 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
 .bell b{position:absolute;top:-4px;inset-inline-end:-4px;background:var(--grad);color:#fff;font-size:.62rem;border-radius:999px;padding:1px 6px}
 .demo-bar{background:#fff4d6;color:#7a5400;font-size:.76rem;padding:7px 20px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .demo-bar button{all:unset;cursor:pointer;font-weight:700;text-decoration:underline}
-.body{display:grid;grid-template-columns:320px 1fr 290px;min-height:0}
-@media (min-width:1181px){.body.nofiche{grid-template-columns:320px 1fr}}
+.body{display:grid;grid-template-columns:300px 1fr 400px;min-height:0}
+@media (max-width:1400px){.body{grid-template-columns:280px 1fr 360px}}
+@media (min-width:1181px){.body.nofiche{grid-template-columns:300px 1fr}}
 .detail{display:contents}
 
 /* List */
@@ -162,13 +163,17 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
 .info h4{padding-top:10px;border-top:1px solid var(--line)}
 .blk{border:1px solid var(--line);border-radius:14px;background:#fff;flex:none}
 .blk-h{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:9px 10px;background:#fbf6f8;border-radius:13px 13px 0 0}
-.blk-h b{font-size:.8rem;display:block}
-.blk-h small{display:block;color:var(--m);font-size:.66rem;font-weight:500}
-.blk .dl{padding:10px 10px 4px}
+.blk-h b{font-size:.92rem;display:block}
+.blk-h small{display:block;color:var(--m);font-size:.74rem;font-weight:500}
+.blk .dl{padding:12px 12px 6px;font-size:.86rem;gap:8px 14px;grid-template-columns:minmax(90px,auto) 1fr}
+.blk .dl dd{font-weight:700}
+.blk-h{padding:11px 12px!important}
+.blk-f{padding:4px 12px 12px!important}
+.blk .cp{font-size:.9rem}
 .blk-f{padding:4px 10px 10px}
 .blk.now{border-color:var(--pink);box-shadow:0 0 0 3px rgba(255,79,154,.12)}
 .blk.now .blk-h{background:#ffe9f2}
-.now-tag{flex:none;font-size:.6rem;font-weight:700;color:#fff;background:var(--grad);border-radius:999px;padding:2px 7px}
+.now-tag{flex:none;font-size:.68rem;font-weight:700;color:#fff;background:var(--grad);border-radius:999px;padding:2px 7px}
 .dl.fiche dd{display:flex;justify-content:flex-end;align-items:flex-start;gap:6px}
 .dl.fiche dd.ltr{direction:ltr}
 .na{color:#b98a95;font-weight:500;font-style:italic}
@@ -582,7 +587,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
         ['Demandeur', demandeur + (cinOf(demandeur) ? ' · ' + cinOf(demandeur) : '')]] },
       { k:'statuts', title:'Statuts et documents', sub:'Rédaction et légalisation', steps:[2, 3], rows:[
         ['Dénomination', nom1 ? nom1 + ' (1er choix)' : ''], ['Forme', FORMES[r.forme] || r.forme], ['Capital', capital],
-        ...ps.map((p, i) => [`Associé ${i + 1}`, [p.name, p.cin, p.pct != null ? p.pct + ' %' : ''].filter(Boolean).join(' · ')]),
+        ...ps.map((p, i) => [`Associé ${i + 1}`, [p.name, p.cin, p.pct != null ? p.pct + '\u00a0%' : ''].filter(Boolean).join(' · ')]),
         ['Gérant', gerant], ['Siège', siege], ['Ville', r.ville], ['Activité', r.activite],
         ...((r.options || []).includes('o_pacte') ? [["Pacte d'associés", 'Oui (option choisie)']] : [])] },
       { k:'immat', title:'Immatriculation · RC, IF, ICE, CNSS', sub:'Enregistrement, dépôt, tribunal', steps:[4, 5, 6, 7, 8], rows:[
