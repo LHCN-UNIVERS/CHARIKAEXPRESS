@@ -221,12 +221,29 @@ textarea{min-height:96px;resize:vertical}
 @media (max-width:720px){.packs,.opts,.steps3,.meth{grid-template-columns:1fr}.pk.pro{order:-1}}
 
 /* Step 6 summary: anti-rejection check, one compact row per part */
+.sendbox{margin-top:22px;display:grid;gap:12px;padding:16px;border-radius:18px;background:var(--blush);border:1px solid #fbe0e9}
+.sendbox .chk{background:#fff;margin:0}
+.send6{width:100%;font-size:1rem;padding:15px 24px}
+button.vcheck{width:100%;margin-top:12px;border:0;cursor:pointer;text-align:start;font:inherit}
+.vtx{flex:1;min-width:0}
+.vtx b{display:block;font-size:.95rem}
+.vtx span{display:block;font-size:.78rem;color:#e3cbdd}
+.vmore{flex:none;font-size:.78rem;font-weight:700;background:rgba(255,255,255,.12);border-radius:999px;padding:7px 12px}
+.vdetail{display:grid;gap:10px;margin-top:10px}
+.instr .amt b{white-space:nowrap}
+@media (max-width:560px){
+  .seg{display:grid;grid-template-columns:1fr 1fr;width:100%;border-radius:16px}
+  .seg label{text-align:center;padding:9px 8px;border-radius:12px;font-size:.78rem}
+  button.vcheck{flex-wrap:wrap;gap:10px 12px}
+  .vring{width:44px;height:44px}.vring span{width:36px;height:36px;font-size:.72rem}
+  .vtx{flex:1 1 180px}
+  .instr .amt{flex-wrap:wrap}
+}
 .vcheck{display:flex;gap:14px;align-items:center;border-radius:18px;padding:14px 16px;background:linear-gradient(160deg,var(--plum),#4b1a46);color:#fff}
 .vring{--p:100%;width:52px;height:52px;border-radius:50%;background:conic-gradient(#7fe0b0 0 var(--p),rgba(255,255,255,.15) 0);display:grid;place-items:center;flex:none}
 .vring.warn{background:conic-gradient(#ffb36b 0 var(--p),rgba(255,255,255,.15) 0)}
 .vring span{width:42px;height:42px;border-radius:50%;background:var(--plum);display:grid;place-items:center;font-weight:800;font-size:.78rem}
 .vcheck b{display:block;font-size:.98rem}
-.vcheck p{margin:2px 0 0;font-size:.8rem;color:#e3cbdd}
 .review{display:grid;gap:8px}
 .rv{border:1px solid var(--line);border-radius:16px;background:#fff;padding:0}
 .rv[open]{border-color:#f6c9d7}
@@ -489,12 +506,14 @@ textarea{min-height:96px;resize:vertical}
             <a class="wa-send" id="waReceipt" href="https://wa.me/212500000000" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.4 14.2c-.2.6-1.3 1.2-1.8 1.3-.5 0-1 .2-3.3-.7-2.8-1.1-4.5-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.9 2c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.6.2.3.7 1.2 1.6 1.9 1.1 1 2 1.3 2.3 1.4.3.1.4.1.6-.1l.8-1c.2-.2.4-.2.6-.1l1.9.9c.3.1.4.2.5.3.1.1.1.6-.1 1.2z"/></svg><span data-t="wasend">Envoyer le reçu sur WhatsApp</span></a>
           </div>
           <p class="pdemo" data-t="pdemo">Coordonnées de démonstration : remplacez-les par vos vrais RIB et bénéficiaire Cash Plus.</p>
-          <div class="grid" style="margin-top:22px">
-              <span class="lbl" data-t="recap">Vérifiez votre dossier avant l'envoi</span>
-              <div class="vcheck"><div class="vring" id="vring"><span class="ltr" id="vscore">6/6</span></div><div><b id="vtitle"></b><p data-t="vsub">Nous vérifions les erreurs qui font le plus souvent rejeter un dossier.</p></div></div>
+          <div class="sendbox">
+            <label class="chk"><input type="checkbox" id="cgu" required><span data-t="cgu">J'accepte d'être contacté au sujet de ma demande.</span></label>
+            <button type="submit" class="btn btn-grad send6"><span data-t="send">Envoyer ma demande</span> <span class="flip">→</span></button>
+          </div>
+          <button type="button" class="vcheck" id="vtoggle" aria-expanded="false" aria-controls="vdetail"><span class="vring" id="vring"><span class="ltr" id="vscore">6/6</span></span><span class="vtx"><b id="vtitle"></b><span data-t="vsub">Vérification anti-rejet de votre dossier</span></span><span class="vmore" id="vmore" data-t="vshow">Voir le détail</span></button>
+          <div class="vdetail" id="vdetail" hidden>
               <div class="review" id="review"></div>
               <div class="vshare"><a class="vwa" id="recapWa" href="https://wa.me/212500000000" target="_blank" rel="noopener" data-t="recapwa">Recevoir ce récapitulatif sur WhatsApp</a><button type="button" class="vcopy" id="recapCopy" data-t="recapcp">Copier le récapitulatif</button></div>
-              <label class="chk"><input type="checkbox" id="cgu" required><span data-t="cgu">J'accepte d'être contacté au sujet de ma demande.</span></label>
           </div>
         </section>
 
@@ -550,7 +569,7 @@ textarea{min-height:96px;resize:vertical}
     meth:"How would you like to pay?", pm1:"Bank transfer", pm1d:"From your bank or banking app", pm2:"Cash Plus", pm2d:"In cash, at any Cash Plus branch",
     refl:"Your payment reference", copy:"Copy", now:"To pay now", bf:"Beneficiary", bk:"Bank", bkv:"Your bank", motif:"Payment description (your reference)", h1:"1. Pay", h1d:"with your reference as the description", h2:"2. Send the receipt", h2d:"by WhatsApp", h3:"3. We start", h3d:"the negative certificate", wasend:"Send the receipt on WhatsApp", cpn:"Beneficiary name", cin:"ID number", tel:"Phone",
     pnote:"After paying, send a photo of your receipt on WhatsApp, quoting your reference.", pdemo:"Demo details: replace them with your real RIB and Cash Plus beneficiary.",
-    recap:"Check your file before sending", vsub:"We check the mistakes that most often get a file rejected.", recapwa:"Get this summary on WhatsApp", recapcp:"Copy the summary", cgu:"I agree to be contacted about my request.",
+    recap:"Check your file before sending", vsub:"Anti-rejection check of your file", vshow:"See details", recapwa:"Get this summary on WhatsApp", recapcp:"Copy the summary", cgu:"I agree to be contacted about my request.",
     okh:"Request sent!", refd:"File reference", t0h:"Request received", t0w:"just now", t0p:"Your file has been registered.",
     nx1h:"Make your payment", nx1:"Use your reference as the payment description.", nx2h:"Send your documents", nx2:"Payment proof + national ID (CNIE), by WhatsApp.", wao:"Open WhatsApp",
     nx3h:"Your legal advisor calls you", nx3:"They start the negative certificate application with OMPIC.",
@@ -560,7 +579,7 @@ textarea{min-height:96px;resize:vertical}
     help:'Questions? A legal advisor is available on <bdi dir="ltr">+212 5 00 00 00 00</bdi> or on <a href="https://wa.me/212500000000" target="_blank" rel="noopener">WhatsApp</a>.'
   };
   const T = {
-    fr:{v:{title:n=>`Presque prêt : ${n} point${n > 1 ? 's' : ''} à vérifier`, allok:"Tout est prêt : votre dossier est complet", fix:"Corriger", today:"aujourd'hui", np:n=>`${n} associé${n > 1 ? 's' : ''}`,
+    fr:{v:{title:n=>`Presque prêt : ${n} point${n > 1 ? 's' : ''} à vérifier`, allok:"Dossier vérifié : tout est en ordre", show:"Voir le détail", hide:"Masquer", fix:"Corriger", today:"aujourd'hui", np:n=>`${n} associé${n > 1 ? 's' : ''}`,
           p1:"Aujourd'hui", p2:"Après la légalisation", p3:"Dossier complet", good3:"Les parts font bien 100 % et les numéros de CIN ont un format valide.", head:r=>`Ma demande Charika Express ${r}`,
           short:l=>`<b>${l.length > 1 ? 'Les noms' : 'Le nom'} ${l.map(n => `« ${escapeHtml(n)} »`).join(', ')} ${l.length > 1 ? 'sont très courts' : 'est très court'}</b> et risque${l.length > 1 ? 'nt' : ''} d'être refusé${l.length > 1 ? 's' : ''} par l'OMPIC. Préférez un nom d'au moins 4 lettres.`,
           common:l=>`<b>${l.length > 1 ? 'Les noms' : 'Le nom'} ${l.map(n => `« ${escapeHtml(n)} »`).join(', ')} ${l.length > 1 ? 'sont très courants' : 'est très courant'}</b> et risque${l.length > 1 ? 'nt' : ''} d'être déjà pris à l'OMPIC. Ajoutez un mot plus original.`,
@@ -577,7 +596,7 @@ textarea{min-height:96px;resize:vertical}
         pname:"Nom complet", pcin:"N° CNIE ou passeport", ppct:"Part (%)", pttl:"Associé", rm:"Retirer", other:"Une autre personne", next:"Continuer", send:"Envoyer ma demande",
         k:{forme:"Forme",noms:"Noms",act:"Activité",ville:"Ville",capital:"Capital",siege:"Siège",plan:"Formule",opts:"Options",total:"Total",method:"Moyen",amount:"Montant",ref:"Référence",now:"À régler maintenant"},
         siege:{dom:"Domiciliation",local:"Local existant"}},
-    en:{v:{title:n=>`Almost ready: ${n} point${n > 1 ? 's' : ''} to check`, allok:"All set: your file is complete", fix:"Fix", today:"today", np:n=>`${n} partner${n > 1 ? 's' : ''}`,
+    en:{v:{title:n=>`Almost ready: ${n} point${n > 1 ? 's' : ''} to check`, allok:"File checked: everything is in order", show:"See details", hide:"Hide", fix:"Fix", today:"today", np:n=>`${n} partner${n > 1 ? 's' : ''}`,
           p1:"Today", p2:"After legalisation", p3:"File complete", good3:"Shares add up to 100% and ID numbers look valid.", head:r=>`My Charika Express request ${r}`,
           short:l=>`<b>${l.length > 1 ? 'The names' : 'The name'} ${l.map(n => `“${escapeHtml(n)}”`).join(', ')} ${l.length > 1 ? 'are' : 'is'} very short</b> and may be refused by OMPIC. Prefer a name of at least 4 letters.`,
           common:l=>`<b>${l.length > 1 ? 'The names' : 'The name'} ${l.map(n => `“${escapeHtml(n)}”`).join(', ')} ${l.length > 1 ? 'are' : 'is'} very common</b> and may already be taken at OMPIC. Add a more original word.`,
@@ -685,6 +704,7 @@ textarea{min-height:96px;resize:vertical}
     $$('.step [data-t=st]').forEach(s => s.textContent = T[lang].st(+s.closest('.step').dataset.step));
     $('#prev').style.visibility = n === 1 ? 'hidden' : 'visible';
     $('#nextTxt').textContent = n === 6 ? T[lang].send : T[lang].next;
+    $('#next').hidden = n === 6;
     if (n === 6) { payment(); review(); }
     if (!keepScroll) $('#wizard').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
@@ -834,6 +854,7 @@ textarea{min-height:96px;resize:vertical}
     $('#vscore').textContent = (6 - bad) + '/6';
     $('#vring').style.setProperty('--p', ((6 - bad) / 6 * 100) + '%'); $('#vring').classList.toggle('warn', bad > 0);
     $('#vtitle').textContent = nw ? t.v.title(nw) : t.v.allok;
+    $('#vmore').textContent = $('#vdetail').hidden ? t.v.show : t.v.hide;
     const open = new Set([...$$('#review details[open]')].map(d => d.dataset.n));
     $('#review').innerHTML = data.map(([h, n, one, rows]) => {
       const w = W[n], info = I[n] || [];
@@ -846,6 +867,11 @@ textarea{min-height:96px;resize:vertical}
     const txt = recapText(data);
     $('#recapWa').href = 'https://wa.me/212500000000?text=' + encodeURIComponent(txt);
   }
+  $('#vtoggle').addEventListener('click', () => {
+    const open = $('#vdetail').hidden; $('#vdetail').hidden = !open;
+    $('#vtoggle').setAttribute('aria-expanded', open);
+    $('#vmore').textContent = open ? T[lang].v.hide : T[lang].v.show;
+  });
   const recapText = data => T[lang].v.head(ref) + '\n' + data.map(([h, , , rows]) => '\n' + h.toUpperCase() + '\n' + rows.map(([a, b]) => `${a} : ${b}`).join('\n')).join('\n');
   $('#recapCopy').addEventListener('click', e => {
     const b = e.currentTarget, txt = recapText(recapData());
