@@ -3,7 +3,7 @@
 Single-page marketing site (French + English) for an online company-formation service in Morocco.
 
 - `index.html` is self-contained. It only loads Google Fonts from the network.
-- The language switch (FR / EN) is built in. English strings live in the `EN` object at the bottom of each page; French is the text in the HTML.
+- The language switch (FR / EN) is built in on the request page and the team space (English strings in the `EN` object at the bottom of each page; French is the text in the HTML). The redesigned homepage is French only for now: see `TODO.md`.
 - Open `index.html` in a browser, or serve the folder with any static host.
 
 ## Hosting on Cloudflare Pages
@@ -19,7 +19,7 @@ Single-page marketing site (French + English) for an online company-formation se
 - Have the English text proofread.
 
 ## Pages
-- `index.html`: homepage. The "Commencer ma demande", "Démarrer" and plan buttons open the request page.
+- `index.html`: homepage, redesigned after the reference design: hero (documents + phone with file statuses), benefits strip, 3-step process, services, « Pourquoi choisir Charika Express ? », pricing (SARL / SAS tabs, full inclusions behind « Voir toutes les inclusions »), rejection guarantee, FAQ, call-back form, footer. « Créer ma société », « Commencer ma demande » and the pack buttons open the request page.
 - `demande.html`: 6-step request form (service, company with 3 required names, partners and manager, plan, payment by bank transfer or Cash Plus with a reference and full or 50/50 payment, contact) with a live price summary, a review step and a confirmation reference. Drafts are kept in the visitor's browser. Supports `?plan=essentiel|premium` and `?service=sarlau|sarl|ae|sa`.
   - `collect()` builds the request object. In demo mode, `finish()` stores it in the browser (`ce-requests`) so the team space on the same browser picks it up. With a backend, send `collect()` to it there instead.
   - Replace the demo payment details in the payment step (`#payVir` bank RIB and `#payCash` Cash Plus beneficiary) with your real ones.

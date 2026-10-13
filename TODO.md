@@ -1,0 +1,20 @@
+# TODO
+
+Things left out of the homepage on purpose, because they would be false today. Add them when they exist.
+
+## Homepage (from the reference design)
+
+- [ ] **Customer reviews.** The reference shows "+1 200 entrepreneurs nous font confiance" and "4,8/5 sur Google". Add a reviews block only with real numbers: a Google Business profile with real reviews, and a real count of companies created.
+- [ ] **"Mon espace" button** in the navbar. Needs the client space (login with a code by WhatsApp or e-mail, file progress, documents). See `docs/client-space.md`.
+- [ ] **Social media icons** in the footer (Facebook, Instagram, LinkedIn, YouTube). Add once the profiles exist, with their real links.
+- [ ] **"Voir les conditions" link** on the « Rejeté ? On recommence. À nos frais. » banner. Needs a conditions page that states the guarantee precisely.
+- [ ] **Legal pages**: Mentions légales, Conditions générales, Politique de confidentialité. They are plain text in the footer until the pages exist.
+- [ ] **English version of the new homepage.** The FR / EN switch still works on the request page and the team space; the redesigned homepage is French only for now.
+
+## Before going live
+
+- [ ] Real contact details: WhatsApp number (now `212500000000`), phone, e-mail, address.
+- [ ] Real payment details: RIB and Cash Plus beneficiary (`demande.html` and `messages.js`).
+- [ ] Backend so requests and the call-back form reach the team (Cloudflare D1 + function + Access). Until then the call-back form only shows a demo message.
+- [ ] SAS prices (now "Sur devis").
+- [ ] Cloudflare Pages import (build `sh build.sh`, output `dist`) and switch the charikaexpress.ma nameservers.

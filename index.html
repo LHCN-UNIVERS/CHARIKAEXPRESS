@@ -9,621 +9,592 @@
 <meta property="og:site_name" content="Charika Express">
 <meta property="og:locale" content="fr_MA">
 <meta property="og:url" content="https://charikaexpress.ma/">
-<meta property="og:title" content="Charika Express · Créez votre société au Maroc, 100% en ligne">
+<meta property="og:title" content="Charika Express · Créez votre société au Maroc, simplement et en ligne">
 <meta property="og:description" content="Créez votre société au Maroc en ligne : certificat négatif, statuts, RC, IF, ICE, CNSS. Juriste dédié, dès 4 680 MAD.">
 <meta property="og:image" content="https://charikaexpress.ma/og-image.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#2b0f2e">
+<meta name="theme-color" content="#30102f">
 <title>Charika Express</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Caveat:wght@600&display=swap">
 <style>
-/* Layout: "Coucher". Soft warm-white page with a living coral/pink/gold orb. Dark sticky navbar (logo left, phone menu). Hero pairs a start-request button with fanned document cards; dark key-facts ribbon; lawyer chat + benefits; services (featured + list); process (lock-screen notifications); pricing; warm guarantee band; FAQ; contact. Logical properties for RTL. Single deliberate light look. */
+/* Layout: one centred 1160px column. Rounded plum navbar; two-column hero (text | documents + phone dashboard); pale-pink benefits strip;
+   3 numbered process cards; services (featured plum card + list); pale-pink trust block; 3 pricing cards (Pro in plum);
+   coral→pink guarantee banner; FAQ + accordion + plum contact panel; light footer. Single deliberate light look. */
 :root{
-  color-scheme:light;
-  --ink:#2b0f2e; --m:#6b5468; --bg:#fffaf7; --card:#ffffff; --blush:#fff0ec; --line:#f1e4e6;
-  --coral:#ff7a59; --pink:#ff4f9a; --gold:#ffc145; --rose:#ff5c7a; --ok:#0e8a5f;
-  --font:"Sora",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
-  --grad:linear-gradient(100deg,var(--coral),var(--pink));
-  --grad3:linear-gradient(120deg,var(--gold),var(--coral) 45%,var(--pink));
+  --plum:#30102f; --plum2:#43173f; --coral:#ff795b; --pink:#ff4f91; --blush:#fff1f5; --blush2:#ffe4ec;
+  --bg:#fffcfa; --ink:#30152f; --m:#7a6474; --line:#f2e2e8; --ok:#1d9a62; --warn:#e8892b;
+  --grad:linear-gradient(90deg,var(--coral),var(--pink));
+  --sans:"Sora",system-ui,-apple-system,"Segoe UI",sans-serif; --hand:"Caveat","Segoe Script",cursive;
+  --r:18px; --sh:0 18px 40px -26px rgba(48,16,47,.45);
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 var(--font);overflow-x:hidden}
-a{color:inherit}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth;scroll-padding-top:96px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+img,svg{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid rgba(255,79,145,.55);outline-offset:2px;border-radius:8px}
+.wrap{width:min(1160px,100% - 32px);margin-inline:auto}
+section{padding-block:clamp(48px,6vw,80px)}
+h1,h2,h3{margin:0;letter-spacing:-.02em;text-wrap:balance}
+h2{font-size:clamp(1.75rem,3.2vw,2.3rem);line-height:1.12;font-weight:800}
+h2 em,h1 em{font-style:normal;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 p{margin:0}
-h1,h2,h3{margin:0;line-height:1.05;letter-spacing:-.04em;text-wrap:balance}
-h2{font-size:clamp(2.1rem,4.4vw,3.4rem);font-weight:800}
-h3{font-size:1.2rem;font-weight:700;letter-spacing:-.02em}
-.wrap{max-width:1200px;margin-inline:auto;padding-inline:clamp(20px,4vw,48px)}
-section{padding-block:clamp(72px,9vw,120px)}
-.eyebrow{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:.85rem;color:var(--rose)}
-.eyebrow::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--grad)}
-.head{display:grid;gap:16px;max-width:700px;margin-bottom:52px}
-.head p{color:var(--m);font-size:1.08rem}
-.head.center{text-align:center;margin-inline:auto;justify-items:center}
-.gt{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
-:focus-visible{outline:3px solid var(--rose);outline-offset:3px;border-radius:8px}
-.flip{display:inline-block}
-.ltr{direction:ltr;unicode-bidi:isolate}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:.78rem;font-weight:700;color:var(--pink);letter-spacing:.02em}
+.eyebrow::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--pink)}
+.lead{color:var(--m);font-size:1rem;max-width:56ch}
+.head{display:grid;gap:12px;margin-bottom:32px}
 
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:700 .96rem var(--font);padding:14px 24px;border-radius:14px;border:0;text-decoration:none;cursor:pointer;transition:transform .2s,box-shadow .2s,background .2s}
-.btn:hover{transform:translateY(-2px)}
-.btn-ink{background:var(--ink);color:#fff;box-shadow:0 12px 26px -14px rgba(43,15,46,.7)}
-.btn-grad{background:var(--grad);color:#fff;box-shadow:0 14px 30px -14px rgba(255,79,154,.75)}
-.btn-soft{background:var(--blush);color:var(--ink)}
-.btn-white{background:#fff;color:var(--ink)}
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:0 24px;border-radius:999px;font-weight:700;font-size:.95rem;border:0;cursor:pointer;white-space:nowrap;transition:transform .15s,box-shadow .15s}
+.btn-grad{background:var(--grad);color:#fff;box-shadow:0 14px 28px -14px rgba(255,79,145,.8)}
+.btn-grad:hover{transform:translateY(-1px);box-shadow:0 18px 32px -14px rgba(255,79,145,.9)}
+.btn-line{background:#fff;color:var(--ink);box-shadow:inset 0 0 0 1.5px #f6b9cc}
+.btn-line:hover{box-shadow:inset 0 0 0 1.5px var(--pink);color:var(--pink)}
+.btn-ink{background:var(--plum);color:#fff}
+.btn-wa{background:#fff;color:#14864a;box-shadow:inset 0 0 0 1.5px #bfe8cf}
+.btn-sm{min-height:40px;padding:0 18px;font-size:.85rem}
+.arr{font-size:1.05em;line-height:1}
 
-/* Living orb */
-.orb{position:absolute;border-radius:50%;overflow:hidden;pointer-events:none;filter:blur(8px)}
-.orb::before{content:"";position:absolute;inset:-30%;background:radial-gradient(40% 45% at 30% 30%,#ff7a59,transparent 62%),radial-gradient(40% 45% at 70% 35%,#ff4f9a,transparent 62%),radial-gradient(45% 50% at 50% 75%,#ffc145,transparent 62%),#ff8fa3;filter:blur(40px);animation:drift 14s ease-in-out infinite alternate}
-@keyframes drift{to{transform:translate(6%,4%) rotate(10deg) scale(1.08)}}
+/* Navbar */
+.topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:60;padding-top:12px}
+.navbar{display:flex;align-items:center;gap:20px;background:var(--plum);color:#fff;border-radius:20px;padding:10px 10px 10px 20px;box-shadow:0 18px 40px -24px rgba(48,16,47,.8)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.12rem;letter-spacing:-.02em;white-space:nowrap}
+.logo i{width:28px;height:28px;border-radius:9px;background:var(--grad);display:grid;place-items:center;flex:none}
+.logo i::after{content:"";width:10px;height:10px;border-radius:3px;background:#fff}
+.logo b{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:800}
+.links{display:flex;gap:4px;margin-inline:auto}
+.links a{padding:8px 14px;border-radius:999px;font-size:.88rem;font-weight:500;color:#e8d6e3}
+.links a:hover,.links a.on{color:#fff;background:rgba(255,255,255,.08)}
+.burger{display:none;width:44px;height:44px;border-radius:12px;border:0;background:rgba(255,255,255,.1);color:#fff;cursor:pointer;place-items:center}
+.mnav{margin-top:8px;background:var(--plum);border-radius:18px;padding:10px;display:grid;gap:2px}
+.mnav a{padding:12px 14px;border-radius:12px;color:#f3e6ef;font-weight:600}
+.mnav a:hover{background:rgba(255,255,255,.08)}
 
-.logo{display:flex;align-items:center;gap:9px;font-weight:800;font-size:1.45rem;letter-spacing:-.05em;text-decoration:none}
-.logo i{width:16px;height:16px;border-radius:50%;background:var(--grad);display:block}
-.logo b{font-weight:800;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;margin-inline-start:.24em}
-@media (max-width:420px){.navbar .logo{font-size:1.08rem}}
-/* ---------- Header: dark bar, logo on the left ---------- */
-/* The sticky header paints its own band (solid, fading out under the navbar) so content never shows around the floating navbar; works in Safari without overlays or scroll scripts */
-.topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:60;padding-top:12px;padding-bottom:30px;margin-bottom:-30px;background:linear-gradient(var(--bg),var(--bg) 58%,rgba(255,250,247,.9) 72%,rgba(255,250,247,0))}
-.navbar{position:relative;display:flex;align-items:center;gap:20px;background:var(--ink);color:#fff;border-radius:22px;padding:10px;padding-inline-start:22px;box-shadow:0 24px 50px -28px rgba(43,15,46,.8);overflow:hidden}
-.navbar::before{content:"";position:absolute;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(255,122,89,.55),rgba(255,79,154,.3) 38%,rgba(255,79,154,0) 68%);opacity:.75;inset-inline-end:-120px;top:-240px;pointer-events:none}
-.navbar{isolation:isolate}
-.navbar > *{position:relative}
-.navbar .logo{color:#fff;flex:none}
-.links{display:flex;gap:2px;list-style:none;margin:0;margin-inline-start:12px;padding:0;font-weight:500;font-size:.92rem}
-.links a{display:block;padding:9px 14px;border-radius:12px;color:#d7c4d3;text-decoration:none;transition:color .2s,background .2s}
-.links a:hover{color:#fff}
-.links a.on{color:#fff;background:rgba(255,255,255,.1);font-weight:700}
-.bar-r{display:flex;gap:8px;align-items:center;margin-inline-start:auto}
-.ico{width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,.08);display:grid;place-items:center;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12);color:var(--gold);text-decoration:none;border:0;cursor:pointer;flex:none;transition:background .2s}
-.ico:hover{background:rgba(255,255,255,.16)}
-.ico svg{width:19px;height:19px}
-.burger{display:none;color:#fff}
-.lang{display:inline-flex;background:rgba(255,255,255,.08);border-radius:12px;padding:4px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
-.lang button{border:0;background:transparent;font:700 .8rem var(--font);color:#d7c4d3;padding:7px 10px;border-radius:9px;cursor:pointer}
-.lang button[aria-pressed="true"]{background:#fff;color:var(--ink)}
-.navbar .cta,.mnav .cta{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--grad);color:#fff;font:700 .9rem var(--font);padding:12px 18px;border-radius:14px;text-decoration:none;white-space:nowrap;box-shadow:0 12px 26px -14px rgba(255,79,154,.8)}
-.mnav{margin-top:8px;background:var(--ink);border-radius:22px;padding:10px;display:grid;gap:2px;box-shadow:0 24px 50px -28px rgba(43,15,46,.8)}
-.mnav a{padding:13px 14px;border-radius:12px;color:#fff;text-decoration:none;font-weight:600}
-.mnav a:hover,.mnav a.on{background:rgba(255,255,255,.08)}
-.mnav .cta{margin-top:8px}
-@media (max-width:1080px){.links{display:none}.burger{display:grid}.navbar .cta{display:none}}
-@media (min-width:1081px){.mnav{display:none!important}}
-.mnav[hidden]{display:none!important}
-@media (max-width:560px){.navbar .wa-ico{display:none}.navbar{gap:10px;padding-inline-start:16px}}
-.bar-r{min-width:0}.navbar .logo{min-width:0}
-@media (max-width:340px){.navbar .lang{display:none}}
-@media (max-width:400px){.navbar{gap:8px;padding-inline-start:14px}.navbar .lang button{padding:6px 8px}.navbar .logo{font-size:1rem}}
-/* small phones: shrink the hero card fan so the side cards stay on screen */
-@media (min-width:961px) and (max-width:1200px){.fan{transform:scale(.84)}}
-@media (max-width:400px){.fan{transform:scale(.82);height:300px}}
-@media (max-width:340px){.fan{transform:scale(.72);height:270px}}
+/* Hero */
+.hero{padding-block:clamp(36px,5vw,56px) clamp(28px,4vw,40px)}
+.hero-grid{display:grid;grid-template-columns:1.02fr .98fr;gap:40px;align-items:center}
+.chip{display:inline-block;background:var(--blush2);color:var(--pink);font-weight:700;font-size:.78rem;border-radius:8px;padding:5px 10px}
+.hero h1{font-size:clamp(2.3rem,5vw,3.4rem);line-height:1.06;font-weight:800;margin:16px 0 18px}
+.hero .lead{font-size:1.05rem}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+.checks{display:flex;flex-wrap:wrap;gap:10px 22px;margin:26px 0 0;padding:0;list-style:none;font-size:.86rem;color:#4b3448;font-weight:500}
+.checks li{display:flex;align-items:center;gap:8px}
+.tick{width:18px;height:18px;border-radius:50%;background:var(--ok);color:#fff;display:grid;place-items:center;flex:none}
+.tick svg{width:11px;height:11px}
 
-/* ---------- Hero ---------- */
-.hero{position:relative;padding-block:44px 64px;overflow-x:clip}
-.hero-grid{position:relative;display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center}
-.pill{display:inline-flex;gap:8px;align-items:center;background:#fff;border-radius:99px;padding:6px 14px 6px 6px;font-size:.84rem;font-weight:600;box-shadow:0 6px 16px -8px rgba(43,15,46,.25)}
-.pill b{background:var(--rose);color:#fff;border-radius:99px;padding:2px 10px;font-size:.74rem}
-.hero h1{font-size:clamp(2.8rem,6vw,5rem);line-height:.98;font-weight:800;letter-spacing:-.055em;margin-top:20px}
-.hero .lead{color:var(--m);font-size:1.1rem;max-width:44ch;margin-top:18px}
+/* Hero illustration */
+.art{position:relative;height:440px}
+.art .blob{position:absolute;inset:6% 2% 0 10%;border-radius:46% 54% 50% 50%/52% 48% 52% 48%;background:linear-gradient(160deg,#ffe9f0,#fff4ee)}
+.doc{position:absolute;width:190px;height:236px;background:#fff;border-radius:14px;box-shadow:var(--sh);padding:18px 16px;font-size:.72rem}
+.doc b{display:block;font-size:.82rem;line-height:1.25;margin-bottom:12px;color:var(--ink)}
+.doc i{display:block;height:6px;border-radius:4px;background:#f3e6ea;margin-top:8px}
+.doc i:nth-child(odd){width:78%}
+.doc.d1{left:8%;top:60px;transform:rotate(-10deg)}
+.doc.d2{left:30%;top:14px;transform:rotate(-3deg)}
+.doc.d3{right:2%;top:40px;transform:rotate(7deg)}
+.doc .seal{position:absolute;right:14px;bottom:14px;width:34px;height:34px;border-radius:50%;box-shadow:inset 0 0 0 2px #ffc1d3}
+.phone{position:absolute;left:31%;top:96px;width:236px;background:var(--plum);border-radius:34px;padding:9px;box-shadow:0 40px 70px -34px rgba(48,16,47,.85)}
+.screen{background:#fff;border-radius:27px;overflow:hidden;min-height:300px}
+.app-h{display:flex;align-items:center;gap:8px;padding:16px 16px 12px;font-weight:700;font-size:.8rem;border-bottom:1px solid var(--line)}
+.app-h i{width:20px;height:20px;border-radius:6px;background:var(--grad)}
+.stat{display:grid;grid-template-columns:26px 1fr auto;gap:10px;padding:12px 14px;border-bottom:1px solid #f7edf0;font-size:.68rem;line-height:1.4}
+.stat b{display:block;font-size:.72rem}
+.stat span{color:var(--m)}
+.stat time{color:var(--m);font-size:.62rem}
+.dot{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;color:#fff}
+.dot svg{width:13px;height:13px}
+.dot.g{background:var(--ok)}.dot.o{background:var(--warn)}
+.hand{position:absolute;right:-24px;bottom:18px;font-family:var(--hand);font-size:1.45rem;line-height:1.1;color:var(--plum);transform:rotate(-8deg);text-align:center}
+.hand svg{width:46px;margin:0 auto 4px;transform:rotate(200deg) scaleX(-1)}
+.spark{position:absolute;left:4%;top:24px;color:var(--coral)}
 
-.ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
-.btn-lg{padding:17px 28px;font-size:1.02rem;border-radius:16px}
-.fan{position:relative;height:460px}
-.doc{position:absolute;left:50%;top:50%;width:240px;height:310px;margin:-155px 0 0 -120px;background:#fff;border-radius:22px;box-shadow:0 34px 64px -30px rgba(43,15,46,.55);padding:22px;display:grid;align-content:start;gap:10px;transition:transform .5s cubic-bezier(.2,.8,.2,1)}
-.doc small{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--m)}
-.doc b{font-size:1.12rem;line-height:1.25}
-.doc .l{height:8px;border-radius:99px;background:#f5eaec}
-.doc .st{justify-self:start;font-size:.74rem;font-weight:700;padding:4px 11px;border-radius:99px;margin-top:6px}
-.d1{transform:translate(-125px,22px) rotate(-12deg)}
-.d2{transform:translate(0,-12px)}
-.d3{transform:translate(125px,32px) rotate(11deg)}
-@media (hover:hover) and (min-width:1100px){.fan:hover .d1{transform:translate(-160px,10px) rotate(-16deg)}.fan:hover .d3{transform:translate(160px,20px) rotate(15deg)}}
-.seal{position:absolute;inset-inline-end:4%;bottom:14px;width:118px;height:118px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;text-align:center;font-size:.74rem;font-weight:700;line-height:1.2;box-shadow:0 22px 44px -20px rgba(43,15,46,.7);z-index:2}
-.seal b{display:block;font-size:1.45rem}
-@media (max-width:960px){.hero-grid{grid-template-columns:1fr}.fan{height:400px}}
-@media (max-width:520px){.fan{height:340px}.doc{width:190px;height:250px;margin:-125px 0 0 -95px;padding:16px}.d1{transform:translate(-80px,18px) rotate(-12deg)}.d3{transform:translate(80px,26px) rotate(11deg)}.seal{width:96px;height:96px}}
+/* Benefits strip */
+.strip{display:grid;grid-template-columns:repeat(4,1fr);background:var(--blush);border:1px solid #fbe0e9;border-radius:22px;padding:8px}
+.strip > div{display:flex;gap:14px;align-items:center;padding:18px 20px}
+.strip > div + div{border-inline-start:1px solid #f6d5e0}
+.sic{width:48px;height:48px;border-radius:14px;background:#fff;color:var(--pink);display:grid;place-items:center;flex:none;box-shadow:0 8px 18px -12px rgba(255,79,145,.6)}
+.sic svg{width:24px;height:24px}
+.strip b{display:block;font-size:.95rem}
+.strip span{font-size:.8rem;color:var(--m);line-height:1.4;display:block}
 
-/* ---------- Key facts ribbon ---------- */
-.ribbon-wrap{position:relative;margin-top:-8px}
-.ribbon{background:var(--ink);color:#fff;border-radius:24px;display:grid;grid-template-columns:repeat(4,1fr);position:relative;overflow:hidden;box-shadow:0 30px 60px -36px rgba(43,15,46,.7)}
-.ribbon::after{content:"";position:absolute;width:320px;height:320px;border-radius:50%;background:var(--grad3);filter:blur(70px);opacity:.35;inset-inline-end:-80px;top:-160px;pointer-events:none}
-.ribbon .it{position:relative;z-index:1;display:flex;gap:14px;align-items:center;padding:22px 24px}
-.ribbon .it + .it{border-inline-start:1px solid rgba(255,255,255,.12)}
-.ribbon .ic{width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.08);display:grid;place-items:center;color:var(--gold);flex:none;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
-.ribbon .ic svg{width:22px;height:22px}
-.ribbon b{display:block;font-size:1.06rem;font-weight:700;line-height:1.25}
-.ribbon span{display:block;margin-top:2px;color:#cdb8c9;font-size:.85rem;line-height:1.4}
-@media (max-width:960px){.ribbon{grid-template-columns:1fr 1fr}.ribbon .it:nth-child(3){border-inline-start:0}.ribbon .it:nth-child(n+3){border-top:1px solid rgba(255,255,255,.12)}}
-@media (max-width:520px){.ribbon{grid-template-columns:1fr}.ribbon .it + .it{border-inline-start:0;border-top:1px solid rgba(255,255,255,.12)}.ribbon .it{padding:16px 20px}}
+/* Process */
+.proc{display:grid;grid-template-columns:.85fr 2.15fr;gap:40px;align-items:start}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;position:relative}
+.step{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:20px;display:grid;gap:10px;align-content:start;position:relative;box-shadow:0 10px 30px -26px rgba(48,16,47,.4)}
+.step + .step::before{content:"→";position:absolute;left:-22px;top:46%;color:var(--coral);font-weight:700}
+.num{width:34px;height:34px;border-radius:50%;background:var(--grad);color:#fff;font-weight:800;font-size:.85rem;display:grid;place-items:center}
+.step h3{font-size:1.02rem;line-height:1.3}
+.step p{font-size:.84rem;color:var(--m);line-height:1.5}
+.mini{margin-top:8px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px;font-size:.74rem;display:grid;gap:7px;box-shadow:0 10px 24px -20px rgba(48,16,47,.5)}
+.mini h4{margin:0 0 2px;font-size:.74rem}
+.opt{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:9px;padding:7px 9px}
+.opt i{width:12px;height:12px;border-radius:50%;box-shadow:inset 0 0 0 1.5px #cdb9c6}
+.opt.on{border-color:#ffb3c9;background:#fff6f9;font-weight:600}
+.opt.on i{box-shadow:inset 0 0 0 4px var(--pink)}
+.row{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:8px;background:#fbf6f8}
+.row .tick{width:15px;height:15px}.row .tick svg{width:9px;height:9px}
+.row .pend{width:15px;height:15px;border-radius:50%;box-shadow:inset 0 0 0 1.5px #d6c3cf;flex:none}
 
-/* ---------- Why: lawyer chat + benefits ---------- */
-.why{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:start}
-.why .head{margin-bottom:0}
-.chatwrap{position:relative;justify-self:center;width:min(300px,100%)}
-.chatphone{width:min(300px,100%);margin-inline:auto;border-radius:40px;background:var(--ink);padding:12px;box-shadow:0 50px 90px -40px rgba(43,15,46,.75)}
-.chatscr{border-radius:30px;background:#f7efed;overflow:hidden}
-.chat-h{background:#fff;padding:14px 16px;display:flex;gap:10px;align-items:center;border-bottom:1px solid var(--line)}
-.chat-h i{width:38px;height:38px;border-radius:50%;background:var(--grad);display:grid;place-items:center;color:#fff;font-style:normal;font-weight:800;flex:none}
-.chat-h b{display:block;font-size:.92rem}
-.chat-h small{color:var(--ok);font-size:.76rem;font-weight:600}
-.msgs{padding:14px;display:grid;gap:10px;font-size:.82rem;line-height:1.5}
-.msg{max-width:86%;padding:10px 12px;border-radius:14px 14px 14px 4px;background:#fff;box-shadow:0 4px 10px -8px rgba(43,15,46,.4)}
-.msg.me{justify-self:end;border-radius:14px 14px 4px 14px;background:var(--ink);color:#fff}
-.msg.ok{border-inline-start:3px solid var(--ok)}
-.msg .t{display:block;font-size:.68rem;color:var(--m);margin-top:4px;text-align:end}
-.msg.me .t{color:#cdb8c9}
-.mdoc{display:flex;gap:8px;align-items:center;margin-top:6px;background:var(--blush);border-radius:10px;padding:8px;font-weight:700;font-size:.76rem;overflow-wrap:anywhere}
-.mdoc i{width:24px;height:28px;border-radius:6px;background:var(--grad);display:block;flex:none}
-.chat-ex{text-align:center;color:var(--m);font-size:.78rem;margin-top:12px}
-.flt{position:absolute;background:#fff;border-radius:16px;padding:10px 14px;box-shadow:0 20px 40px -18px rgba(43,15,46,.5);font-size:.8rem;font-weight:700;display:flex;gap:8px;align-items:center;white-space:nowrap}
-.flt i{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;color:#fff;font-style:normal;flex:none}
-.flt1{inset-inline-start:-136px;top:104px}.flt1 i{background:linear-gradient(135deg,#3fc79a,#0e8a5f)}
-.flt2{inset-inline-end:-136px;top:368px}.flt2 i{background:linear-gradient(135deg,#ff7ab6,#ff4f9a)}
-.ben{list-style:none;margin:30px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:22px 28px}
-.ben li{display:grid;grid-template-columns:46px 1fr;gap:14px;align-items:start}
-.ben .ic{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;color:#fff}
-.ben .ic svg{width:22px;height:22px}
-.ben b{display:block;font-size:1.02rem}
-.ben span{color:var(--m);font-size:.9rem}
-@media (max-width:1240px){.flt{display:none}}
-@media (max-width:960px){.why{grid-template-columns:1fr;gap:40px}.chatwrap{order:2}}
-@media (max-width:560px){.ben{grid-template-columns:1fr}}
-
-/* ---------- Services: featured + list ---------- */
-.why-sec{padding-top:clamp(24px,3vw,36px);padding-bottom:clamp(36px,4vw,56px)}
-.services{background:#fff;border-block:1px solid var(--line);padding-top:clamp(40px,4.5vw,64px)}
-.feat{display:grid;grid-template-columns:1fr 1.1fr;gap:20px}
-.star{background:var(--ink);color:#fff;border-radius:26px;padding:32px;position:relative;overflow:hidden;display:flex;flex-direction:column;gap:18px}
-.star::after{content:"";position:absolute;width:340px;height:340px;border-radius:50%;background:var(--grad3);filter:blur(70px);opacity:.4;inset-inline-end:-120px;bottom:-150px;pointer-events:none}
-.star > *{position:relative;z-index:1}
-.star .tag{align-self:flex-start;background:var(--grad);font-size:.74rem;font-weight:800;padding:5px 12px;border-radius:99px}
-.star h3{font-size:1.8rem;font-weight:800}
-.star p{color:#d9c6d5}
-.star .price{font-size:3rem;font-weight:800;letter-spacing:-.05em;line-height:1}
-.star .price{display:block}
-.star .price span{font-size:inherit;color:#fff;font-weight:800;letter-spacing:inherit}
-.star .price small{font-size:.85rem;letter-spacing:0;color:#d9c6d5;margin-inline-start:8px}
-.star ul{list-style:none;padding:0;margin:0;display:grid;gap:9px;font-size:.93rem}
-.star li{display:flex;gap:10px;align-items:center}
-.star li::before{content:"✓";width:20px;height:20px;border-radius:50%;background:rgba(255,193,69,.2);color:var(--gold);display:grid;place-items:center;font-size:.7rem;font-weight:800;flex:none}
-.star .btn{align-self:flex-start;margin-top:auto}
-.slist{display:grid;gap:12px;align-content:start}
-.feat > *,.srow > *{min-width:0}
-.star h3,.srow h4{overflow-wrap:break-word}
-.srow{display:grid;grid-template-columns:48px minmax(0,1fr) auto 38px;gap:16px;align-items:center;padding:18px;border:1px solid var(--line);border-radius:20px;background:var(--bg);text-decoration:none;color:inherit;transition:background .2s,transform .2s,box-shadow .2s}
-.srow:hover{background:#fff;transform:translateX(4px);box-shadow:0 20px 40px -30px rgba(43,15,46,.5)}
-.srow .ic{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;color:#fff}
+/* Services */
+.svc{display:grid;grid-template-columns:1.15fr 1fr;gap:24px;align-items:stretch}
+.feat{background:linear-gradient(150deg,var(--plum),#4a1a45 70%,#5d1f4f);color:#fff;border-radius:22px;padding:30px;display:grid;grid-template-columns:auto 1fr;gap:20px;box-shadow:0 30px 60px -36px rgba(48,16,47,.9)}
+.fic{width:60px;height:60px;border-radius:18px;background:var(--grad);display:grid;place-items:center}
+.fic svg{width:28px;height:28px}
+.feat h3{font-size:1.35rem}
+.feat p{color:#e5cfe0;font-size:.9rem;margin-top:6px}
+.fprice{display:flex;align-items:baseline;gap:8px;margin:18px 0 6px}
+.fprice small{color:#d9c0d3;font-size:.8rem}
+.fprice b{font-size:2rem;font-weight:800;letter-spacing:-.02em}
+.feat ul{list-style:none;margin:10px 0 22px;padding:0;display:grid;gap:8px;font-size:.88rem}
+.feat li{display:flex;gap:10px;align-items:center}
+.feat li::before{content:"✓";width:18px;height:18px;border-radius:50%;background:rgba(255,121,91,.22);color:#ffb39f;display:grid;place-items:center;font-size:.7rem;font-weight:800;flex:none}
+.slist{display:grid;gap:12px}
+.srow{display:grid;grid-template-columns:46px 1fr auto;gap:14px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px 16px;transition:border-color .15s,transform .15s}
+.srow:hover{border-color:#ffb3c9;transform:translateY(-1px)}
+.srow .ic{width:46px;height:46px;border-radius:14px;background:var(--blush);color:var(--pink);display:grid;place-items:center}
 .srow .ic svg{width:22px;height:22px}
-.srow b{display:block;font-size:1.02rem}
-.srow span.d{color:var(--m);font-size:.87rem}
-.srow .pr{font-weight:800;font-size:.95rem;white-space:nowrap;text-align:end}
-.srow .pr small:empty{display:none}
-.srow .pr small{display:block;color:var(--m);font-weight:600;font-size:.72rem}
-.srow .arrow{width:38px;height:38px;border-radius:12px;background:#fff;display:grid;place-items:center;font-weight:700;transition:background .2s,color .2s}
-.srow:hover .arrow{background:var(--ink);color:#fff}
-@media (max-width:960px){.feat{grid-template-columns:1fr}}
-@media (max-width:420px){.srow{grid-template-columns:44px minmax(0,1fr)}.srow .pr{grid-column:2;text-align:start;justify-self:start}.srow .pr small{display:inline;margin-inline-end:4px}}
-@media (max-width:520px){.srow{grid-template-columns:44px minmax(0,1fr) auto;gap:12px;padding:14px}.srow .arrow{display:none}.star{padding:24px}.star h3{font-size:1.5rem}}
+.srow b{display:block;font-size:.95rem}
+.srow span{display:block;font-size:.8rem;color:var(--m);line-height:1.4}
+.srow .pr{color:var(--pink);font-weight:700;font-size:.8rem;margin-top:2px}
+.srow .chev{color:#c9a9bb;font-size:1.2rem}
 
-/* ---------- Process: lock screen notifications ---------- */
-.e9{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:center}
-.e9 .lockwrap{order:2}
-.e9 .head{margin-bottom:0}
-.lockwrap{justify-self:center}
-.lock{width:310px;border-radius:44px;background:var(--ink);padding:12px;box-shadow:0 50px 90px -40px rgba(43,15,46,.75)}
-.lscr{border-radius:34px;min-height:600px;padding:18px 14px;background:radial-gradient(circle at 30% 20%,#ffb38a,transparent 50%),radial-gradient(circle at 80% 60%,#ff4f9a,transparent 55%),radial-gradient(circle at 20% 90%,#9b5cf0,transparent 55%),#3a1640;color:#fff;display:flex;flex-direction:column}
-.ltop{display:flex;justify-content:space-between;font-size:.72rem;font-weight:700;opacity:.9;padding:0 8px}
-.ltime{text-align:center;margin:26px 0 6px}
-.ltime small{display:block;font-size:.82rem;font-weight:600;opacity:.9}
-.ltime b{font-size:4rem;font-weight:700;letter-spacing:-.04em;line-height:1}
-.ntf{display:grid;gap:8px;margin-top:auto}
-.nt{background:rgba(255,255,255,.84);backdrop-filter:blur(14px);color:var(--ink);border-radius:18px;padding:11px 12px;display:grid;grid-template-columns:34px 1fr;gap:10px;align-items:start}
-.nt i{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;color:#fff;font-style:normal;font-weight:800;font-size:.78rem}
-.nt .hd{display:flex;justify-content:space-between;gap:8px;font-size:.7rem;font-weight:700;color:var(--m)}
-.nt b{display:block;font-size:.82rem;margin-top:2px}
-.nt p{font-size:.76rem;color:#4a3448}
-.nt.old{opacity:.8;transform:scale(.97)}
-.lock-ex{display:block;margin-top:12px;font-size:.78rem;color:var(--m);text-align:center}
-.psteps{list-style:none;padding:0;margin:24px 0 28px;display:grid;gap:12px}
-.psteps li{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center;font-weight:600}
-.psteps li span{font-size:.78rem;font-weight:800;color:var(--rose);background:var(--blush);border-radius:10px;padding:6px 10px;white-space:nowrap;min-width:74px;text-align:center}
-.e9{direction:ltr}
-@media (max-width:1100px){.e9{grid-template-columns:1fr auto;gap:40px}.lock{width:280px}.lscr{min-height:540px}}
-@media (max-width:760px){.e9{grid-template-columns:1fr;gap:32px}}
-@media (max-width:360px){.lock{width:280px}}
+/* Trust */
+.trust{background:var(--blush);border:1px solid #fbe0e9;border-radius:24px;padding:clamp(24px,4vw,40px);display:grid;grid-template-columns:.9fr 2.1fr;gap:36px;align-items:center}
+.tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px 26px}
+.tgrid > div{display:grid;grid-template-columns:44px 1fr;gap:12px;align-items:start}
+.tgrid .sic{width:44px;height:44px}
+.tgrid b{display:block;font-size:.92rem;line-height:1.3}
+.tgrid span{font-size:.82rem;color:var(--m);line-height:1.45}
 
-/* ---------- Pricing ---------- */
-.plans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;align-items:stretch;max-width:1180px;margin-inline:auto}
-.plans[hidden]{display:none}
-.ptabs{display:flex;gap:6px;width:max-content;max-width:100%;margin:0 auto 32px;padding:6px;border-radius:999px;background:#fff;border:1px solid var(--line);box-shadow:0 14px 30px -24px rgba(43,15,46,.5)}
-.ptabs button{border:0;background:none;font:700 .95rem var(--font);color:var(--m);padding:11px 24px;border-radius:999px;cursor:pointer;transition:background .2s,color .2s}
-.ptabs button[aria-selected="true"]{background:var(--ink);color:#fff}
-.plan .dep{font-size:.88rem;color:var(--m);margin-top:-6px}.plan .dep b{color:var(--ink)}
-.plan.top .dep{color:#cdb8c9}.plan.top .dep b{color:#fff}
-.price b.quote{font-size:2.4rem}
-.plan li.inc{grid-template-columns:22px 1fr auto;font-weight:700}
-.plan li.inc em{font-style:normal;font-size:.66rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:99px;background:#e3f5ec;color:var(--ok);align-self:center;white-space:nowrap}
-.plan.top li.inc em{background:rgba(110,240,170,.16);color:#6ef0aa}
-.plan li.inc + li:not(.inc){margin-top:4px;padding-top:12px;border-top:1px dashed var(--line)}
-.plan.top li.inc + li:not(.inc){border-color:rgba(255,255,255,.14)}
-.plan{border-radius:26px;padding:32px 28px;border:1px solid var(--line);background:#fff;display:flex;flex-direction:column;gap:18px}
-.plan.top{background:var(--ink);color:#fff;border-color:var(--ink);position:relative;overflow:hidden;box-shadow:0 40px 70px -40px rgba(43,15,46,.8)}
-.plan.top .orb{width:340px;height:340px;inset-inline-end:-150px;top:-160px;opacity:.75}
-.plan.top > *:not(.orb){position:relative}
-.plan .ph{display:flex;justify-content:space-between;align-items:center;gap:10px}
-.plan .tag{background:var(--grad);color:#fff;font-size:.74rem;font-weight:800;padding:5px 12px;border-radius:99px}
-.plan .sub{color:var(--m);font-size:.94rem;margin-top:-8px}
-.plan.top .sub{color:#cdb8c9}
+/* Pricing */
+.phead{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;margin-bottom:28px}
+.ptabs{display:inline-flex;background:#fff;border:1px solid var(--line);border-radius:999px;padding:4px}
+.ptabs button{border:0;background:none;padding:9px 20px;border-radius:999px;font-weight:700;font-size:.85rem;color:var(--m);cursor:pointer}
+.ptabs button[aria-selected="true"]{background:var(--plum);color:#fff}
+.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-items:stretch}
+.plan{background:#fff;border:1px solid var(--line);border-radius:22px;padding:26px;display:flex;flex-direction:column;gap:14px;box-shadow:0 14px 34px -28px rgba(48,16,47,.5)}
+.plan.top{background:linear-gradient(160deg,var(--plum),#4b1a46);color:#fff;border-color:transparent;box-shadow:0 34px 60px -32px rgba(48,16,47,.9);transform:translateY(-8px)}
+.ph{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.ph h3{font-size:1.15rem}
+.badge{background:var(--grad);color:#fff;font-size:.7rem;font-weight:700;border-radius:999px;padding:5px 12px;white-space:nowrap}
+.sub{font-size:.85rem;color:var(--m);margin-top:-8px}
+.plan.top .sub{color:#e0c8da}
 .price{display:flex;align-items:baseline;gap:8px}
-.price b{font-size:3.1rem;font-weight:800;letter-spacing:-.05em;line-height:1;font-variant-numeric:tabular-nums}
-.price span{color:var(--m);font-weight:600;font-size:.88rem}
-.plan.top .price span{color:#cdb8c9}
-.plan ul{list-style:none;margin:0;padding:18px 0 0;border-top:1px solid var(--line);display:grid;gap:11px;flex:1;align-content:start;font-size:.95rem}
-.plan.top ul{border-color:rgba(255,255,255,.14)}
-.plan li{display:grid;grid-template-columns:22px 1fr;gap:10px;align-items:start}
-.plan li::before{content:"";width:20px;height:20px;border-radius:50%;margin-top:3px;background:#ffe6ec url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='%23ff5c7a' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round' d='M6 12.5l4 4L18 8'/%3E%3C/svg%3E") center/12px no-repeat}
-.plan li.no{opacity:.45}
-.plan li.no::before{background:#f3edf0 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath stroke='%236b5468' stroke-width='3' stroke-linecap='round' d='M7 12h10'/%3E%3C/svg%3E") center/12px no-repeat}
-.plans-note{margin-top:22px;text-align:center;color:var(--m);font-size:.9rem}
-@media (max-width:1020px){.plans{grid-template-columns:1fr;max-width:480px;margin-inline:auto}}
+.price b{font-size:2.3rem;font-weight:800;letter-spacing:-.03em;line-height:1}
+.price span{font-size:.8rem;font-weight:600;color:var(--m)}
+.plan.top .price span{color:#e0c8da}
+.price .quote{font-size:1.7rem}
+.dep{font-size:.8rem;color:var(--m);background:var(--blush);border-radius:10px;padding:8px 10px}
+.plan.top .dep{background:rgba(255,255,255,.08);color:#f0dfeb}
+.feats{list-style:none;margin:0;padding:0;display:grid;gap:9px;font-size:.88rem}
+.feats li{display:flex;gap:10px;align-items:flex-start;line-height:1.4}
+.feats li::before{content:"✓";color:var(--pink);font-weight:800;flex:none;width:16px}
+.plan.top .feats li::before{color:#ff9c86}
+.feats li.inc{font-weight:700}
+.feats em{font-style:normal;font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--ok);background:#e5f6ee;border-radius:6px;padding:2px 6px;margin-inline-start:auto;align-self:center}
+.plan.top .feats em{color:#a6f0c9;background:rgba(29,154,98,.25)}
+details.more summary{cursor:pointer;font-size:.85rem;font-weight:700;color:var(--pink);list-style:none;display:flex;gap:6px;align-items:center}
+details.more summary::-webkit-details-marker{display:none}
+details.more summary::after{content:"→";transition:transform .15s}
+details.more[open] summary::after{transform:rotate(90deg)}
+details.more .feats{margin-top:12px}
+.plan.top details.more summary{color:#ffb39f}
+.plan .btn{margin-top:auto;width:100%}
+.plan .btn-line{box-shadow:inset 0 0 0 1.5px var(--line);background:#fff7f9}
+.pnote{display:flex;gap:8px;justify-content:center;align-items:center;text-align:center;font-size:.8rem;color:var(--m);margin-top:22px}
 
-/* ---------- Guarantee band ---------- */
-.band{padding-top:0}
-.band-in{position:relative;overflow:hidden;border-radius:36px;background:var(--grad3);color:#fff;padding:clamp(36px,6vw,72px);display:grid;grid-template-columns:1.3fr .7fr;gap:32px;align-items:center}
-.band-in::after{content:"";position:absolute;width:420px;height:420px;border-radius:50%;background:rgba(255,255,255,.14);inset-inline-end:-120px;top:-160px}
-.band-in > *{position:relative;z-index:1}
-.band h2{color:#fff}
-.band p{color:rgba(255,255,255,.94);font-size:1.12rem;margin-top:16px;max-width:52ch}
-.shield{justify-self:center;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.2);backdrop-filter:blur(10px);display:grid;place-items:center;box-shadow:inset 0 0 0 1px rgba(255,255,255,.45)}
-.shield svg{width:90px;height:90px}
-@media (max-width:820px){.band-in{grid-template-columns:1fr}.shield{width:140px;height:140px}}
+/* Guarantee */
+.band{background:linear-gradient(95deg,#ff7a52,#ff5b7f 55%,#ff4f91);color:#fff;border-radius:24px;padding:clamp(24px,4vw,34px) clamp(22px,4vw,40px);display:grid;grid-template-columns:auto 1fr 1.2fr;gap:28px;align-items:center;box-shadow:0 30px 60px -34px rgba(255,79,145,.8)}
+.shield{width:76px;height:76px;border-radius:22px;background:rgba(255,255,255,.18);display:grid;place-items:center;box-shadow:inset 0 0 0 1px rgba(255,255,255,.4)}
+.shield svg{width:38px;height:38px}
+.band h2{font-size:clamp(1.5rem,2.6vw,1.9rem);color:#fff}
+.band p{font-size:.92rem;color:#fff3f6}
+.band .btn{margin-top:14px}
 
-/* ---------- FAQ ---------- */
-.faq-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:56px;align-items:start}
-.faq-list{display:grid;gap:12px}
-details{background:#fff;border:1px solid var(--line);border-radius:20px;padding:20px 24px;transition:box-shadow .2s}
-details[open]{box-shadow:0 24px 44px -30px rgba(43,15,46,.45)}
-summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:16px;font-weight:700;font-size:1.04rem}
-summary::-webkit-details-marker{display:none}
-summary::after{content:"+";flex:none;width:32px;height:32px;border-radius:10px;background:var(--blush);display:grid;place-items:center;font-size:1.25rem;color:var(--rose);transition:transform .25s,background .25s,color .25s}
-details[open] summary::after{transform:rotate(45deg);background:var(--ink);color:#fff}
-details p{color:var(--m);margin-top:12px}
-@media (max-width:860px){.faq-grid{grid-template-columns:1fr;gap:24px}}
+/* FAQ + contact */
+.fc{display:grid;grid-template-columns:.8fr 1.25fr 1.25fr;gap:32px;align-items:start}
+.faq{display:grid}
+.faq details{border-bottom:1px solid var(--line)}
+.faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:16px;padding:15px 2px;font-weight:600;font-size:.9rem;line-height:1.4}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";color:var(--pink);font-weight:700;font-size:1.2rem;line-height:1}
+.faq details[open] summary::after{content:"–"}
+.faq details p{padding:0 2px 16px;color:var(--m);font-size:.86rem;line-height:1.6}
+.cpanel{background:linear-gradient(160deg,var(--plum),#4b1a46);color:#fff;border-radius:22px;padding:26px;box-shadow:0 30px 60px -36px rgba(48,16,47,.9)}
+.cpanel .eyebrow{color:#ffb39f}.cpanel .eyebrow::before{background:#ffb39f}
+.cpanel h2{font-size:1.6rem;color:#fff;margin:8px 0 6px}
+.cpanel > p{color:#e3cbdd;font-size:.86rem}
+.form{display:grid;gap:12px;margin-top:18px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form label{display:block;font-size:.76rem;font-weight:600;color:#ecd9e7;margin-bottom:5px}
+.form input,.form select,.form textarea{width:100%;background:#fff;border:1.5px solid transparent;border-radius:12px;padding:11px 12px;font-size:.9rem;color:var(--ink)}
+.form textarea{min-height:76px;resize:vertical}
+.form [aria-invalid="true"]{border-color:#ff8aa9;box-shadow:0 0 0 3px rgba(255,79,145,.25)}
+.consent{font-size:.72rem;color:#cdb3c6;line-height:1.5}
+.factions{display:flex;flex-wrap:wrap;gap:10px}
+.factions .btn{flex:1 1 180px}
+.msg{font-size:.84rem;border-radius:12px;padding:10px 12px}
+.msg.err{background:#ffe3ea;color:#8c1d3d}
+.msg.ok{background:#dff6ea;color:#11593a}
+.cinfo{display:grid;gap:4px;margin-top:16px;font-size:.8rem;color:#e3cbdd}
+.cinfo b{color:#fff;font-weight:600}
 
-/* ---------- Contact ---------- */
-.contact{padding-top:0}
-.c-card{position:relative;overflow:hidden;background:var(--ink);color:#fff;border-radius:36px;padding:clamp(28px,5vw,56px);display:grid;grid-template-columns:.9fr 1.1fr;gap:48px}
-.c-card .orb{width:520px;height:520px;inset-inline-start:-220px;bottom:-280px;opacity:.6}
-.c-card > *:not(.orb){position:relative}
-.c-card h2{color:#fff}
-.c-card .lead{color:#cdb8c9;margin-top:16px;font-size:1.06rem}
-.c-info{list-style:none;margin:28px 0 0;padding:0;display:grid;gap:12px}
-.c-info li{display:flex;gap:14px;align-items:center;background:rgba(255,255,255,.07);border-radius:16px;padding:12px 14px}
-.c-info .ic{width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,.1);display:grid;place-items:center;flex:none;color:var(--gold)}
-.c-info .ic svg{width:20px;height:20px}
-.c-info small{display:block;color:#b59fb1;font-size:.8rem}
-.c-info b{font-weight:600}
-form{background:#fff;color:var(--ink);border-radius:26px;padding:28px;display:grid;gap:16px;min-width:0}
-form h3{font-size:1.45rem}
-label{display:block;font-weight:700;font-size:.85rem;margin-bottom:6px}
-input,select,textarea{width:100%;font:inherit;font-size:.97rem;padding:13px 15px;border:1px solid var(--line);border-radius:14px;background:var(--bg);color:var(--ink)}
-form input:focus,select:focus,textarea:focus{outline:none;border-color:var(--rose);background:#fff;box-shadow:0 0 0 4px rgba(255,92,122,.15)}
-textarea{min-height:96px;resize:vertical}
-.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.err{color:#c0362c;font-size:.9rem;font-weight:600}
-.okmsg{background:#e6f6ef;color:#0b6b4b;border-radius:14px;padding:14px;font-size:.94rem;font-weight:600}
-@media (max-width:900px){.c-card{grid-template-columns:1fr}}
-@media (max-width:460px){.two{grid-template-columns:1fr}}
+/* Footer */
+footer{border-top:1px solid var(--line);padding-block:40px 28px;margin-top:clamp(40px,6vw,64px);background:#fff}
+.f-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:28px}
+footer h4{margin:0 0 12px;font-size:.85rem}
+footer ul{list-style:none;margin:0;padding:0;display:grid;gap:8px;font-size:.84rem;color:var(--m)}
+footer a:hover{color:var(--pink)}
+.f-about{color:var(--m);font-size:.86rem;margin-top:12px;max-width:34ch}
+.f-bottom{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;border-top:1px solid var(--line);margin-top:28px;padding-top:18px;font-size:.78rem;color:var(--m)}
+.logo.dark{color:var(--ink)}
 
-/* ---------- Footer ---------- */
-footer{padding-block:24px 40px;color:var(--m);font-size:.93rem}
-.f-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:32px;padding-top:44px;border-top:1px solid var(--line)}
-footer h4{color:var(--ink);font-size:.95rem;margin:0 0 14px}
-footer ul{list-style:none;margin:0;padding:0;display:grid;gap:9px}
-footer a{text-decoration:none}
-footer a:hover{color:var(--rose)}
-.f-bottom{margin-top:36px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:.84rem}
-@media (max-width:760px){.f-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.f-grid > div:first-child{grid-column:1 / -1}}
-.f-grid li{overflow-wrap:anywhere}
-
+/* Floating WhatsApp */
 .wa{position:fixed;inset-inline-end:20px;bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:40;width:58px;height:58px;border-radius:18px;background:#22c35e;color:#fff;display:grid;place-items:center;box-shadow:0 14px 30px -10px rgba(34,195,94,.7)}
 .wa svg{width:28px;height:28px}
-@media (prefers-reduced-motion:reduce){*,*::before{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* Responsive */
+@media (max-width:1100px){
+  .fc{grid-template-columns:1fr 1fr}.fc > .fhead{grid-column:1/-1}
+  .proc{grid-template-columns:1fr}
+  .trust{grid-template-columns:1fr}
+}
+@media (max-width:1240px){.hand{display:none}}
+@media (max-width:960px){
+  .links{display:none}.burger{display:grid}.navbar .nav-cta{display:none}
+  .navbar{justify-content:space-between}
+  .hero-grid{grid-template-columns:1fr}
+  .art{height:400px;max-width:520px;width:100%;margin-inline:auto}
+  .strip{grid-template-columns:1fr 1fr}
+  .strip > div:nth-child(3){border-inline-start:0}
+  .strip > div:nth-child(n+3){border-top:1px solid #f6d5e0}
+  .steps{grid-template-columns:1fr}.step + .step::before{display:none}
+  .svc{grid-template-columns:1fr}
+  .tgrid{grid-template-columns:1fr 1fr}
+  .plans{grid-template-columns:1fr;max-width:520px;margin-inline:auto}
+  .plan.top{transform:none}
+  .band{grid-template-columns:auto 1fr}.band > div:last-child{grid-column:1/-1}
+  .fc{grid-template-columns:1fr}
+  .f-grid{grid-template-columns:1fr 1fr}
+}
+@media (max-width:560px){
+  .hero h1{font-size:2.15rem}
+  .cta-row .btn{flex:1 1 100%}
+  .art{height:360px}
+  .doc{width:150px;height:190px}
+  .doc.d1{left:0;top:56px}.doc.d2{left:22%}.doc.d3{right:0}
+  .phone{left:auto;right:8%;width:206px;top:88px}
+  .strip{grid-template-columns:1fr}
+  .strip > div + div{border-inline-start:0;border-top:1px solid #f6d5e0}
+  .feat{grid-template-columns:1fr;padding:24px}
+  .tgrid{grid-template-columns:1fr}
+  .two{grid-template-columns:1fr}
+  .band{grid-template-columns:1fr}
+  .f-grid{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
 <body>
 
-<header class="topbar" id="hdr">
+<div class="topbar">
   <div class="wrap">
-    <nav class="navbar" aria-label="Navigation">
-      <a class="logo" href="#top"><i></i><span data-th="brand">Charika<b>Express</b></span></a>
-      <ul class="links">
-        <li><a href="#services" data-t="n1">Services</a></li>
-        <li><a href="#processus" data-t="n2">Processus</a></li>
-        <li><a href="#tarifs" data-t="n3">Tarifs</a></li>
-        <li><a href="#faq" data-t="n4">FAQ</a></li>
-        <li><a href="#contact" data-t="n5">Contact</a></li>
-      </ul>
-      <div class="bar-r">
-        <a class="ico wa-ico" href="https://wa.me/212500000000" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.5-3.9-4.7-4.1-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1c.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.1 1.4z"/></svg></a>
-        <div class="lang" role="group" aria-label="Langue / Language">
-          <button type="button" data-lang="fr" aria-pressed="true">FR</button>
-          <button type="button" data-lang="en" aria-pressed="false">EN</button>
-        </div>
-        <a class="cta" href="demande.html"><span data-t="start">Commencer ma demande</span> <span class="flip">→</span></a>
-        <button class="ico burger" type="button" id="burger" aria-expanded="false" aria-controls="mnav" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"/></svg></button>
+    <nav class="navbar" aria-label="Navigation principale">
+      <a class="logo" href="#top" aria-label="Charika Express, accueil"><i></i><span>Charika <b>Express</b></span></a>
+      <div class="links">
+        <a href="#services">Nos services</a>
+        <a href="#tarifs">Tarifs</a>
+        <a href="#faq">FAQ</a>
+        <a href="#pourquoi">À propos</a>
+        <a href="#contact">Contact</a>
       </div>
+      <a class="btn btn-grad btn-sm nav-cta" href="demande.html">Créer ma société <span class="arr">→</span></a>
+      <button class="burger" id="burger" aria-expanded="false" aria-controls="mnav" aria-label="Ouvrir le menu"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
     </nav>
     <div class="mnav" id="mnav" hidden>
-      <a href="#services" data-t="n1">Services</a>
-      <a href="#processus" data-t="n2">Processus</a>
-      <a href="#tarifs" data-t="n3">Tarifs</a>
-      <a href="#faq" data-t="n4">FAQ</a>
-      <a href="#contact" data-t="n5">Contact</a>
-      <a href="https://wa.me/212500000000" target="_blank" rel="noopener">WhatsApp</a>
-      <a class="cta" href="demande.html"><span data-t="start">Commencer ma demande</span> <span class="flip">→</span></a>
+      <a href="#services">Nos services</a><a href="#tarifs">Tarifs</a><a href="#faq">FAQ</a><a href="#pourquoi">À propos</a><a href="#contact">Contact</a>
+      <a class="btn btn-grad" href="demande.html">Créer ma société <span class="arr">→</span></a>
     </div>
   </div>
-</header>
+</div>
 
 <main id="top">
   <!-- HERO -->
   <section class="hero">
     <div class="wrap hero-grid">
       <div>
-        <span class="pill"><b data-t="h-new">100% en ligne</b><span data-t="h-eye">Juriste dédié inclus</span></span>
-        <h1 data-th="h-title">Le plus simple pour <span class="gt">lancer votre société</span>.</h1>
-        <p class="lead" data-t="h-lead">Décrivez votre projet, choisissez votre formule, signez en ligne. Nous nous occupons de toutes les démarches, du certificat négatif au registre de commerce.</p>
-        <div class="ctas">
-          <a class="btn btn-grad btn-lg" href="demande.html"><span data-t="start">Commencer ma demande</span> <span class="flip">→</span></a>
-          <a class="btn btn-white btn-lg" href="#tarifs" data-t="h-cta2">Voir les tarifs</a>
+        <span class="chip">Création d'entreprise au Maroc</span>
+        <h1>Créez votre société au Maroc, <em>simplement et en ligne.</em></h1>
+        <p class="lead">Préparez vos démarches de création d'entreprise avec un accompagnement juridique, des formalités simplifiées et un suivi de votre dossier à chaque étape.</p>
+        <div class="cta-row">
+          <a class="btn btn-grad" href="demande.html">Créer ma société <span class="arr">→</span></a>
+          <a class="btn btn-line" href="#tarifs">Découvrir nos formules <span class="arr">→</span></a>
         </div>
+        <ul class="checks">
+          <li><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Démarches en ligne</li>
+          <li><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Suivi personnalisé</li>
+          <li><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Tarifs transparents</li>
+          <li><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Accompagnement juridique</li>
+        </ul>
       </div>
-      <div class="fan" aria-hidden="true">
-        <div class="doc d1"><small>OMPIC</small><b data-t="f1">Certificat négatif</b><span class="l"></span><span class="l" style="width:80%"></span><span class="l" style="width:60%"></span><span class="st" style="background:#e3f6ee;color:#0e8a5f" data-t="st-ok">Validé</span></div>
-        <div class="doc d3"><small data-t="d3k">Tribunal</small><b data-t="f5">Registre de commerce</b><span class="l"></span><span class="l" style="width:70%"></span><span class="l" style="width:85%"></span><span class="st" style="background:#f3edf2;color:#6b5468" data-t="st-wait">À venir</span></div>
-        <div class="doc d2"><small data-t="d2k">Statuts</small><b data-t="f2">Statuts de la SARL</b><span class="l"></span><span class="l" style="width:85%"></span><span class="l" style="width:65%"></span><span class="l" style="width:75%"></span><span class="st" style="background:#ffe6ec;color:#e0405f" data-t="st-sign">À signer</span></div>
-        <div class="seal"><span><span data-t="seal1">dès</span><b class="ltr">4 680</b><span data-t="seal2">MAD</span></span></div>
+
+      <div class="art" aria-hidden="true">
+        <div class="blob"></div>
+        <svg class="spark" width="34" height="34" viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M17 3v7M6 9l5 4M28 9l-5 4"/></svg>
+        <div class="doc d1"><b>Statuts de la société</b><i></i><i></i><i></i><i></i><i></i><span class="seal"></span></div>
+        <div class="doc d2"><b>Registre de commerce</b><i></i><i></i><i></i><i></i></div>
+        <div class="doc d3"><b>Attestation de domiciliation</b><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="phone"><div class="screen">
+          <div class="app-h"><i></i>Charika Express</div>
+          <div class="stat"><span class="dot g"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><div><b>Dossier en cours de traitement</b><span>Votre dossier est entre les mains de votre juriste.</span></div><time>10:24</time></div>
+          <div class="stat"><span class="dot g"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><div><b>Documents reçus</b><span>Nous avons bien reçu vos documents.</span></div><time>09:12</time></div>
+          <div class="stat"><span class="dot o"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 7v6M12 17h.01"/></svg></span><div><b>Action requise</b><span>Une pièce complémentaire est nécessaire.</span></div><time>Hier</time></div>
+        </div></div>
+        <div class="hand"><svg viewBox="0 0 60 50" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M50 4C48 24 34 38 10 42"/><path d="M18 34l-8 8 11 3"/></svg>Votre société<br>en toute confiance</div>
       </div>
     </div>
   </section>
 
-  <div class="wrap ribbon-wrap">
-    <div class="ribbon">
-      <div class="it"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><div><b data-t="k1b">7 à 15 jours</b><span data-t="k1">jusqu'au registre de commerce</span></div></div>
-      <div class="it"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="11" rx="2"/><path d="M2 19h20"/></svg></span><div><b data-t="k2b">100% en ligne</b><span data-t="k2">zéro déplacement</span></div></div>
-      <div class="it"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a1 1 0 0 1-1-1V7z"/><path d="M4 7l11-3v3"/><circle cx="16" cy="13.5" r="1.3" fill="currentColor"/></svg></span><div><b data-t="k3b">Avance de 700 MAD</b><span data-t="k3">le reste en deux fois</span></div></div>
-      <div class="it"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.4 8.2-8 9-4.6-.8-8-4.5-8-9V6l8-3z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg></span><div><b data-t="k4b">Anti-rejet</b><span data-t="k4">garantie incluse</span></div></div>
+  <!-- BENEFITS STRIP -->
+  <div class="wrap">
+    <div class="strip">
+      <div><span class="sic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M2 20h20"/></svg></span><div><b>Démarches en ligne</b><span>Faites votre demande à distance, sans déplacement.</span></div></div>
+      <div><span class="sic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/><path d="M8.5 11h7M8.5 14h4"/></svg></span><div><b>Suivi personnalisé</b><span>Chaque étape vous est notifiée sur WhatsApp et par e-mail.</span></div></div>
+      <div><span class="sic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a1 1 0 0 1-1-1V7z"/><path d="M4 7l11-3v3"/><circle cx="16" cy="13.5" r="1.3"/></svg></span><div><b>Tarifs transparents</b><span>Prix TTC, frais administratifs inclus.</span></div></div>
+      <div><span class="sic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.4 8.2-8 9-4.6-.8-8-4.5-8-9V6l8-3z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg></span><div><b>Accompagnement</b><span>Un juriste dédié, du début à la fin.</span></div></div>
     </div>
   </div>
 
-  <!-- BENTO -->
-  <section class="why-sec">
-    <div class="wrap">
-      <div class="why">
-        <div class="chatwrap">
-          <div class="chatphone"><div class="chatscr">
-            <div class="chat-h"><i>N</i><div><b data-t="ch-name">Nadia · Votre juriste</b><small data-t="ch-on">● en ligne</small></div></div>
-            <div class="msgs">
-              <div class="msg"><span data-th="m1">Bonjour Yassine 👋 Votre nom « <bdi>Atlas Digital</bdi> » est réservé à l'OMPIC.</span><span class="t ltr">10:02</span></div>
-              <div class="msg"><span data-t="m2">Vos statuts sont prêts, vous pouvez les signer en ligne :</span><div class="mdoc"><i></i><span class="ltr">Statuts_Atlas.pdf</span></div><span class="t ltr">10:05</span></div>
-              <div class="msg me"><span data-t="m3">Parfait, c'est signé ✅</span><span class="t ltr">10:11</span></div>
-              <div class="msg ok"><span data-t="m4">Dossier déposé au CRI. RC prévu sous 5 jours.</span><span class="t ltr">16:40</span></div>
-            </div>
-          </div></div>
-          <div class="flt flt1"><i>✓</i><span data-t="fa">Nom réservé</span></div>
-          <div class="flt flt2"><i>✍</i><span data-t="fb">Statuts signés</span></div>
-          <p class="chat-ex" data-t="ch-ex">Exemple de conversation</p>
-        </div>
-        <div>
-          <div class="head">
-            <span class="eyebrow" data-t="p-eye">Pourquoi Charika Express</span>
-            <h2 data-th="p-title">Un vrai juriste, <span class="gt">la simplicité d'une app</span>.</h2>
+  <!-- PROCESS -->
+  <section id="processus">
+    <div class="wrap proc">
+      <div class="head" style="margin-bottom:0">
+        <span class="eyebrow">Comment ça marche ?</span>
+        <h2>Un processus simple en <em>3 étapes</em></h2>
+        <p class="lead">De la sélection de votre formule jusqu'à la réception de vos documents, tout est pensé pour vous faire gagner du temps.</p>
+        <div><a class="btn btn-grad btn-sm" href="demande.html">Commencer ma demande <span class="arr">→</span></a></div>
+      </div>
+      <div class="steps">
+        <article class="step">
+          <span class="num">01</span>
+          <h3>Choisissez votre formule</h3>
+          <p>Sélectionnez la forme juridique et le pack adaptés à votre projet.</p>
+          <div class="mini" aria-hidden="true"><h4>Quelle forme juridique ?</h4><div class="opt on"><i></i>SARL / SARL AU</div><div class="opt"><i></i>SAS</div><div class="opt"><i></i>Auto-entrepreneur</div></div>
+        </article>
+        <article class="step">
+          <span class="num">02</span>
+          <h3>Transmettez vos informations</h3>
+          <p>Renseignez votre projet et vos associés en ligne, puis réglez l'avance de 700 MAD.</p>
+          <div class="mini" aria-hidden="true"><h4>Votre demande</h4>
+            <div class="row"><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Noms de la société</div>
+            <div class="row"><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Associés et CIN</div>
+            <div class="row"><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Formulaire envoyé</div>
           </div>
-          <ul class="ben">
-            <li><span class="ic" style="background:linear-gradient(135deg,#ff9a76,#ff7a59)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4.5-6 8-6s7 2 8 6"/></svg></span><div><b data-t="p1">Un juriste dédié</b><span data-t="w1p">Joignable par téléphone et WhatsApp.</span></div></li>
-            <li><span class="ic" style="background:linear-gradient(135deg,#ff7ab6,#ff4f9a)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="11" rx="2"/><path d="M2 19h20"/></svg></span><div><b data-t="p2">Aucun déplacement</b><span data-t="bn3">Signature électronique de vos documents.</span></div></li>
-            <li><span class="ic" style="background:linear-gradient(135deg,#ffd36b,#ffb020)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16V11a6 6 0 1 1 12 0v5l2 2H4z"/><path d="M10 20a2 2 0 0 0 4 0"/></svg></span><div><b data-t="w3">Chaque étape notifiée</b><span data-t="w3p">Vous savez toujours où en est votre dossier.</span></div></li>
-            <li><span class="ic" style="background:linear-gradient(135deg,#c58bff,#9b5cf0)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="8.5" r="1.5"/></svg></span><div><b data-t="w5">Prix fixe, tout compris</b><span data-t="w5p">Dès 4 680 MAD TTC, frais inclus.</span></div></li>
-            <li><span class="ic" style="background:linear-gradient(135deg,#6e4a6c,#2b0f2e)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a1 1 0 0 1-1-1V7z"/><path d="M4 7l11-3v3"/><circle cx="16" cy="13.5" r="1.3" fill="currentColor"/></svg></span><div><b data-t="w6">Paiement en 3 fois</b><span data-t="w6p">700 MAD pour démarrer, puis le reste en deux fois.</span></div></li>
-            <li><span class="ic" style="background:linear-gradient(135deg,#3fc79a,#0e8a5f)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.4 8.2-8 9-4.6-.8-8-4.5-8-9V6l8-3z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg></span><div><b data-t="p4">Garantie anti-rejet</b><span data-t="w4p">Une erreur de notre part ? Corrigée à nos frais.</span></div></li>
-          </ul>
-        </div>
+        </article>
+        <article class="step">
+          <span class="num">03</span>
+          <h3>Suivez votre dossier</h3>
+          <p>Recevez une notification à chaque étape et sachez toujours quelle est la prochaine action.</p>
+          <div class="mini" aria-hidden="true"><h4>Dossier en cours</h4>
+            <div class="row"><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Certificat négatif</div>
+            <div class="row"><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Statuts rédigés</div>
+            <div class="row"><span class="pend"></span>Dépôt OMPIC · Impôts</div>
+            <div class="row"><span class="pend"></span>Registre de commerce</div>
+          </div>
+        </article>
       </div>
     </div>
   </section>
 
   <!-- SERVICES -->
-  <section class="services" id="services">
+  <section id="services" style="padding-top:0">
     <div class="wrap">
       <div class="head">
-        <span class="eyebrow" data-t="s-eye">Nos services</span>
-        <h2 data-th="s-title">Tout le cycle de vie de <span class="gt">votre entreprise</span></h2>
+        <span class="eyebrow">Nos services</span>
+        <h2>Tout le cycle de vie<br>de <em>votre entreprise</em></h2>
+        <p class="lead">De la création à la gestion de votre société, nous vous accompagnons à chaque étape.</p>
       </div>
-      <div class="feat">
-        <div class="star">
-          <span class="tag" data-t="popular">Le plus demandé</span>
-          <h3 data-t="s1">Création SARL / SARL AU</h3>
-          <p data-t="s1p">Statuts sur mesure et immatriculation complète, du certificat négatif aux annonces légales.</p>
-          <div class="price"><span class="ltr">4 680</span><small data-t="mad">MAD TTC</small></div>
-          <ul><li data-t="x1">Certificat négatif</li><li data-t="si2">Statuts rédigés par un juriste</li><li data-t="x3">RC, IF, ICE et CNSS</li><li data-t="x4">Annonces légales</li></ul>
-          <a class="btn btn-grad" href="demande.html?service=sarl"><span data-t="start">Commencer ma demande</span> <span class="flip">→</span></a>
+      <div class="svc">
+        <div class="feat">
+          <span class="fic"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span>
+          <div>
+            <h3>Création SARL / SARL AU</h3>
+            <p>Statuts sur mesure et immatriculation complète, du certificat négatif aux annonces légales.</p>
+            <div class="fprice"><small>À partir de</small><b>4 680</b><small>MAD TTC</small></div>
+            <ul><li>Certificat négatif</li><li>Statuts rédigés par un juriste</li><li>RC, IF, ICE et CNSS</li><li>Annonces légales</li></ul>
+            <a class="btn btn-grad" href="demande.html?service=sarl">Commencer ma demande <span class="arr">→</span></a>
+          </div>
         </div>
         <div class="slist">
-          <a class="srow" href="demande.html?service=ae"><span class="ic" style="background:linear-gradient(135deg,#ff7ab6,#ff4f9a)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4.5-6 8-6s7 2 8 6"/></svg></span><div><b data-t="s2">Auto-entrepreneur</b><span class="d" data-t="sr2">Inscription au registre national</span></div><span class="pr"><small data-t="des">dès</small><span class="ltr">900</span> <span data-t="cur">MAD</span></span><span class="arrow"><span class="flip">→</span></span></a>
-          <a class="srow" href="demande.html?service=sa"><span class="ic" style="background:linear-gradient(135deg,#ffd36b,#ffb020)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V4h8v3M3 12h18"/></svg></span><div><b data-t="s3">Société anonyme</b><span class="d" data-t="sr3">Projets à plusieurs actionnaires</span></div><span class="pr"><small>&nbsp;</small><span data-t="s3f">Sur devis</span></span><span class="arrow"><span class="flip">→</span></span></a>
-          <a class="srow" href="#contact"><span class="ic" style="background:linear-gradient(135deg,#ff8f8f,#ff5c7a)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></span><div><b data-t="s4">Domiciliation</b><span class="d" data-t="sr4">Siège social et gestion du courrier</span></div><span class="pr"><small data-t="des">dès</small><span class="ltr">150</span> <span data-t="curm">MAD/mois</span></span><span class="arrow"><span class="flip">→</span></span></a>
-          <a class="srow" href="#contact"><span class="ic" style="background:linear-gradient(135deg,#c58bff,#9b5cf0)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20h4L19 9l-4-4L4 16v4zM13.5 6.5l4 4"/></svg></span><div><b data-t="s5">Modifications statutaires</b><span class="d" data-t="sr5">Siège, parts, gérant, capital</span></div><span class="pr"><small data-t="des">dès</small><span class="ltr">1 500</span> <span data-t="cur">MAD</span></span><span class="arrow"><span class="flip">→</span></span></a>
-          <a class="srow" href="#contact"><span class="ic" style="background:linear-gradient(135deg,#6e4a6c,#2b0f2e)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4h9l3 3v13H6z"/><path d="M9 12h6M9 16h4"/></svg></span><div><b data-t="s6">Dissolution et liquidation</b><span class="d" data-t="sr6">Clôture et radiation du RC</span></div><span class="pr"><small data-t="des">dès</small><span class="ltr">2 500</span> <span data-t="cur">MAD</span></span><span class="arrow"><span class="flip">→</span></span></a>
+          <a class="srow" href="demande.html?service=ae"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4.5-6 8-6s7 2 8 6"/></svg></span><div><b>Auto-entrepreneur</b><span>Inscription au registre national</span><span class="pr">Dès 900 MAD</span></div><span class="chev">›</span></a>
+          <a class="srow" href="demande.html?service=sa"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V9l7-5 7 5v12M9 21v-6h6v6"/></svg></span><div><b>Société anonyme</b><span>Projets à plusieurs actionnaires</span><span class="pr">Sur devis</span></div><span class="chev">›</span></a>
+          <a class="srow" href="#contact"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></span><div><b>Domiciliation</b><span>Siège social et gestion du courrier</span><span class="pr">Dès 150 MAD/mois</span></div><span class="chev">›</span></a>
+          <a class="srow" href="#contact"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20h4L19 9l-4-4L4 16v4zM13.5 6.5l4 4"/></svg></span><div><b>Modifications statutaires</b><span>Siège, parts, gérant, capital</span><span class="pr">Dès 1 500 MAD</span></div><span class="chev">›</span></a>
+          <a class="srow" href="#contact"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4h9l3 3v13H6z"/><path d="M9 12h6M9 16h4"/></svg></span><div><b>Dissolution et liquidation</b><span>Clôture et radiation du RC</span><span class="pr">Dès 2 500 MAD</span></div><span class="chev">›</span></a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- PROCESS -->
-  <section id="processus">
-    <div class="wrap e9">
-      <div class="lockwrap">
-        <div class="lock"><div class="lscr">
-          <div class="ltop"><span class="ltr">09:41</span><span class="ltr">●●●● 5G</span></div>
-          <div class="ltime"><small data-t="lk-date">Jeudi 14 mai</small><b class="ltr">09:41</b></div>
-          <div class="ntf">
-            <div class="nt"><i style="background:linear-gradient(135deg,#ff7ab6,#ff4f9a)">CE</i><div><div class="hd"><span>CHARIKA EXPRESS</span><span data-t="lk-now">maintenant</span></div><b data-t="lk1">✍️ Vos statuts sont prêts</b><p data-t="lk1p">Signez-les en ligne en un clic.</p></div></div>
-            <div class="nt"><i style="background:#22c35e">✓</i><div><div class="hd"><span>WHATSAPP</span><span data-t="lk-yday">hier</span></div><b data-t="lk2">Nom réservé 🎉</b><p data-th="lk2p">« <bdi>Atlas Digital</bdi> » est réservé à l'OMPIC.</p></div></div>
-            <div class="nt old"><i style="background:linear-gradient(135deg,#ff9a76,#ff7a59)">CE</i><div><div class="hd"><span>CHARIKA EXPRESS</span><span data-t="lk-mon">lun.</span></div><b data-t="lk3">Demande reçue</b><p data-t="lk3p">Nadia, votre juriste, s'occupe de tout.</p></div></div>
-          </div>
-        </div></div>
-        <span class="lock-ex" data-t="lk-ex">Exemple de suivi</span>
-      </div>
-      <div>
-        <div class="head">
-          <span class="eyebrow" data-t="pr-eye">Processus</span>
-          <h2 data-th="pr-title">Vous êtes informé <span class="gt">à chaque étape</span></h2>
-          <p data-t="pr-lead">Pas besoin de relancer. Chaque avancée de votre dossier vous est envoyée sur WhatsApp et par e-mail.</p>
+  <!-- TRUST -->
+  <section id="pourquoi" style="padding-top:clamp(12px,2vw,24px)">
+    <div class="wrap">
+      <div class="trust">
+        <div class="head" style="margin-bottom:0">
+          <span class="eyebrow">Pourquoi nous</span>
+          <h2>Pourquoi choisir <em>Charika Express ?</em></h2>
+          <p class="lead">Un vrai juriste, la simplicité d'une application : vous savez toujours où en est votre dossier.</p>
+          <div><a class="btn btn-line btn-sm" href="demande.html">Commencer ma demande <span class="arr">→</span></a></div>
         </div>
-        <ul class="psteps">
-          <li><span data-t="st1d">10 min</span><b data-t="ps1">Vous remplissez la demande</b></li>
-          <li><span data-t="st2d">24–48 h</span><b data-t="ps2">Votre nom est réservé à l'OMPIC</b></li>
-          <li><span data-t="st3d">1–2 j</span><b data-t="ps3">Vous signez vos statuts en ligne</b></li>
-          <li><span data-t="st4d">5–10 j</span><b data-t="ps4">Vous recevez votre registre de commerce</b></li>
-        </ul>
-        <a class="btn btn-grad" href="demande.html"><span data-t="start">Commencer ma demande</span> <span class="flip">→</span></a>
+        <div class="tgrid">
+          <div><span class="sic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4.5-6 8-6s7 2 8 6"/></svg></span><div><b>Un juriste dédié</b><span>Joignable par téléphone et WhatsApp.</span></div></div>
+          <div><span class="sic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M2 20h20"/></svg></span><div><b>Aucun déplacement</b><span>Signature électronique de vos documents.</span></div></div>
+          <div><span class="sic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16V11a6 6 0 1 1 12 0v5l2 2H4z"/><path d="M10 21h4"/></svg></span><div><b>Chaque étape notifiée</b><span>Vous savez toujours où en est votre dossier.</span></div></div>
+          <div><span class="sic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="8.5" r="1.5"/></svg></span><div><b>Prix fixe, tout compris</b><span>Dès 4 680 MAD TTC, frais inclus.</span></div></div>
+          <div><span class="sic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a1 1 0 0 1-1-1V7z"/><path d="M4 7l11-3v3"/></svg></span><div><b>Paiement en 3 fois</b><span>700 MAD pour démarrer, puis le reste en deux fois.</span></div></div>
+          <div><span class="sic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.4 8.2-8 9-4.6-.8-8-4.5-8-9V6l8-3z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg></span><div><b>Garantie anti-rejet</b><span>Une erreur de notre part ? Corrigée à nos frais.</span></div></div>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- PRICING -->
-  <section id="tarifs" style="padding-top:0">
+  <section id="tarifs">
     <div class="wrap">
-      <div class="head center">
-        <span class="eyebrow" data-t="t-eye">Tarifs</span>
-        <h2 data-t="t-title">Des formules simples, sans surprise</h2>
-        <p data-t="t-lead">Prix TTC, frais administratifs inclus. Choisissez votre forme juridique.</p>
-      </div>
-      <div class="ptabs" role="tablist" aria-label="Forme juridique">
-        <button type="button" role="tab" aria-selected="true" aria-controls="plans-sarl" id="tab-sarl" data-t="pktab1">SARL / SARL AU</button>
-        <button type="button" role="tab" aria-selected="false" aria-controls="plans-sas" id="tab-sas" data-t="pktab2">SAS</button>
+      <div class="phead">
+        <div class="head" style="margin-bottom:0">
+          <span class="eyebrow">Nos formules</span>
+          <h2>Des formules simples,<br>sans surprise</h2>
+          <p class="lead">Choisissez la formule qui correspond à vos besoins. Prix TTC, frais administratifs inclus.</p>
+        </div>
+        <div class="ptabs" role="tablist" aria-label="Forme juridique">
+          <button type="button" role="tab" aria-selected="true" aria-controls="plans-sarl" id="tab-sarl">SARL / SARL AU</button>
+          <button type="button" role="tab" aria-selected="false" aria-controls="plans-sas" id="tab-sas">SAS</button>
+        </div>
       </div>
       <div class="plans" id="plans-sarl" role="tabpanel" aria-labelledby="tab-sarl">
         <article class="plan">
-          <div class="ph"><h3 data-t="pk1">Pack Essentiel</h3></div><p class="sub" data-t="pk1s">Pour démarrer</p>
-          <div class="price"><b class="ltr">4 680</b><span data-t="mad">MAD TTC</span></div>
-            <p class="dep" data-th="pkdep">Seulement <b class="ltr">700 MAD</b> d'avance pour démarrer</p>
-          <ul><li class="inc"><span data-t="pki1">12 mois de domiciliation offerts</span><em data-t="pkinc">Inclus</em></li><li data-t="pkc1">Création de société</li><li data-t="pkc2">Registre de commerce</li><li data-t="pkc3">Taxe professionnelle</li><li data-t="pkc4">Identifiant fiscal</li><li data-t="pkc5">Statuts</li><li data-t="pkc6">Contrat de domiciliation</li><li data-t="pkc7">Enregistrement des contrats</li><li data-t="pkc8">Affiliation de la société à la CNSS</li><li data-t="pkc9">Publication dans un journal d'annonces légales</li><li data-t="pkc10">Publication au Bulletin Officiel</li></ul>
-          <a class="btn btn-soft" href="demande.html?plan=essentiel" data-t="pkchoose">Choisir ce pack</a>
+          <div class="ph"><h3>Pack Essentiel</h3></div>
+          <p class="sub">Pour démarrer</p>
+          <div class="price"><b>4 680</b><span>MAD TTC</span></div>
+          <p class="dep">Seulement <b>700 MAD</b> d'avance pour démarrer</p>
+          <ul class="feats"><li class="inc">12 mois de domiciliation offerts<em>Inclus</em></li><li>Création de société</li><li>Registre de commerce</li><li>Taxe professionnelle</li></ul>
+          <details class="more"><summary>Voir toutes les inclusions (11)</summary><ul class="feats"><li>Identifiant fiscal</li><li>Statuts</li><li>Contrat de domiciliation</li><li>Enregistrement des contrats</li><li>Affiliation de la société à la CNSS</li><li>Publication dans un journal d&#x27;annonces légales</li><li>Publication au Bulletin Officiel</li></ul></details>
+          <a class="btn btn-line" href="demande.html?plan=essentiel">Choisir ce pack</a>
         </article>
         <article class="plan top">
-          <span class="orb" aria-hidden="true"></span>
-          <div class="ph"><h3 data-t="pk2">Pack Pro</h3><span class="tag" data-t="pkrec">Recommandé</span></div><p class="sub" data-t="pk2s">Meilleur rapport qualité prix</p>
-          <div class="price"><b class="ltr">5 980</b><span data-t="mad">MAD TTC</span></div>
-            <p class="dep" data-th="pkdep">Seulement <b class="ltr">700 MAD</b> d'avance pour démarrer</p>
-          <ul><li class="inc"><span data-t="pki2">24 mois de domiciliation</span><em data-t="pkinc">Inclus</em></li><li class="inc"><span data-t="pki3">Cachet de la société</span><em data-t="pkinc">Inclus</em></li><li data-t="pkc1">Création de société</li><li data-t="pkc2">Registre de commerce</li><li data-t="pkc3">Taxe professionnelle</li><li data-t="pkc4">Identifiant fiscal</li><li data-t="pkc5">Statuts</li><li data-t="pkc6">Contrat de domiciliation</li><li data-t="pkc7">Enregistrement des contrats</li><li data-t="pkc8">Affiliation de la société à la CNSS</li><li data-t="pkc9">Publication dans un journal d'annonces légales</li><li data-t="pkc10">Publication au Bulletin Officiel</li></ul>
-          <a class="btn btn-grad" href="demande.html?plan=pro" data-t="pkchoose">Choisir ce pack</a>
+          <div class="ph"><h3>Pack Pro</h3><span class="badge">Le plus populaire</span></div>
+          <p class="sub">Meilleur rapport qualité prix</p>
+          <div class="price"><b>5 980</b><span>MAD TTC</span></div>
+          <p class="dep">Seulement <b>700 MAD</b> d'avance pour démarrer</p>
+          <ul class="feats"><li class="inc">24 mois de domiciliation<em>Inclus</em></li><li class="inc">Cachet de la société<em>Inclus</em></li><li>Création de société</li><li>Registre de commerce</li></ul>
+          <details class="more"><summary>Voir toutes les inclusions (12)</summary><ul class="feats"><li>Taxe professionnelle</li><li>Identifiant fiscal</li><li>Statuts</li><li>Contrat de domiciliation</li><li>Enregistrement des contrats</li><li>Affiliation de la société à la CNSS</li><li>Publication dans un journal d&#x27;annonces légales</li><li>Publication au Bulletin Officiel</li></ul></details>
+          <a class="btn btn-grad" href="demande.html?plan=pro">Choisir ce pack</a>
         </article>
         <article class="plan">
-          <div class="ph"><h3 data-t="pk3">Pack Premium</h3></div><p class="sub" data-t="pk3s">Le choix de la sérénité</p>
-          <div class="price"><b class="ltr">9 980</b><span data-t="mad">MAD TTC</span></div>
-            <p class="dep" data-th="pkdep">Seulement <b class="ltr">700 MAD</b> d'avance pour démarrer</p>
-          <ul><li class="inc"><span data-t="pki2">24 mois de domiciliation</span><em data-t="pkinc">Inclus</em></li><li class="inc"><span data-t="pki3">Cachet de la société</span><em data-t="pkinc">Inclus</em></li><li class="inc"><span data-t="pki4">Protection de la marque (2 classes incluses)</span><em data-t="pkinc">Inclus</em></li><li data-t="pkc1">Création de société</li><li data-t="pkc2">Registre de commerce</li><li data-t="pkc3">Taxe professionnelle</li><li data-t="pkc4">Identifiant fiscal</li><li data-t="pkc5">Statuts</li><li data-t="pkc6">Contrat de domiciliation</li><li data-t="pkc7">Enregistrement des contrats</li><li data-t="pkc8">Affiliation de la société à la CNSS</li><li data-t="pkc9">Publication dans un journal d'annonces légales</li><li data-t="pkc10">Publication au Bulletin Officiel</li></ul>
-          <a class="btn btn-soft" href="demande.html?plan=premium" data-t="pkchoose">Choisir ce pack</a>
+          <div class="ph"><h3>Pack Premium</h3></div>
+          <p class="sub">Le choix de la sérénité</p>
+          <div class="price"><b>9 980</b><span>MAD TTC</span></div>
+          <p class="dep">Seulement <b>700 MAD</b> d'avance pour démarrer</p>
+          <ul class="feats"><li class="inc">24 mois de domiciliation<em>Inclus</em></li><li class="inc">Cachet de la société<em>Inclus</em></li><li class="inc">Protection de la marque (2 classes incluses)<em>Inclus</em></li><li>Création de société</li></ul>
+          <details class="more"><summary>Voir toutes les inclusions (13)</summary><ul class="feats"><li>Registre de commerce</li><li>Taxe professionnelle</li><li>Identifiant fiscal</li><li>Statuts</li><li>Contrat de domiciliation</li><li>Enregistrement des contrats</li><li>Affiliation de la société à la CNSS</li><li>Publication dans un journal d&#x27;annonces légales</li><li>Publication au Bulletin Officiel</li></ul></details>
+          <a class="btn btn-line" href="demande.html?plan=premium">Choisir ce pack</a>
         </article>
       </div>
       <div class="plans" id="plans-sas" role="tabpanel" aria-labelledby="tab-sas" hidden>
         <article class="plan">
-          <div class="ph"><h3 data-t="pk1">Pack Essentiel</h3></div><p class="sub" data-t="pk1s">Pour démarrer</p>
-          <div class="price"><b class="quote" data-t="pkq">Sur devis</b></div>
-            <p class="dep" data-t="pkqd">Tarif communiqué sous 24 h</p>
-          <ul><li class="inc"><span data-t="pki1">12 mois de domiciliation offerts</span><em data-t="pkinc">Inclus</em></li><li data-t="pkc1">Création de société</li><li data-t="pkc2">Registre de commerce</li><li data-t="pkc3">Taxe professionnelle</li><li data-t="pkc4">Identifiant fiscal</li><li data-t="pkc5">Statuts</li><li data-t="pkc6">Contrat de domiciliation</li><li data-t="pkc7">Enregistrement des contrats</li><li data-t="pkc8">Affiliation de la société à la CNSS</li><li data-t="pkc9">Publication dans un journal d'annonces légales</li><li data-t="pkc10">Publication au Bulletin Officiel</li></ul>
-          <a class="btn btn-soft" href="demande.html?service=sas&amp;plan=essentiel" data-t="pkquote">Demander un devis</a>
+          <div class="ph"><h3>Pack Essentiel</h3></div>
+          <p class="sub">Pour démarrer</p>
+          <div class="price"><b class="quote">Sur devis</b></div>
+          <p class="dep">Tarif communiqué sous 24 h</p>
+          <ul class="feats"><li class="inc">12 mois de domiciliation offerts<em>Inclus</em></li><li>Création de société</li><li>Registre de commerce</li><li>Taxe professionnelle</li></ul>
+          <details class="more"><summary>Voir toutes les inclusions (11)</summary><ul class="feats"><li>Identifiant fiscal</li><li>Statuts</li><li>Contrat de domiciliation</li><li>Enregistrement des contrats</li><li>Affiliation de la société à la CNSS</li><li>Publication dans un journal d&#x27;annonces légales</li><li>Publication au Bulletin Officiel</li></ul></details>
+          <a class="btn btn-line" href="demande.html?service=sas&amp;plan=essentiel">Demander un devis</a>
         </article>
         <article class="plan top">
-          <span class="orb" aria-hidden="true"></span>
-          <div class="ph"><h3 data-t="pk2">Pack Pro</h3><span class="tag" data-t="pkrec">Recommandé</span></div><p class="sub" data-t="pk2s">Meilleur rapport qualité prix</p>
-          <div class="price"><b class="quote" data-t="pkq">Sur devis</b></div>
-            <p class="dep" data-t="pkqd">Tarif communiqué sous 24 h</p>
-          <ul><li class="inc"><span data-t="pki2">24 mois de domiciliation</span><em data-t="pkinc">Inclus</em></li><li class="inc"><span data-t="pki3">Cachet de la société</span><em data-t="pkinc">Inclus</em></li><li data-t="pkc1">Création de société</li><li data-t="pkc2">Registre de commerce</li><li data-t="pkc3">Taxe professionnelle</li><li data-t="pkc4">Identifiant fiscal</li><li data-t="pkc5">Statuts</li><li data-t="pkc6">Contrat de domiciliation</li><li data-t="pkc7">Enregistrement des contrats</li><li data-t="pkc8">Affiliation de la société à la CNSS</li><li data-t="pkc9">Publication dans un journal d'annonces légales</li><li data-t="pkc10">Publication au Bulletin Officiel</li></ul>
-          <a class="btn btn-grad" href="demande.html?service=sas&amp;plan=pro" data-t="pkquote">Demander un devis</a>
+          <div class="ph"><h3>Pack Pro</h3><span class="badge">Le plus populaire</span></div>
+          <p class="sub">Meilleur rapport qualité prix</p>
+          <div class="price"><b class="quote">Sur devis</b></div>
+          <p class="dep">Tarif communiqué sous 24 h</p>
+          <ul class="feats"><li class="inc">24 mois de domiciliation<em>Inclus</em></li><li class="inc">Cachet de la société<em>Inclus</em></li><li>Création de société</li><li>Registre de commerce</li></ul>
+          <details class="more"><summary>Voir toutes les inclusions (12)</summary><ul class="feats"><li>Taxe professionnelle</li><li>Identifiant fiscal</li><li>Statuts</li><li>Contrat de domiciliation</li><li>Enregistrement des contrats</li><li>Affiliation de la société à la CNSS</li><li>Publication dans un journal d&#x27;annonces légales</li><li>Publication au Bulletin Officiel</li></ul></details>
+          <a class="btn btn-grad" href="demande.html?service=sas&amp;plan=pro">Demander un devis</a>
         </article>
         <article class="plan">
-          <div class="ph"><h3 data-t="pk3">Pack Premium</h3></div><p class="sub" data-t="pk3s">Le choix de la sérénité</p>
-          <div class="price"><b class="quote" data-t="pkq">Sur devis</b></div>
-            <p class="dep" data-t="pkqd">Tarif communiqué sous 24 h</p>
-          <ul><li class="inc"><span data-t="pki2">24 mois de domiciliation</span><em data-t="pkinc">Inclus</em></li><li class="inc"><span data-t="pki3">Cachet de la société</span><em data-t="pkinc">Inclus</em></li><li class="inc"><span data-t="pki4">Protection de la marque (2 classes incluses)</span><em data-t="pkinc">Inclus</em></li><li data-t="pkc1">Création de société</li><li data-t="pkc2">Registre de commerce</li><li data-t="pkc3">Taxe professionnelle</li><li data-t="pkc4">Identifiant fiscal</li><li data-t="pkc5">Statuts</li><li data-t="pkc6">Contrat de domiciliation</li><li data-t="pkc7">Enregistrement des contrats</li><li data-t="pkc8">Affiliation de la société à la CNSS</li><li data-t="pkc9">Publication dans un journal d'annonces légales</li><li data-t="pkc10">Publication au Bulletin Officiel</li></ul>
-          <a class="btn btn-soft" href="demande.html?service=sas&amp;plan=premium" data-t="pkquote">Demander un devis</a>
+          <div class="ph"><h3>Pack Premium</h3></div>
+          <p class="sub">Le choix de la sérénité</p>
+          <div class="price"><b class="quote">Sur devis</b></div>
+          <p class="dep">Tarif communiqué sous 24 h</p>
+          <ul class="feats"><li class="inc">24 mois de domiciliation<em>Inclus</em></li><li class="inc">Cachet de la société<em>Inclus</em></li><li class="inc">Protection de la marque (2 classes incluses)<em>Inclus</em></li><li>Création de société</li></ul>
+          <details class="more"><summary>Voir toutes les inclusions (13)</summary><ul class="feats"><li>Registre de commerce</li><li>Taxe professionnelle</li><li>Identifiant fiscal</li><li>Statuts</li><li>Contrat de domiciliation</li><li>Enregistrement des contrats</li><li>Affiliation de la société à la CNSS</li><li>Publication dans un journal d&#x27;annonces légales</li><li>Publication au Bulletin Officiel</li></ul></details>
+          <a class="btn btn-line" href="demande.html?service=sas&amp;plan=premium">Demander un devis</a>
         </article>
       </div>
-      <p class="plans-note" data-t="t-note">Paiement en 3 fois : 700 MAD d'avance à la commande (lancement du certificat négatif), 50% du reste à la signature des documents, le solde à la livraison du dossier.</p>
+      <p class="pnote"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>Paiement en 3 fois : 700 MAD d'avance à la commande, 50 % du reste après la légalisation des documents, le solde à la livraison du dossier.</p>
     </div>
   </section>
 
   <!-- GUARANTEE -->
-  <section class="band">
-    <div class="wrap">
-      <div class="band-in">
-        <div>
-          <h2 data-t="g-title">Rejeté ? On recommence. À nos frais.</h2>
-          <p data-t="g-text">Si une administration rejette votre dossier en raison d'une erreur de notre part, nous le corrigeons et le redéposons gratuitement, ou nous vous remboursons les honoraires concernés.</p>
-          <div style="margin-top:26px"><a class="btn btn-ink" href="demande.html"><span data-t="h-cta1">Créer ma société</span> <span class="flip">→</span></a></div>
-        </div>
-        <div class="shield"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.4 8.2-8 9-4.6-.8-8-4.5-8-9V6l8-3z"/><path d="M8.5 12l2.5 2.5 4.5-5" stroke-linecap="round"/></svg></div>
+  <div class="wrap">
+    <div class="band">
+      <span class="shield"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.4 8.2-8 9-4.6-.8-8-4.5-8-9V6l8-3z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg></span>
+      <h2>Rejeté ? On recommence.<br>À nos frais.</h2>
+      <div>
+        <p>Si une administration rejette votre dossier en raison d'une erreur de notre part, nous le corrigeons et le redéposons gratuitement, ou nous vous remboursons les honoraires concernés.</p>
+        <a class="btn btn-ink btn-sm" href="demande.html">Créer ma société <span class="arr">→</span></a>
       </div>
     </div>
-  </section>
+  </div>
 
-  <!-- FAQ -->
-  <section id="faq" style="padding-top:0">
-    <div class="wrap faq-grid">
-      <div class="head" style="margin-bottom:0">
-        <span class="eyebrow" data-t="q-eye">FAQ</span>
-        <h2 data-t="q-title">Vos questions, nos réponses</h2>
-        <p data-t="q-lead">Vous ne trouvez pas votre réponse ? Un juriste vous répond par téléphone ou WhatsApp.</p>
+  <!-- FAQ + CONTACT -->
+  <section id="faq">
+    <div class="wrap fc">
+      <div class="head fhead" style="margin-bottom:0">
+        <span class="eyebrow">FAQ</span>
+        <h2>Vos questions,<br><em>nos réponses</em></h2>
+        <p class="lead">Vous ne trouvez pas votre réponse ? Un juriste vous répond par téléphone ou WhatsApp.</p>
+        <div><a class="btn btn-grad btn-sm" href="https://wa.me/212500000000" target="_blank" rel="noopener">Poser une question <span class="arr">→</span></a></div>
       </div>
-      <div class="faq-list">
-        <details open><summary data-t="q1">Combien de temps faut-il pour créer une SARL ?</summary><p data-t="q1a">En général 7 à 15 jours ouvrés entre le certificat négatif et l'obtention du registre de commerce, selon la ville et la période.</p></details>
-        <details><summary data-t="q2">Quel est le capital minimum d'une SARL ?</summary><p data-t="q2a">Il n'existe plus de capital minimum légal pour une SARL. Un capital de 10 000 MAD reste courant pour rassurer les banques et les partenaires.</p></details>
-        <details><summary data-t="q3">Dois-je me déplacer ?</summary><p data-t="q3a">Non. Vous signez vos documents électroniquement et nous effectuons les dépôts. Certaines pièces peuvent nécessiter une légalisation de signature.</p></details>
-        <details><summary data-t="q4">Quels documents dois-je fournir ?</summary><p data-t="q4a">La CNIE (ou le passeport pour les étrangers) de chaque associé et gérant, ainsi qu'un contrat de bail si vous disposez déjà d'un local.</p></details>
-        <details><summary data-t="q5">Un étranger peut-il créer une société au Maroc ?</summary><p data-t="q5a">Oui. Un étranger peut être associé ou gérant d'une SARL marocaine. Nous vous indiquons les pièces spécifiques à prévoir.</p></details>
+      <div class="faq">
+        <details open><summary>Quels documents dois-je fournir pour créer ma société ?</summary><p>La CNIE (ou le passeport pour les étrangers) de chaque associé et gérant, ainsi qu'un contrat de bail si vous disposez déjà d'un local.</p></details>
+        <details><summary>Combien de temps faut-il pour créer une SARL ?</summary><p>En général 7 à 15 jours ouvrés entre le certificat négatif et l'obtention du registre de commerce, selon la ville et la période.</p></details>
+        <details><summary>Comment fonctionne le paiement en plusieurs fois ?</summary><p>700 MAD d'avance à la commande pour lancer le certificat négatif, 50 % du reste après la légalisation des documents, puis le solde quand le dossier est complet. Paiement par virement ou Cash Plus.</p></details>
+        <details><summary>Quel est le capital minimum d'une SARL ?</summary><p>Il n'existe plus de capital minimum légal pour une SARL. Un capital de 10 000 MAD reste courant pour rassurer les banques et les partenaires.</p></details>
+        <details><summary>Dois-je me déplacer ?</summary><p>Non. Vous signez vos documents électroniquement et nous effectuons les dépôts. Certaines pièces peuvent nécessiter une légalisation de signature.</p></details>
+        <details><summary>Que se passe-t-il si mon dossier est rejeté ?</summary><p>Nous vous indiquons le motif. Si l'erreur vient de nous, nous corrigeons et redéposons le dossier gratuitement. Si une pièce de votre côté doit être corrigée (CIN expirée, légalisation…), nous vous expliquons quoi faire.</p></details>
+        <details><summary>Un étranger peut-il créer une société au Maroc ?</summary><p>Oui. Un étranger peut être associé ou gérant d'une SARL marocaine. Nous vous indiquons les pièces spécifiques à prévoir.</p></details>
       </div>
-    </div>
-  </section>
-
-  <!-- CONTACT -->
-  <section class="contact" id="contact">
-    <div class="wrap">
-      <div class="c-card">
-        <span class="orb" aria-hidden="true"></span>
-        <div>
-          <span class="eyebrow" style="color:var(--gold)" data-t="c-eye">Contact</span>
-          <h2 style="margin-top:14px" data-t="c-title">Parlons de votre projet</h2>
-          <p class="lead" data-t="c-lead">Laissez vos coordonnées. Un juriste vous rappelle dans la journée ouvrée pour étudier votre projet et vous remettre un devis.</p>
-          <ul class="c-info">
-            <li><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg></span><span><small data-t="ci1">Téléphone</small><b class="ltr">+212 5 00 00 00 00</b></span></li>
-            <li><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span><span><small data-t="ci2">E-mail</small><b class="ltr">contact@charikaexpress.ma</b></span></li>
-            <li><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><span><small data-t="ci4">Horaires</small><b data-t="hours">Lun – Ven · 9h00 – 18h00</b></span></li>
-          </ul>
-        </div>
-        <form id="form" novalidate>
-          <h3 data-t="fm-title">Être rappelé</h3>
+      <div class="cpanel" id="contact">
+        <span class="eyebrow">Contact</span>
+        <h2>Parlons de votre projet</h2>
+        <p>Laissez vos coordonnées : un juriste vous rappelle dans la journée ouvrée pour étudier votre projet.</p>
+        <form class="form" id="form" novalidate>
           <div class="two">
-            <div><label for="nom" data-t="fm1">Nom complet</label><input type="text" id="nom" autocomplete="name"></div>
-            <div><label for="tel" data-t="fm2">Téléphone</label><input type="tel" id="tel" autocomplete="tel" placeholder="06 12 34 56 78" dir="ltr"></div>
+            <div><label for="nom">Nom complet *</label><input type="text" id="nom" autocomplete="name" required></div>
+            <div><label for="tel">Téléphone *</label><input type="tel" id="tel" autocomplete="tel" placeholder="06 12 34 56 78" dir="ltr" required></div>
           </div>
-          <div><label for="service" data-t="fm3">Service souhaité</label>
-            <select id="service">
-              <option data-t="s1">Création SARL / SARL AU</option><option data-t="s2">Auto-entrepreneur</option><option data-t="s3">Société anonyme</option><option data-t="s4">Domiciliation</option><option data-t="s5">Modifications statutaires</option><option data-t="s6">Dissolution et liquidation</option>
+          <div><label for="service">Service souhaité *</label>
+            <select id="service" required>
+              <option value="">Sélectionnez un service</option>
+              <option>Création SARL / SARL AU</option><option>Auto-entrepreneur</option><option>Société anonyme</option><option>Domiciliation</option><option>Modifications statutaires</option><option>Dissolution et liquidation</option>
             </select>
           </div>
-          <div><label for="msg" data-t="fm4">Votre projet en quelques mots</label><textarea id="msg"></textarea></div>
-          <button class="btn btn-grad" type="submit"><span data-t="fm-btn">Envoyer ma demande</span> <span class="flip">→</span></button>
-          <p class="err" id="err" hidden></p>
-          <p class="okmsg" id="ok" hidden></p>
+          <div><label for="msg">Votre message (facultatif)</label><textarea id="msg" placeholder="Votre projet en quelques mots…"></textarea></div>
+          <p class="consent">En envoyant ce formulaire, vous acceptez d'être recontacté par Charika Express au sujet de votre demande.</p>
+          <div class="factions">
+            <button class="btn btn-grad" type="submit" id="send">Demander un rappel</button>
+            <a class="btn btn-wa" href="https://wa.me/212500000000" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.4 14.2c-.2.6-1.3 1.2-1.8 1.3-.5 0-1 .2-3.3-.7-2.8-1.1-4.5-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.9 2c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.6.2.3.7 1.2 1.6 1.9 1.1 1 2 1.3 2.3 1.4.3.1.4.1.6-.1l.8-1c.2-.2.4-.2.6-.1l1.9.9c.3.1.4.2.5.3.1.1.1.6-.1 1.2z"/></svg>Contacter sur WhatsApp</a>
+          </div>
+          <p class="msg err" id="err" role="alert" hidden></p>
+          <p class="msg ok" id="ok" role="status" hidden></p>
         </form>
+        <div class="cinfo"><span>Téléphone : <b>+212 5 00 00 00 00</b></span><span>E-mail : <b>contact@charikaexpress.ma</b></span><span>Lun – Ven · 9h00 – 18h00</span></div>
       </div>
     </div>
   </section>
@@ -632,90 +603,19 @@ footer a:hover{color:var(--rose)}
 <footer>
   <div class="wrap">
     <div class="f-grid">
-      <div><a class="logo" href="#top"><i></i><span data-th="brand">Charika<b>Express</b></span></a><p style="margin-top:14px;max-width:34ch" data-t="ft-about">Création et gestion juridique d'entreprises au Maroc, entièrement en ligne.</p></div>
-      <div><h4 data-t="n1">Services</h4><ul><li><a href="#services" data-t="s1">Création SARL / SARL AU</a></li><li><a href="#services" data-t="s2">Auto-entrepreneur</a></li><li><a href="#services" data-t="s4">Domiciliation</a></li><li><a href="#services" data-t="s5">Modifications statutaires</a></li></ul></div>
-      <div><h4 data-t="ft-co">Charika Express</h4><ul><li><a href="#processus" data-t="n2">Processus</a></li><li><a href="#tarifs" data-t="n3">Tarifs</a></li><li><a href="#faq" data-t="n4">FAQ</a></li><li><a href="admin.html" data-t="ft-team">Espace équipe</a></li></ul></div>
-      <div><h4 data-t="n5">Contact</h4><ul><li class="ltr">+212 5 00 00 00 00</li><li class="ltr">contact@charikaexpress.ma</li><li data-t="ci3v">Casablanca, Maroc</li></ul></div>
+      <div><a class="logo dark" href="#top"><i></i><span>Charika <b>Express</b></span></a><p class="f-about">Création d'entreprise au Maroc, simple et rapide. Un juriste dédié, 100 % en ligne.</p></div>
+      <div><h4>Nos services</h4><ul><li><a href="#services">Création SARL / SARL AU</a></li><li><a href="#services">Auto-entrepreneur</a></li><li><a href="#services">Domiciliation</a></li><li><a href="#services">Modifications statutaires</a></li><li><a href="#services">Dissolution et liquidation</a></li></ul></div>
+      <div><h4>Informations</h4><ul><li><a href="#pourquoi">À propos</a></li><li><a href="#tarifs">Tarifs</a></li><li><a href="#faq">FAQ</a></li><li><a href="#contact">Contact</a></li><li><a href="admin.html">Espace équipe</a></li></ul></div>
+      <div><h4>Contact</h4><ul><li dir="ltr">+212 5 00 00 00 00</li><li>contact@charikaexpress.ma</li><li>Casablanca, Maroc</li></ul></div>
     </div>
-    <div class="f-bottom"><span data-t="ft-copy">© 2026 Charika Express. Tous droits réservés.</span><span data-t="ft-legal">Mentions légales · Confidentialité</span></div>
+    <div class="f-bottom"><span>© 2026 Charika Express. Tous droits réservés.</span><span>Mentions légales · Conditions générales · Confidentialité</span></div>
   </div>
 </footer>
 
-<a class="wa" href="https://wa.me/212500000000" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.5-3.9-4.7-4.1-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1c.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.1 1.4z"/></svg></a>
+<a class="wa" href="https://wa.me/212500000000" target="_blank" rel="noopener" aria-label="Nous écrire sur WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.4 14.2c-.2.6-1.3 1.2-1.8 1.3-.5 0-1 .2-3.3-.7-2.8-1.1-4.5-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.9 2c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.6.2.3.7 1.2 1.6 1.9 1.1 1 2 1.3 2.3 1.4.3.1.4.1.6-.1l.8-1c.2-.2.4-.2.6-.1l1.9.9c.3.1.4.2.5.3.1.1.1.6-.1 1.2z"/></svg></a>
 
 <script>
 (function(){
-  const EN = {
-    n1:"Services", n2:"How it works", n3:"Pricing", n4:"FAQ", n5:"Contact", start:"Start my request",
-    "h-new":"100% online", "h-eye":"Dedicated legal advisor included",
-    "h-title":"The easiest way to <span class=\"gt\">launch your company</span>.",
-    "h-lead":"Describe your project, choose your plan and sign online. We handle every step, from the negative certificate to the trade register.",
-    "h-cta2":"See pricing", "h-cta1":"Create my company",
-    f1:"Negative certificate", "st-ok":"Approved", d3k:"Court", f5:"Trade register", "st-wait":"Pending", d2k:"Articles", f2:"SARL articles of association", "st-sign":"To sign", seal1:"from", seal2:"MAD",
-    k1b:"7 to 15 days", k1:"to your trade register", k2b:"100% online", k2:"no travel needed", k3b:"700 MAD upfront", k3:"the rest in two instalments", k4b:"Rejection guarantee", k4:"guarantee included",
-    "ch-name":"Nadia · Your legal advisor", "ch-on":"● online",
-    m1:"Hi Yassine 👋 The name “<bdi>Atlas Digital</bdi>” has been reserved with OMPIC.", m2:"Your articles of association are ready. You can sign them online:", m3:"Perfect, it's signed ✅", m4:"File submitted to the CRI. Your trade register is expected within 5 days.",
-    fa:"Name reserved", fb:"Articles signed", "ch-ex":"Example conversation",
-    "p-eye":"Why Charika Express", "p-title":"A real legal advisor, <span class=\"gt\">as simple as an app</span>.",
-    p1:"A dedicated legal advisor", w1p:"Reachable by phone and WhatsApp.", p2:"No travel needed", bn3:"Electronic signature of your documents.",
-    w3:"Updates at every step", w3p:"You always know where your file stands.", w5:"Fixed, all-inclusive price", w5p:"From 4,680 MAD incl. VAT, all fees included.",
-    w6:"Pay in 3 instalments", w6p:"700 MAD to get started, then the rest in two instalments.", p4:"Rejection guarantee", w4p:"A mistake on our part? We fix it at our own cost.",
-    "s-eye":"Our services", "s-title":"Every stage of <span class=\"gt\">your company's life</span>", popular:"Most popular",
-    s1:"SARL / SARL AU formation", s1p:"Tailored articles of association and full registration, from the negative certificate to the legal notices.",
-    mad:"MAD incl. VAT", x1:"Negative certificate", si2:"Articles drafted by a legal advisor", x3:"RC, IF, ICE and CNSS", x4:"Legal notices",
-    s2:"Self-employed (auto-entrepreneur)", sr2:"Registration with the national auto-entrepreneur register", des:"from", cur:"MAD",
-    s3:"Public limited company (SA)", sr3:"Projects with several shareholders", s3f:"Custom quote",
-    s4:"Business address (domiciliation)", sr4:"Registered office and mail handling", curm:"MAD/month",
-    s5:"Amendments to the articles", sr5:"Registered office, shares, manager, capital", s6:"Dissolution and liquidation", sr6:"Closure and deregistration from the trade register",
-    "lk-date":"Thursday 14 May", "lk-now":"now", lk1:"✍️ Your articles are ready", lk1p:"Sign them online in one click.", "lk-yday":"yesterday",
-    lk2:"Name reserved 🎉", lk2p:"“<bdi>Atlas Digital</bdi>” has been reserved with OMPIC.", "lk-mon":"Mon", lk3:"Request received", lk3p:"Nadia, your legal advisor, takes care of everything.", "lk-ex":"Tracking example",
-    "pr-eye":"How it works", "pr-title":"We keep you updated <span class=\"gt\">at every step</span>", "pr-lead":"No need to chase us: every update on your file reaches you on WhatsApp and by email.",
-    st1d:"10 min", ps1:"You fill in your request", st2d:"24–48 h", ps2:"Your company name is reserved with OMPIC", st3d:"1–2 days", ps3:"You sign your articles online", st4d:"5–10 days", ps4:"You receive your trade register",
-    "t-eye":"Pricing", "t-title":"Simple plans, no surprises", "t-lead":"Prices incl. VAT, administrative fees included. Choose your legal form.",
-    "t-note":"Pay in 3 instalments: 700 MAD upfront when you order (we start the negative certificate), 50% of the rest when the documents are signed, and the balance when your file is delivered.",
-    "g-title":"Rejected? We'll redo it at our cost.", "g-text":"If an authority rejects your file because of a mistake on our part, we correct it and resubmit it free of charge, or refund the fees concerned.",
-    "q-eye":"FAQ", "q-title":"Your questions, our answers", "q-lead":"Can't find your answer? A legal advisor will answer you by phone or on WhatsApp.",
-    q1:"How long does it take to create a SARL?", q1a:"Usually 7 to 15 working days from the negative certificate to the trade register, depending on the city and the time of year.",
-    q2:"What is the minimum capital for a SARL?", q2a:"There is no longer a legal minimum share capital for a SARL. Even so, 10,000 MAD remains common, as it reassures banks and partners.",
-    q3:"Do I need to come in person?", q3a:"No. You sign your documents electronically and we handle the filings. Some documents may require a certified (legalised) signature.",
-    q4:"Which documents do I need to provide?", q4a:"The national ID card (CNIE), or passport for foreign nationals, of each partner and manager, plus a lease if you already have premises.",
-    q5:"Can a foreigner create a company in Morocco?", q5a:"Yes. A foreign national can be a partner or manager of a Moroccan SARL. We'll tell you which specific documents to prepare.",
-    "c-eye":"Contact", "c-title":"Let's talk about your project", "c-lead":"Leave your details. A legal advisor will call you back within one working day to review your project and send you a quote.",
-    ci1:"Phone", ci2:"Email", ci4:"Hours", hours:"Mon–Fri · 9 am – 6 pm",
-    "fm-title":"Request a callback", fm1:"Full name", fm2:"Phone", fm3:"Service needed", fm4:"Your project in a few words", "fm-btn":"Send my request",
-    "ft-about":"Company formation and legal management in Morocco, fully online.", "ft-co":"Charika Express", "ft-team":"Team space",
-    ci3v:"Casablanca, Morocco", "ft-copy":"© 2026 Charika Express. All rights reserved.", "ft-legal":"Legal notice · Privacy",
-    pktab1:"SARL / SARL AU", pktab2:"SAS", pkrec:"Recommended", pkinc:"Included", pkdep:"Only <b class=\"ltr\">700 MAD</b> upfront to get started", pkchoose:"Choose this pack", pkq:"On quote", pkqd:"Price sent within 24 hours", pkquote:"Request a quote",
-    pk1:"Essential Pack", pk1s:"To get started", pk2:"Pro Pack", pk2s:"Best value for money", pk3:"Premium Pack", pk3s:"For complete peace of mind",
-    pki1:"12 months of business address, free", pki2:"24 months of business address", pki3:"Company stamp", pki4:"Trademark protection (2 classes included)",
-    pkc1:"Company formation", pkc2:"Trade register", pkc3:"Business tax (taxe professionnelle)", pkc4:"Tax ID (IF)", pkc5:"Articles of association", pkc6:"Business address contract",
-    pkc7:"Registration of contracts", pkc8:"Company registration with the CNSS", pkc9:"Publication in a legal notices newspaper", pkc10:"Publication in the Official Bulletin"
-  };
-  const MSG = {
-    fr:{err:"Veuillez indiquer votre nom et un numéro de téléphone valide.", ok:n=>"Merci "+n+". Votre demande a bien été enregistrée. (Démonstration : reliez ce formulaire à votre e-mail ou CRM.)"},
-    en:{err:"Please enter your name and a valid phone number.", ok:n=>"Thank you "+n+". Your request has been received. (Demo: connect this form to your email or CRM.)"}
-  };
-  const root = document.documentElement;
-  const nodes = [...document.querySelectorAll('[data-t],[data-th]')];
-  nodes.forEach(n => { n._fr = n.hasAttribute('data-th') ? n.innerHTML : n.textContent; });
-  const phs = [...document.querySelectorAll('[data-ph]')];
-  phs.forEach(n => { n._fr = n.placeholder; });
-  let lang = 'fr';
-  function setLang(l){
-    lang = l;
-    root.lang = l;
-    nodes.forEach(n => {
-      const k = n.getAttribute('data-t') || n.getAttribute('data-th');
-      const v = l === 'en' && EN[k] ? EN[k] : n._fr;
-      if (n.hasAttribute('data-th')) n.innerHTML = v; else n.textContent = v;
-    });
-    phs.forEach(n => { const k = n.dataset.ph; n.placeholder = l === 'en' && EN[k] ? EN[k] : n._fr; });
-    document.querySelectorAll('[data-lang]').forEach(b => b.setAttribute('aria-pressed', b.dataset.lang === l));
-    try { localStorage.setItem('ce-lang', l); } catch(e) {}
-  }
-  document.querySelectorAll('[data-lang]').forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
-  try { if (localStorage.getItem('ce-lang') === 'en') setLang('en'); } catch(e) {}
-
   // Pricing tabs (SARL / SAS)
   const ptabs = [...document.querySelectorAll('.ptabs [role=tab]')];
   ptabs.forEach(b => b.addEventListener('click', () => ptabs.forEach(x => {
@@ -724,22 +624,36 @@ footer a:hover{color:var(--rose)}
 
   // Mobile menu
   const burger = document.getElementById('burger'), mnav = document.getElementById('mnav');
-  burger.addEventListener('click', () => { const open = mnav.hidden; mnav.hidden = !open; burger.setAttribute('aria-expanded', open); });
+  burger.addEventListener('click', () => { const open = mnav.hidden; mnav.hidden = !open; burger.setAttribute('aria-expanded', open); burger.setAttribute('aria-label', open ? 'Fermer le menu' : 'Ouvrir le menu'); });
   mnav.addEventListener('click', e => { if (e.target.closest('a')) { mnav.hidden = true; burger.setAttribute('aria-expanded', 'false'); } });
+
   // Highlight the section in view
-  const navLinks = [...document.querySelectorAll('.links a, .mnav a[href^="#"]')];
+  const navLinks = [...document.querySelectorAll('.links a')];
   const spy = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) navLinks.forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + en.target.id)); }), { rootMargin: '-45% 0px -50% 0px' });
-  ['services','processus','tarifs','faq','contact'].forEach(id => { const el = document.getElementById(id); if (el) spy.observe(el); });
-  addEventListener('scroll', () => { if (scrollY < 300) navLinks.forEach(l => l.classList.remove('on')); }, { passive: true });
+  ['services','pourquoi','tarifs','faq'].forEach(id => { const el = document.getElementById(id); if (el) spy.observe(el); });
 
-
-  document.getElementById('form').addEventListener('submit', e => {
+  // Call-back form. Demo: the request is not sent anywhere yet (no backend); the message says so.
+  const form = document.getElementById('form'), send = document.getElementById('send');
+  const err = document.getElementById('err'), ok = document.getElementById('ok');
+  form.addEventListener('submit', e => {
     e.preventDefault();
-    const nom = document.getElementById('nom').value.trim();
-    const tel = document.getElementById('tel').value.trim();
-    const err = document.getElementById('err'), ok = document.getElementById('ok');
-    if (!nom || !/^[+0-9 ().-]{8,}$/.test(tel)) { err.textContent = MSG[lang].err; err.hidden = false; ok.hidden = true; return; }
-    err.hidden = true; ok.textContent = MSG[lang].ok(nom); ok.hidden = false;
+    if (send.disabled) return;
+    const f = { nom:document.getElementById('nom'), tel:document.getElementById('tel'), service:document.getElementById('service') };
+    const bad = [];
+    if (!f.nom.value.trim()) bad.push([f.nom, 'votre nom']);
+    if (!/^[+0-9 ().-]{8,}$/.test(f.tel.value.trim())) bad.push([f.tel, 'un numéro de téléphone valide']);
+    if (!f.service.value) bad.push([f.service, 'le service souhaité']);
+    Object.values(f).forEach(el => el.removeAttribute('aria-invalid'));
+    if (bad.length) {
+      bad.forEach(([el]) => el.setAttribute('aria-invalid', 'true'));
+      err.textContent = 'Merci d\'indiquer ' + bad.map(b => b[1]).join(', ') + '.'; err.hidden = false; ok.hidden = true; bad[0][0].focus(); return;
+    }
+    send.disabled = true; send.textContent = 'Envoi…';
+    setTimeout(() => {
+      err.hidden = true;
+      ok.textContent = 'Merci ' + f.nom.value.trim() + '. (Démonstration : ce formulaire sera relié à votre e-mail ou CRM avec le backend. Pour l\'instant, écrivez-nous sur WhatsApp.)';
+      ok.hidden = false; send.disabled = false; send.textContent = 'Demander un rappel';
+    }, 400);
   });
 })();
 </script>
