@@ -62,9 +62,9 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
 .bell b{position:absolute;top:-4px;inset-inline-end:-4px;background:var(--grad);color:#fff;font-size:.62rem;border-radius:999px;padding:1px 6px}
 .demo-bar{background:#fff4d6;color:#7a5400;font-size:.76rem;padding:7px 20px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .demo-bar button{all:unset;cursor:pointer;font-weight:700;text-decoration:underline}
-.body{display:grid;grid-template-columns:300px 1fr 400px;min-height:0}
-@media (max-width:1400px){.body{grid-template-columns:280px 1fr 360px}}
-@media (min-width:1181px){.body.nofiche{grid-template-columns:300px 1fr}}
+.body{display:grid;grid-template-columns:290px 1fr 480px;min-height:0}
+@media (max-width:1400px){.body{grid-template-columns:270px 1fr 420px}}
+@media (min-width:1181px){.body.nofiche{grid-template-columns:290px 1fr}}
 .detail{display:contents}
 
 /* List */
@@ -84,15 +84,15 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
 .empty{padding:30px 20px;text-align:center;color:var(--m);font-size:.84rem}
 
 /* Centre */
-.ctr{padding:20px 24px;display:grid;gap:16px;align-content:start;overflow:auto;min-height:0}
+.ctr{padding:20px 24px;display:grid;gap:16px;align-content:start;grid-auto-rows:max-content;overflow:auto;min-height:0;min-width:0}
+.ctr > *{min-width:0}
 .ctr .h{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .ctr .h h2{font-size:1.35rem;letter-spacing:-.03em}
 .ctr .h small{color:var(--m);font-size:.74rem}
 .ctr .h .r{margin-inline-start:auto;display:flex;gap:8px;flex-wrap:wrap}
 .back{display:none}
-.trackw{border-radius:18px}
-@media (max-width:820px){.trackw{overflow-x:auto}}
-.track{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px 8px;display:grid;grid-template-columns:repeat(10,minmax(66px,1fr));min-width:700px}
+.trackw{border-radius:18px;overflow-x:auto}
+.track{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px 8px;display:grid;grid-template-columns:repeat(10,minmax(60px,1fr));min-width:620px}
 .track button{all:unset;cursor:pointer;display:grid;justify-items:center;gap:6px;text-align:center;font-size:.68rem;color:var(--m);position:relative;padding:0 2px}
 .track button::before{content:"";position:absolute;top:13px;inset-inline-end:50%;width:100%;height:3px;background:var(--line)}
 .track button:first-child::before{display:none}
@@ -123,7 +123,8 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
 .lgrp{border-top:1px dashed var(--line);padding-top:10px}.lgrp h5{margin:0 0 8px;font-size:.74rem;color:var(--m);text-transform:uppercase;letter-spacing:.05em}
 .lgrp.now h5{color:var(--rose)}
 .li small.rej{color:var(--err);font-weight:600}
-.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.two > *,.box,.lgrp,.lv{min-width:0}
 .box{background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px;display:grid;gap:10px;align-content:start}
 .box h4{font-size:.88rem;display:flex;justify-content:space-between;align-items:center;gap:8px}
 .box h4 small{color:var(--m);font-weight:600;font-size:.72rem}
@@ -133,7 +134,7 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
 .st.y{background:#e3f5ec;color:var(--ok)}.st.n{background:#ffe9e0;color:#c4502c}
 .tg{all:unset;cursor:pointer;font-size:.72rem;font-weight:700;padding:5px 10px;border-radius:999px;background:#fff;border:1px solid var(--line)}
 .tg.y{background:#e3f5ec;border-color:#c5ead7;color:var(--ok)}
-.livs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.livs{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:8px}
 .lv{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start;padding:10px;border-radius:12px;background:#fffaf7;font-size:.78rem}
 .lv b{display:block;font-size:.8rem}.lv small{color:var(--m);font-size:.7rem;line-height:1.35;display:block;margin-top:2px}
 .lst{all:unset;box-sizing:border-box;min-width:78px;text-align:center;cursor:pointer;font-size:.66rem;font-weight:800;padding:4px 9px;border-radius:999px;white-space:nowrap;background:#f4eef1;color:var(--m);margin-top:1px}
@@ -163,9 +164,9 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
 .info h4{padding-top:10px;border-top:1px solid var(--line)}
 .blk{border:1px solid var(--line);border-radius:14px;background:#fff;flex:none}
 .blk-h{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:9px 10px;background:#fbf6f8;border-radius:13px 13px 0 0}
-.blk-h b{font-size:.92rem;display:block}
+.blk-h b{font-size:1rem;display:block}
 .blk-h small{display:block;color:var(--m);font-size:.74rem;font-weight:500}
-.blk .dl{padding:12px 12px 6px;font-size:.86rem;gap:8px 14px;grid-template-columns:minmax(90px,auto) 1fr}
+.blk .dl{padding:14px 14px 8px;font-size:.92rem;gap:10px 16px;grid-template-columns:minmax(100px,auto) 1fr}
 .blk .dl dd{font-weight:700}
 .blk-h{padding:11px 12px!important}
 .blk-f{padding:4px 12px 12px!important}
@@ -585,13 +586,11 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
       { k:'ompic', title:'Certificat négatif · OMPIC', sub:"À saisir sur le site de l'OMPIC", steps:[1], rows:[
         ...noms.map((n, i) => [`Nom ${i + 1}`, n]), ['Activité', r.activite], ['Forme', FORMES[r.forme] || r.forme],
         ['Demandeur', demandeur + (cinOf(demandeur) ? ' · ' + cinOf(demandeur) : '')]] },
-      { k:'statuts', title:'Statuts et documents', sub:'Rédaction et légalisation', steps:[2, 3], rows:[
+      { k:'statuts', title:'Statuts et documents', sub:'Rédaction, légalisation et dépôts', steps:[2, 3, 4, 5, 6, 7, 8], rows:[
         ['Dénomination', nom1 ? nom1 + ' (1er choix)' : ''], ['Forme', FORMES[r.forme] || r.forme], ['Capital', capital],
         ...ps.map((p, i) => [`Associé ${i + 1}`, [p.name, p.cin, p.pct != null ? p.pct + '\u00a0%' : ''].filter(Boolean).join(' · ')]),
         ['Gérant', gerant], ['Siège', siege], ['Ville', r.ville], ['Activité', r.activite],
         ...((r.options || []).includes('o_pacte') ? [["Pacte d'associés", 'Oui (option choisie)']] : [])] },
-      { k:'immat', title:'Immatriculation · RC, IF, ICE, CNSS', sub:'Enregistrement, dépôt, tribunal', steps:[4, 5, 6, 7, 8], rows:[
-        ['Dénomination', nom1], ['Forme', FORMES[r.forme] || r.forme], ['Activité', r.activite], ['Ville du siège', r.ville], ['Siège', siege], ['Capital', capital], ['Gérant', gerant]] },
       { k:'client', title:'Client et commande', sub:'Contact, formule et paiement', steps:[0, 9, 10], rows:[
         ['Nom', r.client?.nom], ['Téléphone', r.client?.tel, 'ltr'], ['E-mail', r.client?.email, 'ltr'], ['Langue', LANGS[r.lang] || r.lang], ['Message', r.message],
         ['Formule', PLANS[r.plan] || r.plan], ['Options', (r.options || []).length ? r.options.map(o => (OPTS[o] || o) + (OPT_PRICE[o] ? ` (+${fmt(OPT_PRICE[o])} MAD)` : '')).join(', ') : 'Aucune'],
