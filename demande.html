@@ -220,6 +220,39 @@ textarea{min-height:96px;resize:vertical}
 .pdemo{margin-top:8px}
 @media (max-width:720px){.packs,.opts,.steps3,.meth{grid-template-columns:1fr}.pk.pro{order:-1}}
 
+/* Step 6 summary: anti-rejection check, one compact row per part */
+.vcheck{display:flex;gap:14px;align-items:center;border-radius:18px;padding:14px 16px;background:linear-gradient(160deg,var(--plum),#4b1a46);color:#fff}
+.vring{--p:100%;width:52px;height:52px;border-radius:50%;background:conic-gradient(#7fe0b0 0 var(--p),rgba(255,255,255,.15) 0);display:grid;place-items:center;flex:none}
+.vring.warn{background:conic-gradient(#ffb36b 0 var(--p),rgba(255,255,255,.15) 0)}
+.vring span{width:42px;height:42px;border-radius:50%;background:var(--plum);display:grid;place-items:center;font-weight:800;font-size:.78rem}
+.vcheck b{display:block;font-size:.98rem}
+.vcheck p{margin:2px 0 0;font-size:.8rem;color:#e3cbdd}
+.review{display:grid;gap:8px}
+.rv{border:1px solid var(--line);border-radius:16px;background:#fff;padding:0}
+.rv[open]{border-color:#f6c9d7}
+.rv summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:26px minmax(0,1fr) auto auto;gap:12px;align-items:center;padding:12px 14px}
+.rv summary::-webkit-details-marker{display:none}
+.rst{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:.72rem;font-weight:800}
+.rst.ok{background:var(--ok)}.rst.w{background:#c77700}
+.rv summary b{display:block;font-size:.88rem}
+.rv .one{display:block;color:var(--m);font-size:.8rem;overflow-wrap:anywhere}
+.rv .go{border:0;background:#fff1f5;color:var(--pink);font:700 .76rem var(--font);border-radius:999px;padding:6px 12px;cursor:pointer}
+.rv .chev{color:#c9a9bb;transition:transform .15s}
+.rv[open] .chev{transform:rotate(90deg)}
+.rv .det{padding:0 14px 14px 52px;display:grid;gap:10px}
+.rv dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:.84rem}
+.rv dt{color:var(--m)}.rv dd{margin:0;font-weight:600;overflow-wrap:anywhere}
+.tip{display:flex;gap:10px;align-items:flex-start;background:#fff6e6;border:1px solid #f3d7a6;border-radius:12px;padding:10px 12px;font-size:.8rem;color:#6e4a12;line-height:1.45}
+.tip.info{background:#f3f8ff;border-color:#cfe0f6;color:#1f4a7a}
+.tip b{color:inherit;filter:brightness(.8)}
+.tip .go{margin-inline-start:auto;flex:none;background:#fff;color:#8a5a00;box-shadow:inset 0 0 0 1px #f0d29b}
+.good{font-size:.8rem;color:var(--ok);font-weight:600;margin:0}
+.vshare{display:flex;gap:10px;flex-wrap:wrap}
+.vwa,.vcopy{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:999px;padding:11px 16px;font:700 .84rem var(--font);border:0;cursor:pointer;text-decoration:none}
+.vwa{background:#fff;color:#14864a;box-shadow:inset 0 0 0 1.5px #bfe8cf}
+.vcopy{background:#fff;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line)}
+@media (max-width:560px){.rv summary{grid-template-columns:26px minmax(0,1fr) auto}.rv .chev{display:none}.rv .det{padding-inline-start:14px}}
+
 /* Partners */
 .partner{border:1px dashed #ecd2d8;border-radius:18px;padding:16px;display:grid;gap:12px;background:var(--bg)}
 .partner-h{display:flex;justify-content:space-between;align-items:center;font-weight:700;font-size:.92rem}
@@ -245,14 +278,6 @@ textarea{min-height:96px;resize:vertical}
 .pnote{font-size:.88rem;color:var(--ink);font-weight:600}
 .pdemo{font-size:.78rem;color:var(--m)}
 
-/* Review */
-.review{display:grid;gap:12px}
-.rv{border:1px solid var(--line);border-radius:16px;padding:14px 16px;display:grid;gap:6px}
-.rv-h{display:flex;justify-content:space-between;align-items:center;font-weight:700}
-.rv-h button{border:0;background:none;color:var(--rose);font:700 .85rem var(--font);cursor:pointer}
-.rv dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:.92rem}
-.rv dt{color:var(--m)}
-.rv dd{margin:0;font-weight:600;overflow-wrap:anywhere}
 
 
 /* Success — file tracking: step 1 done, current step highlighted */
@@ -465,8 +490,10 @@ textarea{min-height:96px;resize:vertical}
           </div>
           <p class="pdemo" data-t="pdemo">Coordonnées de démonstration : remplacez-les par vos vrais RIB et bénéficiaire Cash Plus.</p>
           <div class="grid" style="margin-top:22px">
-              <span class="lbl" data-t="recap">Récapitulatif</span>
+              <span class="lbl" data-t="recap">Vérifiez votre dossier avant l'envoi</span>
+              <div class="vcheck"><div class="vring" id="vring"><span class="ltr" id="vscore">6/6</span></div><div><b id="vtitle"></b><p data-t="vsub">Nous vérifions les erreurs qui font le plus souvent rejeter un dossier.</p></div></div>
               <div class="review" id="review"></div>
+              <div class="vshare"><a class="vwa" id="recapWa" href="https://wa.me/212500000000" target="_blank" rel="noopener" data-t="recapwa">Recevoir ce récapitulatif sur WhatsApp</a><button type="button" class="vcopy" id="recapCopy" data-t="recapcp">Copier le récapitulatif</button></div>
               <label class="chk"><input type="checkbox" id="cgu" required><span data-t="cgu">J'accepte d'être contacté au sujet de ma demande.</span></label>
           </div>
         </section>
@@ -523,7 +550,7 @@ textarea{min-height:96px;resize:vertical}
     meth:"How would you like to pay?", pm1:"Bank transfer", pm1d:"From your bank or banking app", pm2:"Cash Plus", pm2d:"In cash, at any Cash Plus branch",
     refl:"Your payment reference", copy:"Copy", now:"To pay now", bf:"Beneficiary", bk:"Bank", bkv:"Your bank", motif:"Payment description (your reference)", h1:"1. Pay", h1d:"with your reference as the description", h2:"2. Send the receipt", h2d:"by WhatsApp", h3:"3. We start", h3d:"the negative certificate", wasend:"Send the receipt on WhatsApp", cpn:"Beneficiary name", cin:"ID number", tel:"Phone",
     pnote:"After paying, send a photo of your receipt on WhatsApp, quoting your reference.", pdemo:"Demo details: replace them with your real RIB and Cash Plus beneficiary.",
-    recap:"Summary", cgu:"I agree to be contacted about my request.",
+    recap:"Check your file before sending", vsub:"We check the mistakes that most often get a file rejected.", recapwa:"Get this summary on WhatsApp", recapcp:"Copy the summary", cgu:"I agree to be contacted about my request.",
     okh:"Request sent!", refd:"File reference", t0h:"Request received", t0w:"just now", t0p:"Your file has been registered.",
     nx1h:"Make your payment", nx1:"Use your reference as the payment description.", nx2h:"Send your documents", nx2:"Payment proof + national ID (CNIE), by WhatsApp.", wao:"Open WhatsApp",
     nx3h:"Your legal advisor calls you", nx3:"They start the negative certificate application with OMPIC.",
@@ -533,14 +560,34 @@ textarea{min-height:96px;resize:vertical}
     help:'Questions? A legal advisor is available on <bdi dir="ltr">+212 5 00 00 00 00</bdi> or on <a href="https://wa.me/212500000000" target="_blank" rel="noopener">WhatsApp</a>.'
   };
   const T = {
-    fr:{st:n=>`Étape ${n} sur 6`, receipt:r=>`Bonjour, voici le reçu de paiement pour ma demande ${r}.`, copied:"Copié !", copy:"Copier", pm:{virement:"Virement",cashplus:"Cash Plus"}, pa:{avance:"Avance 700 MAD",full:"Totalité"}, rv5:"Paiement", rv6:"Coordonnées", gl:"Gérant", cn:{nom:"Nom",tel:"Téléphone",email:"E-mail"}, req:"Ce champ est obligatoire.", email:"Adresse e-mail invalide.", tel:"Numéro de téléphone invalide.", cap:"Minimum 1 000 MAD.",
+    fr:{v:{title:n=>`Presque prêt : ${n} point${n > 1 ? 's' : ''} à vérifier`, allok:"Tout est prêt : votre dossier est complet", fix:"Corriger", today:"aujourd'hui", np:n=>`${n} associé${n > 1 ? 's' : ''}`,
+          p1:"Aujourd'hui", p2:"Après la légalisation", p3:"Dossier complet", good3:"Les parts font bien 100 % et les numéros de CIN ont un format valide.", head:r=>`Ma demande Charika Express ${r}`,
+          short:l=>`<b>${l.length > 1 ? 'Les noms' : 'Le nom'} ${l.map(n => `« ${escapeHtml(n)} »`).join(', ')} ${l.length > 1 ? 'sont très courts' : 'est très court'}</b> et risque${l.length > 1 ? 'nt' : ''} d'être refusé${l.length > 1 ? 's' : ''} par l'OMPIC. Préférez un nom d'au moins 4 lettres.`,
+          common:l=>`<b>${l.length > 1 ? 'Les noms' : 'Le nom'} ${l.map(n => `« ${escapeHtml(n)} »`).join(', ')} ${l.length > 1 ? 'sont très courants' : 'est très courant'}</b> et risque${l.length > 1 ? 'nt' : ''} d'être déjà pris à l'OMPIC. Ajoutez un mot plus original.`,
+          same:w=>`<b>Vos noms commencent tous par « ${escapeHtml(w)} ».</b> Si le premier est refusé, les autres risquent de l'être aussi. Proposez un nom vraiment différent.`,
+          three:"<b>Proposez 3 noms</b> pour augmenter vos chances : l'OMPIC refuse les noms déjà pris.",
+          vague:"<b>L'activité est trop vague.</b> Décrivez précisément ce que fera la société (par exemple « vente en ligne de vêtements »).",
+          lease:"Vous avez votre propre local : préparez le <b>contrat de bail ou le titre de propriété</b>, il sera demandé.",
+          pct:n=>`<b>Les parts font ${n} % au lieu de 100 %.</b>`, cin:(n,c)=>`<b>Le CIN de ${escapeHtml(n)} (« ${escapeHtml(c)} ») a un format inhabituel.</b> Vérifiez-le (une erreur de CIN est une cause fréquente de rejet).`,
+          dup:"<b>Le même numéro de CIN est saisi deux fois.</b>", gcin:"<b>Le CIN du gérant est manquant ou au mauvais format.</b>",
+          tel:"<b>Le numéro de téléphone semble incorrect.</b> Exemple : 06 12 34 56 78.", mail:"<b>L'adresse e-mail semble incorrecte.</b>"}, st:n=>`Étape ${n} sur 6`, receipt:r=>`Bonjour, voici le reçu de paiement pour ma demande ${r}.`, copied:"Copié !", copy:"Copier", pm:{virement:"Virement",cashplus:"Cash Plus"}, pa:{avance:"Avance 700 MAD",full:"Totalité"}, rv5:"Paiement", rv6:"Coordonnées", gl:"Gérant", cn:{nom:"Nom",tel:"Téléphone",email:"E-mail"}, req:"Ce champ est obligatoire.", email:"Adresse e-mail invalide.", tel:"Numéro de téléphone invalide.", cap:"Minimum 1 000 MAD.",
         pct:"Le total des parts doit faire 100%.", shareTxt:t=>`Total des parts : ${t}%`, cgu:"Merci de cocher cette case.",
         ok:(n,e)=>`Merci ${n}. Nous avons bien reçu votre demande. Un récapitulatif sera envoyé à ${e}.`,
         edit:"Modifier", rv1:"Service", rv2:"Société", rv3:"Associés", rv4:"Formule", none:"Aucune", quote:"Sur devis", todo:"à compléter", prog:n=>`${n} élément${n>1?"s":""} sur 6 complété${n>1?"s":""}`,
         pname:"Nom complet", pcin:"N° CNIE ou passeport", ppct:"Part (%)", pttl:"Associé", rm:"Retirer", other:"Une autre personne", next:"Continuer", send:"Envoyer ma demande",
         k:{forme:"Forme",noms:"Noms",act:"Activité",ville:"Ville",capital:"Capital",siege:"Siège",plan:"Formule",opts:"Options",total:"Total",method:"Moyen",amount:"Montant",ref:"Référence",now:"À régler maintenant"},
         siege:{dom:"Domiciliation",local:"Local existant"}},
-    en:{st:n=>`Step ${n} of 6`, receipt:r=>`Hello, here is the payment receipt for my request ${r}.`, copied:"Copied!", copy:"Copy", pm:{virement:"Bank transfer",cashplus:"Cash Plus"}, pa:{avance:"700 MAD upfront",full:"Full amount"}, rv5:"Payment", rv6:"Contact details", gl:"Manager", cn:{nom:"Name",tel:"Phone",email:"Email"}, req:"This field is required.", email:"Invalid email address.", tel:"Invalid phone number.", cap:"Minimum: 1,000 MAD.",
+    en:{v:{title:n=>`Almost ready: ${n} point${n > 1 ? 's' : ''} to check`, allok:"All set: your file is complete", fix:"Fix", today:"today", np:n=>`${n} partner${n > 1 ? 's' : ''}`,
+          p1:"Today", p2:"After legalisation", p3:"File complete", good3:"Shares add up to 100% and ID numbers look valid.", head:r=>`My Charika Express request ${r}`,
+          short:l=>`<b>${l.length > 1 ? 'The names' : 'The name'} ${l.map(n => `“${escapeHtml(n)}”`).join(', ')} ${l.length > 1 ? 'are' : 'is'} very short</b> and may be refused by OMPIC. Prefer a name of at least 4 letters.`,
+          common:l=>`<b>${l.length > 1 ? 'The names' : 'The name'} ${l.map(n => `“${escapeHtml(n)}”`).join(', ')} ${l.length > 1 ? 'are' : 'is'} very common</b> and may already be taken at OMPIC. Add a more original word.`,
+          same:w=>`<b>All your names start with “${escapeHtml(w)}”.</b> If the first is refused, the others may be too. Suggest a truly different name.`,
+          three:"<b>Suggest 3 names</b> to improve your chances: OMPIC refuses names already taken.",
+          vague:"<b>The activity is too vague.</b> Describe exactly what the company will do (for example “online clothing sales”).",
+          lease:"You have your own premises: prepare the <b>lease or title deed</b>, it will be requested.",
+          pct:n=>`<b>Shares add up to ${n}% instead of 100%.</b>`, cin:(n,c)=>`<b>${escapeHtml(n)}'s ID number (“${escapeHtml(c)}”) has an unusual format.</b> Please check it (a wrong ID is a common cause of rejection).`,
+          dup:"<b>The same ID number is entered twice.</b>", gcin:"<b>The manager's ID number is missing or in the wrong format.</b>",
+          tel:"<b>The phone number looks incorrect.</b> Example: 06 12 34 56 78.", mail:"<b>The e-mail address looks incorrect.</b>"}, st:n=>`Step ${n} of 6`, receipt:r=>`Hello, here is the payment receipt for my request ${r}.`, copied:"Copied!", copy:"Copy", pm:{virement:"Bank transfer",cashplus:"Cash Plus"}, pa:{avance:"700 MAD upfront",full:"Full amount"}, rv5:"Payment", rv6:"Contact details", gl:"Manager", cn:{nom:"Name",tel:"Phone",email:"Email"}, req:"This field is required.", email:"Invalid email address.", tel:"Invalid phone number.", cap:"Minimum: 1,000 MAD.",
         pct:"Shares must total 100%.", shareTxt:t=>`Total shares: ${t}%`, cgu:"Please tick this box.",
         ok:(n,e)=>`Thank you ${n}. We have received your request. A summary will be sent to ${e}.`,
         edit:"Edit", rv1:"Service", rv2:"Company", rv3:"Partners", rv4:"Plan", none:"None", quote:"Custom quote", todo:"to be completed", prog:n=>`${n} of 6 item${n>1?"s":""} completed`,
@@ -726,21 +773,86 @@ textarea{min-height:96px;resize:vertical}
     $('#tbNow').textContent = fmt(n) + ' MAD';
     if (step === 6) { payment(); review(); }
   }
-  function review(){
-    const t = T[lang], k = t.k;
-    const noms = ['n1','n2','n3'].map(id => $('#'+id).value.trim()).filter(Boolean).join(' · ');
-    const row = (a, b) => `<dt>${a}</dt><dd>${escapeHtml(b)}</dd>`;
-    const blocks = [
-      [t.rv1, 1, row(k.forme, label('forme'))],
-      [t.rv2, 2, row(k.noms, noms) + row(k.act, $('#act').value.trim()) + row(k.ville, $('#ville').selectedOptions[0]?.textContent || '') + row(k.capital, fmt(+$('#capital').value) + ' MAD') + row(k.siege, t.siege[val('siege')])],
-      [t.rv3, 3, partners.map((p, i) => row(`${t.pttl} ${i+1}`, `${p.name} · ${p.cin} · ${p.pct}%`)).join('') + row(t.gl, $('#gerant').value === 'other' ? `${$('#gn').value.trim()} · ${$('#gc').value.trim()}` : (partners[+$('#gerant').value]?.name || ''))],
-      [t.rv4, 4, row(k.plan, val('forme') === 'ae' ? (lang === 'en' ? EN.fo3 : 'Auto-entrepreneur') : label('plan')) + row(k.opts, optsText()) + row(k.total, total() === null ? T[lang].quote : fmt(total()) + ' MAD')],
-      [t.rv6, 5, row(t.cn.nom, $('#nom').value.trim()) + row(t.cn.tel, $('#tel').value.trim()) + row(t.cn.email, $('#email').value.trim())],
-      [t.rv5, 6, row(k.method, t.pm[val('pay_method')]) + row(k.amount, t.pa[val('pay_amount')]) + row(k.now, (fmt(payNow()) + ' MAD')) + row(k.ref, ref)]
-    ];
-    $('#review').innerHTML = blocks.map(([h, n, body]) => `<div class="rv"><div class="rv-h"><span>${h}</span><button type="button" data-go="${n}">${t.edit}</button></div><dl>${body}</dl></div>`).join('');
+  // ---------- Step 6 summary with an anti-rejection check ----------
+  // Soft checks only: they warn and point to the step to fix, they never block the request.
+  const COMMON = 'atlas maroc morocco marocaine moroccan group groupe services service trading consulting conseil international global digital tech technologie technologies sarl sarlau sa sas societe company compagnie invest investissement immobilier business solutions solution import export commerce general generale'.split(' ');
+  const norm = x => x.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9 ]/g, ' ').trim();
+  const words = x => norm(x).split(/\s+/).filter(Boolean);
+  const VAGUE = /^(commerce|services?|import\s*export|trading|divers|negoce|travaux divers|prestations? de services?)$/;
+  function checks(){
+    const t = T[lang].v, W = { 1:[], 2:[], 3:[], 4:[], 5:[], 6:[] }, I = { 2:[] };
+    const noms = ['n1','n2','n3'].map(id => $('#'+id).value.trim()).filter(Boolean);
+    const shorts = [], commons = [];
+    noms.forEach(n => {
+      const w = words(n);
+      if (norm(n).replace(/ /g, '').length < 4) shorts.push(n);
+      else if (w.length && w.every(x => COMMON.includes(x))) commons.push(n);
+    });
+    if (shorts.length) W[2].push(t.short(shorts));
+    if (commons.length) W[2].push(t.common(commons));
+    if (noms.length > 1) { const f = noms.map(n => words(n)[0]); if (f.every(x => x && x === f[0])) W[2].push(t.same(noms[0].split(/\s+/)[0])); }
+    if (noms.length < 3) W[2].push(t.three);
+    const act = $('#act').value.trim();
+    if (act.length < 15 || VAGUE.test(norm(act))) W[2].push(t.vague);
+    if (val('siege') === 'local') I[2].push(t.lease);
+    const cinOk = c => /^[A-Za-z]{1,2}\d{3,7}$/.test(c.replace(/\s/g, ''));
+    const sumPct = partners.reduce((a, p) => a + (+p.pct || 0), 0);
+    if (sumPct !== 100) W[3].push(t.pct(sumPct));
+    partners.forEach(p => { if (p.cin && !cinOk(p.cin)) W[3].push(t.cin(p.name || '?', p.cin)); });
+    const cins = partners.map(p => p.cin.replace(/\s/g, '').toUpperCase()).filter(Boolean);
+    if (new Set(cins).size !== cins.length) W[3].push(t.dup);
+    if ($('#gerant').value === 'other') { const gc = $('#gc').value.trim(); if (!gc || !cinOk(gc)) W[3].push(t.gcin); }
+    const tel = $('#tel').value.replace(/[\s.()-]/g, '');
+    if (!/^(\+212|00212|0)[5-7]\d{8}$/.test(tel)) W[5].push(t.tel);
+    if (!/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test($('#email').value.trim())) W[5].push(t.mail);
+    return { W, I };
   }
-  $('#review').addEventListener('click', e => { const g = e.target.dataset.go; if (g) show(+g); });
+  function recapData(){
+    const t = T[lang], k = t.k;
+    const noms = ['n1','n2','n3'].map(id => $('#'+id).value.trim()).filter(Boolean);
+    const gname = $('#gerant').value === 'other' ? $('#gn').value.trim() : (partners[+$('#gerant').value]?.name || '');
+    const gcin = $('#gerant').value === 'other' ? $('#gc').value.trim() : '';
+    const tt = total(), t3 = tt === null ? null : tt - Math.min(AVANCE, tt), s2 = t3 === null ? null : Math.round(t3 / 2);
+    const plan = val('forme') === 'ae' ? (lang === 'en' ? EN.fo3 : 'Auto-entrepreneur') : label('plan');
+    const money = n => n === null ? t.quote : fmt(n) + ' MAD';
+    return [
+      [t.rv1, 1, label('forme') + (partners.length > 1 ? ' · ' + t.v.np(partners.length) : ''), [[k.forme, label('forme')]]],
+      [t.rv2, 2, [noms[0], $('#ville').selectedOptions[0]?.textContent, fmt(+$('#capital').value) + ' MAD'].filter(Boolean).join(' · '),
+        [[k.noms, noms.map((n, i) => (i + 1) + '. ' + n).join(' · ')], [k.act, $('#act').value.trim()], [k.ville, $('#ville').selectedOptions[0]?.textContent || ''], [k.capital, fmt(+$('#capital').value) + ' MAD'], [k.siege, t.siege[val('siege')]]]],
+      [t.rv3, 3, t.v.np(partners.length) + ' · ' + partners.map(p => (+p.pct || 0) + ' %').join(' / ') + (gname ? ' · ' + t.gl.toLowerCase() + ' : ' + gname : ''),
+        partners.map((p, i) => [`${t.pttl} ${i + 1}`, `${p.name} · ${p.cin} · ${p.pct} %`]).concat([[t.gl, gname + (gcin ? ' · ' + gcin : '')]])],
+      [t.rv4, 4, plan + (optsText() !== t.none ? ' + ' + optsText() : '') + ' · ' + money(tt), [[k.plan, plan], [k.opts, optsText()], [k.total, money(tt)]]],
+      [t.rv6, 5, [$('#nom').value.trim(), $('#tel').value.trim()].filter(Boolean).join(' · '), [[t.cn.nom, $('#nom').value.trim()], [t.cn.tel, $('#tel').value.trim()], [t.cn.email, $('#email').value.trim()]]],
+      [t.rv5, 6, t.pm[val('pay_method')] + ' · ' + money(payNow()) + ' ' + t.v.today,
+        val('pay_amount') === 'full' && tt !== null ? [[k.method, t.pm[val('pay_method')]], [k.now, money(tt)], [k.ref, ref]]
+          : [[k.method, t.pm[val('pay_method')]], [t.v.p1, money(Math.min(AVANCE, tt ?? AVANCE))], [t.v.p2, money(s2)], [t.v.p3, t3 === null ? t.quote : money(t3 - s2)], [k.ref, ref]]]
+    ];
+  }
+  function review(){
+    const t = T[lang], { W, I } = checks(), data = recapData();
+    const bad = data.filter(([, n]) => W[n].length).length, nw = Object.values(W).reduce((a, x) => a + x.length, 0);
+    $('#vscore').textContent = (6 - bad) + '/6';
+    $('#vring').style.setProperty('--p', ((6 - bad) / 6 * 100) + '%'); $('#vring').classList.toggle('warn', bad > 0);
+    $('#vtitle').textContent = nw ? t.v.title(nw) : t.v.allok;
+    const open = new Set([...$$('#review details[open]')].map(d => d.dataset.n));
+    $('#review').innerHTML = data.map(([h, n, one, rows]) => {
+      const w = W[n], info = I[n] || [];
+      const tips = w.map(m => `<div class="tip"><span aria-hidden="true">⚠</span><span>${m}</span><button type="button" class="go" data-go="${n}">${t.v.fix}</button></div>`).join('')
+        + info.map(m => `<div class="tip info"><span aria-hidden="true">ℹ</span><span>${m}</span></div>`).join('');
+      const good = n === 3 && !w.length ? `<p class="good">✓ ${t.v.good3}</p>` : '';
+      return `<details class="rv" data-n="${n}" ${w.length || open.has(String(n)) ? 'open' : ''}><summary><span class="rst ${w.length ? 'w' : 'ok'}" aria-hidden="true">${w.length ? '!' : '✓'}</span><span><b>${h}</b><span class="one">${escapeHtml(one)}</span></span><button type="button" class="go" data-go="${n}">${t.edit}</button><span class="chev" aria-hidden="true">›</span></summary>
+        <div class="det"><dl>${rows.map(([a, b]) => `<dt>${a}</dt><dd>${escapeHtml(b)}</dd>`).join('')}</dl>${good}${tips}</div></details>`;
+    }).join('');
+    const txt = recapText(data);
+    $('#recapWa').href = 'https://wa.me/212500000000?text=' + encodeURIComponent(txt);
+  }
+  const recapText = data => T[lang].v.head(ref) + '\n' + data.map(([h, , , rows]) => '\n' + h.toUpperCase() + '\n' + rows.map(([a, b]) => `${a} : ${b}`).join('\n')).join('\n');
+  $('#recapCopy').addEventListener('click', e => {
+    const b = e.currentTarget, txt = recapText(recapData());
+    const done = () => { b.textContent = T[lang].copied; setTimeout(() => b.textContent = (lang === 'en' ? EN.recapcp : 'Copier le récapitulatif'), 1500); };
+    if (navigator.clipboard) navigator.clipboard.writeText(txt).then(done, done); else done();
+  });
+  $('#review').addEventListener('click', e => { const g = e.target.closest('[data-go]'); if (g) { e.preventDefault(); show(+g.dataset.go); } });
   function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
   // ---------- Finish ----------
