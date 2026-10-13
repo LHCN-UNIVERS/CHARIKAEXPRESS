@@ -69,9 +69,30 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
 
 /* List */
 .list{background:#fff;border-inline-end:1px solid var(--line);display:grid;grid-template-rows:auto 1fr;min-height:0}
-.filters{display:flex;gap:5px;padding:12px 10px;border-bottom:1px solid var(--line);flex-wrap:wrap}
-.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 9px;font-weight:600;font-size:.72rem}
-.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.tabs{display:flex;border-bottom:1px solid var(--line);padding:0 4px}
+.tabs button{flex:1 1 auto;border:0;background:none;padding:13px 0 11px;font-weight:600;font-size:.72rem;color:var(--m);border-bottom:2.5px solid transparent;margin-bottom:-1px;display:flex;gap:4px;min-width:0;justify-content:center;align-items:center;white-space:nowrap}
+.tabs button i{font-style:normal;font-size:.62rem;font-weight:800;background:#f4eef1;color:var(--ink);border-radius:999px;padding:1px 6px}
+.tabs button[aria-pressed="true"]{color:var(--ink);border-color:var(--pink)}
+.tabs button[aria-pressed="true"] i{background:var(--pink);color:#fff}
+.gh{display:flex;justify-content:space-between;align-items:center;gap:8px;width:100%;padding:9px 14px;background:#fbf6f8;border:0;border-bottom:1px solid var(--line);font-weight:700;font-size:.74rem;text-align:start;position:sticky;top:0;z-index:1}
+.gh small{color:var(--m);font-weight:600}
+.gh .n{background:var(--ink);color:#fff;border-radius:999px;padding:1px 7px;font-size:.62rem;flex:none}
+.gh .n::after{content:" ▾";font-size:.55rem}
+.gh.shut .n::after{content:" ▸"}
+.gh.y .n{background:#c77700}.gh.red .n{background:var(--err)}.gh.ok .n{background:var(--ok)}
+.tag{font-size:.6rem;font-weight:700;border-radius:6px;padding:1px 6px;vertical-align:1px;white-space:nowrap}
+.t-dup{background:#fff4d6;color:#8a5a00}.t-bad{background:#fdecea;color:var(--err)}
+.li b .tag{margin-inline-start:4px}
+.li > div{min-width:0}
+.li.sub{padding-inline-start:30px;background:#fffdfb}
+.stack{position:relative;isolation:isolate}
+.stack::after{content:"";position:absolute;inset:3px -3px -3px 3px;border-radius:50%;background:#e6d8e1;z-index:-1}
+.ask{margin:-2px 14px 10px 60px;background:#fff4d6;border-radius:10px;padding:8px 10px;font-size:.7rem;color:#7a5200;display:grid;gap:6px}
+.ask.bad{background:#fdecea;color:#8a2a22}
+.ask .bt{display:flex;gap:6px;flex-wrap:wrap}
+.ask .bt button{border:1px solid rgba(0,0,0,.1);background:#fff;border-radius:8px;padding:4px 9px;font-weight:600;font-size:.68rem;color:var(--ink)}
+.ask + .li,.ask + .gh{border-top:1px solid var(--line)}
+.li.has-ask{border-bottom:0}
 .items{overflow:auto}
 .li{display:grid;grid-template-columns:36px 1fr auto;gap:10px;padding:12px 14px;border-bottom:1px solid var(--line);align-items:center;cursor:pointer;width:100%;background:none;border-inline:0;border-top:0;text-align:start}
 .li:hover{background:#fffaf7}
@@ -244,11 +265,11 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   <div class="demo-bar" id="demoBar"><span>⚠️ Mode démonstration<span class="long"> : les données sont enregistrées dans ce navigateur seulement. Pour que toute l'équipe partage les demandes, il faut connecter une base de données (voir README).</span></span><button id="resetDemo">Réinitialiser la démo</button></div>
   <div class="body" id="body">
     <aside class="list">
-      <div class="filters" id="filters">
-        <button class="chip on" data-f="todo">À traiter</button>
-        <button class="chip" data-f="mine">Mes dossiers</button>
-        <button class="chip" data-f="all">Tous</button>
-        <button class="chip" data-f="done">Terminés</button>
+      <div class="tabs" id="filters" role="group" aria-label="Vue">
+        <button aria-pressed="true" data-f="todo">À traiter <i></i></button>
+        <button aria-pressed="false" data-f="mine" title="Mes dossiers">Mes <i></i></button>
+        <button aria-pressed="false" data-f="all">Tous <i></i></button>
+        <button aria-pressed="false" data-f="done">Terminés <i></i></button>
       </div>
       <div class="items" id="items"></div>
     </aside>
@@ -373,7 +394,16 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
       mk({ ref:'CE-444512', createdAt:ago(24), updatedAt:ago(10), forme:'sarlau', plan:'essentiel', total:4680, payMethod:'cashplus',
         noms:['Souss Fresh'], activite:'Distribution de fruits', ville:'Agadir', capital:10000,
         partners:[P('Hamza Ouali','JK12345',100)], gerant:{ name:'Hamza Ouali', cin:'JK12345' },
-        client:{ nom:'Hamza Ouali', tel:'0622334455', email:'hamza@exemple.ma' }, juriste:'salma', _step:DONE })
+        client:{ nom:'Hamza Ouali', tel:'0622334455', email:'hamza@exemple.ma' }, juriste:'salma', _step:DONE }),
+      // the same client sent the form twice, and someone tried the form (shows the duplicate and test helpers)
+      mk({ ref:'CE-446352', createdAt:ago(.05), updatedAt:ago(.05), seen:false, forme:'sarlau', plan:'essentiel', total:4680, payMethod:'cashplus',
+        noms:['Atlas Digital'], activite:'Marketing digital', ville:'Casablanca', capital:10000,
+        partners:[P('Lahcen Tazi','BE123456',100)], gerant:{ name:'Lahcen Tazi', cin:'BE123456' },
+        client:{ nom:'Lahcen Tazi', tel:'0612345678', email:'lahcen@exemple.ma' } }),
+      mk({ ref:'CE-446340', createdAt:ago(.08), updatedAt:ago(.08), seen:false, forme:'sarlau', plan:'essentiel', total:4680, payMethod:'virement',
+        noms:['lkjlkjlkj'], activite:'test', ville:'Casablanca', capital:10000,
+        partners:[P('lkjlkj','',100)], gerant:{ name:'lkjlkj', cin:'' },
+        client:{ nom:'lkjlkj', tel:'0600000001', email:'' } })
     ];
     list.forEach(r => {
       if (r.payAmount === 'full' && r._step) r.paid.full = true;
@@ -521,43 +551,124 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   // ---------- List ----------
   // Juristes see their own files plus unassigned ones; the admin sees everything.
   const allowed = r => me.role === 'admin' || !r.juriste || r.juriste === me.id;
+  const inView = (r, f) => !r.archived && (f === 'todo' ? r.step < DONE : f === 'done' ? r.step >= DONE : f === 'mine' ? r.juriste === me.id : true);
   function visible(){
     const q = $('#q').value.trim().toLowerCase();
     return db.requests.filter(allowed).filter(r => {
-      if (filter === 'todo' && r.step >= DONE) return false;
-      if (filter === 'done' && r.step < DONE) return false;
-      if (filter === 'mine' && r.juriste !== me.id) return false;
+      if (!inView(r, filter)) return false;
       if (!q) return true;
       const hay = [r.ref, ...(r.noms || []), r.client?.nom, r.client?.tel, r.client?.email, ...(r.partners || []).flatMap(p => [p.name, p.cin])].join(' ').toLowerCase();
       return hay.includes(q);
     }).sort((a, b) => (isPrio(b) && b.step < DONE) - (isPrio(a) && a.step < DONE) || Date.parse(b.updatedAt) - Date.parse(a.updatedAt));   // open priority files first
   }
+  // Next unfinished task of the current step, and who must act on it.
+  const nextTask = r => r.step < DONE ? tasksOf(r, r.step).find(tk => !taskDone(r, tk)) : null;
+  const taskName = (r, tk) => tk.t === 'doc' ? DOCS[tk.k][0] : tk.t === 'pay' ? 'Paiement · ' + (amounts(r).find(a => a.k === tk.k)?.label || '').replace(/ \(.*\)$/, '') : tk.label;
+  const waitsClient = r => { const tk = nextTask(r); return !!tk && (tk.t === 'pay' || tk.k === 'legal-back'); };
+  const GROUPS = [
+    { k:'new', title:'🆕 Nouvelles demandes' },
+    { k:'client', title:'⏳ En attente du client', sub:'paiement, documents', cls:'y' },
+    { k:'team', title:"🛠 À faire par l'équipe" },
+    { k:'rej', title:'⚠ Rejetés', cls:'red' },
+    { k:'done', title:'✓ Livrés', cls:'ok' }
+  ];
+  const groupOf = r => r.step >= DONE ? 'done' : !r.seen ? 'new' : r.reject ? 'rej' : waitsClient(r) ? 'client' : 'team';
+  // A request whose name is unreadable (keyboard mash) is probably a test.
+  function isTest(r){
+    if (r.step > 0) return false;
+    return [title(r), r.client?.nom].some(v => {
+      const raw = String(v || ''), l = raw.toLowerCase().replace(/[^\p{L}]/gu, '');
+      if (/[;<>{}=\\]/.test(raw) || l.length < 3) return true;
+      return /^[a-z]+$/.test(l) && (!/[aeiouy]/.test(l) || /(.{2,4})\1{2,}/.test(l));
+    });
+  }
+  // Open requests from the same phone or e-mail: the newest one stands for the others.
+  function dupClusters(list){
+    const key = r => [String(r.client?.tel || '').replace(/\D/g, '').slice(-9), String(r.client?.email || '').trim().toLowerCase()].filter(x => x.length > 4);
+    const by = new Map(), seen = new Set(), out = new Map();
+    list.forEach(r => key(r).forEach(k => { if (!by.has(k)) by.set(k, []); by.get(k).push(r); }));
+    list.forEach(r => {
+      if (seen.has(r)) return;
+      const c = [], stack = [r];
+      while (stack.length) { const x = stack.pop(); if (seen.has(x)) continue; seen.add(x); c.push(x); key(x).forEach(k => stack.push(...by.get(k))); }
+      if (c.length > 1) { c.sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt)); out.set(c[0].ref, c); }
+    });
+    return out;
+  }
+  const shut = new Set(['arch']), openDup = new Set();
   function statusLine(r){
     if (r.step >= DONE) return '✓ Livré';
-    if (!r.seen) return 'Nouvelle demande';
-    if (r.reject) return `⚠ Rejeté · ${r.reject.motif}`;
-    return `${r.step + 1}/${DONE} · ${WORKFLOW[r.step].name}`;
+    if (r.reject) return `⚠ ${r.reject.motif}`;
+    const tk = nextTask(r), pos = `${r.step + 1}/${DONE} · `;
+    if (!r.seen) return 'Nouvelle demande · ' + WORKFLOW[r.step].name;
+    if (!tk) return pos + WORKFLOW[r.step].name;
+    return pos + (waitsClient(r) ? 'Attend : ' : 'À faire : ') + taskName(r, tk);
   }
-  function renderList(){
-    const list = visible();
-    $('#items').innerHTML = list.length ? list.map(r => {
-      const j = member(r.juriste);
-      return `<button class="li ${r.ref === current ? 'on' : ''}" data-ref="${esc(r.ref)}">
-        <span class="av" style="--c:${j ? j.c : '#c9b6c4'}">${esc(title(r)[0] || '?')}</span>
-        <div><b>${esc(title(r))}</b><small><span class="mono">${esc(r.ref)}</span> · ${esc(FORMES[r.forme] || '')}${isPrio(r) && r.step < DONE ? ' <em class="prio">⚡ Prioritaire</em>' : ''}</small><small class="${r.reject && r.step < DONE ? 'rej' : ''}">${esc(statusLine(r))}</small></div>
+  function row(r, extra = ''){
+    const j = member(r.juriste);
+    return `<button class="li ${r.ref === current ? 'on' : ''} ${extra}" data-ref="${esc(r.ref)}">
+        <span class="av ${extra.includes('dup') ? 'stack' : ''}" style="--c:${j ? j.c : '#c9b6c4'}">${esc(title(r)[0] || '?')}</span>
+        <div><b>${esc(title(r))}${r._tag || ''}</b><small><span class="mono">${esc(r.ref)}</span> · ${esc(FORMES[r.forme] || '')}${isPrio(r) && r.step < DONE ? ' <em class="prio">⚡ Prioritaire</em>' : ''}</small><small class="${r.reject && r.step < DONE ? 'rej' : ''}">${esc(statusLine(r))}</small></div>
         <div class="r"><span>${when(r.updatedAt)}</span>${!r.seen ? '<span class="dot" title="Non lue"></span>' : isLate(r) ? `<span class="pill p-late">J+${days(r.updatedAt)}</span>` : ''}</div>
       </button>`;
-    }).join('') : '<p class="empty">Aucun dossier ici.</p>';
-    const n = db.requests.filter(r => !r.seen && allowed(r)).length;
+  }
+  function renderList(){
+    const list = visible(), dups = dupClusters(list.filter(r => r.step < DONE)), hidden = new Set();
+    dups.forEach(c => c.slice(1).forEach(x => hidden.add(x.ref)));
+    const html = GROUPS.map(g => {
+      const rs = list.filter(r => groupOf(r) === g.k && !hidden.has(r.ref));
+      if (!rs.length) return '';
+      const n = rs.reduce((t, r) => t + (dups.get(r.ref)?.length || 1), 0);
+      const body = shut.has(g.k) ? '' : rs.map(r => {
+        const c = dups.get(r.ref);
+        if (c) {
+          const same = c.every(x => x.client?.tel === r.client?.tel) && c.every(x => (x.client?.email || '') === (r.client?.email || '')) ? 'Même téléphone et même e-mail.' : 'Même téléphone ou même e-mail.';
+          const o = openDup.has(r.ref);
+          return row(Object.assign(Object.create(r), { _tag:` <span class="tag t-dup">${c.length} demandes</span>` }), 'dup has-ask') +
+            `<div class="ask">${same} Garder la plus récente ?<div class="bt"><button data-merge="${esc(r.ref)}">Fusionner</button><button data-dup="${esc(r.ref)}">${o ? 'Masquer' : `Voir les ${c.length}`}</button></div></div>` +
+            (o ? c.slice(1).map(x => row(x, 'sub')).join('') : '');
+        }
+        if (isTest(r)) return row(Object.assign(Object.create(r), { _tag:' <span class="tag t-bad">test ?</span>' }), 'has-ask') +
+          `<div class="ask bad">Nom illisible : sans doute une demande de test.<div class="bt"><button data-arch="${esc(r.ref)}">Archiver</button></div></div>`;
+        return row(r);
+      }).join('');
+      return `<button class="gh ${g.cls || ''} ${shut.has(g.k) ? 'shut' : ''}" data-g="${g.k}" aria-expanded="${!shut.has(g.k)}"><span>${g.title}${g.sub ? ` <small>${g.sub}</small>` : ''}</span><span class="n">${n}</span></button>${body}`;
+    }).join('');
+    const arch = filter === 'all' ? db.requests.filter(r => allowed(r) && r.archived) : [];
+    $('#items').innerHTML = (html || '<p class="empty">Aucun dossier ici.</p>') + (arch.length ? `<button class="gh ${shut.has('arch') ? 'shut' : ''}" data-g="arch"><span>🗄 Archivés</span><span class="n">${arch.length}</span></button>` +
+      (shut.has('arch') ? '' : arch.map(r => row(r, 'has-ask') + `<div class="ask"><span>Archivé${r.archivedNote ? ' · ' + esc(r.archivedNote) : ''}</span><div class="bt"><button data-restore="${esc(r.ref)}">Restaurer</button></div></div>`).join('')) : '');
+    const mine = db.requests.filter(allowed);
+    $$('#filters button').forEach(b => { b.querySelector('i').textContent = mine.filter(r => inView(r, b.dataset.f)).length; b.setAttribute('aria-pressed', b.dataset.f === filter); });
+    const n = db.requests.filter(r => !r.seen && !r.archived && allowed(r)).length;
     $('#bellN').hidden = !n; $('#bellN').textContent = n;
   }
-  $('#items').addEventListener('click', e => { const b = e.target.closest('[data-ref]'); if (b) open(b.dataset.ref); });
+  function archive(r, why){
+    r.archived = true; r.archivedNote = why; log(r, 'Demande archivée : ' + why + '.');
+    if (current === r.ref) { current = null; renderDetail(); }
+  }
+  $('#items').addEventListener('click', e => {
+    const t = e.target.closest('[data-g],[data-merge],[data-dup],[data-arch],[data-restore],[data-ref]'); if (!t) return;
+    const d = t.dataset;
+    if (d.g) { shut.has(d.g) ? shut.delete(d.g) : shut.add(d.g); return renderList(); }
+    if (d.dup) { openDup.has(d.dup) ? openDup.delete(d.dup) : openDup.add(d.dup); return renderList(); }
+    if (d.merge) {
+      const c = [...dupClusters(db.requests.filter(r => allowed(r) && !r.archived && r.step < DONE)).values()].find(c => c.some(x => x.ref === d.merge)); if (!c) return;
+      const keep = get(d.merge), rest = c.filter(x => x !== keep);
+      if (!confirm(`Garder ${keep.ref} et archiver ${rest.map(x => x.ref).join(', ')} ?`)) return;
+      rest.forEach(x => archive(x, 'doublon de ' + keep.ref));
+      log(keep, 'Doublons archivés : ' + rest.map(x => x.ref).join(', ') + '.');
+      persist(); renderList(); return toast(`${c.length - 1} doublon${c.length > 2 ? 's' : ''} archivé${c.length > 2 ? 's' : ''}`);
+    }
+    if (d.arch) { archive(get(d.arch), 'demande de test'); persist(); renderList(); return toast('Demande archivée · visible dans « Tous »'); }
+    if (d.restore) { const r = get(d.restore); r.archived = false; log(r, 'Demande restaurée.'); persist(); renderList(); return toast('Demande restaurée'); }
+    open(d.ref);
+  });
   $('#filters').addEventListener('click', e => {
     const b = e.target.closest('[data-f]'); if (!b) return;
-    filter = b.dataset.f; $$('#filters .chip').forEach(c => c.classList.toggle('on', c === b)); renderList();
+    filter = b.dataset.f; renderList();
   });
   $('#q').addEventListener('input', renderList);
-  $('#bell').addEventListener('click', () => { filter = 'todo'; $$('#filters .chip').forEach(c => c.classList.toggle('on', c.dataset.f === 'todo')); $('#q').value = ''; renderList(); const r = visible().find(x => !x.seen); if (r) open(r.ref); });
+  $('#bell').addEventListener('click', () => { filter = 'todo'; shut.delete('new'); $('#q').value = ''; renderList(); const r = visible().find(x => !x.seen); if (r) open(r.ref); });
 
   // ---------- Detail ----------
   const get = ref => db.requests.find(r => r.ref === ref);
