@@ -529,8 +529,6 @@ textarea{min-height:96px;resize:vertical}
     </div>
 
     <aside class="sum" aria-live="polite">
-      <div class="sum-hd"><h3 data-t="sumh">Votre demande</h3><div class="ring" id="sRing"><span class="ltr" id="sCount">0/6</span></div></div>
-      <p class="sum-sub" id="sSub">0 éléments sur 6 complétés</p>
       <ol>
         <li><i class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg></i><span data-t="sf">Forme</span><span id="sForme">SARL AU</span></li>
         <li><i class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg></i><span data-t="sn">Nom</span><span id="sNom">—</span></li>
@@ -783,12 +781,9 @@ textarea{min-height:96px;resize:vertical}
     $('#sDep').textContent = fmt(n) + ' MAD'; $('#tbNow').textContent = fmt(n) + ' MAD';
     $('#sLater').textContent = t === null ? T[lang].quote : fmt(t - n) + ' MAD';
     $('#sPay').textContent = T[lang].pm[val('pay_method')] + ' · ' + T[lang].pa[val('pay_amount')];
-    // Checklist: tick each row once it has a value, then update the ring
+    // Checklist: tick each row once it has a value
     const filled = [!!val('forme'), !!nom, !!ville, !!document.querySelector('[name=plan]:checked') || val('forme') === 'ae', true, !!val('pay_method')];
     $$('.sum li').forEach((li, i) => li.classList.toggle('ok', filled[i]));
-    const c = filled.filter(Boolean).length;
-    $('#sCount').textContent = c + '/6'; $('#sSub').textContent = T[lang].prog(c);
-    $('#sRing').style.setProperty('--p', (c / 6 * 100) + '%');
     if (step === 6) { payment(); review(); }
   }
   function review(){
