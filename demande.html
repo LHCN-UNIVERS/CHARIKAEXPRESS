@@ -21,13 +21,13 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap">
 <style>
-/* Request page: same "Coucher" tokens as the homepage. Two-column layout: sticky summary on the side, step-by-step form card in the main column. */
+/* Request page: same tokens and navbar as the redesigned homepage. Two-column layout: sticky summary on the side, step-by-step form card in the main column. */
 :root{
   color-scheme:light;
-  --ink:#2b0f2e; --m:#6b5468; --bg:#fffaf7; --blush:#fff0ec; --line:#f1e4e6;
-  --coral:#ff7a59; --pink:#ff4f9a; --gold:#ffc145; --rose:#ff5c7a; --ok:#0e8a5f; --err:#c0362c;
+  --ink:#30152f; --plum:#30102f; --m:#7a6474; --bg:#fffcfa; --blush:#fff1f5; --line:#f2e2e8;
+  --coral:#ff795b; --pink:#ff4f91; --gold:#ffc145; --rose:#ff4f91; --ok:#1d9a62; --err:#c0362c;
   --font:"Sora",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
-  --grad:linear-gradient(100deg,var(--coral),var(--pink));
+  --grad:linear-gradient(90deg,var(--coral),var(--pink));
 }
 *{box-sizing:border-box}
 html{overflow-x:clip}
@@ -41,44 +41,41 @@ h1,h2,h3{margin:0;line-height:1.1;letter-spacing:-.035em;text-wrap:balance}
 .ltr{direction:ltr;unicode-bidi:isolate}
 [hidden]{display:none!important}
 
-.orb-clip{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0}
-.orb{position:absolute;width:640px;height:640px;inset-inline-end:-260px;top:-300px;border-radius:50%;overflow:hidden;pointer-events:none;filter:blur(8px);opacity:.55;z-index:0}
-.orb::before{content:"";position:absolute;inset:-30%;background:radial-gradient(40% 45% at 30% 30%,#ff7a59,transparent 62%),radial-gradient(40% 45% at 70% 35%,#ff4f9a,transparent 62%),radial-gradient(45% 50% at 50% 75%,#ffc145,transparent 62%),#ff8fa3;filter:blur(40px);animation:drift 14s ease-in-out infinite alternate}
-@keyframes drift{to{transform:translate(6%,4%) rotate(10deg) scale(1.08)}}
 
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:700 .95rem var(--font);padding:13px 22px;border-radius:14px;border:0;text-decoration:none;cursor:pointer;transition:transform .2s,box-shadow .2s,opacity .2s}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:700 .95rem var(--font);padding:13px 24px;border-radius:999px;border:0;text-decoration:none;cursor:pointer;transition:transform .2s,box-shadow .2s,opacity .2s}
 .btn:hover{transform:translateY(-1px)}
 .btn-grad{background:var(--grad);color:#fff;box-shadow:0 14px 30px -14px rgba(255,79,154,.75)}
 .btn-ink{background:var(--ink);color:#fff}
 .btn-soft{background:#fff;color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
 .btn-link{background:none;color:var(--m);padding:8px 4px;font-weight:600}
 
-.logo{display:flex;align-items:center;gap:9px;font-weight:800;font-size:1.4rem;letter-spacing:-.05em;text-decoration:none}
-.logo i{width:16px;height:16px;border-radius:50%;background:var(--grad);display:block}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.12rem;letter-spacing:-.02em;text-decoration:none;white-space:nowrap}
+.logo i{width:28px;height:28px;border-radius:9px;background:var(--grad);display:grid;place-items:center;flex:none}
+.logo i::after{content:"";width:10px;height:10px;border-radius:3px;background:#fff}
 .logo b{font-weight:800;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;margin-inline-start:.24em}
 @media (max-width:420px){.navbar .logo{font-size:1.08rem}}
 /* ---------- Header: dark bar, logo on the left ---------- */
 /* The sticky header paints its own band (solid, fading out under the navbar) so content never shows around the floating navbar; works in Safari without overlays or scroll scripts */
 .topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:60;padding-top:12px;padding-bottom:30px;margin-bottom:-30px;background:linear-gradient(var(--bg),var(--bg) 58%,rgba(255,250,247,.9) 72%,rgba(255,250,247,0))}
-.navbar{position:relative;display:flex;align-items:center;gap:20px;background:var(--ink);color:#fff;border-radius:22px;padding:10px;padding-inline-start:22px;box-shadow:0 24px 50px -28px rgba(43,15,46,.8);overflow:hidden}
-.navbar::before{content:"";position:absolute;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(255,122,89,.55),rgba(255,79,154,.3) 38%,rgba(255,79,154,0) 68%);opacity:.75;inset-inline-end:-120px;top:-240px;pointer-events:none}
+.navbar{position:relative;display:flex;align-items:center;gap:20px;background:var(--plum);color:#fff;border-radius:20px;padding:10px;padding-inline-start:20px;box-shadow:0 18px 40px -24px rgba(48,16,47,.8)}
 .navbar{isolation:isolate}
 .navbar > *{position:relative}
 .navbar .logo{color:#fff;flex:none}
-.links{display:flex;gap:2px;list-style:none;margin:0;margin-inline-start:12px;padding:0;font-weight:500;font-size:.92rem}
-.links a{display:block;padding:9px 14px;border-radius:12px;color:#d7c4d3;text-decoration:none;transition:color .2s,background .2s}
+.links{display:flex;gap:4px;list-style:none;margin:0 auto;padding:0;font-weight:500;font-size:.88rem}
+.links a{display:block;padding:8px 14px;border-radius:999px;color:#e8d6e3;text-decoration:none;transition:color .2s,background .2s}
 .links a:hover{color:#fff}
-.links a.on{color:#fff;background:rgba(255,255,255,.1);font-weight:700}
-.bar-r{display:flex;gap:8px;align-items:center;margin-inline-start:auto}
-.ico{width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,.08);display:grid;place-items:center;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12);color:var(--gold);text-decoration:none;border:0;cursor:pointer;flex:none;transition:background .2s}
+.links a.on{color:#fff;background:rgba(255,255,255,.08)}
+.bar-r{display:flex;gap:10px;align-items:center;margin-inline-start:auto}
+.links + .bar-r{margin-inline-start:0}
+.ico{width:40px;height:40px;border-radius:999px;background:rgba(255,255,255,.08);display:grid;place-items:center;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12);color:#fff;text-decoration:none;border:0;cursor:pointer;flex:none;transition:background .2s}
 .ico:hover{background:rgba(255,255,255,.16)}
 .ico svg{width:19px;height:19px}
 .burger{display:none;color:#fff}
-.lang{display:inline-flex;background:rgba(255,255,255,.08);border-radius:12px;padding:4px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
-.lang button{border:0;background:transparent;font:700 .8rem var(--font);color:#d7c4d3;padding:7px 10px;border-radius:9px;cursor:pointer}
+.lang{display:inline-flex;background:rgba(255,255,255,.08);border-radius:999px;padding:3px}
+.lang button{border:0;background:transparent;font:700 .78rem var(--font);color:#e8d6e3;padding:6px 11px;border-radius:999px;cursor:pointer}
 .lang button[aria-pressed="true"]{background:#fff;color:var(--ink)}
-.navbar .cta,.mnav .cta{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--grad);color:#fff;font:700 .9rem var(--font);padding:12px 18px;border-radius:14px;text-decoration:none;white-space:nowrap;box-shadow:0 12px 26px -14px rgba(255,79,154,.8)}
-.mnav{margin-top:8px;background:var(--ink);border-radius:22px;padding:10px;display:grid;gap:2px;box-shadow:0 24px 50px -28px rgba(43,15,46,.8)}
+.navbar .cta,.mnav .cta{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--grad);color:#fff;font:700 .9rem var(--font);padding:12px 18px;border-radius:999px;text-decoration:none;white-space:nowrap;box-shadow:0 12px 26px -14px rgba(255,79,154,.8)}
+.mnav{margin-top:8px;background:var(--plum);border-radius:18px;padding:10px;display:grid;gap:2px;box-shadow:0 24px 50px -28px rgba(43,15,46,.8)}
 .mnav a{padding:13px 14px;border-radius:12px;color:#fff;text-decoration:none;font-weight:600}
 .mnav a:hover,.mnav a.on{background:rgba(255,255,255,.08)}
 .mnav .cta{margin-top:8px}
@@ -95,6 +92,10 @@ main{position:relative;z-index:1;padding-block:28px 72px}
 .title h1{font-size:clamp(2rem,4.4vw,3rem);font-weight:800}
 .title h1 span{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 .title p{color:var(--m);font-size:1.05rem}
+.chip{justify-self:start;background:#ffe4ec;color:var(--pink);font-weight:700;font-size:.78rem;border-radius:8px;padding:5px 10px}
+.checks{display:flex;flex-wrap:wrap;gap:8px 20px;list-style:none;margin:4px 0 0;padding:0;font-size:.86rem;font-weight:500;color:#4b3448}
+.checks li{display:flex;align-items:center;gap:8px}
+.tick{width:18px;height:18px;border-radius:50%;background:var(--ok);color:#fff;display:grid;place-items:center;font-size:.62rem;font-weight:800;flex:none}
 .layout{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
 @media (max-width:920px){.layout{grid-template-columns:1fr}}
 .layout.sent{grid-template-columns:minmax(0,760px);justify-content:center}
@@ -110,7 +111,7 @@ main.sent .title,.layout.sent .stepper{display:none}
 .stepper li.on{color:var(--ink)}
 @media (max-width:600px){.stepper span{display:none}}
 
-.card{background:#fff;border:1px solid var(--line);border-radius:26px;padding:clamp(20px,4vw,36px);box-shadow:0 30px 60px -44px rgba(43,15,46,.45);min-width:0}
+.card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:clamp(20px,4vw,36px);box-shadow:0 30px 60px -44px rgba(43,15,46,.45);min-width:0}
 .step-h{display:grid;gap:6px;margin-bottom:24px}
 .step-h small{font-weight:700;font-size:.82rem;color:var(--rose)}
 .step-h h2{font-size:clamp(1.4rem,2.6vw,1.8rem);font-weight:800}
@@ -121,8 +122,8 @@ main.sent .title,.layout.sent .stepper{display:none}
 @media (max-width:620px){.g2,.g3{grid-template-columns:1fr}}
 label,.lbl{display:block;font-weight:700;font-size:.86rem;margin-bottom:6px}
 label small,.lbl small{font-weight:500;color:var(--m)}
-input,select,textarea{width:100%;font:inherit;font-size:.97rem;padding:13px 15px;border:1px solid var(--line);border-radius:14px;background:var(--bg);color:var(--ink)}
-input:focus,select:focus,textarea:focus{outline:none;border-color:var(--rose);background:#fff;box-shadow:0 0 0 4px rgba(255,92,122,.15)}
+input,select,textarea{width:100%;font:inherit;font-size:.97rem;padding:13px 15px;border:1.5px solid var(--line);border-radius:12px;background:#fff;color:var(--ink)}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--rose);background:#fff;box-shadow:0 0 0 4px rgba(255,79,145,.15)}
 textarea{min-height:96px;resize:vertical}
 .invalid{border-color:var(--err)!important;background:#fff6f5!important}
 .ferr{color:var(--err);font-size:.82rem;font-weight:600;margin-top:5px}
@@ -139,9 +140,9 @@ textarea{min-height:96px;resize:vertical}
 .tile em{font-style:normal;font-weight:800;font-size:1.05rem;margin-top:4px}
 .t3 .tile{grid-template-rows:auto 1fr auto}.t3 .tile em{align-self:end}
 .tile:hover{border-color:#e8c9cf}
-.tile:has(input:checked){border-color:var(--rose);background:#fff7f8;box-shadow:0 0 0 4px rgba(255,92,122,.12)}
+.tile:has(input:checked){border-color:var(--pink);background:#fff6f9;box-shadow:0 0 0 4px rgba(255,79,145,.12)}
 .tile:has(input:focus-visible){outline:3px solid var(--rose);outline-offset:2px}
-.tile .tag{position:absolute;top:-10px;inset-inline-end:14px;background:var(--grad);color:#fff;font-size:.7rem;font-weight:800;padding:3px 10px;border-radius:99px}
+.tile .tag{position:absolute;top:-10px;inset-inline-end:14px;background:var(--grad);color:#fff;font-size:.7rem;font-weight:700;padding:4px 12px;border-radius:999px}
 .chk{display:flex;gap:10px;align-items:center;padding:12px 14px;border:1px solid var(--line);border-radius:14px;background:var(--bg);cursor:pointer;margin:0;font-weight:600;font-size:.92rem}
 .chk input{width:18px;height:18px;accent-color:var(--rose);flex:none}
 .chk span + span:last-child{margin-inline-start:auto;color:var(--m);font-weight:600;font-size:.85rem}
@@ -181,7 +182,7 @@ textarea{min-height:96px;resize:vertical}
 .rv dd{margin:0;font-weight:600;overflow-wrap:anywhere}
 
 /* Summary — checklist: each row ticks once filled, ring shows progress */
-.sum{position:sticky;top:20px;background:#fff;border:1px solid var(--line);border-radius:26px;padding:22px;display:grid;gap:0;box-shadow:0 22px 44px -30px rgba(43,15,46,.3)}
+.sum{position:sticky;top:96px;background:#fff;border:1px solid var(--line);border-radius:22px;padding:22px;display:grid;gap:0;box-shadow:0 22px 44px -30px rgba(43,15,46,.3)}
 .sum-hd{display:flex;justify-content:space-between;align-items:center;gap:12px}
 .sum h3{margin:0;font-size:1.1rem}
 .ring{--p:0%;width:46px;height:46px;border-radius:50%;background:conic-gradient(var(--pink) 0 var(--p),var(--blush) 0);display:grid;place-items:center;flex:none;transition:background .3s}
@@ -197,7 +198,7 @@ textarea{min-height:96px;resize:vertical}
 .sum li > span:nth-child(2){color:var(--m)}
 .sum li > span:last-child{font-weight:600;text-align:end;overflow-wrap:anywhere}
 .sum li:not(.ok) > span:last-child{color:#c9b6c4;font-weight:400;font-style:italic}
-.total{margin-top:14px;background:var(--ink);color:#fff;border-radius:20px;padding:16px 18px;display:grid;gap:10px}
+.total{margin-top:14px;background:linear-gradient(160deg,var(--plum),#4b1a46);color:#fff;border-radius:20px;padding:16px 18px;display:grid;gap:10px}
 .total .r{display:flex;justify-content:space-between;align-items:baseline}
 .total .r b{font-size:1.8rem;font-weight:800;letter-spacing:-.04em}
 .split{display:grid;grid-template-columns:1fr 1fr;gap:8px}
@@ -217,7 +218,7 @@ textarea{min-height:96px;resize:vertical}
 .ok-ic svg{width:28px;height:28px}
 .ok-hd h2{font-size:clamp(1.4rem,3vw,1.9rem);font-weight:800;letter-spacing:-.03em}
 .ok-hd p{color:var(--m);font-size:.9rem;margin-top:4px;line-height:1.5;overflow-wrap:anywhere}
-.ok-ref{margin-top:18px;display:flex;justify-content:space-between;align-items:center;gap:12px;background:var(--ink);color:#fff;border-radius:18px;padding:14px 16px}
+.ok-ref{margin-top:18px;display:flex;justify-content:space-between;align-items:center;gap:12px;background:linear-gradient(160deg,var(--plum),#4b1a46);color:#fff;border-radius:18px;padding:14px 16px}
 .ok-ref small{font-size:.74rem;color:#cdb8c9;display:block}
 .ok-ref b{font:800 1.25rem ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.03em}
 .ok-ref .copy{background:rgba(255,255,255,.12);color:#fff;padding:9px 14px;border-radius:999px;font-size:.82rem}
@@ -241,17 +242,16 @@ textarea{min-height:96px;resize:vertical}
 </style>
 </head>
 <body>
-<div class="orb-clip" aria-hidden="true"><div class="orb"></div></div>
 
 <header class="topbar" id="hdr">
   <div class="wrap">
     <nav class="navbar" aria-label="Navigation">
       <a class="logo" href="index.html"><i></i><span data-th="brand">Charika<b>Express</b></span></a>
       <ul class="links">
-        <li><a href="index.html" data-t="nh">Accueil</a></li>
-        <li><a href="index.html#services" data-t="n1">Services</a></li>
+        <li><a href="index.html#services" data-t="n1">Nos services</a></li>
         <li><a href="index.html#tarifs" data-t="n3">Tarifs</a></li>
         <li><a href="index.html#faq" data-t="n4">FAQ</a></li>
+        <li><a href="index.html#pourquoi" data-t="nab">À propos</a></li>
         <li><a href="index.html#contact" data-t="n5">Contact</a></li>
       </ul>
       <div class="bar-r">
@@ -265,7 +265,7 @@ textarea{min-height:96px;resize:vertical}
     </nav>
     <div class="mnav" id="mnav" hidden>
       <a href="index.html" data-t="nh">Accueil</a>
-      <a href="index.html#services" data-t="n1">Services</a>
+      <a href="index.html#services" data-t="n1">Nos services</a>
       <a href="index.html#tarifs" data-t="n3">Tarifs</a>
       <a href="index.html#faq" data-t="n4">FAQ</a>
       <a href="index.html#contact" data-t="n5">Contact</a>
@@ -276,8 +276,10 @@ textarea{min-height:96px;resize:vertical}
 
 <main class="wrap">
   <div class="title">
+    <span class="chip" data-t="chip">Demande en ligne · environ 5 minutes</span>
     <h1 data-th="title">Votre demande de <span>création de société</span></h1>
     <p data-t="subtitle">6 étapes, environ 5 minutes. Votre juriste vous contacte ensuite pour valider le dossier.</p>
+    <ul class="checks"><li><span class="tick" aria-hidden="true">✓</span><span data-t="ck1">Juriste dédié</span></li><li><span class="tick" aria-hidden="true">✓</span><span data-t="ck2">700 MAD pour démarrer</span></li><li><span class="tick" aria-hidden="true">✓</span><span data-t="ck3">Garantie anti-rejet</span></li></ul>
   </div>
 
   <div class="layout">
@@ -467,8 +469,8 @@ textarea{min-height:96px;resize:vertical}
 <script>
 (function(){
   const EN = {
-    nh:"Home", n1:"Services", n3:"Pricing", n4:"FAQ", n5:"Contact",
-    title:"Your <span>company formation</span> request", subtitle:"6 steps, about 5 minutes. Your legal advisor will then contact you to confirm your file.",
+    nh:"Home", n1:"Our services", nab:"About", n3:"Pricing", n4:"FAQ", n5:"Contact",
+    chip:"Online request · about 5 minutes", ck1:"Dedicated legal advisor", ck2:"700 MAD to get started", ck3:"Rejection guarantee", title:"Your <span>company formation</span> request", subtitle:"6 steps, about 5 minutes. Your legal advisor will then contact you to confirm your file.",
     sp1:"Service", sp2:"Company", sp3:"Partners", sp4:"Plan", sp5:"Contact details", sp6:"Payment",
     s1h:"Which legal form?", s1p:"Not sure? Choose SARL AU if you're on your own, SARL if there are several of you.",
     fo1:"SARL AU", fo1d:"One partner", fo2:"SARL", fo2d:"Two or more partners", fo3:"Self-employed", fo3d:"Individual activity", fo4:"Public limited company (SA)", fo4d:"Several shareholders, custom quote", fo5:"SAS", fo5d:"Simplified joint-stock company, custom quote",
