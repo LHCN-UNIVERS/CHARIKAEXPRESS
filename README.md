@@ -15,13 +15,12 @@ Single-page marketing site (French + English) for an online company-formation se
 ## Before going live
 - Replace the placeholders: phone `+212 5 00 00 00 00` and email `contact@charikaexpress.ma` (create this mailbox).
 - Prices: SARL packs Essentiel 4 680, Pro 5 980, Premium 9 980 MAD TTC. Payment: 700 MAD avance at the order, 50% of the rest after légalisation, the balance when the file is complete. SAS packs show "Sur devis" until SAS prices are set (`#plans-sas` in `index.html`; `sas` is priced on quote in `total()` in `demande.html`).
-- Connect the callback form (`#form`) to your email or CRM. It is currently a demo and sends nothing.
 - Have the English text proofread.
 
 ## Pages
 - `index.html`: homepage, redesigned after the reference design: hero (documents + phone with file statuses), benefits strip, 3-step process, services, « Pourquoi choisir Charika Express ? », pricing (SARL / SAS tabs, full inclusions behind « Voir toutes les inclusions »), rejection guarantee, FAQ, call-back form, footer. « Créer ma société », « Commencer ma demande » and the pack buttons open the request page.
 - `demande.html`: 6-step request form (service, company with 3 required names, partners and manager, plan, payment by bank transfer or Cash Plus with a reference and full or 50/50 payment, contact) with a live price summary, a review step and a confirmation reference. Drafts are kept in the visitor's browser. Supports `?plan=essentiel|premium` and `?service=sarlau|sarl|ae|sa`.
-  - `collect()` builds the request object. In demo mode, `finish()` stores it in the browser (`ce-requests`) so the team space on the same browser picks it up. With a backend, send `collect()` to it there instead.
+  - `collect()` builds the request object; `finish()` sends it to `/api/requests` and shows the confirmation only once the server has saved it (with an error message and a retry otherwise). Without a server (demo) it is stored in the browser (`ce-requests`) for the team space of the same browser.
   - Replace the demo payment details in the payment step (`#payVir` bank RIB and `#payCash` Cash Plus beneficiary) with your real ones.
 - `admin.html`: team space ("Dossier 360°"), not linked from the site and marked `noindex`.
   - Login with roles: the admin sees every file, can assign juristes and export CSV; a juriste sees their own files plus unassigned ones and can take a file.
@@ -30,16 +29,24 @@ Single-page marketing site (French + English) for an online company-formation se
   - Options in the steps: when the client chose an option, it becomes a task of the matching step. Traitement prioritaire is a check in « Demande reçue », and the file gets a ⚡ Prioritaire badge and moves to the top of the list. The Pacte d'associés is a document of « Rédaction », drafted with the statuts. The Logo et carte de visite is a document of « Annonce légale », delivered with the file. These tasks and documents only appear in files that have the option.
   - Client messages: each file shows the message that matches its step (the step just finished, or the rejection), in French or Darija, filled with the client's name, company, reference, amount and payment details. The WhatsApp buttons open WhatsApp with that message ready to send, the send is recorded in the history, and "Copier l'e-mail" copies the matching e-mail. The texts live in `messages.js` (bank and Cash Plus details to fill in there too).
 
-## Team space: demo mode and going live
-`admin.html` currently runs in **demo mode**: demo accounts (password `demo`), example files, and all data saved in the browser only. Each team member would see a different copy, so this is for trying the workflow, not for real use.
+## Backend (Cloudflare D1 + Pages Functions + Access)
+The site, the API and the database all run on Cloudflare.
 
-To use it for real, connect a backend. The recommended option is Supabase (free tier, logins + database):
-1. Create a project at supabase.com, then a `requests` table holding the request object built by `collect()` plus `step`, `docs`, `paid`, `juriste`, `notes`, `seen`, `updated_at`.
-2. Create one account per team member in Supabase Auth and store their role (`admin` or `juriste`).
-3. Turn on Row Level Security: anyone may insert a request (the public form); only signed-in team members may read and update, juristes limited to their own or unassigned files.
-4. In `demande.html` `finish()`, insert `collect()` into `requests`. In `admin.html`, replace the `store` / `TEAM` / demo login code with Supabase calls.
+- **Database:** D1 database `charikaexpress` (id in `wrangler.toml`), schema in `server/db.sql`: `requests` (one row per file, the whole file as JSON) and `team`.
+- **`POST /api/requests`** (`functions/api/requests.js`, public): receives the request form and the homepage call-back form (`kind: 'rappel'`). It keeps only known fields, caps sizes, ignores robots (hidden `website` field) and accepts at most 5 requests per 10 minutes from one connection.
+- **`/api/admin/*`** (`functions/api/admin/[[path]].js`, team only): `GET me`, `GET requests`, `PUT requests/:ref`. Every call must carry a valid **Cloudflare Access** login, checked in `server/access.js` (signature, audience, issuer, expiry). Saving a file that a colleague saved in the meantime returns 409; the team space then loads their version and keeps the notes written locally.
+- **Team members:** whoever Cloudflare Access lets in. The first person to open the team space becomes admin, the others juristes. To rename someone or change a role, run in D1 (Cloudflare dashboard → D1 → charikaexpress → Console): `UPDATE team SET name = 'Salma', role = 'admin' WHERE email = 'salma@…';`
+- **Modes:** `admin.html` and the forms use the server automatically when it answers, on charikaexpress.ma or the pages.dev address. Anywhere else (a preview, a file opened locally) they run in demo mode with example data saved in the browser. On the real site the team space never falls back to the demo.
 
-Never put a secret (service-role) key in these pages: only the public "anon" key, protected by the Row Level Security rules.
+### One-time setup in Cloudflare
+1. **Workers & Pages → Create → Pages → Connect to Git** → `CHARIKAEXPRESS`. Build command `sh build.sh`, output `dist`, branch `main`. The D1 binding comes from `wrangler.toml`.
+2. **Zero Trust → Access → Applications → Add → Self-hosted.**
+   - Domain `charikaexpress.ma`, two paths: `/admin*` and `/api/admin/*`.
+   - Policy « Allow », with the e-mails of the team. Login method « One-time PIN » (a code sent by e-mail).
+3. In that application, copy the **Application Audience (AUD) tag**, and from Zero Trust → Settings copy your **team domain** (`xxx.cloudflareaccess.com`). Put both in `wrangler.toml` (`ACCESS_AUD`, `ACCESS_TEAM_DOMAIN`) and push. Until then the team API answers « accès non configuré ».
+
+### Local test
+`npx wrangler d1 execute charikaexpress --local --file server/db.sql`, then `sh build.sh && npx wrangler pages dev dist --binding DEV_ACCESS_EMAIL=you@example.com`. `DEV_ACCESS_EMAIL` stands in for the Access login **only on localhost**.
 
 ## Planned: client space
 Client accounts (follow their file, upload documents, message their juriste, download company documents) are described in [`docs/client-space.md`](docs/client-space.md), with 3 models to choose from. Not built yet.

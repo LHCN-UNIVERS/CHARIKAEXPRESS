@@ -699,9 +699,11 @@ footer a:hover{color:var(--pink)}
   };
   const MSG = {
     fr:{ need:'Merci d\'indiquer ', f:{ nom:'votre nom', tel:'un numéro de téléphone valide', service:'le service souhaité' }, sending:'Envoi…',
-         ok:n => 'Merci ' + n + '. (Démonstration : ce formulaire sera relié à votre e-mail ou CRM avec le backend. Pour l\'instant, écrivez-nous sur WhatsApp.)' },
+         ok:n => 'Merci ' + n + ' ! Votre demande de rappel est bien reçue : un juriste vous appelle dans la journée ouvrée.',
+         fail:'L\'envoi n\'a pas abouti. Réessayez dans un instant, ou écrivez-nous directement sur WhatsApp.', busy:'Plusieurs demandes viennent d\'être envoyées depuis cette connexion. Réessayez dans quelques minutes, ou écrivez-nous sur WhatsApp.' },
     en:{ need:'Please enter ', f:{ nom:'your name', tel:'a valid phone number', service:'the service you need' }, sending:'Sending…',
-         ok:n => 'Thank you ' + n + '. (Demo: this form will be connected to your e-mail or CRM with the backend. For now, write to us on WhatsApp.)' }
+         ok:n => 'Thank you ' + n + '! Your call-back request has been received: a legal advisor will call you within one working day.',
+         fail:'Your request could not be sent. Please try again in a moment, or write to us directly on WhatsApp.', busy:'Several requests were just sent from this connection. Please try again in a few minutes, or write to us on WhatsApp.' }
   };
   let lang = 'fr';
   const tr = s => {                                      // French → current language
@@ -744,7 +746,7 @@ footer a:hover{color:var(--pink)}
   const spy = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) navLinks.forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + en.target.id)); }), { rootMargin: '-45% 0px -50% 0px' });
   ['services','pourquoi','tarifs','faq'].forEach(id => { const el = document.getElementById(id); if (el) spy.observe(el); });
 
-  // Call-back form. Demo: the request is not sent anywhere yet (no backend); the message says so.
+  // Call-back form: sent to the team space (/api/requests, kind 'rappel'). Without a server (preview) it only shows the thank-you message.
   const form = document.getElementById('form'), send = document.getElementById('send');
   const err = document.getElementById('err'), ok = document.getElementById('ok');
   form.addEventListener('submit', e => {
@@ -762,11 +764,17 @@ footer a:hover{color:var(--pink)}
       err.textContent = t.need + bad.map(b => b[1]).join(', ') + '.'; err.hidden = false; ok.hidden = true; bad[0][0].focus(); return;
     }
     send.disabled = true; send.textContent = t.sending;
-    setTimeout(() => {
-      err.hidden = true;
-      ok.textContent = t.ok(f.nom.value.trim());
-      ok.hidden = false; send.disabled = false; send.textContent = tr('Demander un rappel');
-    }, 400);
+    const done = st => {
+      send.disabled = false; send.textContent = tr('Demander un rappel');
+      if (st === 'ok') { err.hidden = true; ok.textContent = t.ok(f.nom.value.trim()); ok.hidden = false; form.reset(); }
+      else { ok.hidden = true; err.textContent = st === 'busy' ? t.busy : t.fail; err.hidden = false; }
+    };
+    const body = { kind:'rappel', lang, client:{ nom:f.nom.value.trim(), tel:f.tel.value.trim() }, service:f.service.value, message:(document.getElementById('msg')?.value || '').trim() };
+    if (location.protocol === 'file:') return done('ok');
+    fetch('/api/requests', { method:'POST', headers:{ 'content-type':'application/json' }, body:JSON.stringify(body) })
+      .then(res => { const isJson = (res.headers.get('content-type') || '').includes('application/json');
+        done(res.ok && isJson ? 'ok' : !isJson ? 'ok' : res.status === 429 ? 'busy' : 'fail'); })   // no server behind (preview): demo thank-you
+      .catch(() => done('fail'));
   });
 })();
 </script>

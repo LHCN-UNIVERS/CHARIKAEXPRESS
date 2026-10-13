@@ -234,6 +234,9 @@ textarea{min-height:96px;resize:vertical}
 .sendbox{margin-top:22px;display:grid;gap:12px;padding:16px;border-radius:18px;background:var(--blush);border:1px solid #fbe0e9}
 .sendbox .chk{background:#fff;margin:0}
 .send6{width:100%;font-size:1rem;padding:15px 24px}
+.send6:disabled{opacity:.7;cursor:wait}
+.senderr{margin-top:10px;background:#ffe3ea;color:#8c1d3d;border-radius:12px;padding:10px 12px;font-size:.86rem;line-height:1.5}
+.senderr a{text-decoration:underline;font-weight:700}
 button.vcheck{width:100%;margin-top:12px;border:0;cursor:pointer;text-align:start;font:inherit}
 .vtx{flex:1;min-width:0}
 .vtx b{display:block;font-size:.95rem}
@@ -612,7 +615,7 @@ button.vcheck{width:100%;margin-top:12px;border:0;cursor:pointer;text-align:star
           lease:"Vous avez votre propre local : préparez le <b>contrat de bail ou le titre de propriété</b>, il sera demandé.",
           pct:n=>`<b>Les parts font ${n} % au lieu de 100 %.</b>`, cin:(n,c)=>`<b>Le CIN de ${escapeHtml(n)} (« ${escapeHtml(c)} ») a un format inhabituel.</b> Vérifiez-le (une erreur de CIN est une cause fréquente de rejet).`,
           dup:"<b>Le même numéro de CIN est saisi deux fois.</b>", gcin:"<b>Le CIN du gérant est manquant ou au mauvais format.</b>",
-          tel:"<b>Le numéro de téléphone semble incorrect.</b> Exemple : 06 12 34 56 78.", mail:"<b>L'adresse e-mail semble incorrecte.</b>"}, st:n=>`Étape ${n} sur 6`, receipt:r=>`Bonjour, voici le reçu de paiement pour ma demande ${r}.`, confirm:(r, n)=>`Bonjour, je confirme ma demande ${r}${n ? ` pour la création de ${n}` : ''}. Merci !`, copied:"Copié !", copy:"Copier", pm:{virement:"Virement",cashplus:"Cash Plus"}, pa:{avance:"Avance 700 MAD",full:"Totalité"}, rv5:"Paiement", rv6:"Coordonnées", gl:"Gérant", cn:{nom:"Nom",tel:"Téléphone",email:"E-mail"}, req:"Ce champ est obligatoire.", email:"Adresse e-mail invalide.", tel:"Numéro de téléphone invalide.", cap:"Minimum 1 000 MAD.",
+          tel:"<b>Le numéro de téléphone semble incorrect.</b> Exemple : 06 12 34 56 78.", mail:"<b>L'adresse e-mail semble incorrecte.</b>"}, st:n=>`Étape ${n} sur 6`, receipt:r=>`Bonjour, voici le reçu de paiement pour ma demande ${r}.`, confirm:(r, n)=>`Bonjour, je confirme ma demande ${r}${n ? ` pour la création de ${n}` : ''}. Merci !`, sendErr:'<b>L\'envoi n\'a pas abouti.</b> Vérifiez votre connexion et cliquez à nouveau sur « Envoyer ma demande ». Rien n\'est perdu : vos réponses sont gardées. Vous pouvez aussi nous écrire sur <a href="https://wa.me/212500000000" target="_blank" rel="noopener">WhatsApp</a>.', sendBusy:'<b>Plusieurs demandes viennent d\'être envoyées depuis cette connexion.</b> Patientez quelques minutes, ou écrivez-nous sur <a href="https://wa.me/212500000000" target="_blank" rel="noopener">WhatsApp</a>.', copied:"Copié !", copy:"Copier", pm:{virement:"Virement",cashplus:"Cash Plus"}, pa:{avance:"Avance 700 MAD",full:"Totalité"}, rv5:"Paiement", rv6:"Coordonnées", gl:"Gérant", cn:{nom:"Nom",tel:"Téléphone",email:"E-mail"}, req:"Ce champ est obligatoire.", email:"Adresse e-mail invalide.", tel:"Numéro de téléphone invalide.", cap:"Minimum 1 000 MAD.",
         pct:"Le total des parts doit faire 100%.", shareTxt:t=>`Total des parts : ${t}%`, cgu:"Merci de cocher cette case.",
         ok:(n,e)=>`Merci ${n}. Nous avons bien reçu votre demande. Un récapitulatif sera envoyé à ${e}.`,
         edit:"Modifier", rv1:"Service", rv2:"Société", rv3:"Associés", rv4:"Formule", none:"Aucune", quote:"Sur devis", todo:"à compléter", prog:n=>`${n} élément${n>1?"s":""} sur 6 complété${n>1?"s":""}`,
@@ -629,7 +632,7 @@ button.vcheck{width:100%;margin-top:12px;border:0;cursor:pointer;text-align:star
           lease:"You have your own premises: prepare the <b>lease or title deed</b>, it will be requested.",
           pct:n=>`<b>Shares add up to ${n}% instead of 100%.</b>`, cin:(n,c)=>`<b>${escapeHtml(n)}'s ID number (“${escapeHtml(c)}”) has an unusual format.</b> Please check it (a wrong ID is a common cause of rejection).`,
           dup:"<b>The same ID number is entered twice.</b>", gcin:"<b>The manager's ID number is missing or in the wrong format.</b>",
-          tel:"<b>The phone number looks incorrect.</b> Example: 06 12 34 56 78.", mail:"<b>The e-mail address looks incorrect.</b>"}, st:n=>`Step ${n} of 6`, receipt:r=>`Hello, here is the payment receipt for my request ${r}.`, confirm:(r, n)=>`Hello, I confirm my request ${r}${n ? ` to create ${n}` : ''}. Thank you!`, copied:"Copied!", copy:"Copy", pm:{virement:"Bank transfer",cashplus:"Cash Plus"}, pa:{avance:"700 MAD upfront",full:"Full amount"}, rv5:"Payment", rv6:"Contact details", gl:"Manager", cn:{nom:"Name",tel:"Phone",email:"Email"}, req:"This field is required.", email:"Invalid email address.", tel:"Invalid phone number.", cap:"Minimum: 1,000 MAD.",
+          tel:"<b>The phone number looks incorrect.</b> Example: 06 12 34 56 78.", mail:"<b>The e-mail address looks incorrect.</b>"}, st:n=>`Step ${n} of 6`, receipt:r=>`Hello, here is the payment receipt for my request ${r}.`, confirm:(r, n)=>`Hello, I confirm my request ${r}${n ? ` to create ${n}` : ''}. Thank you!`, sendErr:'<b>Your request could not be sent.</b> Check your connection and click “Send my request” again. Nothing is lost: your answers are kept. You can also write to us on <a href="https://wa.me/212500000000" target="_blank" rel="noopener">WhatsApp</a>.', sendBusy:'<b>Several requests were just sent from this connection.</b> Please wait a few minutes, or write to us on <a href="https://wa.me/212500000000" target="_blank" rel="noopener">WhatsApp</a>.', copied:"Copied!", copy:"Copy", pm:{virement:"Bank transfer",cashplus:"Cash Plus"}, pa:{avance:"700 MAD upfront",full:"Full amount"}, rv5:"Payment", rv6:"Contact details", gl:"Manager", cn:{nom:"Name",tel:"Phone",email:"Email"}, req:"This field is required.", email:"Invalid email address.", tel:"Invalid phone number.", cap:"Minimum: 1,000 MAD.",
         pct:"Shares must total 100%.", shareTxt:t=>`Total shares: ${t}%`, cgu:"Please tick this box.",
         ok:(n,e)=>`Thank you ${n}. We have received your request. A summary will be sent to ${e}.`,
         edit:"Edit", rv1:"Service", rv2:"Company", rv3:"Partners", rv4:"Plan", none:"None", quote:"Custom quote", todo:"to be completed", prog:n=>`${n} of 6 item${n>1?"s":""} completed`,
@@ -943,7 +946,34 @@ button.vcheck{width:100%;margin-top:12px;border:0;cursor:pointer;text-align:star
   function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
   // ---------- Finish ----------
-  function finish(){
+  // Send the request to the team. On the real site it goes to /api/requests (shared database);
+  // where there is no server (preview, file opened locally) the demo hands it over through this browser's storage.
+  async function deliver(){
+    if ($('#hpWeb').value) return 'ok';   // robot: show the success screen, but keep nothing
+    const data = collect();
+    if (location.protocol !== 'file:') {
+      try {
+        const res = await fetch('/api/requests', { method:'POST', headers:{ 'content-type':'application/json' }, body:JSON.stringify(data) });
+        const isJson = (res.headers.get('content-type') || '').includes('application/json');
+        if (res.ok && isJson) { const j = await res.json(); if (j.ref) ref = j.ref; return 'ok'; }
+        if (isJson) return res.status === 429 ? 'busy' : 'err';      // the server answered with a refusal
+      } catch (e) { return 'err'; }
+    }
+    try { const box = JSON.parse(localStorage.getItem('ce-requests') || '[]'); box.push(data); localStorage.setItem('ce-requests', JSON.stringify(box)); } catch(e) {}
+    return 'ok';
+  }
+  let sending = false;
+  async function finish(){
+    if (sending) return;
+    const btn = $('.send6'), label = btn.innerHTML; sending = true; btn.disabled = true; btn.textContent = lang === 'en' ? 'Sending…' : 'Envoi en cours…';
+    $('#sendErr')?.remove();
+    const st = await deliver();
+    sending = false; btn.disabled = false; btn.innerHTML = label;
+    if (st !== 'ok') {
+      const p = document.createElement('p'); p.id = 'sendErr'; p.className = 'senderr'; p.setAttribute('role', 'alert');
+      p.innerHTML = st === 'busy' ? T[lang].sendBusy : T[lang].sendErr;
+      btn.after(p); return;
+    }
     steps.forEach(s => s.hidden = true);
     $('#navBtns').hidden = true;
     $$('#stepper li').forEach(li => { li.classList.add('done'); li.classList.remove('on'); });
@@ -957,10 +987,6 @@ button.vcheck{width:100%;margin-top:12px;border:0;cursor:pointer;text-align:star
     $('.layout').classList.add('sent'); // summary is no longer needed once the request is sent
     $('#wizard').scrollIntoView({ behavior: 'smooth', block: 'start' });
     try { localStorage.removeItem('ce-demande'); } catch(e) {}
-    // Demo: hand the request to the team space (admin.html) through this browser's storage.
-    // With a backend, send collect() to it instead (see README).
-    if ($('#hpWeb').value) return;   // robot: show the success screen, but keep nothing
-    try { const box = JSON.parse(localStorage.getItem('ce-requests') || '[]'); box.push(collect()); localStorage.setItem('ce-requests', JSON.stringify(box)); } catch(e) {}
   }
 
   // ---------- Draft save ----------

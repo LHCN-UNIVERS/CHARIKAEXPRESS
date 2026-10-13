@@ -367,7 +367,11 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     write(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e) {} }
   };
   let db = store.read(DB_KEY, null);
-  const persist = () => store.write(DB_KEY, db);
+  // Two modes: on the real site the files live in the shared database (/api/admin, behind Cloudflare Access);
+  // anywhere else (preview, file opened locally) the demo keeps them in this browser.
+  let SERVER = false;
+  const stamps = {}, snap = {};                 // per file: last server version seen, and its JSON (to find what changed)
+  function persist(){ if (SERVER) { clearTimeout(persist.t); persist.t = setTimeout(sync, 300); } else store.write(DB_KEY, db); }
 
   // Empty workflow state for a new file
   const fresh = () => ({ step:0, docs:{}, livrables:{}, checks:{}, paid:{}, reject:null });
@@ -441,14 +445,63 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     return { requests:list };
   }
 
+  // A file with every field the team space expects
+  const normalize = r => Object.assign(fresh(), { seen:false, juriste:null, payAmount:'avance', options:[], notes:[], updatedAt:r.createdAt }, r);
+
+  // ---------- Shared database (real site) ----------
+  const api = (path, opt = {}) => fetch('/api/admin/' + path, Object.assign({ credentials:'same-origin', headers:{ accept:'application/json', 'content-type':'application/json' } }, opt));
+  function take(row){ const r = normalize(row.data); stamps[r.ref] = row.updated_at; snap[r.ref] = JSON.stringify(r); return r; }
+  let syncing = false;
+  async function sync(){
+    if (syncing) { persist(); return; }
+    syncing = true;
+    try {
+      for (const r of db.requests) {
+        const j = JSON.stringify(r); if (j === snap[r.ref]) continue;
+        const res = await api('requests/' + r.ref, { method:'PUT', body:JSON.stringify({ base:stamps[r.ref], data:r }) });
+        if (res.ok) { stamps[r.ref] = (await res.json()).updated_at; snap[r.ref] = j; }
+        else if (res.status === 409) {
+          // A colleague saved this file first: keep their version, add back the notes written here, then save again.
+          const cur = await res.json().catch(() => ({}));
+          if (!cur.data) { await pull(true); toast('Un collègue a modifié ce dossier : version à jour chargée'); break; }
+          const srv = normalize(cur.data), key = n => n.at + '|' + n.text, have = new Set(srv.notes.map(key));
+          const mine = (r.notes || []).filter(n => !have.has(key(n)));
+          stamps[r.ref] = cur.updated_at; snap[r.ref] = JSON.stringify(srv);
+          if (mine.length) srv.notes = [...srv.notes, ...mine].sort((x, y) => Date.parse(x.at) - Date.parse(y.at));
+          db.requests[db.requests.indexOf(r)] = srv;
+          renderList(); if (current === r.ref) renderDetail();
+          toast(mine.length ? 'Un collègue a modifié ce dossier : sa version est chargée, votre note est gardée' : 'Un collègue a modifié ce dossier : version à jour chargée');
+          if (mine.length) persist();
+          break;
+        }
+        else throw new Error(res.status);
+      }
+    } catch (e) { toast('Modification non enregistrée (connexion ?) · nouvel essai…'); setTimeout(persist, 5000); }
+    syncing = false;
+  }
+  // Fetch the files: new ones are added, files changed by a colleague are refreshed (unless being edited here).
+  async function pull(force = false){
+    const res = await api('requests'); if (!res.ok) return;
+    const rows = (await res.json()).requests; let added = 0, changed = false;
+    rows.forEach(row => {
+      const i = db.requests.findIndex(x => x.ref === row.ref);
+      if (i < 0) { db.requests.push(take(row)); added++; changed = true; return; }
+      const local = db.requests[i], dirty = JSON.stringify(local) !== snap[row.ref];
+      if (stamps[row.ref] !== row.updated_at && (!dirty || force)) { db.requests[i] = take(row); changed = true; }
+    });
+    db.requests.sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt));
+    if (changed && me) { renderList(); if (current) renderDetail(); }
+    if (added && me && pull.done) toast(added > 1 ? `${added} nouvelles demandes` : 'Nouvelle demande reçue');
+    pull.done = true;
+  }
+
   // New requests sent from the form in this browser (demande.html)
   function importInbox(){
     const box = store.read(INBOX_KEY, []);
     if (!box.length) return;
     box.forEach(r => {
       if (db.requests.some(x => x.ref === r.ref)) return;
-      db.requests.unshift(Object.assign(fresh(), { seen:false, juriste:null, payAmount:'avance',
-        updatedAt:r.createdAt, notes:[{ t:'sys', at:r.createdAt, text:'Demande reçue depuis le site.' }] }, r));
+      db.requests.unshift(normalize(Object.assign({ notes:[{ t:'sys', at:r.createdAt, text:'Demande reçue depuis le site.' }] }, r)));
     });
     store.write(INBOX_KEY, []); persist();
   }
@@ -559,12 +612,14 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     if (!u || $('#lPass').value !== DEMO_PASS) { $('#lErr').hidden = false; return; }
     $('#lErr').hidden = true; store.write(USER_KEY, u.id); start(u);
   });
-  $('#logout').addEventListener('click', () => { try { localStorage.removeItem(USER_KEY); } catch(e) {} me = null; current = null; showLogin(); });
+  $('#logout').addEventListener('click', () => {
+    if (SERVER) { location.href = '/cdn-cgi/access/logout'; return; }   // Cloudflare Access sign-out
+    try { localStorage.removeItem(USER_KEY); } catch(e) {} me = null; current = null; showLogin();
+  });
 
   function start(u){
     me = u;
-    if (!db) { db = seed(); persist(); }
-    importInbox();
+    if (!SERVER) { if (!db) { db = seed(); persist(); } importInbox(); }
     $('#loginView').hidden = true; $('#appView').hidden = false;
     $('#meAv').textContent = u.name[0]; $('#meAv').style.setProperty('--c', u.c);
     $('#meName').textContent = u.name; $('#meRole').textContent = u.role === 'admin' ? 'Administrateur' : 'Juriste';
@@ -598,7 +653,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     { k:'rej', title:'⚠ Rejetés', cls:'red' },
     { k:'done', title:'✓ Livrés', cls:'ok' }
   ];
-  const groupOf = r => r.step >= DONE ? 'done' : !r.seen ? 'new' : r.reject ? 'rej' : waitsClient(r) ? 'client' : 'team';
+  const groupOf = r => r.kind === 'rappel' ? (r.seen ? 'team' : 'new') : r.step >= DONE ? 'done' : !r.seen ? 'new' : r.reject ? 'rej' : waitsClient(r) ? 'client' : 'team';
   // A name that is unreadable (keyboard mash) points to a test or a fake request.
   const unreadable = v => {
     const raw = String(v || ''), l = raw.toLowerCase().replace(/[^\p{L}]/gu, '');
@@ -629,7 +684,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     return { score, level, sig, paid, text:paid ? 'Avance payée' : { ok:'Sérieux', mid:'À vérifier', bad:'Probablement faux' }[level] };
   }
   const SC_RANK = { ok:0, mid:1, bad:2 };
-  const scored = r => r.step === 0 && !r.archived;   // the score matters until the avance is paid and the work starts
+  const scored = r => r.step === 0 && !r.archived && r.kind !== 'rappel';   // the score matters until the avance is paid and the work starts
 
   // Open requests from the same phone or e-mail: the newest one stands for the others.
   function dupClusters(list){
@@ -646,6 +701,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   }
   const shut = new Set(['arch']), openDup = new Set();
   function statusLine(r){
+    if (r.kind === 'rappel') return '📞 Rappel demandé' + (r.service ? ' · ' + r.service : '');
     if (r.step >= DONE) return '✓ Livré';
     if (r.reject) return `⚠ ${r.reject.motif}`;
     const tk = nextTask(r), pos = `${r.step + 1}/${DONE} · `;
@@ -657,7 +713,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     const j = member(r.juriste);
     return `<button class="li ${r.ref === current ? 'on' : ''} ${extra}" data-ref="${esc(r.ref)}">
         <span class="av ${extra.includes('dup') ? 'stack' : ''}" style="--c:${j ? j.c : '#c9b6c4'}">${esc(title(r)[0] || '?')}</span>
-        <div><b>${esc(title(r))}${r._tag || ''}</b><small><span class="mono">${esc(r.ref)}</span> · ${esc(FORMES[r.forme] || '')}${isPrio(r) && r.step < DONE ? ' <em class="prio">⚡ Prioritaire</em>' : ''}</small><small class="${r.reject && r.step < DONE ? 'rej' : ''}">${esc(statusLine(r))}</small></div>
+        <div><b>${esc(title(r))}${r._tag || ''}</b><small><span class="mono">${esc(r.ref)}</span> · ${r.kind === 'rappel' ? 'Rappel' : esc(FORMES[r.forme] || '')}${isPrio(r) && r.step < DONE ? ' <em class="prio">⚡ Prioritaire</em>' : ''}</small><small class="${r.reject && r.step < DONE ? 'rej' : ''}">${esc(statusLine(r))}</small></div>
         <div class="r"><span>${when(r.updatedAt)}</span>${!r.seen ? '<span class="dot" title="Non lue"></span>' : isLate(r) ? `<span class="pill p-late">J+${days(r.updatedAt)}</span>` : ''}${scored(r) ? (s => `<span class="sc sc-${s.level}" title="Score de sérieux : ${s.score}/100">${s.text === 'Probablement faux' ? 'Faux ?' : s.text}</span>`)(serieux(r)) : ''}</div>
       </button>`;
   }
@@ -786,6 +842,25 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
         <span class="mseg" role="group" aria-label="Langue"><button data-ml="fr" class="${lang === 'fr' ? 'on' : ''}">FR</button><button data-ml="ar" class="${lang === 'ar' ? 'on' : ''}">الدارجة</button></span></div>
         <div class="askr">${actions}</div></div>` : actions}</div>`;
   }
+  // Call-back request from the homepage form: no creation file yet, the team calls the person back.
+  function rappelView(r, canEdit){
+    const tel = r.client?.tel || '', hi = `Bonjour ${r.client?.nom || ''}, c'est ${me.name} de Charika Express. Vous avez demandé à être rappelé${r.service ? ` au sujet de : ${r.service}` : ''}. Quand êtes-vous disponible pour un court appel ?`;
+    return `<section class="ctr">
+      <div class="h"><button class="btn b-soft b-sm back" id="back">← Liste</button>
+        <div><h2>${esc(r.client?.nom || r.ref)} <em class="optb">📞 Rappel</em></h2><small class="mono">${esc(r.ref)} · reçu ${esc(when(r.createdAt))}</small></div>
+        <div class="r">${tel ? `<a class="btn b-grad" href="tel:${esc(tel.replace(/\s/g, ''))}">Appeler ${esc(tel)}</a><a class="btn b-wa" href="${waLink(tel, hi)}" target="_blank" rel="noopener">WhatsApp</a>` : ''}
+          ${!r.juriste ? '<button class="btn b-ink" id="take">Prendre le rappel</button>' : ''}</div></div>
+      <div class="box cur-step"><h4>Demande de rappel <small>formulaire « Parlons de votre projet » de l'accueil</small></h4>
+        <div class="row"><span>Service souhaité</span><b>${esc(r.service || '—')}</b></div>
+        <div class="row"><span>Téléphone</span><b class="mono">${esc(tel || '—')}</b></div>
+        ${r.message ? `<p style="margin:0;font-size:.86rem;white-space:pre-wrap">${esc(r.message)}</p>` : ''}
+        ${canEdit || !r.juriste ? `<div class="ra"><button class="btn b-soft b-sm" id="rappelDone">Rappel effectué · archiver</button></div>` : ''}
+        <p class="hint" style="margin:0">Si la personne veut créer sa société, envoyez-lui le lien du formulaire : sa demande complète arrivera dans la liste.</p></div>
+      <div class="box"><h4>Historique et notes de l'équipe <small>visibles par l'équipe seulement</small></h4>
+        <div class="feed" id="feed">${r.notes.map(n => { const w = member(n.by); return `<div class="msg ${n.t === 'sys' ? 'sys' : ''}"><span class="av" style="--c:${w ? w.c : '#c9b6c4'}">${esc((w ? w.name : 'S')[0])}</span><div><b>${esc(w ? w.name : 'Système')}</b> <small>${esc(when(n.at))}</small><p>${esc(n.text)}</p></div></div>`; }).join('')}</div>
+        <form class="cmp" id="noteForm"><input class="f" id="noteIn" placeholder="Ajouter une note pour l'équipe…" autocomplete="off"><button class="btn b-grad">Ajouter</button></form></div>
+    </section>`;
+  }
   function renderDetail(){
     const r = current && get(current);
     if (current !== renderDetail.last) { rejectOpen = false; msgSel = null; renderDetail.last = current; }
@@ -797,6 +872,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     const paidSum = am.filter(a => payDone(r, a.k) && a.v != null).reduce((x, a) => x + a.v, 0);
     const piecesOk = docs.filter(d => r.docs[d.k]).length, livOk = docsOk(r);
     const canEdit = me.role === 'admin' || r.juriste === me.id;
+    if (r.kind === 'rappel') { $('#detail').innerHTML = rappelView(r, canEdit); return; }
     const auto = msgKey(r), mk = msgSel || auto, lang = r.msgLang || 'fr', waText = msgText(r, mk, lang);
     const sentAt = (r.sent || {})[mk];
     const waBtn = (label, cls, key = mk, text = waText) => `<a class="btn b-wa ${cls}" data-wasend="${key}" href="${waLink(r.client?.tel, text)}" target="_blank" rel="noopener">${label}</a>`;
@@ -894,6 +970,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     const t = e.target.closest('button'); if (!t || t.disabled) return;
     if (t.dataset.cp != null) { copyText(t.dataset.cp, 'Copié : ' + t.dataset.cp.slice(0, 40)); return; }
     if (t.id === 'waConf') { r.waConfirmed = !r.waConfirmed; log(r, r.waConfirmed ? 'Demande confirmée par le client sur WhatsApp.' : 'Confirmation WhatsApp annulée.'); renderList(); renderDetail(); return toast(r.waConfirmed ? 'Confirmée ✓' : 'Confirmation annulée'); }
+    if (t.id === 'rappelDone') { if (!armed(t, 'Confirmer : rappel effectué')) return; archive(r, 'rappel effectué'); persist(); renderList(); return toast('Rappel archivé'); }
     if (t.id === 'markFake') { if (!armed(t, 'Confirmer : archiver comme faux client')) return; archive(r, 'faux client'); persist(); renderList(); return toast('Demande archivée'); }
     if (t.id === 'ficheToggle' || t.id === 'ficheHide') {
       ficheOn = t.id === 'ficheToggle' ? !ficheOn : false;
@@ -975,10 +1052,33 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   });
 
   // Pick up requests sent from the form in another tab
-  addEventListener('storage', e => { if (e.key === INBOX_KEY && me) { importInbox(); renderList(); toast('Nouvelle demande reçue'); } });
+  addEventListener('storage', e => { if (!SERVER && e.key === INBOX_KEY && me) { importInbox(); renderList(); toast('Nouvelle demande reçue'); } });
 
-  const saved = TEAM.find(t => t.id === store.read(USER_KEY, null));
-  saved ? start(saved) : showLogin();
+  // Start: shared database if the team API answers, demo otherwise.
+  (async () => {
+    let res = null;
+    if (location.protocol !== 'file:') { try { res = await api('me'); } catch(e) {} }
+    const isJson = res && (res.headers.get('content-type') || '').includes('application/json');
+    if (res && res.ok && isJson) {
+      const j = await res.json();
+      SERVER = true; db = { requests:[] };
+      TEAM.splice(0, TEAM.length, ...j.team);
+      $('#demoBar').hidden = true;
+      await pull();
+      start(TEAM.find(t => t.id === j.me.id) || j.me);
+      setInterval(() => pull(), 20000);
+      addEventListener('focus', () => pull());
+      addEventListener('beforeunload', e => { if (db.requests.some(r => JSON.stringify(r) !== snap[r.ref])) { sync(); e.preventDefault(); e.returnValue = ''; } });
+      return;
+    }
+    const code = isJson && [401, 403, 503].includes(res.status) ? (await res.json().catch(() => ({}))).error : null;
+    if (['not_signed_in', 'bad_token', 'access_not_configured', 'access_certs'].includes(code)) {   // our team API refuses: never fall back to the demo on the real site
+      document.body.innerHTML = `<main class="login"><div class="lcard"><div class="logo"><i></i>Charika <span>Express</span></div><h1>Accès refusé</h1><p>${code === 'access_not_configured' ? "L'accès sécurisé de l'espace équipe n'est pas encore configuré (Cloudflare Access, voir README)." : 'Votre compte ne permet pas d\'ouvrir l\'espace équipe. Reconnectez-vous avec votre e-mail professionnel.'}</p><a class="btn b-grad" href="/cdn-cgi/access/logout">Se reconnecter</a></div></main>`;
+      return;
+    }
+    const saved = TEAM.find(t => t.id === store.read(USER_KEY, null));
+    saved ? start(saved) : showLogin();
+  })();
 })();
 </script>
 </body>

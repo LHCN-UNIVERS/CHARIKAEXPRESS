@@ -1,0 +1,19 @@
+# Cloudflare Pages configuration (read by Pages at build time).
+# The site is built into dist/ by build.sh; the API lives in functions/.
+name = "charikaexpress"
+pages_build_output_dir = "dist"
+compatibility_date = "2026-09-01"
+
+# Shared database: client requests and team members
+[[d1_databases]]
+binding = "DB"
+database_name = "charikaexpress"
+database_id = "0876352c-d28d-4d57-bf81-606a9509aebf"
+
+# Cloudflare Access (Zero Trust) protecting /admin and /api/admin:
+# ACCESS_TEAM_DOMAIN = your team domain, e.g. "charikaexpress.cloudflareaccess.com"
+# ACCESS_AUD = the "Application Audience (AUD) tag" of the Access application
+# Until both are set, the team API refuses every call.
+[vars]
+ACCESS_TEAM_DOMAIN = ""
+ACCESS_AUD = ""

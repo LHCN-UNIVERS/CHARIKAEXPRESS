@@ -16,6 +16,9 @@ Things left out of the homepage on purpose, because they would be false today. A
 
 - [ ] Real contact details: WhatsApp number (now `212500000000`), phone, e-mail, address.
 - [ ] Real payment details: RIB and Cash Plus beneficiary (`demande.html` and `messages.js`).
-- [ ] Backend so requests and the call-back form reach the team (Cloudflare D1 + function + Access). Until then the call-back form only shows a demo message.
+- [x] Backend: requests and call-back form saved in Cloudflare D1, team space shared (see README « Backend »).
+- [ ] Cloudflare Access on `/admin*` and `/api/admin/*`, then `ACCESS_AUD` and `ACCESS_TEAM_DOMAIN` in `wrangler.toml`.
+- [ ] Legal pages + CNDP declaration (law 09-08) before collecting client data with ads.
+- [ ] Meta Pixel / Google tag with conversion events, and a cookie banner.
 - [ ] SAS prices (now "Sur devis").
 - [ ] Cloudflare Pages import (build `sh build.sh`, output `dist`) and switch the charikaexpress.ma nameservers.
