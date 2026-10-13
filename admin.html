@@ -109,7 +109,9 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
 .sig.ko{background:#fff1f0;color:#9b2c22}
 .scb .ra{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .askc{background:#eafaf0;border-radius:12px;padding:10px 12px;display:grid;gap:6px}
-.askc b{font-size:.8rem}.askc > span{font-size:.72rem;color:#3d5a49}
+.askc b{font-size:.8rem}
+.askr{display:grid;gap:8px;border-top:1px solid #c9ead6;padding-top:10px;margin-top:4px}
+.askc .askr .b-wa{background:#fff;color:#14864a;border:1.5px solid #8fd5ab}.askc > span{font-size:.72rem;color:#3d5a49}
 .items{overflow:auto}
 .li{display:grid;grid-template-columns:36px 1fr auto;gap:10px;padding:12px 14px;border-bottom:1px solid var(--line);align-items:center;cursor:pointer;width:100%;background:none;border-inline:0;border-top:0;text-align:start}
 .li:hover{background:#fffaf7}
@@ -773,14 +775,16 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   function scoreBox(r, canEdit){
     const s = serieux(r), ko = s.sig.filter(x => !x.ok), ok = s.sig.filter(x => x.ok), lang = r.msgLang || 'fr';
     const ask = !r.waConfirmed && s.score < 100 && s.sig[0].ok && s.sig[1].ok;   // valid phone and e-mail: worth asking
+    // The answer: confirmed, or fake. Inside the "ask" box when there is one, so asking and answering stay together.
+    const actions = `${canEdit || !r.juriste ? `<div class="ra"><button class="btn ${r.waConfirmed ? 'b-soft' : 'b-wa'} b-sm" id="waConf">${r.waConfirmed ? '✓ Confirmé sur WhatsApp · annuler' : 'Message de confirmation reçu sur WhatsApp'}</button>${s.paid ? '' : '<button class="btn b-soft b-sm" id="markFake">Faux client · archiver</button>'}</div>` : ''}
+      ${r.waConfirmed ? '' : '<p class="hint" style="margin:0">Le client a reçu un bouton « Confirmer sur WhatsApp » après l\'envoi. Quand sa réponse arrive, cliquez sur « Message de confirmation reçu ».</p>'}`;
     return `<div class="box scb ${s.level}"><h4>Score de sérieux <span class="sc sc-${s.level}">${s.text}</span></h4>
       <div class="big"><b>${s.score}<small> /100</small></b><span class="bar"><i style="width:${s.score}%"></i></span></div>
       <div class="sigs">${[...ko, ...ok].map(x => `<span class="sig ${x.ok ? '' : 'ko'}">${x.ok ? '✓' : '✗'} ${esc(x.label)}</span>`).join('')}</div>
       ${ask ? `<div class="askc"><b>Demander la confirmation au client</b><span>Coordonnées valides : un message poli pour qu'il confirme sa demande.${(r.sent || {}).confirmer ? ` Envoyé ${when(r.sent.confirmer)}.` : ''}</span>
         <div class="ra"><a class="btn b-wa b-sm" data-wasend="confirmer" href="${waLink(r.client?.tel, msgText(r, 'confirmer', lang))}" target="_blank" rel="noopener">${(r.sent || {}).confirmer ? 'Relancer sur WhatsApp' : 'Demander sur WhatsApp'}</a><button class="btn b-soft b-sm" id="confMail">Copier l'e-mail</button>
-        <span class="mseg" role="group" aria-label="Langue"><button data-ml="fr" class="${lang === 'fr' ? 'on' : ''}">FR</button><button data-ml="ar" class="${lang === 'ar' ? 'on' : ''}">الدارجة</button></span></div></div>` : ''}
-      ${canEdit || !r.juriste ? `<div class="ra"><button class="btn ${r.waConfirmed ? 'b-soft' : 'b-wa'} b-sm" id="waConf">${r.waConfirmed ? '✓ Confirmé sur WhatsApp · annuler' : 'Message de confirmation reçu sur WhatsApp'}</button>${s.paid ? '' : '<button class="btn b-soft b-sm" id="markFake">Faux client · archiver</button>'}</div>` : ''}
-      ${r.waConfirmed ? '' : '<p class="hint" style="margin:0">Le client a reçu un bouton « Confirmer sur WhatsApp » après l\'envoi. Quand son message arrive, cliquez sur le bouton vert.</p>'}</div>`;
+        <span class="mseg" role="group" aria-label="Langue"><button data-ml="fr" class="${lang === 'fr' ? 'on' : ''}">FR</button><button data-ml="ar" class="${lang === 'ar' ? 'on' : ''}">الدارجة</button></span></div>
+        <div class="askr">${actions}</div></div>` : actions}</div>`;
   }
   function renderDetail(){
     const r = current && get(current);
