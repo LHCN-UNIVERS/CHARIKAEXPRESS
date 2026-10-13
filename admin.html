@@ -93,6 +93,20 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
 .ask .bt button{border:1px solid rgba(0,0,0,.1);background:#fff;border-radius:8px;padding:4px 9px;font-weight:600;font-size:.68rem;color:var(--ink)}
 .ask + .li,.ask + .gh{border-top:1px solid var(--line)}
 .li.has-ask{border-bottom:0}
+.sc{display:inline-flex;align-items:center;gap:4px;font-size:.6rem;font-weight:700;border-radius:999px;padding:1px 7px;white-space:nowrap}
+.sc::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.sc-ok{background:#e3f5ec;color:var(--ok)}.sc-mid{background:#fff4d6;color:#a06500}.sc-bad{background:#fdecea;color:var(--err)}
+.scb{border-width:1.5px}.scb.ok{border-color:#c5ead7}.scb.mid{border-color:#f5dc9c}.scb.bad{border-color:#f5c2bd}
+.scb .big{display:flex;align-items:center;gap:12px}
+.scb .big b{font-size:1.5rem;letter-spacing:-.03em;line-height:1}
+.scb .big b small{font-size:.75rem;color:var(--m);font-weight:600}
+.scb .bar{flex:1;height:8px;border-radius:99px;background:#f4eef1;overflow:hidden}
+.scb .bar i{display:block;height:100%;border-radius:99px}
+.scb.ok .bar i{background:var(--ok)}.scb.mid .bar i{background:#e0a100}.scb.bad .bar i{background:var(--err)}
+.sigs{display:flex;flex-wrap:wrap;gap:6px}
+.sig{font-size:.7rem;border-radius:8px;padding:4px 8px;background:#f2faf6;color:#145c3e}
+.sig.ko{background:#fff1f0;color:#9b2c22}
+.scb .ra{display:flex;gap:8px;flex-wrap:wrap}
 .items{overflow:auto}
 .li{display:grid;grid-template-columns:36px 1fr auto;gap:10px;padding:12px 14px;border-bottom:1px solid var(--line);align-items:center;cursor:pointer;width:100%;background:none;border-inline:0;border-top:0;text-align:start}
 .li:hover{background:#fffaf7}
@@ -368,7 +382,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     const P = (name, cin, pct) => ({ name, cin, pct });
     const list = [
       mk({ ref:'CE-446366', createdAt:ago(.02), updatedAt:ago(.02), seen:false, forme:'sarlau', plan:'essentiel', total:7080, options:['o_prio', 'o_logo'], payMethod:'cashplus',
-        noms:['Atlas Digital','Atlas Media','Atlas Group'], activite:'Agence de marketing digital', ville:'Casablanca', capital:10000,
+        noms:['Atlas Digital','Atlas Media','Atlas Group'], activite:'Agence de marketing digital', ville:'Casablanca', capital:10000, secs:420, waConfirmed:true,
         partners:[P('Lahcen Tazi','BE123456',100)], gerant:{ name:'Lahcen Tazi', cin:'BE123456' },
         client:{ nom:'Lahcen Tazi', tel:'0612345678', email:'lahcen@exemple.ma' } }),
       mk({ ref:'CE-446201', createdAt:ago(.3), updatedAt:ago(.3), seen:false, forme:'sarl', plan:'premium', total:9980, payMethod:'virement', payAmount:'full',
@@ -397,11 +411,11 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
         client:{ nom:'Hamza Ouali', tel:'0622334455', email:'hamza@exemple.ma' }, juriste:'salma', _step:DONE }),
       // the same client sent the form twice, and someone tried the form (shows the duplicate and test helpers)
       mk({ ref:'CE-446352', createdAt:ago(.05), updatedAt:ago(.05), seen:false, forme:'sarlau', plan:'essentiel', total:4680, payMethod:'cashplus',
-        noms:['Atlas Digital'], activite:'Marketing digital', ville:'Casablanca', capital:10000,
+        noms:['Atlas Digital'], activite:'Marketing digital', ville:'Casablanca', capital:10000, secs:45,
         partners:[P('Lahcen Tazi','BE123456',100)], gerant:{ name:'Lahcen Tazi', cin:'BE123456' },
         client:{ nom:'Lahcen Tazi', tel:'0612345678', email:'lahcen@exemple.ma' } }),
       mk({ ref:'CE-446340', createdAt:ago(.08), updatedAt:ago(.08), seen:false, forme:'sarlau', plan:'essentiel', total:4680, payMethod:'virement',
-        noms:['lkjlkjlkj'], activite:'test', ville:'Casablanca', capital:10000,
+        noms:['lkjlkjlkj'], activite:'test', ville:'Casablanca', capital:10000, secs:14,
         partners:[P('lkjlkj','',100)], gerant:{ name:'lkjlkj', cin:'' },
         client:{ nom:'lkjlkj', tel:'0600000001', email:'' } })
     ];
@@ -573,15 +587,38 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     { k:'done', title:'✓ Livrés', cls:'ok' }
   ];
   const groupOf = r => r.step >= DONE ? 'done' : !r.seen ? 'new' : r.reject ? 'rej' : waitsClient(r) ? 'client' : 'team';
-  // A request whose name is unreadable (keyboard mash) is probably a test.
-  function isTest(r){
-    if (r.step > 0) return false;
-    return [title(r), r.client?.nom].some(v => {
-      const raw = String(v || ''), l = raw.toLowerCase().replace(/[^\p{L}]/gu, '');
-      if (/[;<>{}=\\]/.test(raw) || l.length < 3) return true;
-      return /^[a-z]+$/.test(l) && (!/[aeiouy]/.test(l) || /(.{2,4})\1{2,}/.test(l));
-    });
+  // A name that is unreadable (keyboard mash) points to a test or a fake request.
+  const unreadable = v => {
+    const raw = String(v || ''), l = raw.toLowerCase().replace(/[^\p{L}]/gu, '');
+    if (/[;<>{}=\\]/.test(raw) || l.length < 3) return true;
+    return /^[a-z]+$/.test(l) && (!/[aeiouy]/.test(l) || /(.{2,4})\1{2,}/.test(l));
+  };
+  const isTest = r => r.step === 0 && [title(r), r.client?.nom].some(unreadable);
+  // Seriousness score of a new request, from what the client typed in the form.
+  // Paying the avance settles it; a WhatsApp confirmation (ticked by the team) counts a lot.
+  const dur = s => s < 60 ? `${s} s` : `${Math.round(s / 60)} min`;
+  function serieux(r){
+    const sig = [], add = (ok, pts, yes, no) => sig.push({ ok, pts, label:ok ? yes : no });
+    const tel = String(r.client?.tel || '').replace(/\D/g, '').replace(/^00/, '');
+    add(/^(?:212|0)[5-7]\d{8}$/.test(tel), 20, 'Téléphone marocain valide', 'Téléphone invalide');
+    add(/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(r.client?.email || ''), 5, 'E-mail valide', 'E-mail absent ou invalide');
+    add(![title(r), r.client?.nom].some(unreadable), 15, 'Nom lisible', 'Nom illisible');
+    const ps = r.partners || [];
+    add(ps.length > 0 && ps.every(p => /^[A-Z]{1,2}\d{3,7}$/i.test(String(p.cin || '').replace(/\s/g, ''))), 15, 'CIN au bon format', 'CIN absente ou mal écrite');
+    const n = (r.noms || []).filter(x => !unreadable(x)).length;
+    add(n >= 3, 10, '3 noms proposés', `${n} nom${n > 1 ? 's' : ''} proposé${n > 1 ? 's' : ''} seulement`);
+    add(String(r.activite || '').trim().length >= 8 && !unreadable(r.activite), 10, 'Activité décrite', 'Activité vague');
+    add(ps.reduce((t, p) => t + (+p.pct || 0), 0) === 100, 5, 'Parts = 100 %', 'Parts ≠ 100 %');
+    if (r.secs != null) add(r.secs >= 90, 10, `Formulaire rempli en ${dur(r.secs)}`, `Formulaire rempli en ${dur(r.secs)} seulement`);
+    add(!!r.waConfirmed, 15, 'Confirmé sur WhatsApp', 'Pas encore confirmé sur WhatsApp');
+    const max = sig.reduce((t, x) => t + x.pts, 0), score = Math.round(sig.reduce((t, x) => t + (x.ok ? x.pts : 0), 0) / max * 100);
+    const paid = payDone(r, 'avance'), fake = !r.waConfirmed && ([title(r), r.client?.nom].some(unreadable) || (r.secs != null && r.secs < 30));
+    const level = paid ? 'ok' : fake ? 'bad' : score >= 75 ? 'ok' : score >= 50 ? 'mid' : 'bad';
+    return { score, level, sig, paid, text:paid ? 'Avance payée' : { ok:'Sérieux', mid:'À vérifier', bad:'Probablement faux' }[level] };
   }
+  const SC_RANK = { ok:0, mid:1, bad:2 };
+  const scored = r => r.step === 0 && !r.archived;   // the score matters until the avance is paid and the work starts
+
   // Open requests from the same phone or e-mail: the newest one stands for the others.
   function dupClusters(list){
     const key = r => [String(r.client?.tel || '').replace(/\D/g, '').slice(-9), String(r.client?.email || '').trim().toLowerCase()].filter(x => x.length > 4);
@@ -609,14 +646,15 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     return `<button class="li ${r.ref === current ? 'on' : ''} ${extra}" data-ref="${esc(r.ref)}">
         <span class="av ${extra.includes('dup') ? 'stack' : ''}" style="--c:${j ? j.c : '#c9b6c4'}">${esc(title(r)[0] || '?')}</span>
         <div><b>${esc(title(r))}${r._tag || ''}</b><small><span class="mono">${esc(r.ref)}</span> · ${esc(FORMES[r.forme] || '')}${isPrio(r) && r.step < DONE ? ' <em class="prio">⚡ Prioritaire</em>' : ''}</small><small class="${r.reject && r.step < DONE ? 'rej' : ''}">${esc(statusLine(r))}</small></div>
-        <div class="r"><span>${when(r.updatedAt)}</span>${!r.seen ? '<span class="dot" title="Non lue"></span>' : isLate(r) ? `<span class="pill p-late">J+${days(r.updatedAt)}</span>` : ''}</div>
+        <div class="r"><span>${when(r.updatedAt)}</span>${!r.seen ? '<span class="dot" title="Non lue"></span>' : isLate(r) ? `<span class="pill p-late">J+${days(r.updatedAt)}</span>` : ''}${scored(r) ? (s => `<span class="sc sc-${s.level}" title="Score de sérieux : ${s.score}/100">${s.text === 'Probablement faux' ? 'Faux ?' : s.text}</span>`)(serieux(r)) : ''}</div>
       </button>`;
   }
   function renderList(){
     const list = visible(), dups = dupClusters(list.filter(r => r.step < DONE)), hidden = new Set();
     dups.forEach(c => c.slice(1).forEach(x => hidden.add(x.ref)));
     const html = GROUPS.map(g => {
-      const rs = list.filter(r => groupOf(r) === g.k && !hidden.has(r.ref));
+      const rank = r => scored(r) ? SC_RANK[serieux(r).level] : 0;
+      const rs = list.filter(r => groupOf(r) === g.k && !hidden.has(r.ref)).sort((a, b) => (isPrio(b) && b.step < DONE) - (isPrio(a) && a.step < DONE) || rank(a) - rank(b));   // serious requests first
       if (!rs.length) return '';
       const n = rs.reduce((t, r) => t + (dups.get(r.ref)?.length || 1), 0);
       const body = shut.has(g.k) ? '' : rs.map(r => {
@@ -722,6 +760,14 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   const ficheText = r => `Demande ${r.ref} · reçue le ${new Date(r.createdAt).toLocaleString('fr-FR')}\n\n` + ficheData(r).map(blockText).join('\n\n');
   const copyText = (txt, ok) => navigator.clipboard?.writeText(txt).then(() => toast(ok), () => toast('Copie impossible'));
 
+  function scoreBox(r, canEdit){
+    const s = serieux(r), ko = s.sig.filter(x => !x.ok), ok = s.sig.filter(x => x.ok);
+    return `<div class="box scb ${s.level}"><h4>Score de sérieux <span class="sc sc-${s.level}">${s.text}</span></h4>
+      <div class="big"><b>${s.score}<small> /100</small></b><span class="bar"><i style="width:${s.score}%"></i></span></div>
+      <div class="sigs">${[...ko, ...ok].map(x => `<span class="sig ${x.ok ? '' : 'ko'}">${x.ok ? '✓' : '✗'} ${esc(x.label)}</span>`).join('')}</div>
+      ${canEdit || !r.juriste ? `<div class="ra"><button class="btn ${r.waConfirmed ? 'b-soft' : 'b-wa'} b-sm" id="waConf">${r.waConfirmed ? '✓ Confirmé sur WhatsApp · annuler' : 'Message de confirmation reçu sur WhatsApp'}</button>${s.paid ? '' : '<button class="btn b-soft b-sm" id="markFake">Faux client · archiver</button>'}</div>` : ''}
+      ${r.waConfirmed ? '' : '<p class="hint" style="margin:0">Le client a reçu un bouton « Confirmer sur WhatsApp » après l\'envoi. Quand son message arrive, cliquez sur le bouton vert.</p>'}</div>`;
+  }
   function renderDetail(){
     const r = current && get(current);
     if (current !== renderDetail.last) { rejectOpen = false; msgSel = null; renderDetail.last = current; }
@@ -780,6 +826,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
         </div>
       </div>
       <div class="trackw"><div class="track" role="list">${WORKFLOW.map((x, i) => `<button role="listitem" data-step="${i}" class="${i < r.step ? 'ok' : i === r.step ? (r.reject && x.reject ? 'cur rj' : 'cur') : ''}" ${me.role === 'admin' ? '' : 'disabled'} title="${esc(x.name)}${me.role === 'admin' ? ' · cliquer pour déplacer le dossier' : ''}"><i>${i < r.step ? '✓' : r.reject && x.reject && i === r.step ? '!' : i + 1}</i>${esc(x.short)}</button>`).join('')}</div></div>
+      ${scored(r) ? scoreBox(r, canEdit) : ''}
       ${curBox}
       ${msgBox}
       <div class="box"><h4>Documents de la société <small>${livOk}/${docsTotal(r)} obtenus</small></h4>
@@ -828,6 +875,8 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     }
     const t = e.target.closest('button'); if (!t || t.disabled) return;
     if (t.dataset.cp != null) { copyText(t.dataset.cp, 'Copié : ' + t.dataset.cp.slice(0, 40)); return; }
+    if (t.id === 'waConf') { r.waConfirmed = !r.waConfirmed; log(r, r.waConfirmed ? 'Demande confirmée par le client sur WhatsApp.' : 'Confirmation WhatsApp annulée.'); renderList(); renderDetail(); return toast(r.waConfirmed ? 'Confirmée ✓' : 'Confirmation annulée'); }
+    if (t.id === 'markFake') { if (!confirm('Archiver cette demande comme faux client ? Elle reste visible dans « Tous » › Archivés.')) return; archive(r, 'faux client'); persist(); renderList(); return toast('Demande archivée'); }
     if (t.id === 'ficheToggle' || t.id === 'ficheHide') {
       ficheOn = t.id === 'ficheToggle' ? !ficheOn : false;
       try { localStorage.setItem('ce-admin-fiche', ficheOn ? 'show' : 'hide'); } catch(err) {}
