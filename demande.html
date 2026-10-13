@@ -147,6 +147,82 @@ textarea{min-height:96px;resize:vertical}
 .chk input{width:18px;height:18px;accent-color:var(--rose);flex:none}
 .chk span + span:last-child{margin-inline-start:auto;color:var(--m);font-weight:600;font-size:.85rem}
 
+/* Step 4: pack cards, option cards with a switch, total bar */
+.sr{position:absolute;opacity:0;pointer-events:none}
+.packs{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;align-items:stretch;margin-top:6px}
+.pk{position:relative;display:flex;flex-direction:column;gap:10px;padding:18px;border:1.5px solid var(--line);border-radius:20px;cursor:pointer;background:#fff;transition:border-color .15s,box-shadow .15s;margin:0}
+.pk.pro{background:linear-gradient(160deg,var(--plum),#4b1a46);color:#fff;border-color:transparent}
+.pk .badge{position:absolute;top:-11px;inset-inline-start:16px;background:var(--grad);color:#fff;font-size:.68rem;font-weight:700;border-radius:999px;padding:4px 11px}
+.pk > b{font-size:1rem}
+.pp{font-size:1.6rem;font-weight:800;letter-spacing:-.02em;line-height:1}
+.pp small{font-size:.72rem;font-weight:600;color:var(--m);margin-inline-start:4px}
+.pk.pro .pp small{color:#e0c8da}
+.pk ul{list-style:none;margin:0;padding:0;display:grid;gap:6px;font-size:.8rem;font-weight:500}
+.pk li{display:flex;gap:8px;align-items:flex-start;line-height:1.35}
+.pk li::before{content:"✓";color:var(--ok);font-weight:800;flex:none}
+.pk.pro li::before{color:#7fe0b0}
+.pk li.no{color:#b9a6b3}.pk li.no::before{content:"–";color:#cdb9c6}
+.pk.pro li.no{color:#a88aa1}
+.pk .base{font-size:.72rem;color:var(--m);border-top:1px dashed var(--line);padding-top:8px;margin-top:auto}
+.pk.pro .base{color:#d8bfd2;border-color:rgba(255,255,255,.15)}
+.pick{display:flex;align-items:center;justify-content:center;border-radius:999px;padding:9px;font-weight:700;font-size:.82rem;background:#fff6f9;color:var(--pink)}
+.pk.pro .pick{background:rgba(255,255,255,.1);color:#fff}
+.pk:hover{border-color:#ffc2d4}
+.pk:has(input:checked){border-color:var(--pink);box-shadow:0 0 0 4px rgba(255,79,145,.15)}
+.pk.pro:has(input:checked){box-shadow:0 0 0 4px rgba(255,79,145,.35)}
+.pk:has(input:checked) .pick{background:var(--grad);color:#fff}
+.pk:has(input:focus-visible),.op:has(input:focus-visible),.mt:has(input:focus-visible),.seg label:has(input:focus-visible){outline:3px solid var(--pink);outline-offset:2px}
+.opts{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.op{position:relative;display:grid;gap:6px;align-content:start;padding:14px;border:1.5px solid var(--line);border-radius:16px;cursor:pointer;background:#fff;margin:0}
+.oi{width:36px;height:36px;border-radius:11px;background:var(--blush);color:var(--pink);display:grid;place-items:center}
+.oi svg{width:18px;height:18px}
+.op b{font-size:.88rem}
+.op > span:not(.sw):not(.oi){font-size:.76rem;color:var(--m);line-height:1.4;font-weight:500}
+.op em{font-style:normal;font-weight:800;font-size:.85rem;color:var(--pink)}
+.sw{position:absolute;top:14px;inset-inline-end:14px;width:34px;height:20px;border-radius:999px;background:#eadde4;transition:background .15s}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:50%;background:#fff;transition:transform .15s}
+.op:has(input:checked){border-color:var(--pink);background:#fff6f9}
+.op:has(input:checked) .sw{background:var(--pink)}
+.op:has(input:checked) .sw::after{transform:translateX(14px)}
+.tbar{margin-top:18px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;background:linear-gradient(160deg,var(--plum),#4b1a46);color:#fff;border-radius:16px;padding:14px 18px}
+.tbar small{color:#d9c0d3;font-size:.76rem;display:block}
+.tbar b{font-size:1.3rem;font-weight:800}
+.tnow{background:var(--grad);border-radius:12px;padding:8px 12px;text-align:end}
+.tnow small{color:#fff}
+/* Step 6: payment schedule, amount switch, method cards, copy-ready instructions */
+.plan3{display:grid;grid-template-columns:repeat(3,1fr);position:relative;margin:4px 0 12px}
+.plan3::before{content:"";position:absolute;top:15px;left:16%;right:16%;height:2px;background:var(--line)}
+.p3{display:grid;justify-items:center;text-align:center;gap:4px;position:relative;padding:0 6px}
+.p3 i{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-weight:800;font-size:.8rem;background:#fff;border:2px solid var(--line);color:var(--m)}
+.p3.now i{background:var(--grad);border-color:transparent;color:#fff;box-shadow:0 0 0 6px rgba(255,79,145,.15)}
+.p3 b{font-size:1.05rem}
+.p3.now b{color:var(--pink)}
+.p3 span{font-size:.74rem;color:var(--m);line-height:1.35}
+.seg{display:inline-flex;flex-wrap:wrap;background:#f6eef2;border-radius:999px;padding:4px}
+.seg label{padding:8px 16px;border-radius:999px;font-weight:700;font-size:.82rem;cursor:pointer;color:var(--m);margin:0}
+.seg label:has(input:checked){background:#fff;color:var(--ink);box-shadow:0 4px 12px -6px rgba(48,16,47,.35)}
+.meth{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.mt{position:relative;display:flex;gap:12px;align-items:center;padding:14px;border:1.5px solid var(--line);border-radius:16px;cursor:pointer;margin:0;background:#fff}
+.mi{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;flex:none;background:var(--blush);color:var(--pink)}
+.mi svg{width:20px;height:20px}
+.mt b{display:block;font-size:.9rem}.mt span span{font-size:.76rem;color:var(--m);font-weight:500}
+.mt:has(input:checked){border-color:var(--pink);background:#fff6f9;box-shadow:0 0 0 4px rgba(255,79,145,.12)}
+.instr{margin-top:14px;border-radius:18px;background:linear-gradient(160deg,var(--plum),#4b1a46);color:#fff;padding:18px;display:grid;gap:10px}
+.instr .amt{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-weight:600}
+.instr .amt b{font-size:1.6rem;font-weight:800;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.fields{display:grid;gap:8px}
+.field{display:flex;justify-content:space-between;align-items:center;gap:10px;background:rgba(255,255,255,.07);border-radius:12px;padding:10px 12px}
+.field > div{min-width:0}
+.field small{display:block;color:#cfb6c9;font-size:.7rem}
+.field b{font-size:.9rem;overflow-wrap:anywhere}
+.cpf{border:0;background:rgba(255,255,255,.14);color:#fff;font:600 .74rem var(--font);border-radius:999px;padding:6px 11px;cursor:pointer;flex:none}
+.steps3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.steps3 div{font-size:.74rem;color:#e3cbdd;background:rgba(255,255,255,.05);border-radius:10px;padding:8px}
+.steps3 b{display:block;color:#fff;font-size:.78rem}
+.wa-send{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:#22c35e;color:#fff;border-radius:999px;padding:12px 16px;font-weight:700;font-size:.88rem;text-decoration:none}
+.pdemo{margin-top:8px}
+@media (max-width:720px){.packs,.opts,.steps3,.meth{grid-template-columns:1fr}.pk.pro{order:-1}}
+
 /* Partners */
 .partner{border:1px dashed #ecd2d8;border-radius:18px;padding:16px;display:grid;gap:12px;background:var(--bg)}
 .partner-h{display:flex;justify-content:space-between;align-items:center;font-weight:700;font-size:.92rem}
@@ -353,18 +429,25 @@ textarea{min-height:96px;resize:vertical}
 
         <!-- STEP 4 -->
         <section class="step" data-step="4" hidden>
-          <div class="step-h"><small data-t="st">Étape 4 sur 5</small><h2 data-t="s4h">Choisissez votre formule</h2><p data-t="s4p">Prix TTC, frais administratifs inclus. 700 MAD d'avance, puis le reste en deux fois.</p></div>
-          <div class="tiles t3" role="radiogroup">
-            <label class="tile"><input type="radio" name="plan" value="essentiel" data-price="4680" checked><b data-t="pl1">Pack Essentiel</b><span data-t="pl1d">12 mois de domiciliation offerts</span><em class="ltr">4 680 MAD</em></label>
-            <label class="tile"><span class="tag" data-t="pkrec">Recommandé</span><input type="radio" name="plan" value="pro" data-price="5980"><b data-t="pl2">Pack Pro</b><span data-t="pl2d">24 mois de domiciliation et cachet de la société</span><em class="ltr">5 980 MAD</em></label>
-            <label class="tile"><input type="radio" name="plan" value="premium" data-price="9980"><b data-t="pl3">Pack Premium</b><span data-t="pl3d">24 mois de domiciliation, cachet et protection de la marque (2 classes)</span><em class="ltr">9 980 MAD</em></label>
+          <div class="step-h"><small data-t="st">Étape 4 sur 6</small><h2 data-t="s4h">Choisissez votre formule</h2><p data-t="s4p">Tous les packs comprennent la création complète de votre société. Ils diffèrent par ce qui est en plus.</p></div>
+          <div class="packs" role="radiogroup">
+            <label class="pk"><input class="sr" type="radio" name="plan" value="essentiel" data-price="4680" checked><b data-t="pl1">Pack Essentiel</b><div class="pp"><span class="ltr">4 680</span><small data-t="mad">MAD TTC</small></div>
+              <ul><li data-t="pi1">12 mois de domiciliation</li><li class="no" data-t="pi3">Cachet de la société</li><li class="no" data-t="pi4">Protection de la marque</li></ul>
+              <p class="base" data-t="pbase">+ création complète : statuts, RC, IF, taxe professionnelle, CNSS, annonces légales, Bulletin Officiel</p><span class="pick" data-t="pick">Choisir</span></label>
+            <label class="pk pro"><span class="badge" data-t="pkrec">Le plus populaire</span><input class="sr" type="radio" name="plan" value="pro" data-price="5980"><b data-t="pl2">Pack Pro</b><div class="pp"><span class="ltr">5 980</span><small data-t="mad">MAD TTC</small></div>
+              <ul><li data-t="pi2">24 mois de domiciliation</li><li data-t="pi3">Cachet de la société</li><li class="no" data-t="pi4">Protection de la marque</li></ul>
+              <p class="base" data-t="pbase">+ création complète : statuts, RC, IF, taxe professionnelle, CNSS, annonces légales, Bulletin Officiel</p><span class="pick" data-t="pick">Choisir</span></label>
+            <label class="pk"><input class="sr" type="radio" name="plan" value="premium" data-price="9980"><b data-t="pl3">Pack Premium</b><div class="pp"><span class="ltr">9 980</span><small data-t="mad">MAD TTC</small></div>
+              <ul><li data-t="pi2">24 mois de domiciliation</li><li data-t="pi3">Cachet de la société</li><li data-t="pi5">Protection de la marque (2 classes)</li></ul>
+              <p class="base" data-t="pbase">+ création complète : statuts, RC, IF, taxe professionnelle, CNSS, annonces légales, Bulletin Officiel</p><span class="pick" data-t="pick">Choisir</span></label>
           </div>
-          <span class="lbl" style="margin-top:22px" data-t="opts">Options</span>
-          <div class="grid">
-            <label class="chk"><input type="checkbox" name="o_prio" data-price="900"><span data-t="o1">Traitement prioritaire</span><span class="ltr">+900 MAD</span></label>
-            <label class="chk"><input type="checkbox" name="o_logo" data-price="1500"><span data-t="o2">Logo et carte de visite</span><span class="ltr">+1 500 MAD</span></label>
-            <label class="chk"><input type="checkbox" name="o_pacte" data-price="1200"><span data-t="o3">Pacte d'associés</span><span class="ltr">+1 200 MAD</span></label>
+          <span class="lbl" style="margin-top:22px" data-t="opts">Options (facultatives)</span>
+          <div class="opts">
+            <label class="op"><input class="sr" type="checkbox" name="o_prio" data-price="900"><span class="sw" aria-hidden="true"></span><span class="oi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg></span><b data-t="o1">Traitement prioritaire</b><span data-t="o1d">Votre dossier passe en priorité à chaque étape.</span><em class="ltr">+900 MAD</em></label>
+            <label class="op"><input class="sr" type="checkbox" name="o_logo" data-price="1500"><span class="sw" aria-hidden="true"></span><span class="oi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg></span><b data-t="o2">Logo et carte de visite</b><span data-t="o2d">Une identité prête pour lancer votre activité.</span><em class="ltr">+1 500 MAD</em></label>
+            <label class="op"><input class="sr" type="checkbox" name="o_pacte" data-price="1200"><span class="sw" aria-hidden="true"></span><span class="oi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 11a4 4 0 1 0-8 0M3 20c1-3 4-5 9-5s8 2 9 5"/></svg></span><b data-t="o3">Pacte d'associés</b><span data-t="o3d">Conseillé si vous êtes plusieurs : parts, décisions, sortie.</span><em class="ltr">+1 200 MAD</em></label>
           </div>
+          <div class="tbar"><div><small data-t="ttc">Total TTC</small><b class="ltr" id="tbTotal">4 680 MAD</b></div><div class="tnow"><small data-t="now">À régler maintenant</small><b class="ltr" id="tbNow">700 MAD</b></div></div>
         </section>
 
         <!-- STEP 5: CONTACT -->
@@ -382,38 +465,37 @@ textarea{min-height:96px;resize:vertical}
 
         <!-- STEP 6: PAYMENT -->
         <section class="step" data-step="6" hidden>
-          <div class="step-h"><small data-t="st">Étape 6 sur 6</small><h2 data-t="s6h">Mode de paiement</h2><p data-t="s6p">Choisissez le montant et le moyen de paiement. Indiquez votre référence comme motif du paiement.</p></div>
-          <span class="lbl" data-t="amt">Montant à régler</span>
-          <div class="tiles t2" role="radiogroup">
-            <label class="tile"><input type="radio" name="pay_amount" value="avance" checked><b data-t="am2">Avance de 700 MAD</b><span data-t="am2d">On lance le certificat négatif dès réception. Le reste en deux fois : 50% à la signature des documents, le solde à la livraison.</span><em class="ltr" id="amtHalf">700 MAD</em></label>
-            <label class="tile"><input type="radio" name="pay_amount" value="full"><b data-t="am1">Totalité</b><span data-t="am1d">100% maintenant, en une seule fois</span><em class="ltr" id="amtFull">—</em></label>
+          <div class="step-h"><small data-t="st">Étape 6 sur 6</small><h2 data-t="s6h">Payez l'avance et on démarre</h2><p data-t="s6p">Vous ne payez que 700 MAD aujourd'hui. Le reste est réglé en deux fois, pendant la création.</p></div>
+          <div class="plan3" id="plan3">
+            <div class="p3 now"><i>1</i><b class="ltr" id="p3a">700 MAD</b><span data-th="p3at">Aujourd'hui<br>lance le certificat négatif</span></div>
+            <div class="p3"><i>2</i><b class="ltr" id="p3b">—</b><span data-th="p3bt">Après la légalisation<br>des documents</span></div>
+            <div class="p3"><i>3</i><b class="ltr" id="p3c">—</b><span data-th="p3ct">Quand le dossier<br>est complet</span></div>
           </div>
-          <span class="lbl" style="margin-top:22px" data-t="meth">Moyen de paiement</span>
-          <div class="tiles t2" role="radiogroup">
-            <label class="tile"><input type="radio" name="pay_method" value="virement" checked><b data-t="pm1">Virement bancaire</b><span data-t="pm1d">Depuis votre banque ou votre application</span></label>
-            <label class="tile"><input type="radio" name="pay_method" value="cashplus"><b data-t="pm2">Cash Plus</b><span data-t="pm2d">En espèces, dans une agence Cash Plus</span></label>
+          <div class="seg" role="radiogroup">
+            <label><input class="sr" type="radio" name="pay_amount" value="avance" checked><span data-t="am2">Payer en 3 fois</span></label>
+            <label><input class="sr" type="radio" name="pay_amount" value="full"><span data-t="am1">Tout payer maintenant</span></label>
           </div>
-          <div class="paybox">
-            <div class="pref">
-              <div><small data-t="refl">Votre référence de paiement</small><b class="ltr" id="payRef">CE-000000</b></div>
-              <button type="button" class="btn btn-soft copy" id="copyRef" data-t="copy">Copier</button>
+          <span class="lbl" style="margin-top:22px" data-t="meth">Comment voulez-vous payer ?</span>
+          <div class="meth" role="radiogroup">
+            <label class="mt"><input class="sr" type="radio" name="pay_method" value="virement" checked><span class="mi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10l9-6 9 6M5 10v8M19 10v8M9 10v8M15 10v8M3 20h18"/></svg></span><span><b data-t="pm1">Virement bancaire</b><span data-t="pm1d">Depuis votre banque ou votre application</span></span></label>
+            <label class="mt"><input class="sr" type="radio" name="pay_method" value="cashplus"><span class="mi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/></svg></span><span><b data-t="pm2">Cash Plus</b><span data-t="pm2d">En espèces, dans une agence Cash Plus</span></span></label>
+          </div>
+          <div class="instr">
+            <div class="amt"><span data-t="now">À régler maintenant</span><b class="ltr" id="payNow">—</b></div>
+            <div class="fields" id="payVir">
+              <div class="field"><div><small data-t="bf">Bénéficiaire</small><b>CHARIKA EXPRESS SARL</b></div><button type="button" class="cpf" data-t="copy">Copier</button></div>
+              <div class="field"><div><small>RIB</small><b class="ltr">000 000 0000000000000000 00</b></div><button type="button" class="cpf" data-t="copy">Copier</button></div>
+              <div class="field"><div><small data-t="motif">Motif (votre référence)</small><b class="ltr refv">CE-000000</b></div><button type="button" class="cpf" data-t="copy">Copier</button></div>
             </div>
-            <div class="pnow"><span data-t="now">À régler maintenant</span><b class="ltr" id="payNow">—</b></div>
-            <dl class="pinfo" id="payVir">
-              <dt data-t="bf">Bénéficiaire</dt><dd>CHARIKA EXPRESS SARL</dd>
-              <dt data-t="bk">Banque</dt><dd data-t="bkv">Votre banque</dd>
-              <dt>RIB</dt><dd class="ltr">000 000 0000000000000000 00</dd>
-              <dt data-t="motif">Motif</dt><dd class="ltr refv">CE-000000</dd>
-            </dl>
-            <dl class="pinfo" id="payCash" hidden>
-              <dt data-t="bf">Bénéficiaire</dt><dd data-t="cpn">Nom du bénéficiaire</dd>
-              <dt data-t="cin">CIN</dt><dd class="ltr">XX000000</dd>
-              <dt data-t="tel">Téléphone</dt><dd class="ltr">+212 6 00 00 00 00</dd>
-              <dt data-t="motif">Motif</dt><dd class="ltr refv">CE-000000</dd>
-            </dl>
-            <p class="pnote" data-t="pnote">Après le paiement, envoyez la photo du reçu par WhatsApp en indiquant votre référence.</p>
-            <p class="pdemo" data-t="pdemo">Coordonnées de démonstration : remplacez-les par vos vrais RIB et bénéficiaire Cash Plus.</p>
+            <div class="fields" id="payCash" hidden>
+              <div class="field"><div><small data-t="bf">Bénéficiaire</small><b data-t="cpn">Nom du bénéficiaire</b></div><button type="button" class="cpf" data-t="copy">Copier</button></div>
+              <div class="field"><div><small data-t="tel">Téléphone</small><b class="ltr">+212 6 00 00 00 00</b></div><button type="button" class="cpf" data-t="copy">Copier</button></div>
+              <div class="field"><div><small data-t="motif">Motif (votre référence)</small><b class="ltr refv">CE-000000</b></div><button type="button" class="cpf" data-t="copy">Copier</button></div>
+            </div>
+            <div class="steps3"><div><b data-t="h1">1. Payez</b><span data-t="h1d">avec votre référence comme motif</span></div><div><b data-t="h2">2. Envoyez le reçu</b><span data-t="h2d">par WhatsApp</span></div><div><b data-t="h3">3. On démarre</b><span data-t="h3d">le certificat négatif</span></div></div>
+            <a class="wa-send" id="waReceipt" href="https://wa.me/212500000000" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.4 14.2c-.2.6-1.3 1.2-1.8 1.3-.5 0-1 .2-3.3-.7-2.8-1.1-4.5-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.9 2c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.6.2.3.7 1.2 1.6 1.9 1.1 1 2 1.3 2.3 1.4.3.1.4.1.6-.1l.8-1c.2-.2.4-.2.6-.1l1.9.9c.3.1.4.2.5.3.1.1.1.6-.1 1.2z"/></svg><span data-t="wasend">Envoyer le reçu sur WhatsApp</span></a>
           </div>
+          <p class="pdemo" data-t="pdemo">Coordonnées de démonstration : remplacez-les par vos vrais RIB et bénéficiaire Cash Plus.</p>
           <div class="grid" style="margin-top:22px">
               <span class="lbl" data-t="recap">Récapitulatif</span>
               <div class="review" id="review"></div>
@@ -480,15 +562,15 @@ textarea{min-height:96px;resize:vertical}
     capital:"Share capital (MAD)", siege:"Registered office", sg1:"I need a business address", sg1d:"We provide one for you", sg2:"I already have premises", sg2d:"Lease or title deed",
     s3h:"Partners and manager", s3p:"Enter each partner and their share of the capital. The total must be 100%.",
     addp:"Add a partner", gerant:"Manager", gname:"Manager's full name", pcin2:"National ID (CNIE) or passport number",
-    s4h:"Choose your plan", s4p:"Prices include VAT and administrative fees. 700 MAD upfront, then the rest in two instalments.",
-    pl1:"Essential Pack", pl1d:"12 months of business address, free", pkrec:"Recommended", pl2:"Pro Pack", pl2d:"24 months of business address and company stamp", pl3:"Premium Pack", pl3d:"24 months of business address, company stamp and trademark protection (2 classes)",
-    opts:"Options", o1:"Priority processing", o2:"Logo and business card", o3:"Shareholders' agreement",
+    s4h:"Choose your plan", s4p:"Every pack includes the full formation of your company. They differ in what comes on top.", mad:"MAD incl. VAT", pi1:"12 months of domiciliation", pi2:"24 months of domiciliation", pi3:"Company stamp", pi4:"Trademark protection", pi5:"Trademark protection (2 classes)", pbase:"+ full formation: articles, RC, IF, business tax, CNSS, legal notices, Official Bulletin", pick:"Choose", ttc:"Total incl. VAT", o1d:"Your file gets priority at every step.", o2d:"A ready identity to launch your business.", o3d:"Advised if there are several of you: shares, decisions, exit.",
+    pl1:"Essential Pack", pl1d:"12 months of business address, free", pkrec:"Most popular", pl2:"Pro Pack", pl2d:"24 months of business address and company stamp", pl3:"Premium Pack", pl3d:"24 months of business address, company stamp and trademark protection (2 classes)",
+    opts:"Options (optional)", o1:"Priority processing", o2:"Logo and business card", o3:"Shareholders' agreement",
     s5h:"Your contact details", s5p:"Your legal advisor will contact you within one working day to confirm your file.",
     fn:"Full name", ft:"Phone / WhatsApp", fe:"Email", fm:"Additional information",
-    s6h:"Payment method", s6p:"Choose the amount and payment method. Use your reference as the payment description.",
-    amt:"Amount to pay", am2:"700 MAD upfront", am2d:"We start the negative certificate as soon as it arrives. The rest in two instalments: 50% when the documents are signed, the balance on delivery.", am1:"Full amount", am1d:"100% now, in a single payment",
-    meth:"Payment method", pm1:"Bank transfer", pm1d:"From your bank or banking app", pm2:"Cash Plus", pm2d:"In cash, at any Cash Plus branch",
-    refl:"Your payment reference", copy:"Copy", now:"To pay now", bf:"Beneficiary", bk:"Bank", bkv:"Your bank", motif:"Payment description", cpn:"Beneficiary name", cin:"ID number", tel:"Phone",
+    s6h:"Pay the upfront amount and we start", s6p:"You only pay 700 MAD today. The rest is paid in two instalments during the formation.", p3at:"Today<br>starts the negative certificate", p3bt:"After the documents<br>are legalised", p3ct:"When the file<br>is complete",
+    amt:"Amount to pay", am2:"Pay in 3 instalments", am1:"Pay everything now",
+    meth:"How would you like to pay?", pm1:"Bank transfer", pm1d:"From your bank or banking app", pm2:"Cash Plus", pm2d:"In cash, at any Cash Plus branch",
+    refl:"Your payment reference", copy:"Copy", now:"To pay now", bf:"Beneficiary", bk:"Bank", bkv:"Your bank", motif:"Payment description (your reference)", h1:"1. Pay", h1d:"with your reference as the description", h2:"2. Send the receipt", h2d:"by WhatsApp", h3:"3. We start", h3d:"the negative certificate", wasend:"Send the receipt on WhatsApp", cpn:"Beneficiary name", cin:"ID number", tel:"Phone",
     pnote:"After paying, send a photo of your receipt on WhatsApp, quoting your reference.", pdemo:"Demo details: replace them with your real RIB and Cash Plus beneficiary.",
     recap:"Summary", cgu:"I agree to be contacted about my request.",
     okh:"Request sent!", refd:"File reference", t0h:"Request received", t0w:"just now", t0p:"Your file has been registered.",
@@ -500,14 +582,14 @@ textarea{min-height:96px;resize:vertical}
     help:'Questions? A legal advisor is available on <bdi dir="ltr">+212 5 00 00 00 00</bdi> or on <a href="https://wa.me/212500000000" target="_blank" rel="noopener">WhatsApp</a>.'
   };
   const T = {
-    fr:{st:n=>`Étape ${n} sur 6`, copied:"Copié !", copy:"Copier", pm:{virement:"Virement",cashplus:"Cash Plus"}, pa:{avance:"Avance 700 MAD",full:"Totalité"}, rv5:"Paiement", rv6:"Coordonnées", gl:"Gérant", cn:{nom:"Nom",tel:"Téléphone",email:"E-mail"}, req:"Ce champ est obligatoire.", email:"Adresse e-mail invalide.", tel:"Numéro de téléphone invalide.", cap:"Minimum 1 000 MAD.",
+    fr:{st:n=>`Étape ${n} sur 6`, receipt:r=>`Bonjour, voici le reçu de paiement pour ma demande ${r}.`, copied:"Copié !", copy:"Copier", pm:{virement:"Virement",cashplus:"Cash Plus"}, pa:{avance:"Avance 700 MAD",full:"Totalité"}, rv5:"Paiement", rv6:"Coordonnées", gl:"Gérant", cn:{nom:"Nom",tel:"Téléphone",email:"E-mail"}, req:"Ce champ est obligatoire.", email:"Adresse e-mail invalide.", tel:"Numéro de téléphone invalide.", cap:"Minimum 1 000 MAD.",
         pct:"Le total des parts doit faire 100%.", shareTxt:t=>`Total des parts : ${t}%`, cgu:"Merci de cocher cette case.",
         ok:(n,e)=>`Merci ${n}. Nous avons bien reçu votre demande. Un récapitulatif sera envoyé à ${e}.`,
         edit:"Modifier", rv1:"Service", rv2:"Société", rv3:"Associés", rv4:"Formule", none:"Aucune", quote:"Sur devis", todo:"à compléter", prog:n=>`${n} élément${n>1?"s":""} sur 6 complété${n>1?"s":""}`,
         pname:"Nom complet", pcin:"N° CNIE ou passeport", ppct:"Part (%)", pttl:"Associé", rm:"Retirer", other:"Une autre personne", next:"Continuer", send:"Envoyer ma demande",
         k:{forme:"Forme",noms:"Noms",act:"Activité",ville:"Ville",capital:"Capital",siege:"Siège",plan:"Formule",opts:"Options",total:"Total",method:"Moyen",amount:"Montant",ref:"Référence",now:"À régler maintenant"},
         siege:{dom:"Domiciliation",local:"Local existant"}},
-    en:{st:n=>`Step ${n} of 6`, copied:"Copied!", copy:"Copy", pm:{virement:"Bank transfer",cashplus:"Cash Plus"}, pa:{avance:"700 MAD upfront",full:"Full amount"}, rv5:"Payment", rv6:"Contact details", gl:"Manager", cn:{nom:"Name",tel:"Phone",email:"Email"}, req:"This field is required.", email:"Invalid email address.", tel:"Invalid phone number.", cap:"Minimum: 1,000 MAD.",
+    en:{st:n=>`Step ${n} of 6`, receipt:r=>`Hello, here is the payment receipt for my request ${r}.`, copied:"Copied!", copy:"Copy", pm:{virement:"Bank transfer",cashplus:"Cash Plus"}, pa:{avance:"700 MAD upfront",full:"Full amount"}, rv5:"Payment", rv6:"Contact details", gl:"Manager", cn:{nom:"Name",tel:"Phone",email:"Email"}, req:"This field is required.", email:"Invalid email address.", tel:"Invalid phone number.", cap:"Minimum: 1,000 MAD.",
         pct:"Shares must total 100%.", shareTxt:t=>`Total shares: ${t}%`, cgu:"Please tick this box.",
         ok:(n,e)=>`Thank you ${n}. We have received your request. A summary will be sent to ${e}.`,
         edit:"Edit", rv1:"Service", rv2:"Company", rv3:"Partners", rv4:"Plan", none:"None", quote:"Custom quote", todo:"to be completed", prog:n=>`${n} of 6 item${n>1?"s":""} completed`,
@@ -609,7 +691,7 @@ textarea{min-height:96px;resize:vertical}
     if (!keepScroll) $('#wizard').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
   function val(name){ const el = document.querySelector(`[name="${name}"]:checked`); return el ? el.value : ''; }
-  function label(name){ const el = document.querySelector(`[name="${name}"]:checked`); return el ? el.closest('.tile').querySelector('b').textContent : ''; }
+  function label(name){ const el = document.querySelector(`[name="${name}"]:checked`); return el ? el.closest('label').querySelector('b').textContent : ''; }
 
   function fieldErr(el, msg){
     el.classList.add('invalid');
@@ -654,16 +736,21 @@ textarea{min-height:96px;resize:vertical}
     $$('#wizard input[type=checkbox][data-price]:checked').forEach(c => t += +c.dataset.price);
     return t;
   }
-  function optsText(){ const o = $$('#wizard input[type=checkbox][data-price]:checked').map(c => c.nextElementSibling.textContent); return o.length ? o.join(', ') : T[lang].none; }
+  function optsText(){ const o = $$('#wizard input[type=checkbox][data-price]:checked').map(c => c.closest('label').querySelector('b').textContent); return o.length ? o.join(', ') : T[lang].none; }
   let ref = 'CE-' + String(Math.floor(100000 + Math.random() * 900000));
   // 700 MAD avance at the order (or everything at once); with a price on quote, the avance still applies
   const AVANCE = 700;
   function payNow(){ const t = total(); if (val('pay_amount') === 'full' && t !== null) return t; return t === null ? AVANCE : Math.min(AVANCE, t); }
   function payment(){
     const t = total();
-    $('#amtFull').textContent = t === null ? T[lang].quote : fmt(t) + ' MAD';
-    $('#amtHalf').textContent = fmt(t === null ? AVANCE : Math.min(AVANCE, t)) + ' MAD';
-    $('#payRef').textContent = ref; $$('.refv').forEach(e => e.textContent = ref);
+    // 3-payment schedule: avance today, 50 % of the rest after légalisation, the balance when the file is complete
+    const av = t === null ? AVANCE : Math.min(AVANCE, t), rest = t === null ? null : t - av, second = rest === null ? null : Math.round(rest / 2);
+    $('#p3a').textContent = fmt(av) + ' MAD';
+    $('#p3b').textContent = rest === null ? T[lang].quote : fmt(second) + ' MAD';
+    $('#p3c').textContent = rest === null ? T[lang].quote : fmt(rest - second) + ' MAD';
+    $('#plan3').hidden = val('pay_amount') === 'full' && t !== null;
+    $$('.refv').forEach(e => e.textContent = ref);
+    $('#waReceipt').href = 'https://wa.me/212500000000?text=' + encodeURIComponent(T[lang].receipt(ref));
     const n = payNow(); $('#payNow').textContent = n === null ? T[lang].quote : fmt(n) + ' MAD';
     const cash = val('pay_method') === 'cashplus';
     $('#payVir').hidden = cash; $('#payCash').hidden = !cash;
@@ -673,7 +760,14 @@ textarea{min-height:96px;resize:vertical}
     const sel = () => { const r = document.createRange(); r.selectNodeContents(el); getSelection().removeAllRanges(); getSelection().addRange(r); };
     if (navigator.clipboard) navigator.clipboard.writeText(ref).then(done, sel); else sel();
   }
-  $('#copyRef').addEventListener('click', e => copyRef(e.currentTarget, $('#payRef')));
+  // Copy buttons in the payment instructions copy the value next to them
+  $('#wizard').addEventListener('click', e => {
+    const b = e.target.closest('.cpf'); if (!b) return;
+    const v = b.previousElementSibling.querySelector('b'), txt = v.textContent.trim();
+    const done = () => { b.textContent = T[lang].copied; setTimeout(() => b.textContent = T[lang].copy, 1500); };
+    const sel = () => { const r = document.createRange(); r.selectNodeContents(v); getSelection().removeAllRanges(); getSelection().addRange(r); };
+    if (navigator.clipboard) navigator.clipboard.writeText(txt).then(done, sel); else sel();
+  });
   $('#copyRef2').addEventListener('click', e => copyRef(e.currentTarget, $('#ref')));
   function summary(){
     const nom = $('#n1').value.trim(), ville = $('#ville').value;
@@ -684,8 +778,9 @@ textarea{min-height:96px;resize:vertical}
     $('#sOpts').textContent = optsText();
     const t = total();
     $('#sTotal').textContent = t === null ? T[lang].quote : fmt(t);
+    $('#tbTotal').textContent = t === null ? T[lang].quote : fmt(t) + ' MAD';
     const n = payNow();
-    $('#sDep').textContent = fmt(n) + ' MAD';
+    $('#sDep').textContent = fmt(n) + ' MAD'; $('#tbNow').textContent = fmt(n) + ' MAD';
     $('#sLater').textContent = t === null ? T[lang].quote : fmt(t - n) + ' MAD';
     $('#sPay').textContent = T[lang].pm[val('pay_method')] + ' · ' + T[lang].pa[val('pay_amount')];
     // Checklist: tick each row once it has a value, then update the ring
