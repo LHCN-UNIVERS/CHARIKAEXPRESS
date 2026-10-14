@@ -35,16 +35,14 @@ The site, the API and the database all run on Cloudflare.
 
 - **Database:** D1 database `charikaexpress` (id in `wrangler.toml`), schema in `server/db.sql`: `requests` (one row per file, the whole file as JSON) and `team`.
 - **`POST /api/requests`** (`functions/api/requests.js`, public): receives the request form and the homepage call-back form (`kind: 'rappel'`). It keeps only known fields, caps sizes, ignores robots (hidden `website` field) and accepts at most 5 requests per 10 minutes from one connection.
-- **`/api/admin/*`** (`functions/api/admin/[[path]].js`, team only): `GET me`, `GET requests`, `PUT requests/:ref`. Every call must carry a valid **Cloudflare Access** login, checked in `server/access.js` (signature, audience, issuer, expiry). Saving a file that a colleague saved in the meantime returns 409; the team space then loads their version and keeps the notes written locally.
-- **Team members:** whoever Cloudflare Access lets in. The first person to open the team space becomes admin, the others juristes. To rename someone or change a role, run in D1 (Cloudflare dashboard → D1 → charikaexpress → Console): `UPDATE team SET name = 'Salma', role = 'admin' WHERE email = 'salma@…';`
+- **Team login** (`server/auth.js`): the team space keeps its own login page (e-mail + password). `POST /api/auth/login` checks the password (PBKDF2-SHA256, 100 000 iterations, salt per person) and sets a session cookie (HttpOnly, Secure, SameSite=Strict, 7 days; only its SHA-256 is stored in `sessions`). 8 wrong passwords for one e-mail, or 30 from one connection, in 15 minutes block the login for 15 minutes. Mutating calls must be same-origin JSON. A temporary password must be changed at the first login.
+- **`/api/admin/*`** (`server/admin.js`, signed-in team only): `GET me`, `GET requests`, `PUT requests/:ref`, `POST password`, and for admins `GET/POST team`, `PUT team/:id` (role, deactivate, new temporary password). Saving a file that a colleague saved in the meantime returns 409; the team space then loads their version and keeps the notes written locally. Cloudflare Access (`server/access.js`) is still accepted if it is ever put in front of `/admin` again, but it is not needed.
+- **Team members:** managed in the team space (« Compte » button, admins only): add a member (they get a temporary password to pass on), change a role, deactivate, issue a new temporary password. To rename someone, run in D1 (dashboard → D1 → charikaexpress → Console): `UPDATE team SET name = 'Salma' WHERE email = 'salma@…';`
 - **Modes:** `admin.html` and the forms use the server automatically when it answers, on charikaexpress.ma or the workers.dev address. Anywhere else (a preview, a file opened locally) they run in demo mode with example data saved in the browser. On the real site the team space never falls back to the demo.
 
 ### One-time setup in Cloudflare
 1. **Workers & Pages → Create → Import a repository** → `CHARIKAEXPRESS`. Build command `sh build.sh`, deploy command `npx wrangler deploy`. Then **Settings → Domains & Routes → Add → Custom domain** → `charikaexpress.ma` (and `www.charikaexpress.ma`). The D1 binding comes from `wrangler.toml`.
-2. **Zero Trust → Access → Applications → Add → Self-hosted.**
-   - Domain `charikaexpress.ma`, two paths: `/admin*` and `/api/admin/*`.
-   - Policy « Allow », with the e-mails of the team. Login method « One-time PIN » (a code sent by e-mail).
-3. In that application, copy the **Application Audience (AUD) tag**, and from Zero Trust → Settings copy your **team domain** (`xxx.cloudflareaccess.com`). Put both in `wrangler.toml` (`ACCESS_AUD`, `ACCESS_TEAM_DOMAIN`) and push. Until then the team API answers « accès non configuré ».
+2. The first admin account is created in D1 with a temporary password (hash made with `hashPassword` from `server/auth.js`); everyone else is added from the team space.
 
 ### Local test
 `npx wrangler d1 execute charikaexpress --local --file server/db.sql`, then `sh build.sh && npx wrangler dev --var DEV_ACCESS_EMAIL:you@example.com`. `DEV_ACCESS_EMAIL` stands in for the Access login **only on localhost**.

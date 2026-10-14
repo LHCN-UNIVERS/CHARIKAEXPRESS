@@ -49,6 +49,25 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
 .lerr{color:var(--err);font-size:.8rem;font-weight:600}
 .demo-acc{background:var(--bg);border:1px dashed var(--line);border-radius:14px;padding:10px 12px;font-size:.76rem;color:var(--m);display:grid;gap:6px}
 .demo-acc button{all:unset;cursor:pointer;color:var(--rose);font-weight:700}
+.lhint{font-size:.76rem!important;text-align:center}
+.lok{background:#e3f5ec;color:#11593a;border-radius:12px;padding:10px 12px;font-size:.8rem}
+/* Account / team window */
+.modal{position:fixed;inset:0;z-index:80;background:rgba(43,15,46,.45);display:grid;place-items:center;padding:16px}
+.mbox{background:#fff;border-radius:22px;width:min(760px,100%);max-height:calc(100dvh - 32px);overflow:auto;padding:22px;display:grid;gap:18px;box-shadow:0 30px 60px -30px rgba(43,15,46,.6)}
+.mbox h3{font-size:1.15rem;letter-spacing:-.02em;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.mbox h4{font-size:.9rem;margin-bottom:8px}
+.mbox .sec{border:1px solid var(--line);border-radius:16px;padding:14px;display:grid;gap:10px}
+.mbox .grid3{display:grid;grid-template-columns:1fr 1.3fr .8fr auto;gap:8px;align-items:end}
+.mbox label{font-size:.74rem;font-weight:600;display:grid;gap:4px}
+.mbox .tm{display:grid;grid-template-columns:34px 1fr auto;gap:10px;align-items:center;padding:8px 0;border-top:1px solid var(--line)}
+.mbox .tm:first-of-type{border-top:0}
+.mbox .tm b{font-size:.84rem;display:block}.mbox .tm small{color:var(--m);font-size:.72rem}
+.mbox .tm .act{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;align-items:center}
+.mbox .tm.off{opacity:.55}
+.mbox .newpw{background:#fff4d6;border-radius:12px;padding:10px 12px;font-size:.8rem;display:grid;gap:8px}
+.mbox .newpw code{font:700 1rem ui-monospace,Menlo,monospace;letter-spacing:.04em}
+.mbox .merr{color:var(--err);font-size:.78rem;font-weight:600}
+@media (max-width:640px){.mbox .grid3{grid-template-columns:1fr}.mbox .tm{grid-template-columns:34px 1fr}.mbox .tm .act{grid-column:1/-1;justify-content:flex-start}}
 
 /* App shell */
 .app{height:100%;display:grid;grid-template-rows:auto auto 1fr}
@@ -265,6 +284,16 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     <p class="lerr" id="lErr" hidden>E-mail ou mot de passe incorrect.</p>
     <button class="btn b-grad" type="submit">Se connecter</button>
     <div class="demo-acc" id="demoAcc"></div>
+    <p class="lhint" id="lHint" hidden>Mot de passe oublié ? Demandez à l'administrateur de le réinitialiser.</p>
+  </form>
+  <form class="lcard" id="pwForm" novalidate hidden>
+    <div class="logo"><i></i>Charika <span>Express</span></div>
+    <div><h1>Choisissez votre mot de passe</h1><p>Votre mot de passe actuel est provisoire. Choisissez-en un personnel (10 caractères minimum).</p></div>
+    <label id="pwCurL">Mot de passe actuel<input class="f" type="password" id="pwCur" autocomplete="current-password"></label>
+    <label>Nouveau mot de passe<input class="f" type="password" id="pwNew" autocomplete="new-password" minlength="10" required></label>
+    <label>Confirmer le mot de passe<input class="f" type="password" id="pwNew2" autocomplete="new-password" required></label>
+    <p class="lerr" id="pwErr" hidden></p>
+    <button class="btn b-grad" type="submit">Enregistrer et continuer</button>
   </form>
 </main>
 
@@ -278,6 +307,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
       <button class="bell" id="bell" title="Nouvelles demandes non lues" aria-label="Nouvelles demandes">🔔<b id="bellN" hidden>0</b></button>
       <button class="btn b-soft b-sm" id="exportBtn" title="Exporter la liste en CSV">Exporter</button>
       <div class="me"><span class="av" id="meAv">?</span><div><span id="meName"></span><small id="meRole"></small></div></div>
+      <button class="btn b-soft b-sm" id="acctBtn" hidden>Compte</button>
       <button class="btn b-soft b-sm" id="logout">Déconnexion</button>
     </div>
   </header>
@@ -297,6 +327,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
 </div>
 
 <div class="toast" id="toast" hidden></div>
+<div class="modal" id="acct" hidden><div class="mbox" id="acctBox" role="dialog" aria-modal="true" aria-label="Compte et équipe"></div></div>
 
 <script src="messages.js"></script>
 <script>
@@ -600,20 +631,53 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
 
   // ---------- Auth (demo) ----------
   let me = null, filter = 'todo', current = null;
-  function showLogin(){
-    $('#appView').hidden = true; $('#loginView').hidden = false;
+  let AUTH = false;   // real site: e-mail + password checked by the server (/api/auth/login)
+  function showLogin(msg){
+    $('#appView').hidden = true; $('#loginView').hidden = false; $('#loginForm').hidden = false; $('#pwForm').hidden = true;
+    if (AUTH) { $('#demoAcc').hidden = true; $('#lHint').hidden = false; $('#lErr').hidden = !msg; if (msg) $('#lErr').textContent = msg; setTimeout(() => $('#lEmail').focus(), 50); return; }
     $('#demoAcc').innerHTML = '<p><b>Comptes de démonstration</b> · mot de passe : <span class="mono">demo</span></p>' +
       TEAM.map(t => `<button type="button" data-e="${t.email}">${t.name} · ${t.role === 'admin' ? 'admin' : 'juriste'}</button>`).join('');
   }
   $('#demoAcc').addEventListener('click', e => { const b = e.target.closest('[data-e]'); if (!b) return; $('#lEmail').value = b.dataset.e; $('#lPass').value = DEMO_PASS; });
-  $('#loginForm').addEventListener('submit', e => {
+  const post = (url, body) => fetch(url, { method:'POST', credentials:'same-origin', headers:{ 'content-type':'application/json', accept:'application/json' }, body:JSON.stringify(body) });
+  let lastPass = '';
+  $('#loginForm').addEventListener('submit', async e => {
     e.preventDefault();
+    if (AUTH) {
+      const btn = e.submitter || $('#loginForm button[type=submit]'), email = $('#lEmail').value.trim(), password = $('#lPass').value;
+      if (!email || !password) { showLogin('Indiquez votre e-mail et votre mot de passe.'); return; }
+      btn.disabled = true;
+      let res = null; try { res = await post('/api/auth/login', { email, password }); } catch(err) {}
+      btn.disabled = false;
+      if (res && res.ok) { lastPass = password; $('#lPass').value = ''; const j = await res.json(); if (j.mustChange) showPw(true); else boot(); return; }
+      showLogin(!res ? 'Connexion impossible : vérifiez votre connexion internet.' : res.status === 429 ? 'Trop d\'essais. Réessayez dans 15 minutes.' : res.status === 401 ? 'E-mail ou mot de passe incorrect.' : 'Connexion impossible pour le moment, réessayez.');
+      return;
+    }
     const u = TEAM.find(t => t.email === $('#lEmail').value.trim().toLowerCase());
     if (!u || $('#lPass').value !== DEMO_PASS) { $('#lErr').hidden = false; return; }
     $('#lErr').hidden = true; store.write(USER_KEY, u.id); start(u);
   });
-  $('#logout').addEventListener('click', () => {
-    if (SERVER) { location.href = '/cdn-cgi/access/logout'; return; }   // Cloudflare Access sign-out
+  // Temporary password: choose a personal one before entering
+  function showPw(haveCurrent){
+    $('#appView').hidden = true; $('#loginView').hidden = false; $('#loginForm').hidden = true; $('#pwForm').hidden = false;
+    $('#pwCurL').hidden = haveCurrent && !!lastPass; $('#pwErr').hidden = true; setTimeout(() => ($('#pwCurL').hidden ? $('#pwNew') : $('#pwCur')).focus(), 50);
+  }
+  async function savePassword(current, password, password2, errEl){
+    const err = t => { errEl.textContent = t; errEl.hidden = false; return false; };
+    if (password.length < 10) return err('Le mot de passe doit faire au moins 10 caractères.');
+    if (password !== password2) return err('Les deux mots de passe ne sont pas identiques.');
+    let res = null; try { res = await api('password', { method:'POST', body:JSON.stringify({ current, password }) }); } catch(e) {}
+    if (res && res.ok) { lastPass = ''; return true; }
+    const code = res && (await res.json().catch(() => ({}))).error;
+    return err(code === 'bad_current_password' ? 'Le mot de passe actuel est incorrect.' : code === 'password_too_short' ? 'Le mot de passe doit faire au moins 10 caractères.' : 'Enregistrement impossible, réessayez.');
+  }
+  $('#pwForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const cur = $('#pwCurL').hidden ? lastPass : $('#pwCur').value;
+    if (await savePassword(cur, $('#pwNew').value, $('#pwNew2').value, $('#pwErr'))) { $('#pwForm').reset(); toast('Mot de passe enregistré'); boot(); }
+  });
+  $('#logout').addEventListener('click', async () => {
+    if (SERVER || AUTH) { try { await post('/api/auth/logout', {}); } catch(e) {} location.reload(); return; }
     try { localStorage.removeItem(USER_KEY); } catch(e) {} me = null; current = null; showLogin();
   });
 
@@ -1054,31 +1118,106 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   // Pick up requests sent from the form in another tab
   addEventListener('storage', e => { if (!SERVER && e.key === INBOX_KEY && me) { importInbox(); renderList(); toast('Nouvelle demande reçue'); } });
 
+  // ---------- Account and team window (real site) ----------
+  const tmRow = t => `<div class="tm ${t.active === false ? 'off' : ''}"><span class="av" style="--c:${t.c}">${esc(t.name[0] || '?')}</span>
+      <div><b>${esc(t.name)}${t.id === me.id ? ' (vous)' : ''}</b><small>${esc(t.email)} · ${t.role === 'admin' ? 'Administrateur' : 'Juriste'}${t.active === false ? ' · désactivé' : t.mustChange ? ' · mot de passe provisoire' : ''}</small></div>
+      <div class="act">${t.id === me.id ? '' : `<select class="f" data-role="${t.id}" aria-label="Rôle" style="width:auto;padding:5px 8px;font-size:.74rem"><option value="juriste" ${t.role !== 'admin' ? 'selected' : ''}>Juriste</option><option value="admin" ${t.role === 'admin' ? 'selected' : ''}>Admin</option></select>
+        <button class="btn b-soft b-sm" data-reset="${t.id}">Nouveau mot de passe</button><button class="btn b-soft b-sm" data-active="${t.id}" data-v="${t.active === false ? 1 : 0}">${t.active === false ? 'Réactiver' : 'Désactiver'}</button>`}</div></div>`;
+  const pwBox = (t, pw) => { const msg = `Bonjour ${t.name}, voici votre accès à l'espace équipe Charika Express :\n${location.origin}/admin\nE-mail : ${t.email}\nMot de passe provisoire : ${pw}\nVous choisirez votre mot de passe à la première connexion.`;
+    return `<div class="newpw"><span>Mot de passe provisoire de <b>${esc(t.name)}</b> (affiché une seule fois) :</span><code>${esc(pw)}</code><div class="ra" style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn b-soft b-sm" data-cp="${esc(msg)}">Copier le message</button>${''}</div></div>`; };
+  let acctMsg = '';
+  async function openAcct(){
+    let team = [];
+    if (me.role === 'admin') { try { const r = await api('team'); if (r.ok) team = (await r.json()).team; } catch(e) {} }
+    $('#acctBox').innerHTML = `<h3>Compte et équipe <button class="btn b-soft b-sm" id="acctClose">Fermer</button></h3>
+      <div class="sec"><h4>Mon mot de passe</h4><form id="myPw" class="grid3" novalidate>
+        <label>Actuel<input class="f" type="password" id="myCur" autocomplete="current-password"></label>
+        <label>Nouveau (10 caractères min.)<input class="f" type="password" id="myNew" autocomplete="new-password"></label>
+        <label>Confirmer<input class="f" type="password" id="myNew2" autocomplete="new-password"></label>
+        <button class="btn b-ink">Changer</button></form><p class="merr" id="myErr" hidden></p></div>
+      ${me.role === 'admin' ? `<div class="sec"><h4>Équipe</h4>${acctMsg}
+        ${team.map(tmRow).join('')}
+        <form id="addTm" class="grid3" novalidate style="border-top:1px solid var(--line);padding-top:12px">
+          <label>Nom<input class="f" id="tmName" placeholder="Salma"></label>
+          <label>E-mail<input class="f" type="email" id="tmEmail" placeholder="salma@exemple.ma"></label>
+          <label>Rôle<select class="f" id="tmRole"><option value="juriste">Juriste</option><option value="admin">Admin</option></select></label>
+          <button class="btn b-grad">Ajouter</button></form><p class="merr" id="tmErr" hidden></p>
+        <p class="hint" style="margin:0">Chaque membre reçoit un mot de passe provisoire à lui transmettre (WhatsApp, en personne) ; il en choisit un personnel à sa première connexion. « Désactiver » coupe son accès tout de suite.</p></div>` : ''}`;
+    acctMsg = '';
+    $('#acct').hidden = false;
+  }
+  async function refreshTeam(){ try { const r = await api('me'); if (r.ok) { const j = await r.json(); TEAM.splice(0, TEAM.length, ...j.team); } } catch(e) {} }
+  $('#acctBtn').addEventListener('click', openAcct);
+  $('#acct').addEventListener('click', async e => {
+    if (e.target.id === 'acct' || e.target.id === 'acctClose') { $('#acct').hidden = true; return; }
+    const t = e.target.closest('button'); if (!t) return;
+    if (t.dataset.cp != null) { copyText(t.dataset.cp, 'Message copié : envoyez-le au membre'); return; }
+    const put = (id, body) => api('team/' + id, { method:'PUT', body:JSON.stringify(body) });
+    if (t.dataset.reset) {
+      if (!armed(t, 'Confirmer : nouveau mot de passe')) return;
+      const r = await put(t.dataset.reset, { resetPassword:true }); const j = await r.json().catch(() => ({}));
+      const m = TEAM.find(x => x.id === t.dataset.reset) || { name:'', email:'' };
+      acctMsg = r.ok ? pwBox(m, j.tempPassword) : '<p class="merr">Réinitialisation impossible.</p>'; openAcct(); return;
+    }
+    if (t.dataset.active) {
+      if (t.dataset.v === '0' && !armed(t, 'Confirmer : désactiver')) return;
+      await put(t.dataset.active, { active:t.dataset.v === '1' }); await refreshTeam(); openAcct(); return;
+    }
+  });
+  $('#acct').addEventListener('change', async e => {
+    const s = e.target.closest('[data-role]'); if (!s) return;
+    await api('team/' + s.dataset.role, { method:'PUT', body:JSON.stringify({ role:s.value }) }); await refreshTeam(); toast('Rôle mis à jour');
+  });
+  $('#acct').addEventListener('submit', async e => {
+    e.preventDefault();
+    if (e.target.id === 'myPw') {
+      if (await savePassword($('#myCur').value, $('#myNew').value, $('#myNew2').value, $('#myErr'))) { e.target.reset(); $('#myErr').hidden = true; toast('Mot de passe changé'); }
+      return;
+    }
+    if (e.target.id === 'addTm') {
+      const body = { name:$('#tmName').value.trim(), email:$('#tmEmail').value.trim(), role:$('#tmRole').value };
+      const r = await api('team', { method:'POST', body:JSON.stringify(body) }); const j = await r.json().catch(() => ({}));
+      if (!r.ok) { $('#tmErr').textContent = j.error === 'email_exists' ? 'Cet e-mail fait déjà partie de l\'équipe.' : j.error === 'bad_email' ? 'E-mail invalide.' : 'Ajout impossible.'; $('#tmErr').hidden = false; return; }
+      await refreshTeam();
+      acctMsg = pwBox({ name:body.name || body.email, email:body.email.toLowerCase() }, j.tempPassword); openAcct();
+    }
+  });
+
   // Start: shared database if the team API answers, demo otherwise.
-  (async () => {
+  let timers = false;
+  async function boot(){
     let res = null;
     if (location.protocol !== 'file:') { try { res = await api('me'); } catch(e) {} }
     const isJson = res && (res.headers.get('content-type') || '').includes('application/json');
     if (res && res.ok && isJson) {
       const j = await res.json();
-      SERVER = true; db = { requests:[] };
+      SERVER = true; AUTH = true;
+      if (j.me.mustChange) { showPw(true); return; }
+      db = db && db.requests && SERVER && timers ? db : { requests:[] };
       TEAM.splice(0, TEAM.length, ...j.team);
-      $('#demoBar').hidden = true;
+      $('#demoBar').hidden = true; $('#acctBtn').hidden = false;
       await pull();
       start(TEAM.find(t => t.id === j.me.id) || j.me);
-      setInterval(() => pull(), 20000);
-      addEventListener('focus', () => pull());
-      addEventListener('beforeunload', e => { if (db.requests.some(r => JSON.stringify(r) !== snap[r.ref])) { sync(); e.preventDefault(); e.returnValue = ''; } });
+      if (!timers) {
+        timers = true;
+        setInterval(() => me && pull(), 20000);
+        addEventListener('focus', () => me && pull());
+        addEventListener('beforeunload', e => { if (db.requests.some(r => JSON.stringify(r) !== snap[r.ref])) { sync(); e.preventDefault(); e.returnValue = ''; } });
+      }
       return;
     }
     const code = isJson && [401, 403, 503].includes(res.status) ? (await res.json().catch(() => ({}))).error : null;
-    if (['not_signed_in', 'bad_token', 'access_not_configured', 'access_certs'].includes(code)) {   // our team API refuses: never fall back to the demo on the real site
-      document.body.innerHTML = `<main class="login"><div class="lcard"><div class="logo"><i></i>Charika <span>Express</span></div><h1>Accès refusé</h1><p>${code === 'access_not_configured' ? "L'accès sécurisé de l'espace équipe n'est pas encore configuré (Cloudflare Access, voir README)." : 'Votre compte ne permet pas d\'ouvrir l\'espace équipe. Reconnectez-vous avec votre e-mail professionnel.'}</p><a class="btn b-grad" href="/cdn-cgi/access/logout">Se reconnecter</a></div></main>`;
+    if (code === 'not_signed_in' || code === 'not_in_team' || code === 'bad_token') {   // real site, not signed in: our own login page (never the demo)
+      SERVER = true; AUTH = true; showLogin(code === 'not_in_team' ? 'Ce compte n\'a pas accès à l\'espace équipe.' : ''); return;
+    }
+    if (code) {
+      document.body.innerHTML = `<main class="login"><div class="lcard"><div class="logo"><i></i>Charika <span>Express</span></div><h1>Espace équipe indisponible</h1><p>Le service est momentanément indisponible. Réessayez dans quelques minutes.</p><a class="btn b-grad" href="/admin">Réessayer</a></div></main>`;
       return;
     }
     const saved = TEAM.find(t => t.id === store.read(USER_KEY, null));
     saved ? start(saved) : showLogin();
-  })();
+  }
+  boot();
 })();
 </script>
 </body>

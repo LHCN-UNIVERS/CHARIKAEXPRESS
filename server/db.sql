@@ -15,3 +15,17 @@ CREATE TABLE IF NOT EXISTS team (
   color TEXT NOT NULL,
   created_at TEXT NOT NULL
 );
+
+-- Own login (e-mail + password) for the team space
+ALTER TABLE team ADD COLUMN pass_hash TEXT;           -- PBKDF2-SHA256, 100 000 iterations, hex
+ALTER TABLE team ADD COLUMN pass_salt TEXT;           -- random, hex
+ALTER TABLE team ADD COLUMN must_change INTEGER NOT NULL DEFAULT 0;   -- 1 = temporary password, change it at next login
+ALTER TABLE team ADD COLUMN active INTEGER NOT NULL DEFAULT 1;
+CREATE TABLE IF NOT EXISTS sessions (
+  token_hash TEXT PRIMARY KEY,     -- SHA-256 of the cookie value (the cookie itself is never stored)
+  email TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  expires_at TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS login_fails (k TEXT NOT NULL, at TEXT NOT NULL);   -- k = 'e:<email>' or 'i:<ip hash>'
+CREATE INDEX IF NOT EXISTS login_fails_k ON login_fails(k, at);
