@@ -970,8 +970,9 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
           <div class="cmp"><select class="f" id="rejCause"><option value="client">Problème côté client (le client sera notifié)</option><option value="cabinet">Problème côté cabinet</option></select><button class="btn b-ink">Enregistrer</button><button type="button" class="btn b-soft" id="rejCancel">Annuler</button></div></form>`
           : '<button class="btn b-soft b-sm rejbtn" id="rejOpen">⚠ Signaler un rejet</button>';
       }
-      curBox = `<div class="box cur-step"><h4>Étape ${r.step + 1}/${DONE} · ${esc(w.name)} <small>${left ? `${left} élément${left > 1 ? 's' : ''} restant${left > 1 ? 's' : ''} · l'étape suivante démarre automatiquement` : 'tout est fait · décochez la tâche à refaire'}</small></h4>
-        <p class="hint">${esc(w.hint)}</p>${rej}${tasksOf(r, r.step).map(taskRow).join('')}${backBtn}</div>`;
+      curBox = `<div class="box cur-step"><h4>Étape ${r.step + 1}/${DONE} · ${esc(w.name)} <small>${left ? `${left} élément${left > 1 ? 's' : ''} restant${left > 1 ? 's' : ''} · l'étape suivante démarre automatiquement` : 'tout est fait'}</small></h4>
+        <p class="hint">${esc(w.hint)}</p>${rej}${tasksOf(r, r.step).map(taskRow).join('')}
+        <div class="ra" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">${!left && canEdit && stepDone(r, r.step) ? `<button class="btn b-grad b-sm" id="stepNext">Passer à l'étape suivante : ${esc(stepName(r.step + 1))} →</button>` : ''}${backBtn}</div></div>`;
     }
     $('#detail').innerHTML = `
     <section class="ctr">
@@ -1058,6 +1059,13 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     if (t.id === 'back') { $('#body').classList.remove('open'); return; }
     if (t.id === 'rejOpen' || t.id === 'rejCancel') { rejectOpen = t.id === 'rejOpen'; renderDetail(); if (rejectOpen) $('#rejMotif').focus(); return; }
     if (t.closest('#rejForm')) return;                  // the form's own submit
+    if (t.id === 'stepNext') {                          // one step forward, after a step back
+      if (r.step >= DONE || !stepDone(r, r.step)) return;
+      r.step++; msgSel = null;
+      log(r, r.step >= DONE ? 'Dossier livré au client. ✓' : `Étape terminée : ${WORKFLOW[r.step - 1].name} → ${WORKFLOW[r.step].name}.`);
+      if (r.step < DONE) tasksOf(r, r.step).forEach(tk => { if (tk.t === 'doc' && !r.livrables[tk.k]) r.livrables[tk.k] = 1; });
+      persist(); renderList(); renderDetail(); toast(r.step >= DONE ? 'Dossier terminé ✓' : `Étape suivante : ${WORKFLOW[r.step].name}`); return;
+    }
     if (t.id === 'stepBack') {
       if (r.step < 1 || !armed(t, `Confirmer : revenir à « ${WORKFLOW[r.step - 1].name} »`)) return;
       r.step--; msgSel = null; log(r, `Dossier remis à l'étape précédente : ${WORKFLOW[r.step].name}.`);
