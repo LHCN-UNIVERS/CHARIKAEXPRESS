@@ -171,6 +171,7 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
 .rejb small{color:#a5524a}.rejb .ra{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
 .rejf{display:grid;gap:8px;background:#fffaf7;border:1px dashed var(--line);border-radius:14px;padding:12px;font-size:.8rem}
 .rejbtn{justify-self:start;color:#a5524a}
+.stepback{justify-self:start;color:var(--m);font-weight:600}
 .msgb.todo{border-color:#bfeccf;box-shadow:inset 4px 0 0 #25d366}
 .mrow{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.mrow select{flex:1;min-width:180px}
 .mseg{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:3px}
@@ -955,7 +956,9 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     };
     const w = WORKFLOW[r.step];
     let curBox = '';
-    if (r.step >= DONE) curBox = `<div class="box cur-step okb"><h4>✓ Dossier livré <small>Tous les documents ont été envoyés au client.</small></h4></div>`;
+    // Going back one step, for a file moved forward by mistake (the previous step's tasks stay as they are: untick the one to redo)
+    const backBtn = canEdit && r.step > 0 ? `<button class="btn b-soft b-sm stepback" id="stepBack" title="Remet le dossier à l'étape « ${esc(WORKFLOW[r.step - 1].name)} »">↩ Revenir à l'étape précédente</button>` : '';
+    if (r.step >= DONE) curBox = `<div class="box cur-step okb"><h4>✓ Dossier livré <small>Tous les documents ont été envoyés au client.</small></h4>${backBtn}</div>`;
     else {
       const left = tasksOf(r, r.step).filter(tk => !taskDone(r, tk)).length;
       let rej = '';
@@ -967,8 +970,8 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
           <div class="cmp"><select class="f" id="rejCause"><option value="client">Problème côté client (le client sera notifié)</option><option value="cabinet">Problème côté cabinet</option></select><button class="btn b-ink">Enregistrer</button><button type="button" class="btn b-soft" id="rejCancel">Annuler</button></div></form>`
           : '<button class="btn b-soft b-sm rejbtn" id="rejOpen">⚠ Signaler un rejet</button>';
       }
-      curBox = `<div class="box cur-step"><h4>Étape ${r.step + 1}/${DONE} · ${esc(w.name)} <small>${left ? `${left} élément${left > 1 ? 's' : ''} restant${left > 1 ? 's' : ''} · l'étape suivante démarre automatiquement` : 'terminée'}</small></h4>
-        <p class="hint">${esc(w.hint)}</p>${rej}${tasksOf(r, r.step).map(taskRow).join('')}</div>`;
+      curBox = `<div class="box cur-step"><h4>Étape ${r.step + 1}/${DONE} · ${esc(w.name)} <small>${left ? `${left} élément${left > 1 ? 's' : ''} restant${left > 1 ? 's' : ''} · l'étape suivante démarre automatiquement` : 'tout est fait · décochez la tâche à refaire'}</small></h4>
+        <p class="hint">${esc(w.hint)}</p>${rej}${tasksOf(r, r.step).map(taskRow).join('')}${backBtn}</div>`;
     }
     $('#detail').innerHTML = `
     <section class="ctr">
@@ -1055,6 +1058,11 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     if (t.id === 'back') { $('#body').classList.remove('open'); return; }
     if (t.id === 'rejOpen' || t.id === 'rejCancel') { rejectOpen = t.id === 'rejOpen'; renderDetail(); if (rejectOpen) $('#rejMotif').focus(); return; }
     if (t.closest('#rejForm')) return;                  // the form's own submit
+    if (t.id === 'stepBack') {
+      if (r.step < 1 || !armed(t, `Confirmer : revenir à « ${WORKFLOW[r.step - 1].name} »`)) return;
+      r.step--; msgSel = null; log(r, `Dossier remis à l'étape précédente : ${WORKFLOW[r.step].name}.`);
+      persist(); renderList(); renderDetail(); toast(`Retour à l'étape « ${WORKFLOW[r.step].name} »`); return;
+    }
     if (t.id === 'take') { r.juriste = me.id; log(r, `${me.name} prend le dossier.`); toast('Dossier assigné à vous'); }
     else if (t.id === 'redepot') { log(r, `Dossier corrigé et redéposé (rejet précédent : ${r.reject.motif}).`); r.reject = null; toast('Dossier redéposé'); }
     else if (t.dataset.liv) {
