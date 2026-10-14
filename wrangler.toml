@@ -22,4 +22,4 @@ database_id = "0876352c-d28d-4d57-bf81-606a9509aebf"
 # Until both are set, the team API refuses every call.
 [vars]
 ACCESS_TEAM_DOMAIN = "odd-violet-e6b7.cloudflareaccess.com"
-ACCESS_AUD = ""
+ACCESS_AUD = "5bdf85e4b704fb07e895c54ddf7c5a7ef6059757df3ebe9cd70b11a7287b8c69"
