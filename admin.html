@@ -152,10 +152,10 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
 .back{display:none}
 .trackw{border-radius:18px;overflow-x:auto}
 .track{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px 8px;display:grid;grid-template-columns:repeat(10,minmax(60px,1fr));min-width:620px}
-.track button{all:unset;cursor:pointer;display:grid;justify-items:center;gap:6px;text-align:center;font-size:.68rem;color:var(--m);position:relative;padding:0 2px}
-.track button::before{content:"";position:absolute;top:13px;inset-inline-end:50%;width:100%;height:3px;background:var(--line)}
-.track button:first-child::before{display:none}
-.track button.ok::before,.track button.cur::before{background:var(--ok)}
+.track .ts{display:grid;cursor:default;user-select:none;justify-items:center;gap:6px;text-align:center;font-size:.68rem;color:var(--m);position:relative;padding:0 2px}
+.track .ts::before{content:"";position:absolute;top:13px;inset-inline-end:50%;width:100%;height:3px;background:var(--line)}
+.track .ts:first-child::before{display:none}
+.track .ts.ok::before,.track .ts.cur::before{background:var(--ok)}
 .track i{width:28px;height:28px;border-radius:50%;background:#fff;border:2px solid var(--line);display:grid;place-items:center;font-style:normal;font-weight:800;font-size:.72rem;position:relative;z-index:1}
 .track .ok i{background:var(--ok);border-color:var(--ok);color:#fff}
 .track .cur i{border-color:var(--pink);color:var(--pink);box-shadow:0 0 0 5px rgba(255,79,154,.15)}
@@ -266,9 +266,9 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   .ctr{padding:16px}
   .two{grid-template-columns:1fr}
   .track{padding:14px 4px}
-  .track button{font-size:.58rem}
+  .track .ts{font-size:.58rem}
   .track i{width:24px;height:24px;font-size:.64rem}
-  .track button::before{top:11px}
+  .track .ts::before{top:11px}
 }
 </style>
 </head>
@@ -375,7 +375,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     { name:'Demande reçue', short:'Reçue', hint:"Le client règle l'avance de 700 MAD. Le certificat négatif démarre dès réception.", tasks:[{ t:'check', k:'prio', opt:'o_prio', label:'Traitement prioritaire : dossier signalé en priorité à l\'équipe' }, { t:'pay', k:'avance' }] },
     { name:'Certificat négatif', short:'Certificat', hint:"Demande du certificat négatif à l'OMPIC pour réserver le nom.", tasks:[{ t:'doc', k:'cn' }] },
     { name:'Rédaction', short:'Rédaction', hint:'Préparation des documents, puis envoi au client pour légalisation.', tasks:[{ t:'doc', k:'statuts' }, { t:'doc', k:'pacte', opt:'o_pacte' }, { t:'doc', k:'domiciliation' }, { t:'doc', k:'procuration' }, { t:'check', k:'form-rc', label:"Formulaire RC (déclaration d'immatriculation) préparé" }, { t:'check', k:'sent-legal', label:'Documents envoyés au client pour légalisation' }] },
-    { name:'Légalisation', short:'Légalisation', hint:'Le client légalise les documents, les renvoie et règle 50 % du reste.', tasks:[{ t:'check', k:'legal-back', label:'Documents légalisés reçus du client' }, { t:'pay', k:'second' }] },
+    { name:'Légalisation', short:'Légalis', hint:'Le client légalise les documents, les renvoie et règle 50 % du reste.', tasks:[{ t:'check', k:'legal-back', label:'Documents légalisés reçus du client' }, { t:'pay', k:'second' }] },
     { name:'Enregistrement', short:'Enregistrement', hint:'Enregistrement des statuts et du contrat de domiciliation.', tasks:[{ t:'doc', k:'enr-statuts' }, { t:'doc', k:'enr-domiciliation' }] },
     { name:'Dépôt OMPIC · Impôts', short:'OMPIC · Impôts', hint:"Dépôt à l'OMPIC, traitement par les Impôts. En cas de rejet, indiquez le motif.", reject:true, tasks:[{ t:'check', k:'depot', label:"Dossier déposé à l'OMPIC" }, { t:'doc', k:'ice' }, { t:'doc', k:'tp' }, { t:'doc', k:'if' }, { t:'doc', k:'identifiants' }] },
     { name:'Tribunal', short:'Tribunal', hint:'Immatriculation au registre de commerce, puis affiliation CNSS.', tasks:[{ t:'doc', k:'rc' }, { t:'doc', k:'cnss' }] },
@@ -983,7 +983,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
           ${r.step >= DONE ? '<span class="pill p-ok">✓ Dossier livré</span>' : ''}
         </div>
       </div>
-      <div class="trackw"><div class="track" role="list">${WORKFLOW.map((x, i) => `<button role="listitem" data-step="${i}" class="${i < r.step ? 'ok' : i === r.step ? (r.reject && x.reject ? 'cur rj' : 'cur') : ''}" ${me.role === 'admin' ? '' : 'disabled'} title="${esc(x.name)}${me.role === 'admin' ? ' · cliquer pour déplacer le dossier' : ''}"><i>${i < r.step ? '✓' : r.reject && x.reject && i === r.step ? '!' : i + 1}</i>${esc(x.short)}</button>`).join('')}</div></div>
+      <div class="trackw"><div class="track" role="list">${WORKFLOW.map((x, i) => `<div role="listitem" class="ts ${i < r.step ? 'ok' : i === r.step ? (r.reject && x.reject ? 'cur rj' : 'cur') : ''}" title="${esc(x.name)}"><i>${i < r.step ? '✓' : r.reject && x.reject && i === r.step ? '!' : i + 1}</i>${esc(x.short)}</div>`).join('')}</div></div>
       ${scored(r) ? scoreBox(r, canEdit) : ''}
       ${curBox}
       ${msgBox}
@@ -1057,11 +1057,6 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     if (t.closest('#rejForm')) return;                  // the form's own submit
     if (t.id === 'take') { r.juriste = me.id; log(r, `${me.name} prend le dossier.`); toast('Dossier assigné à vous'); }
     else if (t.id === 'redepot') { log(r, `Dossier corrigé et redéposé (rejet précédent : ${r.reject.motif}).`); r.reject = null; toast('Dossier redéposé'); }
-    else if (t.dataset.step != null) {
-      const s2 = +t.dataset.step; if (s2 === r.step) return;
-      if (!t.dataset.armed) { t.dataset.armed = '1'; setTimeout(() => t.isConnected && delete t.dataset.armed, 4000); toast(`Cliquez encore pour passer à « ${WORKFLOW[s2].name} »`); return; }
-      r.step = s2; log(r, `Dossier déplacé manuellement à l'étape : ${WORKFLOW[s2].name}.`);
-    }
     else if (t.dataset.liv) {
       const k = t.dataset.liv; r.livrables[k] = ((r.livrables[k] || 0) + 1) % 3;
       log(r, `${DOCS[k][0]} : ${DOC_ST[r.livrables[k]].toLowerCase()}.`);
