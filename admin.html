@@ -227,6 +227,33 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
 .mprev{background:#e7f8dc;color:#1d3a12;border-radius:14px 14px 14px 4px;padding:10px 12px;font-size:.8rem;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere;max-height:260px;overflow:auto}
 .mprev[dir="rtl"]{border-radius:14px 14px 4px 14px;font-size:.88rem}
 .msgb .ra{display:flex;gap:8px;flex-wrap:wrap}
+.dtl{display:grid;margin-top:12px}
+.dti{display:grid;grid-template-columns:28px minmax(0,1fr);gap:12px;position:relative;padding-bottom:10px}
+.dti:not(:last-child)::after{content:"";position:absolute;left:13px;top:28px;bottom:0;width:2px;background:var(--line)}
+.dti.done:not(:last-child)::after{background:linear-gradient(var(--coral,#ff795b),var(--rose,#ff4f91))}
+.ddot{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:.72rem;background:#fff;box-shadow:inset 0 0 0 1.5px var(--line);color:var(--m)}
+.dti.done .ddot{background:var(--grad);color:#fff;box-shadow:none}
+.dti.now .ddot{color:var(--rose,#ff4f91);box-shadow:inset 0 0 0 2px var(--rose,#ff4f91),0 0 0 5px rgba(255,79,145,.12)}
+.dti.late .ddot{color:#c4502c;box-shadow:inset 0 0 0 2px #f0a58f}
+.dth{all:unset;box-sizing:border-box;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;min-height:28px}
+.dth:focus-visible{outline:2px solid var(--rose,#ff4f91);outline-offset:2px;border-radius:6px}
+.dth b{font-size:.86rem}.dti.later .dth b{color:var(--m);font-weight:600}
+.dth small{font-size:.72rem;font-weight:700;color:var(--m);text-align:end;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dti.done .dth small{color:var(--ok)}.dti.now .dth small{color:var(--rose,#ff4f91)}.dti.late .dth small{color:#c4502c}
+.dds{display:grid;gap:6px;margin-top:6px}
+.dd{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:7px 9px 7px 10px;font-size:.8rem}
+.dd > span{flex:1;min-width:0}
+.dti.now .dd{border-color:#ffd0e0}
+.dd.s2{background:#f3fbf7;border-color:#cdeedd}
+.dcb{width:18px;height:18px;border-radius:5px;box-shadow:inset 0 0 0 1.5px #d4bfca;flex:none;display:grid;place-items:center;font-style:normal;font-size:.62rem;font-weight:800}
+.dd.s1 .dcb{box-shadow:inset 0 0 0 1.5px #e0b84d;background:#fff4d6}
+.dd.s2 .dcb{background:var(--ok);color:#fff;box-shadow:none}
+.dd .lst{margin-top:0}
+.pays3{display:grid;gap:7px;margin-top:10px}
+.pays3 div{display:flex;align-items:center;gap:10px;font-size:.8rem}
+.pays3 i{width:18px;height:18px;border-radius:50%;flex:none;display:grid;place-items:center;font-style:normal;font-size:.62rem;font-weight:800;box-shadow:inset 0 0 0 1.5px #d4bfca}
+.pays3 .y i{background:var(--ok);color:#fff;box-shadow:none}
+.pays3 span{flex:1;min-width:0}
 .lgrp{border-top:1px dashed var(--line);padding-top:10px}.lgrp h5{margin:0 0 8px;font-size:.74rem;color:var(--m);text-transform:uppercase;letter-spacing:.05em}
 .lgrp.now h5{color:var(--rose)}
 .li small.rej{color:var(--err);font-weight:600}
@@ -425,6 +452,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     'logo': ['Logo et carte de visite', 'Option choisie par le client. À lancer dès que le nom est réservé, validé par le client, remis avec le dossier.']
   };
   const DOC_ST = ['En attente', 'En cours', 'Obtenu'];
+  const openSteps = new Set();                       // document steps opened by hand in the file view (ref:step)
   const AVANCE = 700;
   // The creation workflow. A step is finished when all its tasks are done; the file then moves on by itself.
   // Task types: doc (a document above, done when "Obtenu"), check (an action ticked by the team), pay (a payment received).
@@ -1050,17 +1078,27 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
       ${msgBox}
       <div class="box"><h4>Documents de la société <small>${livOk}/${docsTotal(r)} obtenus</small></h4>
         <div class="prog"><i style="width:${livOk / docsTotal(r) * 100}%"></i></div>
-        ${WORKFLOW.map((x, i) => { const ds = tasksOf(r, i).filter(tk => tk.t === 'doc'); if (!ds.length) return ''; return `<div class="lgrp ${i === r.step ? 'now' : ''}"><h5>${i + 1}. ${esc(x.name)}</h5><div class="livs">${ds.map(tk => `<div class="lv">${docBtn(tk.k)}<div><b>${esc(DOCS[tk.k][0])}</b></div></div>`).join('')}</div></div>`; }).join('')}
+        <div class="dtl">${WORKFLOW.map((x, i) => {
+          const ds = tasksOf(r, i).filter(tk => tk.t === 'doc'); if (!ds.length) return '';
+          const ok = ds.filter(tk => r.livrables[tk.k] === 2).length, all = ok === ds.length;
+          const state = all && i !== r.step ? 'done' : i === r.step ? 'now' : i < r.step ? 'late' : 'later';
+          const open = state === 'now' || state === 'late' || openSteps.has(r.ref + ':' + i);
+          const names = ds.map(tk => DOCS[tk.k][0].replace(/^Attestation d'(inscription à la |enregistrement (des |du ))?/, '').replace(/ \(.*\)$/, '')).join(', ');
+          const meta = all ? `${ok}/${ds.length} ✓${state === 'done' && ds.length > 1 ? ' · ' + esc(names) : ''}` : state === 'now' ? `${ok}/${ds.length} · en cours` : state === 'late' ? `${ok}/${ds.length} · en retard` : `${ds.length} document${ds.length > 1 ? 's' : ''}`;
+          return `<div class="dti ${state}${open ? ' open' : ''}"><span class="ddot">${all ? '✓' : i + 1}</span><div>
+            <button type="button" class="dth" data-lstep="${i}" aria-expanded="${open}"><b>${esc(x.name)}</b><small>${meta}</small></button>
+            ${open ? `<div class="dds">${ds.map(tk => { const st = r.livrables[tk.k] || 0; return `<div class="dd s${st}"><i class="dcb">${st === 2 ? '✓' : ''}</i><span>${esc(DOCS[tk.k][0])}</span>${docBtn(tk.k)}</div>`; }).join('')}</div>` : ''}
+          </div></div>`; }).join('')}</div>
       </div>
       <div class="two">
-        <div class="box"><h4>Pièces du client <small>${piecesOk}/${docs.length}</small></h4>
-          ${docs.map(d => `<div class="row"><i class="st ${r.docs[d.k] ? 'y' : 'n'}">${r.docs[d.k] ? '✓' : '!'}</i><span>${esc(d.label)}</span>
-            ${canEdit ? `<button class="tg ${r.docs[d.k] ? 'y' : ''}" data-doc="${d.k}">${r.docs[d.k] ? 'Reçue' : 'Marquer reçue'}</button>` : ''}
-            ${!r.docs[d.k] ? `<a class="tg" href="${waLink(r.client?.tel, `Bonjour ${r.client?.nom || ''}, pour avancer sur votre dossier ${r.ref}, merci de nous envoyer : ${d.label}.`)}" target="_blank" rel="noopener">Relancer</a>` : ''}</div>`).join('')}
+        <div class="box"><h4>Pièces du client <small>${piecesOk}/${docs.length} reçue${piecesOk > 1 ? 's' : ''}</small></h4>
+          <div class="dds">${docs.map(d => `<div class="dd ${r.docs[d.k] ? 's2' : ''}"><i class="dcb">${r.docs[d.k] ? '✓' : ''}</i><span>${esc(d.label)}</span>
+            ${canEdit ? `<button class="tg ${r.docs[d.k] ? 'y' : ''}" data-doc="${d.k}">${r.docs[d.k] ? 'Reçue ✓' : 'Reçue'}</button>` : ''}
+            ${!r.docs[d.k] ? `<a class="tg" href="${waLink(r.client?.tel, `Bonjour ${r.client?.nom || ''}, pour avancer sur votre dossier ${r.ref}, merci de nous envoyer : ${d.label}.`)}" target="_blank" rel="noopener">Relancer</a>` : ''}</div>`).join('')}</div>
         </div>
-        <div class="box"><h4>Paiements <small>${esc(PAY[r.payMethod] || '')}</small></h4>
-          ${am.map(a => `<div class="row"><span>${esc(a.label)}</span><b>${a.v == null ? 'Sur devis' : fmt(a.v) + ' MAD'}</b><span class="pill ${payDone(r, a.k) ? 'p-ok' : 'p-wait'}">${payDone(r, a.k) ? 'Reçu' : 'Attendu'}</span></div>`).join('')}
-          <div class="prog"><i style="width:${r.total ? paidSum / r.total * 100 : 0}%"></i></div><div style="display:flex;justify-content:space-between;font-size:.76rem;color:var(--m)"><span>Payé</span><b style="color:var(--ink)">${fmt(paidSum)} / ${r.total == null ? 'sur devis' : fmt(r.total) + ' MAD'}</b></div>
+        <div class="box"><h4>Paiements <small>${esc(PAY[r.payMethod] || '')} · ${fmt(paidSum)} / ${r.total == null ? 'sur devis' : fmt(r.total) + ' MAD'}</small></h4>
+          <div class="prog"><i style="width:${r.total ? paidSum / r.total * 100 : 0}%"></i></div>
+          <div class="pays3">${am.map(a => `<div class="${payDone(r, a.k) ? 'y' : ''}"><i>${payDone(r, a.k) ? '✓' : ''}</i><span>${esc(a.label)}${payDone(r, a.k) ? ' · reçu' : ''}</span><b>${a.v == null ? 'Sur devis' : fmt(a.v) + ' MAD'}</b></div>`).join('')}</div>
         </div>
         ${affBox(r)}
       </div>
@@ -1108,6 +1146,8 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   let rejectOpen = false;
   $('#detail').addEventListener('click', e => {
     const r = current && get(current); if (!r) return;
+    const ls = e.target.closest('[data-lstep]');
+    if (ls) { const key = r.ref + ':' + ls.dataset.lstep; openSteps.has(key) ? openSteps.delete(key) : openSteps.add(key); renderDetail(); return; }
     const ap = e.target.closest('[data-affpay]');
     if (ap) {
       if (!armed(ap, 'Confirmer : commission versée')) return;
