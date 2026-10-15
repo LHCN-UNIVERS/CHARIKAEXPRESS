@@ -199,11 +199,23 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
 .ad .rule{color:var(--m);font-size:.76rem;background:#fff;border:1px dashed var(--line);border-radius:12px;padding:10px 12px}
 .ad .newbox{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;display:grid;gap:12px}
 .ad .aff-f{display:grid;grid-template-columns:1fr 1.2fr 1fr auto;gap:8px;align-items:end}
+.aav.ph{background-size:cover;background-position:center}
+.ad .cform{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ad .cform label{display:grid;gap:5px;font-weight:600;font-size:.76rem}
+.ad .cform .wide{grid-column:1/-1}
+.ad .csvc{display:flex;flex-wrap:wrap;gap:6px}
+.ad .csvc label{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:5px 10px;font-size:.74rem;font-weight:600;cursor:pointer;background:#fff}
+.ad .csvc input{accent-color:var(--pink)}
+.ad .photos{display:flex;flex-wrap:wrap;gap:10px}
+.ad .photos a{display:block;width:150px;height:100px;border-radius:12px;background-size:cover;background-position:center;border:1px solid var(--line)}
+.dsel{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.dsel select{flex:1;min-width:150px}
 .ad .newpw{background:#fff4d6;border-radius:12px;padding:10px 12px;font-size:.8rem;display:grid;gap:8px}
 .ad .newpw code{font:700 1rem ui-monospace,Menlo,monospace;letter-spacing:.04em}
 .ad .newpw .acts{display:flex;gap:6px;flex-wrap:wrap}
 .ad .merr{color:var(--err);font-size:.78rem;font-weight:600}
 @media (max-width:820px){
+  .ad .cform{grid-template-columns:1fr}
   .aw{grid-template-columns:minmax(0,1fr)}
   .al{position:static;max-height:none;height:auto;border-right:0}
   .aw.det .al,.aw:not(.det) .ad{display:none}
@@ -464,7 +476,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
 <div class="app" id="appView" hidden>
   <header class="top">
     <div class="logo"><i></i>Charika <span>Express</span></div>
-    <nav class="seg" aria-label="Sections"><button type="button" class="on" id="segReq" aria-current="page">Demandes</button><button type="button" id="affBtn" hidden>Partenaires</button></nav>
+    <nav class="seg" aria-label="Sections"><button type="button" class="on" id="segReq" aria-current="page">Demandes</button><button type="button" id="affBtn" hidden>Partenaires</button><button type="button" id="ctrBtn" hidden>Centres</button></nav>
     <label class="search" for="q"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="q" type="search" placeholder="Rechercher : réf, nom, téléphone, CIN…" aria-label="Rechercher" autocomplete="off"><kbd title="Raccourci clavier">/</kbd></label>
     <div class="r">
       <button class="ib bell" id="bell" type="button" title="Nouvelles demandes non lues" aria-label="Nouvelles demandes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><b id="bellN" hidden>0</b></button>
@@ -485,6 +497,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   <nav class="tabbar" id="tabbar" aria-label="Navigation">
     <button type="button" class="on" id="tbReq"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg><span>Demandes</span><b id="tbN" hidden>0</b></button>
     <button type="button" id="tbAff" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M21.5 20a6.5 6.5 0 0 0-4-6"/></svg><span>Partenaires</span></button>
+    <button type="button" id="tbCtr" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16M16 9h3a1 1 0 0 1 1 1v11M2 21h20M8 7h4M8 11h4M8 15h4"/></svg><span>Centres</span></button>
   </nav>
   <div class="demo-bar" id="demoBar"><span>⚠️ Mode démonstration<span class="long"> : les données sont enregistrées dans ce navigateur seulement. Pour que toute l'équipe partage les demandes, il faut connecter une base de données (voir README).</span></span><button id="resetDemo">Réinitialiser la démo</button></div>
   <div class="body" id="body">
@@ -500,6 +513,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     <div class="detail" id="detail"></div>
   </div>
   <main class="affpage" id="affm" hidden aria-label="Partenaires"><div class="aw" id="affBox"></div></main>
+  <main class="affpage" id="ctrm" hidden aria-label="Centres de domiciliation"><div class="aw" id="ctrBox"></div></main>
 </div>
 
 <div class="toast" id="toast" hidden></div>
@@ -1025,7 +1039,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     const b = e.target.closest('[data-f]'); if (!b) return;
     filter = b.dataset.f; renderList();
   });
-  $('#q').addEventListener('input', () => { if (!$('#affm').hidden) showAff(false); renderList(); });
+  $('#q').addEventListener('input', () => { if (PAGE !== 'req') showPage('req'); renderList(); });
   $('#bell').addEventListener('click', () => { filter = 'todo'; shut.delete('new'); $('#q').value = ''; renderList(); const r = visible().find(x => !x.seen); if (r) open(r.ref); });
 
   // ---------- Detail ----------
@@ -1203,6 +1217,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
           <div class="pays3">${am.map(a => `<div class="${payDone(r, a.k) ? 'y' : ''}"><i>${payDone(r, a.k) ? '✓' : ''}</i><span>${esc(a.label)}${payDone(r, a.k) ? ' · reçu' : ''}</span><b>${a.v == null ? 'Sur devis' : fmt(a.v) + ' MAD'}</b></div>`).join('')}</div>
         </div>
         ${affBox(r)}
+        ${domiBox(r)}
       </div>
       <div class="box"><h4>Historique et notes de l'équipe <small>visibles par l'équipe seulement</small></h4>
         <div class="feed" id="feed">${r.notes.map(n => { const w = member(n.by); return `<div class="msg ${n.t === 'sys' ? 'sys' : ''}"><span class="av" style="--c:${w ? w.c : '#c9b6c4'}">${n.t === 'sys' && !w ? '•' : esc((w?.name || '?')[0])}</span><div><small>${n.t === 'sys' ? 'Suivi' : 'Note'}${w ? ' · ' + esc(w.name) : ''} · ${when(n.at)}</small>${esc(n.text)}</div></div>`; }).join('')}</div>
@@ -1244,12 +1259,60 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     return `<div class="box"><h4>Partenaire <small>le partenaire voit seulement la référence et l'avancement</small></h4>${html}</div>`;
   }
 
+
+  // Domiciliation of a file (included in the pack): the centre chosen by the client or by the team, its answer and its attestation.
+  // Kept apart from the file itself (server « domi » table), so the centre and the team never overwrite each other.
+  let DOMI = {}, DCENTRES = [];
+  async function loadDomi(){
+    if (!SERVER) return;
+    try {
+      const res = await api('domi'); if (!res.ok) return;
+      const j = await res.json(), next = {}; j.domi.forEach(d => { next[d.ref] = d; });
+      const changed = JSON.stringify(next) !== JSON.stringify(DOMI) || JSON.stringify(j.centres) !== JSON.stringify(DCENTRES);
+      DOMI = next; DCENTRES = j.centres;
+      if (changed && me && current) renderDetail();
+    } catch(e) {}
+  }
+  const DOMI_ST = { new:['En attente du centre', 'p-new'], accepted:['Accepté · attestation à venir', 'p-wait'], done:['Attestation reçue', 'p-ok'], refused:['Refusé par le centre', 'p-late'] };
+  function domiBox(r){
+    if (!SERVER || r.kind === 'rappel' || r.siege !== 'dom' || r.forme === 'ae') return '';
+    const d = DOMI[r.ref], [sl, sc] = d ? DOMI_ST[d.status] || [d.status, 'p-mute'] : ['Aucun centre attribué', 'p-mute'];
+    let html = `<div class="row"><span>Centre</span><b>${d ? esc(d.centreName) : '—'}</b></div><div class="row"><span>Statut</span><span class="pill ${sc}">${sl}</span></div>`;
+    if (d) html += `<div class="row"><span>Durée</span><b>${d.months} mois${me.role === 'admin' && d.rate ? ` · ${fmt(d.rate)} MAD au centre` : ''}</b></div>`;
+    if (d && d.attFile) html += `<a class="btn b-soft b-sm" href="/api/admin/centre-files/${esc(d.attFile)}" target="_blank" rel="noopener">📎 Voir l'attestation</a>`;
+    if (d && d.status === 'new' && d.centrePhone) html += `<a class="btn b-soft b-sm" href="${waLink(d.centrePhone, `Bonjour, une nouvelle demande de domiciliation (${r.ref}) vous attend dans votre espace centre Charika Express : ${location.origin}/centre.html`)}" target="_blank" rel="noopener">Prévenir le centre sur WhatsApp</a>`;
+    if (d && d.status === 'done' && me.role === 'admin') html += d.paidAt ? `<div class="row"><span>Paiement du centre</span><span class="pill p-ok">Payé le ${esc(new Date(d.paidAt).toLocaleDateString('fr-FR'))}</span></div>`
+      : `<button class="btn b-grad b-sm" data-domipaid="${esc(r.ref)}">Marquer ${fmt(d.rate)} MAD payés au centre</button>`;
+    if (DCENTRES.length) html += `<div class="dsel"><select class="f" id="domiSel" aria-label="Centre de domiciliation">${d ? '' : '<option value="">Choisir un centre…</option>'}${DCENTRES.map(c => `<option value="${esc(c.id)}"${d && d.centre === c.id ? ' selected' : ''}>${esc(c.name)} · ${esc([c.district, c.city].filter(Boolean).join(', '))}</option>`).join('')}</select>
+      <button class="btn b-soft b-sm" data-domiset="${esc(r.ref)}">${d ? 'Changer de centre' : 'Attribuer'}</button></div>`;
+    else html += `<p class="phint">Aucun centre actif pour l'instant${me.role === 'admin' ? ' : ajoutez-en dans l\'onglet « Centres »' : ''}.</p>`;
+    return `<div class="box"><h4>Domiciliation <small>incluse dans le pack · ville : ${esc(r.ville || '—')}</small></h4>${html}</div>`;
+  }
+
   // Actions on the open file (event delegation)
   let rejectOpen = false;
   $('#detail').addEventListener('click', e => {
     const r = current && get(current); if (!r) return;
     const ls = e.target.closest('[data-lstep]');
     if (ls) { const key = r.ref + ':' + ls.dataset.lstep; openSteps.has(key) ? openSteps.delete(key) : openSteps.add(key); renderDetail(); return; }
+    const ds = e.target.closest('[data-domiset]');
+    if (ds) {
+      const centre = $('#domiSel')?.value; if (!centre) return toast('Choisissez un centre');
+      if (DOMI[r.ref] && DOMI[r.ref].centre === centre) return toast('Ce centre est déjà attribué');
+      if (DOMI[r.ref] && !armed(ds, 'Confirmer : changer de centre')) return;
+      api('domi/' + r.ref, { method:'PUT', body:JSON.stringify({ centre }) }).then(async res => {
+        if (!res.ok) return toast('Attribution impossible');
+        const c = DCENTRES.find(x => x.id === centre); log(r, `Domiciliation attribuée au centre ${c ? c.name : centre}.`); persist();
+        await loadDomi(); renderDetail(); toast('Centre attribué');
+      });
+      return;
+    }
+    const dp = e.target.closest('[data-domipaid]');
+    if (dp) {
+      if (!armed(dp, 'Confirmer : centre payé')) return;
+      api('domi/' + r.ref, { method:'PUT', body:JSON.stringify({ paid:true }) }).then(async res => { if (!res.ok) return toast('Action impossible'); await loadDomi(); renderDetail(); toast('Paiement du centre enregistré'); });
+      return;
+    }
     const ap = e.target.closest('[data-affpay]');
     if (ap) {
       if (!armed(ap, 'Confirmer : commission versée')) return;
@@ -1406,15 +1469,17 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     if (e.key === 'Escape' && !$('#umenu').hidden) { menu(false); $('#meBtn').focus(); }
     if (e.key === '/' && !e.target.closest('input,textarea,select,[contenteditable]') && !$('#appView').hidden) { e.preventDefault(); $('#q').focus(); }
   });
-  // Sections: « Demandes » (list + file) or the « Partenaires » page
-  function showAff(on){
-    $('#affm').hidden = !on; $('#body').hidden = on;
-    $('#segReq').classList.toggle('on', !on); $('#affBtn').classList.toggle('on', on);
-    $('#segReq').toggleAttribute('aria-current', !on); $('#affBtn').toggleAttribute('aria-current', on);
-    $('#tbReq').classList.toggle('on', !on); $('#tbAff').classList.toggle('on', on);
-    if (on) { $('#affm').scrollTop = 0; scrollTo({ top:0 }); }
+  // Sections: « Demandes » (list + file), the « Partenaires » page or the « Centres » page
+  let PAGE = 'req';
+  function showPage(p){
+    PAGE = p;
+    $('#body').hidden = p !== 'req'; $('#affm').hidden = p !== 'aff'; $('#ctrm').hidden = p !== 'ctr';
+    [['segReq', 'tbReq', 'req'], ['affBtn', 'tbAff', 'aff'], ['ctrBtn', 'tbCtr', 'ctr']].forEach(([sg, tb, k]) => {
+      $('#' + sg).classList.toggle('on', p === k); $('#' + sg).toggleAttribute('aria-current', p === k); $('#' + tb).classList.toggle('on', p === k); });
+    if (p !== 'req') { $(p === 'aff' ? '#affm' : '#ctrm').scrollTop = 0; scrollTo({ top:0 }); }
   }
-  $('#segReq').addEventListener('click', () => { if (!$('#affm').hidden) showAff(false); else $('#q').focus(); });
+  const showAff = on => showPage(on ? 'aff' : 'req');
+  $('#segReq').addEventListener('click', () => { if (PAGE !== 'req') showPage('req'); else $('#q').focus(); });
   $('#snd').addEventListener('click', () => {
     soundOn = !soundOn; try { localStorage.setItem('ce-sound', soundOn ? 'on' : 'off'); } catch(e) {}
     paintSnd();
@@ -1642,6 +1707,137 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     }
   });
 
+
+  // ---------- Domiciliation centres page (admins): list on the left, the centre's file on the right ----------
+  let CTRS = [], ctrSel = null, ctrTab = 'contrats', ctrDet = false, ctrQ = '', ctrMsg = '';
+  const CTR_ST = { pending:['À vérifier', 'p-wait'], active:['Actif', 'p-ok'], refused:['Refusé', 'p-mute'], suspended:['Suspendu', 'p-mute'] };
+  const CTR_GRP = [['pending', 'À vérifier'], ['active', 'Actifs'], ['suspended', 'Suspendus'], ['refused', 'Refusés']];
+  const SVC_L = { courrier:'Réception du courrier', scan:'Scan du courrier', reunion:'Salle de réunion', bureau:'Bureau à l\'heure', standard:'Standard téléphonique', parking:'Parking' };
+  async function loadCtrs(){ try { const r = await api('centres'); if (r.ok) CTRS = (await r.json()).centres; } catch(e) {} }
+  const ctrAv = c => c.photo ? `<span class="aav ph" style="background-image:url('/api/admin/centre-files/${esc(c.photo)}')" aria-hidden="true"></span>` : affAv(c);
+  const ctrSum = c => { const k = c.contracts.filter(x => !get(x.ref)?.archived), done = k.filter(x => x.status === 'done'), due = done.filter(x => !x.paidAt);
+    return { k, done, due, dueAmt:due.reduce((n, x) => n + x.rate, 0), paidAmt:done.filter(x => x.paidAt).reduce((n, x) => n + x.rate, 0) }; };
+  const ctrNote = (c, pw) => { const txt = `Bonjour ${c.contact || c.name}, votre centre « ${c.name} » est ${pw ? 'prêt' : 'validé'} sur Charika Express ✅\nEspace centre : ${location.origin}/centre.html\nE-mail : ${c.email}\n${pw ? `Mot de passe provisoire : ${pw}\n` : 'Connectez-vous avec le mot de passe choisi à l\'inscription.\n'}Vous y recevrez les demandes de domiciliation de nos clients.`;
+    return `<div class="newpw"><span>${pw ? `Mot de passe provisoire de <b>${esc(c.name)}</b> : <code>${esc(pw)}</code>` : `<b>${esc(c.name)}</b> est validé et visible par les clients de ${esc(c.city || 'sa ville')}.`} Envoyez-lui ce message :</span>
+      <div class="acts">${c.phone ? `<a class="btn b-grad b-sm" href="${waLink(c.phone, txt)}" target="_blank" rel="noopener">Envoyer sur WhatsApp</a>` : ''}<button class="btn b-soft b-sm" data-cp="${esc(txt)}">Copier le message</button></div></div>`; };
+  function ctrList(){
+    const q = ctrQ.trim().toLowerCase();
+    const hit = c => !q || [c.name, c.company, c.email, c.phone, c.city, c.district].join(' ').toLowerCase().includes(q);
+    const groups = CTR_GRP.map(([k, label]) => {
+      const xs = CTRS.filter(c => c.status === k && hit(c)); if (!xs.length) return '';
+      return `<div class="grp">${label} · ${xs.length}</div>` + xs.map(c => { const sm = ctrSum(c);
+        const right = k === 'pending' ? '<span class="pill p-new">Nouveau</span>' : `<div class="r"><b>${sm.done.length}</b>domicilié${sm.done.length > 1 ? 's' : ''}</div>`;
+        return `<button type="button" class="li ${ctrSel === c.id ? 'on' : ''} ${k === 'suspended' || k === 'refused' ? 'off' : ''}" data-ctrsel="${c.id}">${ctrAv(c)}<div class="t"><b>${esc(c.name)}</b><span>${esc([c.city, c.district].filter(Boolean).join(' · ') || '—')}${k === 'active' && !c.available ? ' · complet' : ''}</span></div>${right}</button>`; }).join('');
+    }).join('');
+    return groups || `<p class="empty">${CTRS.length ? 'Aucun centre ne correspond.' : 'Aucun centre pour l\'instant. Les inscriptions de la page « Référencer mon centre » apparaissent ici.'}</p>`;
+  }
+  function ctrDetail(c){
+    const back = '<button type="button" class="btn b-soft b-sm back" data-ctrback>← Centres</button>';
+    if (!c) return back + `${ctrMsg}<div class="newbox"><h3>Ajouter un centre</h3>
+      <p class="rule">Le centre reçoit un mot de passe provisoire à lui envoyer. Complétez ensuite sa fiche (adresse, services, tarifs) dans l'onglet « Fiche ». La page publique d'inscription est <a href="domiciliation.html" target="_blank">domiciliation.html</a>.</p>
+      <form id="addCtr" class="aff-f" novalidate>
+        <label>Nom du centre<input class="f" id="ctName" placeholder="Business Center Maârif"></label>
+        <label>E-mail<input class="f" type="email" id="ctEmail" placeholder="contact@centre.ma"></label>
+        <label>Téléphone<input class="f" id="ctPhone" placeholder="06 12 34 56 78"></label>
+        <label>Ville<input class="f" id="ctCity" placeholder="Casablanca"></label>
+        <button class="btn b-grad">Ajouter</button></form><p class="merr" id="ctErr" hidden></p></div>`;
+    const sm = ctrSum(c), [stl, stc] = CTR_ST[c.status] || [c.status, 'p-wait'];
+    const since = c.createdAt ? new Date(c.createdAt).toLocaleDateString('fr-FR', { month:'long', year:'numeric' }) : '';
+    const acts = c.status === 'pending' ? `<button class="btn b-soft b-sm" data-ctrst="${c.id}" data-v="refused">Refuser</button><button class="btn b-grad b-sm" data-ctrst="${c.id}" data-v="active">Valider</button>`
+      : c.status === 'active' ? `<button class="btn b-soft b-sm" data-ctrreset="${c.id}">Nouveau mot de passe</button><button class="btn b-soft b-sm" data-ctrst="${c.id}" data-v="suspended">Suspendre</button>`
+      : `<button class="btn b-soft b-sm" data-ctrst="${c.id}" data-v="active">Réactiver</button>`;
+    const hero = `<div class="hero">${ctrAv(c)}<div class="who"><h2>${esc(c.name)} <span class="pill ${stc}">${stl}</span>${c.status === 'active' && !c.available ? ' <span class="pill p-mute">Complet</span>' : ''}</h2>
+      <p>${esc([c.company, c.city, c.district].filter(Boolean).join(' · '))}${since ? ` · ${c.status === 'pending' ? 'inscrit en' : 'partenaire depuis'} ${since}` : ''}</p></div><div class="acts">${acts}</div></div>`;
+    const pay = c.status === 'pending' ? `<p class="rule">Nouvelle inscription : vérifiez les justificatifs (onglet « Documents »), appelez le centre et validez ses tarifs avant de l'activer. Une fois validé, il apparaît aux clients de ${esc(c.city || 'sa ville')} dans le formulaire de demande.</p>`
+      : `<div class="payb"><div><span>À payer au centre</span><b class="big">${fmt(sm.dueAmt)} MAD</b></div><div><span>Déjà payé</span><b>${fmt(sm.paidAmt)} MAD</b></div><div><span>Domiciliés / demandes</span><b>${sm.done.length} / ${sm.k.length}</b></div>
+        <div><span>Tarifs 12 / 24 mois</span><b>${c.rate12 ? fmt(c.rate12) : '—'} / ${c.rate24 ? fmt(c.rate24) : '—'}</b></div>${sm.due.length ? `<button class="btn b-grad" data-ctrpayall="${c.id}">Marquer ${fmt(sm.dueAmt)} MAD payés</button>` : ''}</div>`;
+    const docs = c.files.filter(f => f.kind === 'doc'), photos = c.files.filter(f => f.kind === 'photo');
+    const tabs = [['contrats', `Demandes (${sm.k.length})`], ['fiche', 'Fiche et tarifs'], ['docs', `Documents (${docs.length + photos.length})`], ['contact', 'Coordonnées']];
+    const CST = { new:['En attente du centre', 'p-new'], accepted:['Attestation à venir', 'p-wait'], done:['Attestation reçue', 'p-ok'], refused:['Refusé', 'p-late'] };
+    let body = '';
+    if (ctrTab === 'contrats') body = sm.k.length ? sm.k.map(x => { const [l, k] = CST[x.status] || [x.status, 'p-mute']; return `<div class="dos"><button type="button" class="ref" data-afopen="${esc(x.ref)}">${esc(x.ref)}</button>
+        <span>${esc(x.company || '—')} · ${x.months} mois${x.attFile ? ` · <a href="/api/admin/centre-files/${esc(x.attFile)}" target="_blank" rel="noopener">attestation</a>` : ''}</span><span class="pill ${k}">${l}</span>
+        <span class="amt ${x.status === 'done' ? '' : 'z'}">${x.status === 'done' ? (x.paidAt ? `<span class="pill p-ok">Payé</span>` : `<button class="btn b-soft b-sm" data-ctrpay="${esc(x.ref)}">${fmt(x.rate)} MAD</button>`) : fmt(x.rate) + ' MAD'}</span></div>`; }).join('')
+      : '<p class="nil">Aucune demande pour l\'instant. Les clients qui choisissent ce centre apparaissent ici.</p>';
+    if (ctrTab === 'fiche') body = `<form class="cform" id="ctrForm" data-id="${c.id}" novalidate>
+      <label>Nom du centre<input class="f" name="name" value="${esc(c.name)}"></label><label>Société<input class="f" name="company" value="${esc(c.company)}"></label>
+      <label>Responsable<input class="f" name="contact" value="${esc(c.contact)}"></label><label>Téléphone<input class="f" name="phone" value="${esc(c.phone)}"></label>
+      <label>Ville<input class="f" name="city" value="${esc(c.city)}"></label><label>Quartier<input class="f" name="district" value="${esc(c.district)}"></label>
+      <label class="wide">Adresse exacte<input class="f" name="address" value="${esc(c.address)}"></label>
+      <label>RC<input class="f" name="rc" value="${esc(c.rc)}"></label><label>ICE<input class="f" name="ice" value="${esc(c.ice)}"></label>
+      <label>Tarif 12 mois (MAD, payé au centre)<input class="f" type="number" min="0" step="50" name="rate12" value="${c.rate12 || ''}"></label><label>Tarif 24 mois (MAD)<input class="f" type="number" min="0" step="50" name="rate24" value="${c.rate24 || ''}"></label>
+      <div class="wide"><div class="csvc">${Object.entries(SVC_L).map(([k, l]) => `<label><input type="checkbox" name="svc" value="${k}"${c.services.includes(k) ? ' checked' : ''}>${l}</label>`).join('')}</div></div>
+      <label class="wide" style="display:flex;gap:8px;align-items:center"><input type="checkbox" name="available"${c.available ? ' checked' : ''}> Affiché aux clients (décocher si le centre est complet)</label>
+      <div class="wide"><button class="btn b-grad">Enregistrer la fiche</button></div></form>`;
+    if (ctrTab === 'docs') body = (photos.length ? `<div class="photos">${photos.map(f => `<a href="/api/admin/centre-files/${esc(f.id)}" target="_blank" rel="noopener" style="background-image:url('/api/admin/centre-files/${esc(f.id)}')" title="${esc(f.name)}"></a>`).join('')}</div>` : '<p class="nil">Aucune photo.</p>')
+      + (docs.length ? `<div class="afi" style="margin-top:12px">${docs.map(f => `<div><span>Justificatif</span><a href="/api/admin/centre-files/${esc(f.id)}" target="_blank" rel="noopener">📄 ${esc(f.name)}</a></div>`).join('')}</div>` : '<p class="nil">Aucun justificatif envoyé : demandez le RC, l\'ICE et l\'autorisation de domiciliation sur WhatsApp.</p>');
+    if (ctrTab === 'contact') body = `<div class="afi"><div><span>E-mail</span><a href="mailto:${esc(c.email)}">${esc(c.email)}</a></div>
+      <div><span>Téléphone</span>${c.phone ? `${esc(c.phone)} · <a href="${waLink(c.phone, `Bonjour ${c.contact || ''}, `)}" target="_blank" rel="noopener">WhatsApp</a>` : '—'}</div>
+      <div><span>Adresse</span>${esc([c.address, c.district, c.city].filter(Boolean).join(', ') || '—')}</div><div><span>Responsable</span>${esc(c.contact || '—')}</div><div><span>RC / ICE</span>${esc([c.rc, c.ice].filter(Boolean).join(' · ') || '—')}</div></div>`;
+    return back + ctrMsg + hero + pay + `<div class="tabs" role="tablist">${tabs.map(([k, l]) => `<button type="button" role="tab" aria-selected="${ctrTab === k}" class="${ctrTab === k ? 'on' : ''}" data-ctrtab="${k}">${l}</button>`).join('')}</div><div class="tb tb-${ctrTab}">${body}</div>`;
+  }
+  function renderCtr(){
+    if (ctrSel !== 'new' && !CTRS.some(c => c.id === ctrSel)) {
+      const order = { pending:0, active:1, suspended:2, refused:3 };
+      ctrSel = CTRS.slice().sort((a, b) => (order[a.status] ?? 9) - (order[b.status] ?? 9))[0]?.id || 'new';
+    }
+    $('#ctrBox').classList.toggle('det', ctrDet);
+    $('#ctrBox').innerHTML = `<aside class="al"><div class="lq"><input type="search" id="ctQ" placeholder="Chercher un centre ou une ville…" aria-label="Chercher un centre" value="${esc(ctrQ)}"></div>
+      <div id="ctList">${ctrList()}</div><div class="add"><button type="button" class="btn b-grad" data-ctrnew>+ Ajouter un centre</button></div></aside>
+      <section class="ad">${ctrDetail(CTRS.find(c => c.id === ctrSel))}</section>`;
+    ctrMsg = '';
+  }
+  async function openCtr(){ await loadCtrs(); renderCtr(); if (PAGE !== 'ctr') showPage('ctr'); }
+  $('#ctrBtn').addEventListener('click', openCtr);
+  $('#tbCtr').addEventListener('click', () => { ctrDet = false; openCtr(); });
+  const ctrPut = (id, body) => api('centres/' + id, { method:'PUT', body:JSON.stringify(body) });
+  async function payDomi(refs){ for (const ref of refs) await api('domi/' + ref, { method:'PUT', body:JSON.stringify({ paid:true }) }); await Promise.all([loadCtrs(), loadDomi()]); }
+  $('#ctrm').addEventListener('click', async e => {
+    const t = e.target.closest('button'); if (!t || t.closest('form')) return;
+    if (t.dataset.cp != null) { copyText(t.dataset.cp, 'Message copié'); return; }
+    if (t.dataset.ctrsel) { ctrSel = t.dataset.ctrsel; ctrTab = 'contrats'; ctrDet = true; renderCtr(); $('#ctrm').scrollTop = 0; scrollTo({ top:0 }); return; }
+    if (t.dataset.ctrnew != null) { ctrSel = 'new'; ctrDet = true; renderCtr(); setTimeout(() => $('#ctName')?.focus(), 30); return; }
+    if (t.dataset.ctrback != null) { ctrDet = false; renderCtr(); scrollTo({ top:0 }); return; }
+    if (t.dataset.ctrtab) { ctrTab = t.dataset.ctrtab; renderCtr(); return; }
+    if (t.dataset.afopen) { showPage('req'); open(t.dataset.afopen); return; }
+    const c = CTRS.find(x => x.id === (t.dataset.ctrst || t.dataset.ctrreset || t.dataset.ctrpayall));
+    if (t.dataset.ctrst) {
+      if (t.dataset.v !== 'active' && !armed(t, t.dataset.v === 'refused' ? 'Confirmer : refuser' : 'Confirmer : suspendre')) return;
+      const res = await ctrPut(t.dataset.ctrst, { status:t.dataset.v });
+      if (res.ok && t.dataset.v === 'active' && c && c.status === 'pending') ctrMsg = ctrNote(c, null);
+      if (!res.ok) toast('Action impossible');
+      await loadCtrs(); renderCtr(); loadDomi(); return;
+    }
+    if (t.dataset.ctrreset) {
+      if (!armed(t, 'Confirmer : nouveau mot de passe')) return;
+      const res = await ctrPut(t.dataset.ctrreset, { resetPassword:true }); const j = await res.json().catch(() => ({}));
+      ctrMsg = res.ok && c ? ctrNote(c, j.tempPassword) : '<p class="merr">Réinitialisation impossible.</p>'; renderCtr(); return;
+    }
+    if (t.dataset.ctrpayall && c) {
+      const due = ctrSum(c).due; if (!due.length || !armed(t, `Confirmer : ${fmt(ctrSum(c).dueAmt)} MAD payés`)) return;
+      await payDomi(due.map(x => x.ref)); renderCtr(); toast('Paiements du centre enregistrés'); return;
+    }
+    if (t.dataset.ctrpay) { if (!armed(t, 'Confirmer : payé')) return; await payDomi([t.dataset.ctrpay]); renderCtr(); toast('Paiement enregistré'); }
+  });
+  $('#ctrm').addEventListener('input', e => { if (e.target.id === 'ctQ') { ctrQ = e.target.value; $('#ctList').innerHTML = ctrList(); } });
+  $('#ctrm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const f = e.target;
+    if (f.id === 'ctrForm') {
+      const v = n => f.elements[n].value.trim();
+      const body = { name:v('name'), company:v('company'), contact:v('contact'), phone:v('phone'), city:v('city'), district:v('district'), address:v('address'), rc:v('rc'), ice:v('ice'),
+        rate12:+v('rate12') || 0, rate24:+v('rate24') || 0, services:[...f.querySelectorAll('[name=svc]:checked')].map(i => i.value), available:f.elements.available.checked };
+      const res = await ctrPut(f.dataset.id, body); toast(res.ok ? 'Fiche enregistrée' : 'Enregistrement impossible');
+      await loadCtrs(); renderCtr(); loadDomi(); return;
+    }
+    if (f.id === 'addCtr') {
+      const body = { name:$('#ctName').value.trim(), email:$('#ctEmail').value.trim(), phone:$('#ctPhone').value.trim(), city:$('#ctCity').value.trim() };
+      const res = await api('centres', { method:'POST', body:JSON.stringify(body) }); const j = await res.json().catch(() => ({}));
+      if (!res.ok) { $('#ctErr').textContent = j.error === 'email_exists' ? 'Un centre existe déjà avec cet e-mail.' : 'Nom et e-mail valide obligatoires.'; $('#ctErr').hidden = false; return; }
+      await loadCtrs(); const c = CTRS.find(x => x.id === j.id); ctrMsg = ctrNote(c || { ...body, contact:'' }, j.tempPassword); ctrSel = j.id; ctrTab = 'fiche'; renderCtr(); loadDomi();
+    }
+  });
+
   // ---------- Phone: bottom tab bar, file from a notification link (#CE-123456), push notifications ----------
   $('#tbReq').addEventListener('click', () => { showAff(false); $('#body').classList.remove('open'); scrollTo({ top:0, behavior:'smooth' }); });
   $('#tbAff').addEventListener('click', () => { affDet = false; openAff(); });
@@ -1690,15 +1886,15 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
       if (j.me.mustChange) { showPw(true); return; }
       db = db && db.requests && SERVER && timers ? db : { requests:[] };
       TEAM.splice(0, TEAM.length, ...j.team);
-      $('#demoBar').hidden = true; $('#acctBtn').hidden = false; $('#affBtn').hidden = $('#tbAff').hidden = j.me.role !== 'admin';
+      $('#demoBar').hidden = true; $('#acctBtn').hidden = false; $('#affBtn').hidden = $('#tbAff').hidden = $('#ctrBtn').hidden = $('#tbCtr').hidden = j.me.role !== 'admin';
       setupPush();
       if (j.me.role === 'admin') loadAffs();
-      await pull();
+      await Promise.all([pull(), loadDomi()]);
       start(TEAM.find(t => t.id === j.me.id) || j.me);
       openFromHash();
       if (!timers) {
         timers = true;
-        setInterval(() => me && pull(), 20000);
+        setInterval(() => me && (pull(), loadDomi()), 20000);
         addEventListener('focus', () => me && pull());
         addEventListener('beforeunload', e => { if (db.requests.some(r => JSON.stringify(r) !== snap[r.ref])) { sync(); e.preventDefault(); e.returnValue = ''; } });
       }

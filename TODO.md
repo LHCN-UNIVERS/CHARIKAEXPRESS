@@ -57,3 +57,14 @@ Replaces the client referral programme (removed).
 - [x] Installable on the home screen (manifest, icons, plum status bar).
 - [x] Push notifications for every new request (`server/push.js`, `sw.js`). On iPhone they need the team space added to the home screen (iOS 16.4+), then account menu → « Notifications sur ce téléphone ». Tested on a real iPhone on 15 Oct 2026: test notification and a real call-back request both arrive with the screen locked.
 - [ ] Swipe actions on a request in the list (Prendre / WhatsApp / Archiver).
+
+## Domiciliation centres (marketplace)
+
+Centres sign up on `domiciliation.html`, the team checks and activates them (team space → « Centres »), then they work from `centre.html`. In the request form, a client who needs a business address picks an active centre of their city, or lets the team choose. The domiciliation stays **included in the pack**: Charika Express pays the centre its agreed rate (12 months for the Pack Essentiel, 24 months for Pro and Premium). Code: `server/centres.js`; tables `centres`, `centre_sessions`, `centre_files`, `domi` in `server/db.sql`.
+
+- [x] Public sign-up page with photos and documents, centre space (accept / refuse, send the attestation as a PDF), « Centres » page in the team space (check, activate, edit the file and rates, mark payments), « Domiciliation » box in each file (assign / change the centre, see the attestation, warn the centre on WhatsApp).
+- [ ] Recruit the first centres (Casablanca, Rabat, Marrakech) and agree on their rates before announcing the page.
+- [ ] Write the « conditions du programme centres » (payment terms, attestation delay, what happens if a centre refuses).
+- [ ] Show the chosen centre and the attestation status on the client tracking page (`suivi.html`).
+- [ ] City pages for Google (« Domiciliation à Casablanca »…), once there are several centres per city.
+- [ ] Optional: notify the centre automatically (e-mail or WhatsApp API) when a new request arrives; for now the team uses the « Prévenir le centre » button.

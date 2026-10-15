@@ -3,6 +3,7 @@
 import { json, now, readJson, fail, HttpError } from './http.js';
 import { promoInfo } from './affiliate.js';
 import { notifyTeam } from './push.js';
+import { centreForRequest, monthsOf } from './centres.js';
 
 const str = (v, max = 200) => String(v ?? '').trim().slice(0, max);
 const num = v => (v === null || v === '' || v === undefined || isNaN(+v)) ? null : +v;
@@ -50,10 +51,15 @@ export async function postRequest(request, env, ctx){
     const promo = b.promo ? await promoInfo(env, b.promo) : null;
     if (promo) Object.assign(r, { promo: promo.code, affiliate: promo.affiliate_id, remise: promo.discount });
     else if (b.promo) r.promoInvalid = str(b.promo, 20).toUpperCase();    // shown to the team: discount not to be granted
+    // Domiciliation centre picked by the client (included in the pack): the centre sees the request in its space
+    const centre = r.kind === 'demande' && r.siege === 'dom' && r.forme !== 'ae' ? await centreForRequest(env, b.centre) : null;
+    if (centre) r.centre = { id: centre.id, name: centre.name };
     const at = now();
     const data = { ...r, ref, createdAt: at, updatedAt: at, step: 0, docs: {}, livrables: {}, checks: {}, paid: {}, reject: null,
       seen: false, juriste: null, notes: [{ t: 'sys', at, text: 'Demande reçue depuis le site.' }] };
-    await env.DB.prepare('INSERT INTO requests (ref, created_at, updated_at, ip_hash, data) VALUES (?, ?, ?, ?, ?)').bind(ref, at, at, ip, JSON.stringify(data)).run();
+    const st = [env.DB.prepare('INSERT INTO requests (ref, created_at, updated_at, ip_hash, data) VALUES (?, ?, ?, ?, ?)').bind(ref, at, at, ip, JSON.stringify(data))];
+    if (centre) st.push(env.DB.prepare("INSERT INTO domi (ref, centre_id, months, status, att_file, created_at, updated_at, paid_at) VALUES (?, ?, ?, 'new', NULL, ?, ?, NULL)").bind(ref, centre.id, monthsOf(r.plan), at, at));
+    await env.DB.batch(st);
     ctx?.waitUntil(notifyTeam(env).catch(e => console.error('push', e)));   // team phones: « Nouvelle demande »
     return json({ ok: true, ref });
   } catch (e) { return fail(e); }

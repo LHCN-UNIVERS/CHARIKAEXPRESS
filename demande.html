@@ -149,6 +149,25 @@ textarea{min-height:96px;resize:vertical}
 .tile:hover{border-color:#e8c9cf}
 .tile:has(input:checked){border-color:var(--pink);background:#fff6f9;box-shadow:0 0 0 4px rgba(255,79,145,.12)}
 .tile:has(input:focus-visible){outline:3px solid var(--rose);outline-offset:2px}
+/* Domiciliation centre picker (step 2, « J'ai besoin d'une domiciliation »): partner centres of the client's city, included in the pack */
+.domi{margin-top:16px;display:grid;gap:10px}
+.domi .dmp{margin:-6px 0 0;color:var(--m);font-size:.84rem}
+.dgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.dc{position:relative;display:grid;grid-template-rows:auto 1fr;border:1.5px solid var(--line);border-radius:18px;background:#fff;cursor:pointer;overflow:hidden;margin:0;transition:border-color .2s,box-shadow .2s}
+.dc input{position:absolute;opacity:0;pointer-events:none}
+.dc:hover{border-color:#e8c9cf}
+.dc:has(input:checked){border-color:var(--pink);box-shadow:0 0 0 4px rgba(255,79,145,.12)}
+.dc:has(input:focus-visible){outline:3px solid var(--rose);outline-offset:2px}
+.dc .ph{height:86px;background:linear-gradient(135deg,#f7d9c9,#f3b9cf 60%,#d9a3c8);background-size:cover;background-position:center}
+.dc .bd{padding:10px 12px 12px;display:grid;gap:5px;align-content:start}
+.dc .bd b{font-size:.92rem}
+.dc .bd small{color:var(--m);font-size:.76rem}
+.dc .ok{color:var(--ok);font-size:.72rem;font-weight:800}
+.dc .sv{display:flex;flex-wrap:wrap;gap:4px}.dc .sv span{font-size:.68rem;background:#fff1f5;color:#a33a6a;border-radius:99px;padding:2px 7px;font-weight:600}
+.dc .inc{position:absolute;top:8px;right:8px;background:#fff;color:var(--ok);font-size:.68rem;font-weight:800;border-radius:99px;padding:3px 8px;box-shadow:0 2px 6px rgba(48,16,47,.15)}
+.dc .chk2{position:absolute;top:8px;left:8px;width:22px;height:22px;border-radius:50%;background:#fff;border:2px solid #fff;box-shadow:0 2px 6px rgba(48,16,47,.2);display:grid;place-items:center;font-size:.7rem;color:#fff}
+.dc:has(input:checked) .chk2{background:var(--grad)}
+.dc.auto .ph{display:grid;place-items:center;font-size:1.8rem;background:linear-gradient(135deg,#fff1f5,#ffe4ec)}
 .tile .tag{position:absolute;top:-10px;inset-inline-end:14px;background:var(--grad);color:#fff;font-size:.7rem;font-weight:700;padding:4px 12px;border-radius:999px}
 .chk{display:flex;gap:10px;align-items:center;padding:12px 14px;border:1px solid var(--line);border-radius:14px;background:var(--bg);cursor:pointer;margin:0;font-weight:600;font-size:.92rem}
 .chk a{color:var(--rose);text-decoration:underline}
@@ -443,6 +462,11 @@ button.vcheck{width:100%;margin-top:12px;border:0;cursor:pointer;text-align:star
                 <label class="tile"><input type="radio" name="siege" value="dom" checked><b data-t="sg1">J'ai besoin d'une domiciliation</b><span data-t="sg1d">Nous vous fournissons une adresse</span></label>
                 <label class="tile"><input type="radio" name="siege" value="local"><b data-t="sg2">J'ai déjà un local</b><span data-t="sg2d">Contrat de bail ou titre de propriété</span></label>
               </div>
+              <div class="domi" id="domi" hidden>
+                <span class="lbl" data-t="dmh">Choisissez votre centre de domiciliation</span>
+                <p class="dmp" data-t="dmp">Inclus dans votre pack : aucun supplément, quel que soit le centre choisi.</p>
+                <div class="dgrid" id="dgrid" role="radiogroup" aria-label="Centre de domiciliation"></div>
+              </div>
             </div>
           </div>
         </section>
@@ -588,7 +612,7 @@ button.vcheck{width:100%;margin-top:12px;border:0;cursor:pointer;text-align:star
     s2h:"Your future company", s2p:"Suggest 3 names, in order of preference. We'll check their availability with OMPIC.",
     nm1:"Name 1", nm2:"Name 2", nm3:"Name 3", opt:"(optional)", fp:"Promo code", track:"Track my file", act:"Main activity", actph:"E.g. digital marketing agency, consulting, import-export…",
     ville:"City of the registered office", cityph:"Type the name of your city", cityfree:c=>`Use “${c}”`, choose:"Choose…", c1:"Casablanca", c2:"Rabat", c3:"Marrakech", c4:"Tangier", c5:"Agadir", c6:"Fez", c7:"Other city",
-    capital:"Share capital (MAD)", siege:"Registered office", sg1:"I need a business address", sg1d:"We provide one for you", sg2:"I already have premises", sg2d:"Lease or title deed",
+    capital:"Share capital (MAD)", siege:"Registered office", sg1:"I need a business address", sg1d:"We provide one for you", sg2:"I already have premises", sg2d:"Lease or title deed", dmh:"Choose your business address centre", dmp:"Included in your pack: no extra cost, whichever centre you choose.",
     s3h:"Partners and manager", s3p:"Enter each partner and their share of the capital. The total must be 100%.",
     addp:"Add a partner", gerant:"Manager", gname:"Manager's full name", pcin2:"National ID (CNIE) or passport number",
     s4h:"Choose your plan", s4p:"Every pack includes the full formation of your company. They differ in what comes on top.", mad:"MAD incl. VAT", pi1:"12 months of domiciliation", pi2:"24 months of domiciliation", pi3:"Company stamp", pi4:"Trademark protection", pi5:"Trademark protection (2 classes)", pbase:"+ full formation: articles, RC, IF, business tax, CNSS, legal notices, Official Bulletin", pick:"Choose", ttc:"Total incl. VAT", o1d:"Your file gets priority at every step.", o2d:"A ready identity to launch your business.", o3d:"Advised if there are several of you: shares, decisions, exit.",
@@ -666,7 +690,7 @@ button.vcheck{width:100%;margin-top:12px;border:0;cursor:pointer;text-align:star
     phs.forEach(n => n.placeholder = l === 'en' && EN[n.dataset.ph] ? EN[n.dataset.ph] : n._fr);
     $$('[data-lang]').forEach(b => b.setAttribute('aria-pressed', b.dataset.lang === l));
     try { localStorage.setItem('ce-lang', l); } catch(e) {}
-    renderPartners(); show(step, true); summary();
+    renderPartners(); show(step, true); summary(); renderDomi();
   }
   $$('[data-lang]').forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
 
@@ -744,6 +768,32 @@ button.vcheck{width:100%;margin-top:12px;border:0;cursor:pointer;text-align:star
     if (!keepScroll) $('#wizard').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
   function val(name){ const el = document.querySelector(`[name="${name}"]:checked`); return el ? el.value : ''; }
+
+  // ---------- Domiciliation centre (included in the pack) ----------
+  // Active partner centres come from /api/centres; the client sees those of their city, or lets the team choose.
+  let CENTRES = [];
+  const SVC = { fr:{ courrier:'Courrier', scan:'Scan du courrier', reunion:'Salle de réunion', bureau:'Bureau', standard:'Standard', parking:'Parking' },
+    en:{ courrier:'Mail', scan:'Mail scanning', reunion:'Meeting room', bureau:'Office', standard:'Phone answering', parking:'Parking' } };
+  const normCity = c => String(c || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z]/g, '');
+  const escD = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
+  function renderDomi(){
+    const box = $('#domi'); if (!box) return;
+    const on = val('siege') === 'dom' && val('forme') !== 'ae' && CENTRES.length > 0;
+    box.hidden = !on; if (!on) return;
+    const city = $('#ville').value.trim(), list = CENTRES.filter(c => normCity(c.city) === normCity(city));
+    const cur = val('centre'), en = lang === 'en';
+    const auto = `<label class="dc auto"><input type="radio" name="centre" value=""${!cur || !list.some(c => c.id === cur) ? ' checked' : ''}><span class="chk2">✓</span><div class="ph">✨</div>
+      <div class="bd"><b>${en ? 'Let Charika Express choose' : 'Laisser Charika Express choisir'}</b><small>${list.length ? (en ? 'Our team picks a partner centre for you.' : 'Notre équipe vous attribue un centre partenaire.')
+        : city ? (en ? `No partner centre in ${escD(city)} yet: our team will find you an address.` : `Pas encore de centre partenaire à ${escD(city)} : notre équipe vous trouve une adresse.`)
+        : (en ? 'Enter your city above to see the centres.' : 'Indiquez votre ville ci-dessus pour voir les centres.')}</small></div></label>`;
+    $('#dgrid').innerHTML = list.map(c => `<label class="dc"><input type="radio" name="centre" value="${escD(c.id)}"${cur === c.id ? ' checked' : ''}><span class="chk2">✓</span><span class="inc">${en ? 'Included' : 'Inclus'}</span>
+      <div class="ph"${c.photo ? ` style="background-image:url('${escD(c.photo)}')"` : ''}></div>
+      <div class="bd"><b>${escD(c.name)}</b><small>${escD([c.district, c.city].filter(Boolean).join(' · '))}</small><span class="ok">✓ ${en ? 'Verified centre' : 'Centre vérifié'}</span>
+      ${c.services.length ? `<span class="sv">${c.services.map(s => `<span>${SVC[en ? 'en' : 'fr'][s] || s}</span>`).join('')}</span>` : ''}</div></label>`).join('') + auto;
+  }
+  fetch('/api/centres').then(r => (r.headers.get('content-type') || '').includes('application/json') ? r.json() : null).then(j => { if (j && j.centres) { CENTRES = j.centres; renderDomi(); } }).catch(() => {});
+  ['input', 'change', 'blur'].forEach(ev => $('#ville').addEventListener(ev, () => renderDomi()));
+  $('#villeList').addEventListener('click', () => setTimeout(renderDomi, 0));
   function label(name){ const el = document.querySelector(`[name="${name}"]:checked`); return el ? el.closest('label').querySelector('b').textContent : ''; }
 
   function fieldErr(el, msg){
@@ -777,7 +827,7 @@ button.vcheck{width:100%;margin-top:12px;border:0;cursor:pointer;text-align:star
     finish();
   });
   $('#prev').addEventListener('click', () => step > 1 && show(step - 1));
-  $('#wizard').addEventListener('change', e => { if (e.target.name === 'forme') renderPartners(); summary(); save(); });
+  $('#wizard').addEventListener('change', e => { if (e.target.name === 'forme') renderPartners(); if (e.target.name === 'forme' || e.target.name === 'siege') renderDomi(); summary(); save(); });
   $('#wizard').addEventListener('input', () => { summary(); save(); });
 
   // ---------- City search: type a few letters, accents and dashes don't matter; any other town can be typed in full ----------
@@ -934,7 +984,7 @@ button.vcheck{width:100%;margin-top:12px;border:0;cursor:pointer;text-align:star
     return [
       [t.rv1, 1, label('forme') + (partners.length > 1 ? ' · ' + t.v.np(partners.length) : ''), [[k.forme, label('forme')]]],
       [t.rv2, 2, [noms[0], $('#ville').value.trim(), fmt(+$('#capital').value) + ' MAD'].filter(Boolean).join(' · '),
-        [[k.noms, noms.map((n, i) => (i + 1) + '. ' + n).join(' · ')], [k.act, $('#act').value.trim()], [k.ville, $('#ville').value.trim()], [k.capital, fmt(+$('#capital').value) + ' MAD'], [k.siege, t.siege[val('siege')]]]],
+        [[k.noms, noms.map((n, i) => (i + 1) + '. ' + n).join(' · ')], [k.act, $('#act').value.trim()], [k.ville, $('#ville').value.trim()], [k.capital, fmt(+$('#capital').value) + ' MAD'], [k.siege, t.siege[val('siege')] + (val('siege') === 'dom' && val('centre') ? ' · ' + (CENTRES.find(c => c.id === val('centre'))?.name || '') : '')]]],
       [t.rv3, 3, t.v.np(partners.length) + ' · ' + partners.map(p => (+p.pct || 0) + ' %').join(' / ') + (gname ? ' · ' + t.gl.toLowerCase() + ' : ' + gname : ''),
         partners.map((p, i) => [`${t.pttl} ${i + 1}`, `${p.name} · ${p.cin} · ${p.pct} %`]).concat([[t.gl, gname + (gcin ? ' · ' + gcin : '')]])],
       [t.rv4, 4, plan + (optsText() !== t.none ? ' + ' + optsText() : '') + ' · ' + money(tt), [[k.plan, plan], [k.opts, optsText()], [k.total, money(tt)]]],
@@ -1036,7 +1086,8 @@ button.vcheck{width:100%;margin-top:12px;border:0;cursor:pointer;text-align:star
       partners: partners.map(p => ({ name: p.name.trim(), cin: p.cin.trim(), pct: +p.pct || 0 })),
       gerant: g === 'other' ? { name: $('#gn').value.trim(), cin: $('#gc').value.trim() } : { name: partners[+g]?.name || '', cin: partners[+g]?.cin || '' },
       client: { nom: $('#nom').value.trim(), tel: $('#tel').value.trim(), email: $('#email').value.trim() },
-      message: $('#note').value.trim(), cgu: $('#cgu').checked, secs: secs(), promo: promo.ok ? promo.code : (promo.code || null)
+      message: $('#note').value.trim(), cgu: $('#cgu').checked, secs: secs(), promo: promo.ok ? promo.code : (promo.code || null),
+      centre: val('siege') === 'dom' && val('forme') !== 'ae' ? val('centre') || null : null
     };
   }
   function save(){

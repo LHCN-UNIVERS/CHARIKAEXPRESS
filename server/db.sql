@@ -60,3 +60,49 @@ CREATE TABLE IF NOT EXISTS aff_sessions (
 -- Web Push (team phones get a notification for every new request; see server/push.js)
 CREATE TABLE IF NOT EXISTS push_keys (id INTEGER PRIMARY KEY, pub TEXT NOT NULL, priv TEXT NOT NULL);   -- one VAPID key pair, created on first use
 CREATE TABLE IF NOT EXISTS push_subs (endpoint TEXT PRIMARY KEY, email TEXT NOT NULL, created_at TEXT NOT NULL);
+
+-- Domiciliation centres (marketplace, see server/centres.js): the client picks a centre in the request form,
+-- the domiciliation stays included in the pack and Charika Express pays the centre its agreed rate
+CREATE TABLE IF NOT EXISTS centres (
+  id TEXT PRIMARY KEY,                       -- ct-xxxxxxxxxx
+  email TEXT UNIQUE NOT NULL,
+  name TEXT NOT NULL,                        -- name of the centre shown to clients
+  company TEXT, contact TEXT, phone TEXT,
+  city TEXT, district TEXT, address TEXT,
+  services TEXT NOT NULL DEFAULT '[]',       -- JSON list: courrier, scan, reunion, bureau, standard, parking
+  rate12 INTEGER NOT NULL DEFAULT 0,         -- MAD paid by Charika Express for 12 months (24 months: rate24)
+  rate24 INTEGER NOT NULL DEFAULT 0,
+  rc TEXT, ice TEXT,
+  status TEXT NOT NULL DEFAULT 'pending',    -- 'pending' (to check), 'active', 'refused', 'suspended'
+  available INTEGER NOT NULL DEFAULT 1,      -- 0 = full, hidden from the request form
+  photo TEXT,                                -- id of the main photo in centre_files
+  pass_hash TEXT, pass_salt TEXT,
+  must_change INTEGER NOT NULL DEFAULT 0,
+  created_at TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS centre_sessions (
+  token_hash TEXT PRIMARY KEY,               -- SHA-256 of the ce_ctr cookie
+  centre_id TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  expires_at TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS centre_files (
+  id TEXT PRIMARY KEY,                       -- fl-xxxxxxxxxxxxxxxx
+  centre_id TEXT NOT NULL,
+  kind TEXT NOT NULL,                        -- 'photo', 'doc' (RC, ICE, authorisation) or 'attest' (attestation for a request)
+  ref TEXT,                                  -- request reference for an attestation
+  name TEXT NOT NULL, mime TEXT NOT NULL, size INTEGER NOT NULL,
+  data BLOB NOT NULL,                        -- up to 1.2 MB
+  created_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS centre_files_centre ON centre_files(centre_id);
+CREATE TABLE IF NOT EXISTS domi (
+  ref TEXT PRIMARY KEY,                      -- request reference
+  centre_id TEXT NOT NULL,
+  months INTEGER NOT NULL,                   -- 12 (Pack Essentiel) or 24
+  status TEXT NOT NULL DEFAULT 'new',        -- 'new', 'accepted', 'refused', 'done' (attestation sent)
+  att_file TEXT,                             -- centre_files id of the attestation
+  created_at TEXT NOT NULL, updated_at TEXT NOT NULL,
+  paid_at TEXT                               -- when Charika Express paid the centre
+);
+CREATE INDEX IF NOT EXISTS domi_centre ON domi(centre_id);

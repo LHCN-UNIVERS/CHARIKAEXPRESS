@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#30102f">
+<title>Espace centre · Charika Express</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap">
+<style>
+/* Layout (same base as partenaire.html): plum header. Signed out: one centred card. Signed in: 4 figures,
+   then two columns on desktop: the domiciliation requests | availability, services, rates and account cards. */
+:root{
+  --plum:#30102f; --plum2:#4b1a46; --coral:#ff795b; --pink:#ff4f91; --blush:#fff1f5;
+  --bg:#fffcfa; --ink:#30152f; --m:#7a6474; --line:#f2e2e8;
+  --ok:#1d9a62; --okbg:#e3f6ec; --warn:#b4560f; --warnbg:#fff1e3; --info:#5a4bd6; --infobg:#eeecff;
+  --grad:linear-gradient(90deg,var(--coral),var(--pink));
+  --sans:"Sora",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14.5px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:var(--pink)}
+button,input,select{font:inherit;color:inherit}
+.wrap{max-width:1160px;margin:0 auto;padding-inline:max(16px,env(safe-area-inset-left,0px)) max(16px,env(safe-area-inset-right,0px))}
+header{background:var(--plum);color:#fff}
+.bar{display:flex;align-items:center;gap:12px;padding-block:13px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.08rem;letter-spacing:-.02em;color:#fff;text-decoration:none;white-space:nowrap}
+.logo i{width:28px;height:28px;border-radius:9px;background:var(--grad);display:grid;place-items:center}
+.logo i::after{content:"";width:10px;height:10px;border-radius:3px;background:#fff}
+.logo b{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.tag{background:rgba(255,255,255,.12);border-radius:999px;padding:4px 10px;font-size:.74rem;font-weight:700}
+.bar .r{margin-inline-start:auto;display:flex;align-items:center;gap:10px;font-size:.82rem;color:#e8d6e3;min-width:0}
+.bar .r span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lng{display:inline-flex;background:rgba(255,255,255,.1);border-radius:999px;padding:3px;flex:none}
+.lng button{border:0;background:none;cursor:pointer;font:800 .72rem var(--sans);padding:5px 10px;border-radius:999px;color:#fff}
+.lng button[aria-pressed="true"]{background:#fff;color:var(--plum)}
+.out{border:0;background:rgba(255,255,255,.1);color:#fff;border-radius:999px;padding:7px 13px;font-size:.78rem;font-weight:700;cursor:pointer;white-space:nowrap}
+main{padding-block:26px 60px}
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px}
+.card h2{margin:0;font-size:1.02rem;letter-spacing:-.01em}
+.muted{color:var(--m);font-size:.83rem}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;border:0;border-radius:999px;padding:10px 16px;font-weight:700;font-size:.84rem;cursor:pointer;text-decoration:none;white-space:nowrap}
+.btn-grad{background:var(--grad);color:#fff}
+.btn-wa{background:#1fae5b;color:#fff}
+.btn-soft{background:var(--blush);color:var(--ink)}
+.btn:disabled{opacity:.6;cursor:default}
+.f{border:1px solid var(--line);border-radius:11px;padding:10px 12px;background:var(--bg);font-size:.95rem;width:100%;min-width:0}
+.f:focus{outline:2px solid #ffc2d6;border-color:var(--pink)}
+label.fl{display:grid;gap:5px;font-weight:600;font-size:.82rem}
+.err{background:#fde8e4;color:#a8321e;border-radius:11px;padding:9px 12px;font-size:.84rem}
+.okm{background:var(--okbg);color:var(--ok);border-radius:11px;padding:9px 12px;font-size:.84rem;font-weight:600}
+.demo{background:var(--warnbg);color:var(--warn);border-radius:12px;padding:10px 14px;font-size:.84rem;font-weight:600;margin-bottom:16px}
+.num{font-variant-numeric:tabular-nums}
+
+.login{max-width:420px;margin:12px auto 0}
+.login h1{margin:0;font-size:1.45rem;letter-spacing:-.02em}
+.login form{display:grid;gap:12px;margin-top:16px}
+/* Sign-in screens: full page, centred card on a soft gradient (same look as the team space login) */
+body.auth header,body.auth footer{display:none}
+body.auth main{min-height:100vh;min-height:100dvh;max-width:none;display:grid;place-items:center;padding:24px max(16px,env(safe-area-inset-right)) 24px max(16px,env(safe-area-inset-left));
+  background:radial-gradient(600px 400px at 85% 10%,rgba(255,122,89,.25),transparent 70%),radial-gradient(500px 400px at 10% 90%,rgba(255,79,154,.18),transparent 70%),var(--bg)}
+body.auth .login{width:100%;max-width:400px;margin:0;border-radius:26px;padding:28px;box-shadow:0 30px 60px -36px rgba(48,16,47,.45)}
+.lhead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:18px}
+.lhead .logo{color:var(--ink);font-size:1rem}.lhead .logo i{width:24px;height:24px;border-radius:8px}
+.lhead .lng{background:var(--blush)}.lhead .lng button{color:var(--ink)}.lhead .lng button[aria-pressed="true"]{background:var(--plum);color:#fff}
+.login .btn{width:100%}
+.lhint{text-align:center;font-size:.8rem;margin:16px 0 0;line-height:1.7}
+
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px 16px}
+.kpi small{color:var(--m);font-size:.74rem;font-weight:600;display:block}
+.kpi b{font-size:1.55rem;letter-spacing:-.02em;display:block;margin-top:2px}
+.kpi span{font-size:.75rem;color:var(--m)}
+.kpi.money{background:linear-gradient(160deg,var(--plum),var(--plum2));color:#fff;border:0}
+.kpi.money small,.kpi.money span{color:#e3cbdd}
+.cols{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:16px;margin-top:16px;align-items:start}
+.side{display:grid;grid-template-columns:minmax(0,1fr);gap:16px}
+
+.tblw{overflow-x:auto;margin-top:10px}
+table{width:100%;border-collapse:collapse;min-width:560px}
+th{text-align:start;font-size:.7rem;color:var(--m);font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:8px 10px;border-bottom:1px solid var(--line)}
+td{padding:11px 10px;border-bottom:1px solid var(--line);vertical-align:middle;font-size:.85rem}
+tr.f-row{cursor:pointer}
+tr.f-row:hover td{background:#fff7fa}
+tr.f-row:focus-visible{outline:2px solid var(--pink);outline-offset:-2px}
+td .ref{font-weight:800;letter-spacing:.02em}
+td small{display:block;color:var(--m);font-size:.74rem}
+.segs{display:flex;gap:3px;width:150px}
+.segs i{flex:1;height:7px;border-radius:3px;background:var(--line)}
+.segs i.d{background:var(--grad)}
+.segs i.n{background:#ffc2d6;box-shadow:0 0 0 2px #ffe3ec}
+.stp{font-size:.74rem;font-weight:600;margin-top:4px;display:block}
+.stp.ok{color:var(--ok)}
+.pill{display:inline-block;border-radius:999px;padding:3px 9px;font-size:.72rem;font-weight:700;white-space:nowrap}
+.p-wait{background:var(--blush);color:var(--m)}
+.p-due{background:var(--warnbg);color:var(--warn)}
+.p-paid{background:var(--okbg);color:var(--ok)}
+.p-new{background:var(--infobg);color:var(--info)}
+.detail td{background:#fff7fa}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(78px,1fr));gap:10px 6px}
+.steps div{text-align:center;font-size:.64rem;color:var(--m);line-height:1.25}
+.steps i{display:grid;place-items:center;width:24px;height:24px;margin:0 auto 4px;border-radius:50%;background:#fff;font-style:normal;font-weight:800;font-size:.68rem;box-shadow:inset 0 0 0 1px var(--line)}
+.steps .d i{background:var(--grad);color:#fff;box-shadow:none}
+.steps .n{color:var(--ink);font-weight:700}
+.steps .n i{color:var(--pink);box-shadow:inset 0 0 0 2px var(--pink)}
+.steps .end.d i{background:var(--ok)}
+.empty{text-align:center;padding:26px 10px;color:var(--m)}
+
+.code{border:1px solid var(--line);border-radius:14px;padding:12px;margin-top:10px;display:grid;gap:8px}
+.code.off{opacity:.55}
+.code .h{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.code .h b{font-size:1.05rem;letter-spacing:.06em}
+.link{display:flex;gap:8px;align-items:center;border:1px dashed #f3b5ca;border-radius:11px;padding:6px 6px 6px 10px;background:var(--bg)}
+.link code{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.78rem}
+.link button{flex:none;border:0;background:var(--blush);border-radius:999px;padding:6px 11px;font-weight:700;font-size:.74rem;cursor:pointer}
+.pays{display:grid;gap:7px;margin-top:10px}
+.pays div{display:flex;justify-content:space-between;gap:8px;font-size:.83rem;border-bottom:1px solid var(--line);padding-bottom:7px}
+.next{margin-top:10px;background:var(--warnbg);color:#6d3409;border-radius:12px;padding:10px 12px;font-size:.82rem}
+.acc{display:grid;gap:10px;margin-top:10px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+details.more summary{cursor:pointer;font-weight:700;font-size:.84rem;margin-top:12px}
+footer{border-top:1px solid var(--line);background:#fff;padding-block:18px;color:var(--m);font-size:.8rem}
+footer .wrap{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+footer a{color:var(--m)}
+@media (max-width:980px){.cols{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:480px){.bar{gap:8px}.lng button{padding:4px 7px}.tag{display:none}}
+@media (max-width:640px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.g2{grid-template-columns:1fr}.bar .r span{display:none}}
+.req{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;padding:13px 0;border-top:1px solid var(--line)}
+.req:first-child{border-top:0}
+.req b{font-size:.9rem}.req small{display:block;color:var(--m);font-size:.76rem;margin-top:2px}
+.req .acts{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.btn-ok{background:var(--ok);color:#fff}.btn-line{background:#fff;color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
+.tabs{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.tabs button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 12px;font-size:.78rem;font-weight:700;cursor:pointer}
+.tabs button.on{background:var(--plum);color:#fff;border-color:var(--plum)}
+.rate{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line);font-size:.86rem}
+.svc{display:flex;flex-wrap:wrap;gap:6px}
+.svc label{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:5px 11px;font-size:.78rem;font-weight:600;cursor:pointer;background:#fff}
+.svc input{accent-color:var(--pink)}
+.svc label:has(input:checked){background:var(--plum);color:#fff;border-color:var(--plum)}
+.sw{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:10px 12px}
+.sw b{font-size:.86rem}.sw small{display:block;color:var(--m);font-size:.74rem}
+.tog{position:relative;width:44px;height:26px;flex:none}
+.tog input{opacity:0;width:0;height:0}
+.tog span{position:absolute;inset:0;border-radius:99px;background:#d9cdd2;cursor:pointer;transition:.2s}
+.tog span::after{content:"";position:absolute;left:3px;top:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:.2s}
+.tog input:checked + span{background:var(--ok)}.tog input:checked + span::after{left:21px}
+.files{display:grid;gap:6px;margin-top:8px}
+.files a{font-size:.8rem;display:flex;justify-content:space-between;gap:8px;border-bottom:1px solid var(--line);padding-bottom:6px;text-decoration:none;color:var(--ink)}
+@media (max-width:640px){.req{grid-template-columns:minmax(0,1fr)}.req .acts{justify-content:flex-start}.req .acts .btn{flex:1}}
+</style>
+</head>
+<body>
+<header><div class="wrap bar">
+  <a class="logo" href="index.html"><i></i><span>Charika <b>Express</b></span></a>
+  <span class="tag">Espace centre</span>
+  <div class="r"><div class="lng" role="group" aria-label="Langue"><button type="button" data-lang="fr" aria-pressed="true">FR</button><button type="button" data-lang="en" aria-pressed="false">EN</button></div><span id="who"></span><button class="out" id="out" type="button" hidden>Déconnexion</button></div>
+</div></header>
+
+<main class="wrap">
+  <section class="card login" id="loginView" hidden>
+    <div class="lhead"><a class="logo" href="index.html"><i></i><span>Charika <b>Express</b></span></a><div class="lng" role="group" aria-label="Langue"><button type="button" data-lang="fr" aria-pressed="true">FR</button><button type="button" data-lang="en" aria-pressed="false">EN</button></div></div>
+    <h1>Espace centre</h1>
+    <p class="muted">Connectez-vous avec l'e-mail et le mot de passe de votre centre.</p>
+    <form id="lf" novalidate>
+      <label class="fl" for="l_email">E-mail<input class="f" id="l_email" type="email" dir="ltr" autocomplete="username" required></label>
+      <label class="fl" for="l_pw">Mot de passe<input class="f" id="l_pw" type="password" autocomplete="current-password" required></label>
+      <p class="err" id="lerr" role="alert" hidden></p>
+      <button class="btn btn-grad" id="lgo" type="submit">Se connecter</button>
+    </form>
+    <p class="muted lhint">Pas encore référencé ? <a href="domiciliation.html">Référencer mon centre</a><br>Mot de passe oublié ? Écrivez-nous sur <a href="https://wa.me/212667154604" target="_blank" rel="noopener">WhatsApp</a>.</p>
+  </section>
+
+  <section class="card login" id="pwView" hidden>
+    <div class="lhead"><a class="logo" href="index.html"><i></i><span>Charika <b>Express</b></span></a><div class="lng" role="group" aria-label="Langue"><button type="button" data-lang="fr" aria-pressed="true">FR</button><button type="button" data-lang="en" aria-pressed="false">EN</button></div></div>
+    <h1>Choisissez votre mot de passe</h1>
+    <p class="muted">Vous vous êtes connecté avec un mot de passe temporaire. Choisissez-en un nouveau (10 caractères minimum).</p>
+    <form id="pf" novalidate>
+      <label class="fl" for="p_cur">Mot de passe temporaire<input class="f" id="p_cur" type="password" autocomplete="current-password"></label>
+      <label class="fl" for="p_new">Nouveau mot de passe<input class="f" id="p_new" type="password" autocomplete="new-password" minlength="10"></label>
+      <p class="err" id="perr" role="alert" hidden></p>
+      <button class="btn btn-grad" type="submit">Enregistrer</button>
+    </form>
+  </section>
+
+  <div id="appView" hidden>
+    <p class="demo" id="demo" hidden>Aperçu : exemple d'espace centre. Sur le site en ligne, vos vraies demandes s'affichent ici.</p>
+    <div class="kpis">
+      <div class="kpi"><small>Nouvelles demandes</small><b class="num" id="kN">0</b><span>à accepter sous 24 h</span></div>
+      <div class="kpi"><small>Attestations à envoyer</small><b class="num" id="kA">0</b><span>après acceptation</span></div>
+      <div class="kpi"><small>Clients domiciliés</small><b class="num" id="kD">0</b><span>attestation envoyée</span></div>
+      <div class="kpi money"><small>Montant dû par Charika Express</small><b class="num" id="kM">0 MAD</b><span id="kMs">—</span></div>
+    </div>
+    <div class="cols">
+      <section class="card">
+        <h2>Demandes de domiciliation</h2>
+        <p class="muted" style="margin:2px 0 0">Pour chaque demande : acceptez-la, puis envoyez l'attestation de domiciliation (PDF). Elle arrive directement dans le dossier du client.</p>
+        <div class="tabs" id="tabs"></div>
+        <div id="reqs" style="margin-top:6px"></div>
+        <input type="file" id="attFile" accept="application/pdf,image/jpeg,image/png" hidden>
+      </section>
+      <div class="side">
+        <section class="card">
+          <h2>Disponibilité</h2>
+          <div class="sw" style="margin-top:10px"><div><b>Centre affiché aux clients</b><small>Désactivez si votre centre est complet.</small></div><label class="tog"><input type="checkbox" id="avail"><span></span></label></div>
+          <p class="sec" style="font-weight:800;font-size:.84rem;margin:14px 0 8px">Services inclus</p>
+          <div class="svc" id="svc">
+            <label><input type="checkbox" value="courrier"><span>Réception du courrier</span></label>
+            <label><input type="checkbox" value="scan"><span>Scan du courrier</span></label>
+            <label><input type="checkbox" value="reunion"><span>Salle de réunion</span></label>
+            <label><input type="checkbox" value="bureau"><span>Bureau à l'heure</span></label>
+            <label><input type="checkbox" value="standard"><span>Standard téléphonique</span></label>
+            <label><input type="checkbox" value="parking"><span>Parking</span></label>
+          </div>
+          <p class="okm" id="sok" hidden style="margin-top:10px">Enregistré ✓</p>
+        </section>
+        <section class="card">
+          <h2>Mes tarifs Charika Express</h2>
+          <div style="margin-top:6px"><div class="rate"><span>12 mois</span><b class="num" id="r12">—</b></div><div class="rate"><span>24 mois</span><b class="num" id="r24">—</b></div></div>
+          <p class="muted" style="margin:8px 0 0">Pour modifier vos tarifs, écrivez-nous sur <a href="https://wa.me/212667154604" target="_blank" rel="noopener">WhatsApp</a>.</p>
+        </section>
+        <section class="card">
+          <h2>Mon compte</h2>
+          <form class="acc" id="af" novalidate>
+            <label class="fl" for="a_phone">Téléphone<input class="f" id="a_phone" type="tel" dir="ltr"></label>
+            <p class="okm" id="aok" hidden>Enregistré ✓</p>
+            <button class="btn btn-soft" type="submit">Enregistrer</button>
+          </form>
+          <details class="more"><summary>Changer mon mot de passe</summary>
+            <form class="acc" id="cf" novalidate>
+              <label class="fl" for="c_cur">Mot de passe actuel<input class="f" id="c_cur" type="password" autocomplete="current-password"></label>
+              <label class="fl" for="c_new">Nouveau mot de passe<input class="f" id="c_new" type="password" autocomplete="new-password" minlength="10"></label>
+              <p class="err" id="cerr" role="alert" hidden></p><p class="okm" id="cok" hidden>Mot de passe changé ✓</p>
+              <button class="btn btn-soft" type="submit">Changer</button>
+            </form>
+          </details>
+        </section>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer><div class="wrap"><span>© 2026 Charika Express · Centres de domiciliation</span><span><span class="soon" title="Bientôt disponible">Conditions</span> · <span class="soon" title="Bientôt disponible">Confidentialité</span></span></div></footer>
+
+<script>
+(() => {
+  const $ = s => document.querySelector(s);
+  // Language: FR by default, EN on request (same choice as the homepage, kept in localStorage 'ce-lang').
+  // Static text is translated from the French text nodes; JS-built text uses tx('français', 'English').
+  let lang = 'fr';
+  const tx = (fr, en) => lang === 'en' ? en : fr;
+  const loc = () => lang === 'en' ? 'en-GB' : 'fr-FR';
+  const EN = {
+    "Espace centre · Charika Express":"Centre space · Charika Express", "Espace centre":"Centre space", "Langue":"Language", "Déconnexion":"Sign out",
+    "Connectez-vous avec l'e-mail et le mot de passe de votre centre.":"Sign in with your centre's e-mail and password.",
+    "Mot de passe":"Password", "Se connecter":"Sign in", "Pas encore référencé ?":"Not listed yet?", "Référencer mon centre":"List my centre",
+    "Mot de passe oublié ? Écrivez-nous sur":"Forgot your password? Write to us on",
+    "Choisissez votre mot de passe":"Choose your password",
+    "Vous vous êtes connecté avec un mot de passe temporaire. Choisissez-en un nouveau (10 caractères minimum).":"You signed in with a temporary password. Choose a new one (at least 10 characters).",
+    "Mot de passe temporaire":"Temporary password", "Nouveau mot de passe":"New password", "Enregistrer":"Save",
+    "Aperçu : exemple d'espace centre. Sur le site en ligne, vos vraies demandes s'affichent ici.":"Preview: sample centre space. On the live site, your real requests are shown here.",
+    "Nouvelles demandes":"New requests", "à accepter sous 24 h":"to accept within 24 h", "Attestations à envoyer":"Attestations to send", "après acceptation":"after accepting",
+    "Clients domiciliés":"Clients domiciled", "attestation envoyée":"attestation sent", "Montant dû par Charika Express":"Amount due by Charika Express",
+    "Demandes de domiciliation":"Domiciliation requests",
+    "Pour chaque demande : acceptez-la, puis envoyez l'attestation de domiciliation (PDF). Elle arrive directement dans le dossier du client.":"For each request: accept it, then send the domiciliation attestation (PDF). It goes straight into the client's file.",
+    "Disponibilité":"Availability", "Centre affiché aux clients":"Centre shown to clients", "Désactivez si votre centre est complet.":"Switch off if your centre is full.",
+    "Services inclus":"Included services", "Réception du courrier":"Mail handling", "Scan du courrier":"Mail scanning", "Salle de réunion":"Meeting room", "Bureau à l'heure":"Office by the hour", "Standard téléphonique":"Phone answering", "Parking":"Parking",
+    "Mes tarifs Charika Express":"My Charika Express rates", "12 mois":"12 months", "24 mois":"24 months", "Pour modifier vos tarifs, écrivez-nous sur":"To change your rates, write to us on",
+    "Mon compte":"My account", "Téléphone":"Phone", "Enregistré ✓":"Saved ✓", "Changer mon mot de passe":"Change my password", "Mot de passe actuel":"Current password", "Mot de passe changé ✓":"Password changed ✓", "Changer":"Change",
+    "© 2026 Charika Express · Centres de domiciliation":"© 2026 Charika Express · Business address centres", "Conditions":"Terms", "Confidentialité":"Privacy", "Bientôt disponible":"Coming soon"
+  };
+  const trs = s => { if (lang === 'fr') return s; const k = s.trim().replace(/\s+/g, ' '); return EN[k] ? s.replace(s.trim(), EN[k]) : s; };
+  const texts = [];
+  { const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, { acceptNode:n => n.parentElement.closest('script,style') || !n.nodeValue.trim() ? 2 : 1 });
+    let n; while ((n = w.nextNode())) texts.push([n, n.nodeValue]); }
+  const attrs = [...document.querySelectorAll('[placeholder],[aria-label],[title]')].map(el => [el, el.getAttribute('placeholder'), el.getAttribute('aria-label'), el.getAttribute('title')]);
+  const title0 = document.title;
+  function setLang(l){
+    lang = l === 'en' ? 'en' : 'fr';
+    document.documentElement.lang = lang; document.title = trs(title0);
+    texts.forEach(([n, fr]) => { n.nodeValue = trs(fr); });
+    attrs.forEach(([el, ph, al, ti]) => { if (ph) el.placeholder = trs(ph); if (al) el.setAttribute('aria-label', trs(al)); if (ti) el.title = trs(ti); });
+    document.querySelectorAll('[data-lang]').forEach(b => b.setAttribute('aria-pressed', b.dataset.lang === lang));
+    try { localStorage.setItem('ce-lang', lang); } catch(e) {}
+    if (data && !$('#appView').hidden) render();
+  }
+  document.querySelectorAll('[data-lang]').forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
+
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
+  const fmt = n => Number(n || 0).toLocaleString('fr-FR').replace(/ | /g, ' ') + ' MAD';
+  const day = d => new Date(d).toLocaleDateString(loc(), { day:'numeric', month:'short' });
+  const FORMES = { sarlau:'SARL AU', sarl:'SARL', sas:'SAS', sa:'SA', ae:'Auto-entrepreneur' };
+  let data = null, demo = false, tab = 'todo', attRef = null;
+
+  const SAMPLE = (() => { const d = n => new Date(Date.now() - n * 864e5).toISOString(); return {
+    me:{ name:'Business Center Maârif', city:'Casablanca', district:'Maârif', phone:'06 61 00 00 00', services:['courrier', 'scan', 'bureau'], rate12:1300, rate24:2400, available:true },
+    requests:[
+      { ref:'CE-514208', company:'Atlas Digital', forme:'sarlau', gerant:'Youssef Alaoui', months:12, status:'new', createdAt:d(0) },
+      { ref:'CE-482913', company:'Nour Consulting', forme:'sarl', gerant:'Salma Idrissi', months:24, status:'new', createdAt:d(1) },
+      { ref:'CE-377120', company:'Kenza Events', forme:'sarlau', gerant:'Kenza Amrani', months:24, status:'accepted', createdAt:d(5) },
+      { ref:'CE-290455', company:'Medina Tech', forme:'sarl', gerant:'Omar Tazi', months:12, status:'done', attFile:'x', createdAt:d(13) }
+    ], files:[] }; })();
+
+  async function api(path, opts = {}){
+    const res = await fetch('/api/centre/' + path, { ...opts, headers:{ 'content-type':'application/json' } });
+    const isJson = (res.headers.get('content-type') || '').includes('application/json');
+    return { res, isJson, body: isJson ? await res.json() : null };
+  }
+  const view = v => { ['loginView', 'pwView', 'appView'].forEach(id => $('#' + id).hidden = id !== v); $('#out').hidden = v === 'loginView'; document.body.classList.toggle('auth', v !== 'appView'); };
+
+  async function boot(){
+    let r;
+    try { r = await api('me'); } catch (e) { r = null; }
+    if (!r || !r.isJson) { demo = true; data = SAMPLE; render(); return view('appView'); }        // preview without a server
+    if (!r.res.ok) { $('#who').textContent = ''; return view('loginView'); }
+    data = r.body; demo = false;
+    if (data.me.mustChange) return view('pwView');
+    render(); view('appView');
+  }
+
+  const ST = () => ({ new:[tx('Nouvelle demande', 'New request'), 'p-new'], accepted:[tx('Attestation à envoyer', 'Attestation to send'), 'p-due'],
+    done:[tx('✓ Domicilié', '✓ Domiciled'), 'p-paid'], refused:[tx('Refusée', 'Declined'), 'p-wait'] });
+  function render(){
+    const { me, requests } = data;
+    $('#demo').hidden = !demo;
+    $('#who').textContent = me.name;
+    const by = s => requests.filter(r => r.status === s), rateOf = r => r.months === 12 ? me.rate12 : me.rate24;
+    $('#kN').textContent = by('new').length; $('#kA').textContent = by('accepted').length; $('#kD').textContent = by('done').length;
+    const due = by('done').filter(r => !r.paidAt);
+    $('#kM').textContent = fmt(due.reduce((n, r) => n + rateOf(r), 0)); $('#kMs').textContent = `${due.length} ${tx('contrat(s) à régler', 'contract(s) to pay')}`;
+    const tabs = [['todo', tx('À traiter', 'To do'), r => r.status === 'new' || r.status === 'accepted'], ['done', tx('Domiciliés', 'Domiciled'), r => r.status === 'done'], ['all', tx('Toutes', 'All'), () => true]];
+    $('#tabs').innerHTML = tabs.map(([k, l, f]) => `<button type="button" data-tab="${k}" class="${tab === k ? 'on' : ''}">${l} · ${requests.filter(f).length}</button>`).join('');
+    const list = requests.filter(tabs.find(t => t[0] === tab)[2]);
+    $('#reqs').innerHTML = list.length ? list.map(r => {
+      const [l, c] = ST()[r.status] || [r.status, 'p-wait'];
+      const acts = r.status === 'new' ? `<button class="btn btn-line" data-refuse="${r.ref}">${tx('Refuser', 'Decline')}</button><button class="btn btn-ok" data-accept="${r.ref}">${tx('Accepter', 'Accept')}</button>`
+        : r.status === 'accepted' ? `<span class="pill ${c}">${l}</span><button class="btn btn-grad" data-att="${r.ref}">📎 ${tx('Envoyer l\'attestation', 'Send the attestation')}</button>`
+        : r.status === 'done' ? `<span class="pill ${c}">${l}</span>${r.attFile && !demo ? `<a class="btn btn-line" href="/api/centre/files/${r.attFile}" target="_blank" rel="noopener">${tx('Voir', 'View')}</a>` : ''}<button class="btn btn-line" data-att="${r.ref}">${tx('Remplacer', 'Replace')}</button>`
+        : `<span class="pill ${c}">${l}</span>`;
+      return `<div class="req"><div><b>${esc(r.ref)} · ${esc(r.company || tx('Nom en cours de validation', 'Name being validated'))}${r.forme ? ' ' + esc(FORMES[r.forme] || '') : ''}</b>
+        <small>${r.months} ${tx('mois', 'months')} · ${fmt(rateOf(r))} · ${tx('gérant', 'manager')} : ${esc(r.gerant || '—')} · ${day(r.createdAt)}</small></div><div class="acts">${acts}</div></div>`;
+    }).join('') : `<p class="empty">${tx('Aucune demande ici pour l\'instant. Les clients qui choisissent votre centre apparaissent ici.', 'No requests here yet. Clients who choose your centre appear here.')}</p>`;
+    $('#avail').checked = !!me.available;
+    document.querySelectorAll('#svc input').forEach(i => { i.checked = (me.services || []).includes(i.value); });
+    $('#r12').textContent = me.rate12 ? fmt(me.rate12) : '—'; $('#r24').textContent = me.rate24 ? fmt(me.rate24) : '—';
+    $('#a_phone').value = me.phone || '';
+  }
+
+  $('#tabs').addEventListener('click', e => { const b = e.target.closest('[data-tab]'); if (b) { tab = b.dataset.tab; render(); } });
+  $('#reqs').addEventListener('click', async e => {
+    const b = e.target.closest('button'); if (!b) return;
+    const ref = b.dataset.accept || b.dataset.refuse;
+    if (ref) {
+      if (b.dataset.refuse && !confirm(tx('Refuser cette demande ? Notre équipe proposera un autre centre au client.', 'Decline this request? Our team will offer the client another centre.'))) return;
+      const action = b.dataset.accept ? 'accept' : 'refuse'; b.disabled = true;
+      if (!demo) { const r = await api('requests/' + ref, { method:'PUT', body:JSON.stringify({ action }) }); if (!r.res.ok) { b.disabled = false; return alert(tx('Action impossible. Rechargez la page.', 'Could not do this. Reload the page.')); } }
+      data.requests.find(x => x.ref === ref).status = action === 'accept' ? 'accepted' : 'refused';
+      return render();
+    }
+    if (b.dataset.att) { attRef = b.dataset.att; $('#attFile').click(); }
+  });
+  const b64 = buf => { let s = ''; const a = new Uint8Array(buf); for (let i = 0; i < a.length; i += 32768) s += String.fromCharCode.apply(null, a.subarray(i, i + 32768)); return btoa(s); };
+  $('#attFile').addEventListener('change', async e => {
+    const f = e.target.files[0]; e.target.value = ''; if (!f || !attRef) return;
+    if (f.size > 1.2e6) return alert(tx('Le fichier doit faire 1,2 Mo maximum.', 'The file must be 1.2 MB max.'));
+    if (!['application/pdf', 'image/jpeg', 'image/png'].includes(f.type)) return alert(tx('Envoyez un PDF, JPG ou PNG.', 'Send a PDF, JPG or PNG.'));
+    const r0 = data.requests.find(x => x.ref === attRef);
+    if (!demo) {
+      const r = await api('requests/' + attRef + '/attestation', { method:'POST', body:JSON.stringify({ name:f.name.slice(0, 120), mime:f.type, data:b64(await f.arrayBuffer()) }) });
+      if (!r.res.ok) return alert(tx('Envoi impossible. Réessayez.', 'Could not send. Try again.'));
+      r0.attFile = r.body.file;
+    }
+    r0.status = 'done'; render();
+  });
+  async function saveMe(extra){
+    const body = { phone:$('#a_phone').value.trim(), available:$('#avail').checked, services:[...document.querySelectorAll('#svc input:checked')].map(i => i.value), ...extra };
+    if (!demo) { const r = await api('me', { method:'PUT', body:JSON.stringify(body) }); if (!r.res.ok) return false; }
+    Object.assign(data.me, body); return true;
+  }
+  const flash = id => { $(id).hidden = false; setTimeout(() => $(id).hidden = true, 1800); };
+  $('#avail').addEventListener('change', async () => { if (await saveMe()) flash('#sok'); });
+  $('#svc').addEventListener('change', async () => { if (await saveMe()) flash('#sok'); });
+  $('#af').addEventListener('submit', async e => { e.preventDefault(); if (await saveMe()) flash('#aok'); });
+
+  const LERR = () => ({ bad_credentials:tx('E-mail ou mot de passe incorrect.', 'Wrong e-mail or password.'),
+    pending:tx('Votre centre est en cours de vérification. Nous vous appelons dès qu\'il est validé.', 'Your centre is being checked. We will call you as soon as it is approved.'),
+    refused:tx('Votre centre n\'a pas été retenu. Contactez-nous sur WhatsApp pour en parler.', 'Your centre was not accepted. Contact us on WhatsApp to talk about it.'),
+    suspended:tx('Votre espace centre est suspendu. Contactez-nous sur WhatsApp.', 'Your centre space is suspended. Contact us on WhatsApp.'),
+    too_many_attempts:tx('Trop de tentatives. Réessayez dans 15 minutes.', 'Too many attempts. Try again in 15 minutes.') });
+  $('#lf').addEventListener('submit', async e => {
+    e.preventDefault();
+    const err = $('#lerr'), b = $('#lgo'); err.hidden = true; b.disabled = true;
+    try {
+      const r = await api('login', { method:'POST', body:JSON.stringify({ email:$('#l_email').value, password:$('#l_pw').value }) });
+      if (r.res.ok) { $('#p_cur').value = $('#l_pw').value; $('#l_pw').value = ''; return boot(); }
+      err.textContent = LERR()[r.body?.error] || tx('Connexion impossible. Réessayez.', 'Could not sign in. Try again.'); err.hidden = false;
+    } catch (e2) { err.textContent = tx('Connexion impossible. Vérifiez votre connexion.', 'Could not sign in. Check your connection.'); err.hidden = false; }
+    finally { b.disabled = false; }
+  });
+  async function changePw(cur, pw, errEl){
+    if (pw.length < 10) { errEl.textContent = tx('Le nouveau mot de passe doit faire au moins 10 caractères.', 'The new password must be at least 10 characters long.'); errEl.hidden = false; return false; }
+    const r = await api('password', { method:'POST', body:JSON.stringify({ current:cur, password:pw }) });
+    if (r.res.ok) { errEl.hidden = true; return true; }
+    errEl.textContent = r.body?.error === 'bad_current_password' ? tx('Le mot de passe actuel est incorrect.', 'The current password is wrong.') : tx('Changement impossible. Réessayez.', 'Could not change the password. Try again.'); errEl.hidden = false; return false;
+  }
+  $('#pf').addEventListener('submit', async e => { e.preventDefault(); if (await changePw($('#p_cur').value, $('#p_new').value, $('#perr'))) boot(); });
+  $('#cf').addEventListener('submit', async e => {
+    e.preventDefault(); if (demo) return;
+    if (await changePw($('#c_cur').value, $('#c_new').value, $('#cerr'))) { e.target.reset(); flash('#cok'); }
+  });
+  $('#out').addEventListener('click', async () => { if (!demo) { try { await api('logout', { method:'POST', body:'{}' }); } catch (e) {} } data = null; view('loginView'); $('#who').textContent = ''; });
+
+  try { if (localStorage.getItem('ce-lang') === 'en') setLang('en'); } catch(e) {}
+  boot();
+})();
+</script>
+</body>
+</html>
