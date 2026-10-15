@@ -48,3 +48,10 @@ Replaces the client referral programme (removed).
 - [x] Promo codes per partner (default code from the name; admins add codes, each with an optional client discount). Link `charikaexpress.ma/?code=CODE`.
 - [x] Team space: « Partenaires » window (validate / refuse / suspend, codes, new password, « Marquer versé »), « Partenaire » box in each file.
 - [ ] English version of the two partner pages.
+
+## Team space on phones
+
+- [x] Compact header, bottom tab bar (Demandes / Partenaires / Compte), 16 px fields (no zoom on iPhone), no Safari translate bar.
+- [x] Installable on the home screen (manifest, icons, plum status bar).
+- [x] Push notifications for every new request (`server/push.js`, `sw.js`). On iPhone they need the team space added to the home screen (iOS 16.4+), then account menu → « Notifications sur ce téléphone ».
+- [ ] Swipe actions on a request in the list (Prendre / WhatsApp / Archiver).

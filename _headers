@@ -14,3 +14,10 @@
 # The preview address (*.pages.dev) must not compete with charikaexpress.ma on Google
 https://:project.pages.dev/*
   X-Robots-Tag: noindex
+
+# Team space service worker (phone notifications): always re-checked
+/sw.js
+  Cache-Control: no-cache
+
+/manifest.webmanifest
+  Content-Type: application/manifest+json

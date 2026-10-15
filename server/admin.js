@@ -4,10 +4,12 @@
 //   PUT  /api/admin/requests/:ref   -> save one file; refused (409) if a colleague saved it in the meantime
 //   GET  /api/admin/team, POST /api/admin/team, PUT /api/admin/team/:id  -> manage the team (admin only)
 //   /api/admin/affiliates…, /api/admin/codes/:code  -> partner programme (admin only, see server/affiliate.js)
+//   /api/admin/push-*               -> phone notifications (see server/push.js)
 import { json, now, readJson, fail, HttpError } from './http.js';
 import { accessEmail } from './access.js';
 import { sessionEmail, sameOrigin, hashPassword, changePassword } from './auth.js';
 import { adminAffiliates } from './affiliate.js';
+import { pushApi } from './push.js';
 
 const COLORS = ['linear-gradient(100deg,#ff7a59,#ff4f9a)', '#7a5cff', '#14a3a3', '#e0a100', '#e5533d', '#2f80ed', '#1d9a62', '#b04ad8'];
 const pretty = email => email.split('@')[0].split(/[._-]+/).filter(Boolean).map(w => w[0].toUpperCase() + w.slice(1)).join(' ') || email;
@@ -45,6 +47,7 @@ export async function adminApi(request, env, path){
       return json({ me: { ...pub(me), mustChange: !!me.must_change }, team: results.map(pub) });
     }
     if (method === 'POST' && path === 'password') return await changePassword(request, env, me.email);
+    if (path.startsWith('push-')) { const r = await pushApi(request, env, path, me, readJson); if (r) return r; }
     if (path === 'affiliates' || path.startsWith('affiliates/') || path.startsWith('codes/')) {   // partner programme (admin only)
       if (me.role !== 'admin') throw new HttpError(403, 'admin_only');
       return await adminAffiliates(request, env, path, tempPassword);   // await: its errors are answered by the catch below

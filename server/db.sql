@@ -56,3 +56,7 @@ CREATE TABLE IF NOT EXISTS aff_sessions (
   created_at TEXT NOT NULL,
   expires_at TEXT NOT NULL
 );
+
+-- Web Push (team phones get a notification for every new request; see server/push.js)
+CREATE TABLE IF NOT EXISTS push_keys (id INTEGER PRIMARY KEY, pub TEXT NOT NULL, priv TEXT NOT NULL);   -- one VAPID key pair, created on first use
+CREATE TABLE IF NOT EXISTS push_subs (endpoint TEXT PRIMARY KEY, email TEXT NOT NULL, created_at TEXT NOT NULL);

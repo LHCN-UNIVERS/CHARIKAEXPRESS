@@ -1,9 +1,17 @@
 <!doctype html>
-<html lang="fr">
+<html lang="fr" translate="no">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
+<meta name="google" content="notranslate">
+<meta name="theme-color" content="#30102f">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Charika">
 <title>Espace équipe · Charika Express</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -88,7 +96,7 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
 /* App shell */
 .app{height:100%;display:grid;grid-template-rows:auto auto 1fr}
 /* Header (proposal C): plum bar like the public site; sections as a segment, search, icon buttons, account menu */
-.top{display:flex;align-items:center;gap:14px;padding:10px 20px;background:linear-gradient(100deg,#30102f,#43173f);color:#fff;position:relative;z-index:30}
+.top{display:flex;align-items:center;gap:14px;padding:10px 20px;padding-top:max(10px,env(safe-area-inset-top));padding-left:max(20px,env(safe-area-inset-left));padding-right:max(20px,env(safe-area-inset-right));background:linear-gradient(100deg,#30102f,#43173f);color:#fff;position:relative;z-index:30}
 .top .logo{color:#fff}
 .seg{display:flex;background:rgba(255,255,255,.08);border-radius:12px;padding:3px;flex:none}
 .seg button{border:0;background:none;color:#e6d2e1;font-weight:700;font-size:.8rem;padding:7px 13px;border-radius:9px}
@@ -118,7 +126,19 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
 .umenu button:hover{background:var(--blush)}
 .umenu button svg{width:16px;height:16px;color:var(--m);flex:none}
 .umenu .out,.umenu .out svg{color:#c4312a}
-.umenu hr{border:0;border-top:1px solid var(--line);margin:4px 0}
+ .umenu hr{border:0;border-top:1px solid var(--line);margin:4px 0}
+.tabbar{display:none}
+@media (max-width:820px){
+  .top{padding-left:max(14px,env(safe-area-inset-left));padding-right:max(14px,env(safe-area-inset-right))}
+  .top .seg{display:none}
+  input,select,textarea,input.f,select.f,textarea.f,.top .search input{font-size:16px}
+  .tabbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:40;background:rgba(255,255,255,.96);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:6px max(8px,env(safe-area-inset-right)) max(8px,env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left))}
+  .tabbar button{flex:1;border:0;background:none;display:grid;justify-items:center;gap:2px;padding:4px 0;font:700 .66rem var(--font);color:var(--m);position:relative}
+  .tabbar button svg{width:22px;height:22px}
+  .tabbar button.on{color:var(--rose)}
+  .tabbar b{position:absolute;top:0;left:calc(50% + 6px);background:var(--grad);color:#fff;font-size:.6rem;border-radius:999px;padding:0 6px;border:2px solid #fff}
+  .app{padding-bottom:calc(66px + env(safe-area-inset-bottom))}
+}
 .snd[aria-pressed="false"]{opacity:.5}
 .bell.ring{animation:ring .9s ease-in-out 2}
 @keyframes ring{0%,100%{transform:rotate(0)}15%{transform:rotate(14deg)}30%{transform:rotate(-12deg)}45%{transform:rotate(8deg)}60%{transform:rotate(-5deg)}75%{transform:rotate(2deg)}}
@@ -387,6 +407,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
         <div class="umenu" id="umenu" role="menu" hidden>
           <div class="who"><b id="mWho"></b><small id="mWhoS"></small></div>
           <button type="button" role="menuitem" id="acctBtn" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>Mon compte et équipe</button>
+          <button type="button" role="menuitem" id="pushBtn" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span id="pushLbl">Notifications sur ce téléphone</span></button>
           <button type="button" role="menuitem" id="exportBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"/></svg>Exporter la liste (CSV)</button>
           <hr>
           <button type="button" role="menuitem" id="logout" class="out"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg>Déconnexion</button>
@@ -394,6 +415,11 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
       </div>
     </div>
   </header>
+  <nav class="tabbar" id="tabbar" aria-label="Navigation">
+    <button type="button" class="on" id="tbReq"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg><span>Demandes</span><b id="tbN" hidden>0</b></button>
+    <button type="button" id="tbAff" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M21.5 20a6.5 6.5 0 0 0-4-6"/></svg><span>Partenaires</span></button>
+    <button type="button" id="tbMe"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span>Compte</span></button>
+  </nav>
   <div class="demo-bar" id="demoBar"><span>⚠️ Mode démonstration<span class="long"> : les données sont enregistrées dans ce navigateur seulement. Pour que toute l'équipe partage les demandes, il faut connecter une base de données (voir README).</span></span><button id="resetDemo">Réinitialiser la démo</button></div>
   <div class="body" id="body">
     <aside class="list">
@@ -410,6 +436,16 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
 </div>
 
 <div class="toast" id="toast" hidden></div>
+<div class="modal" id="pushm" hidden><div class="mbox" role="dialog" aria-modal="true" aria-label="Notifications sur iPhone" style="width:min(420px,100%)">
+  <h3>Notifications sur ce téléphone <button class="btn b-soft b-sm" id="pushClose">Fermer</button></h3>
+  <p class="hint" style="margin:0">Sur iPhone, les notifications arrivent seulement quand l'espace équipe est installé sur l'écran d'accueil :</p>
+  <ol style="margin:0;padding-inline-start:20px;display:grid;gap:6px;font-size:.86rem">
+    <li>Dans Safari, touchez le bouton <b>Partager</b> (carré avec une flèche vers le haut).</li>
+    <li>Choisissez <b>« Sur l'écran d'accueil »</b>, puis <b>Ajouter</b>.</li>
+    <li>Ouvrez <b>Charika</b> depuis l'écran d'accueil, connectez-vous, puis menu du compte → <b>Notifications sur ce téléphone</b>.</li>
+  </ol>
+  <p class="hint" style="margin:0">iPhone avec iOS 16.4 ou plus récent.</p>
+</div></div>
 <div class="modal" id="affm" hidden><div class="mbox" id="affBox" role="dialog" aria-modal="true" aria-label="Partenaires"></div></div>
 <div class="modal" id="acct" hidden><div class="mbox" id="acctBox" role="dialog" aria-modal="true" aria-label="Compte et équipe"></div></div>
 
@@ -896,7 +932,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     const mine = db.requests.filter(allowed);
     $$('#filters button').forEach(b => { b.querySelector('i').textContent = mine.filter(r => inView(r, b.dataset.f)).length; b.setAttribute('aria-pressed', b.dataset.f === filter); });
     const n = db.requests.filter(r => !r.seen && !r.archived && allowed(r)).length;
-    $('#bellN').hidden = !n; $('#bellN').textContent = n;
+    $('#bellN').hidden = !n; $('#bellN').textContent = n; $('#tbN').hidden = !n; $('#tbN').textContent = n;
   }
   function archive(r, why){
     r.archived = true; r.archivedNote = why; log(r, 'Demande archivée : ' + why + '.');
@@ -1472,6 +1508,43 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     }
   });
 
+  // ---------- Phone: bottom tab bar, file from a notification link (#CE-123456), push notifications ----------
+  $('#tbReq').addEventListener('click', () => { $('#affm').hidden = true; $('#body').classList.remove('open'); scrollTo({ top:0, behavior:'smooth' }); });
+  $('#tbAff').addEventListener('click', () => openAff());
+  $('#tbMe').addEventListener('click', e => { e.stopPropagation(); scrollTo({ top:0 }); menu($('#umenu').hidden); });
+  function openFromHash(){ const m = location.hash.match(/^#(CE-\d{6})$/); if (m && get(m[1])) open(m[1]); }
+  addEventListener('hashchange', () => me && openFromHash());
+
+  const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent);
+  const standalone = () => navigator.standalone === true || matchMedia('(display-mode: standalone)').matches;
+  const pushOK = () => 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window;
+  const keyBytes = s => { const b = atob(s.replace(/-/g, '+').replace(/_/g, '/') + '='.repeat((4 - s.length % 4) % 4)); return Uint8Array.from(b, c => c.charCodeAt(0)); };
+  async function pushState(){
+    let on = false;
+    try { if (pushOK()) { const reg = await navigator.serviceWorker.getRegistration('/'); on = !!(reg && await reg.pushManager.getSubscription()) && Notification.permission === 'granted'; } } catch(e) {}
+    $('#pushLbl').textContent = on ? 'Notifications activées ✓ · tester' : 'Notifications sur ce téléphone';
+    return on;
+  }
+  function setupPush(){
+    $('#pushBtn').hidden = false;
+    if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').then(pushState).catch(() => {});
+  }
+  $('#pushBtn').addEventListener('click', async () => {
+    if (!pushOK() || (isIOS && !standalone())) { $('#pushm').hidden = false; return; }
+    try {
+      if (await pushState()) { await api('push-test', { method:'POST', body:'{}' }); return toast('Notification de test envoyée'); }
+      if (await Notification.requestPermission() !== 'granted') return toast('Notifications refusées : autorisez-les dans les Réglages du téléphone');
+      const reg = await navigator.serviceWorker.ready;
+      const { key } = await (await api('push-key')).json();
+      const sub = await reg.pushManager.subscribe({ userVisibleOnly:true, applicationServerKey:keyBytes(key) });
+      const r = await api('push-subscribe', { method:'POST', body:JSON.stringify({ endpoint:sub.endpoint }) });
+      if (!r.ok) throw new Error('subscribe');
+      await api('push-test', { method:'POST', body:'{}' });
+      await pushState(); toast('Notifications activées : une notification de test arrive');
+    } catch(e) { toast('Activation impossible sur ce navigateur'); }
+  });
+  $('#pushm').addEventListener('click', e => { if (e.target.id === 'pushm' || e.target.id === 'pushClose') $('#pushm').hidden = true; });
+
   // Start: shared database if the team API answers, demo otherwise.
   let timers = false;
   async function boot(){
@@ -1484,10 +1557,12 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
       if (j.me.mustChange) { showPw(true); return; }
       db = db && db.requests && SERVER && timers ? db : { requests:[] };
       TEAM.splice(0, TEAM.length, ...j.team);
-      $('#demoBar').hidden = true; $('#acctBtn').hidden = false; $('#affBtn').hidden = j.me.role !== 'admin';
+      $('#demoBar').hidden = true; $('#acctBtn').hidden = false; $('#affBtn').hidden = $('#tbAff').hidden = j.me.role !== 'admin';
+      setupPush();
       if (j.me.role === 'admin') loadAffs();
       await pull();
       start(TEAM.find(t => t.id === j.me.id) || j.me);
+      openFromHash();
       if (!timers) {
         timers = true;
         setInterval(() => me && pull(), 20000);

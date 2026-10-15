@@ -7,9 +7,9 @@ import { track } from './track.js';
 import { affApi, promoApi } from './affiliate.js';
 
 export default {
-  async fetch(request, env){
+  async fetch(request, env, ctx){
     const { pathname } = new URL(request.url);
-    if (pathname === '/api/requests') return request.method === 'POST' ? postRequest(request, env) : json({ error: 'method' }, 405);
+    if (pathname === '/api/requests') return request.method === 'POST' ? postRequest(request, env, ctx) : json({ error: 'method' }, 405);
     if (pathname === '/api/track') return request.method === 'POST' ? track(request, env) : json({ error: 'method' }, 405);
     if (pathname === '/api/promo') return request.method === 'GET' ? promoApi(request, env) : json({ error: 'method' }, 405);
     if (pathname.startsWith('/api/aff/')) return affApi(request, env, pathname.slice('/api/aff/'.length));

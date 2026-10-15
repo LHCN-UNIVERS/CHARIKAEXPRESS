@@ -2,6 +2,7 @@
 // Public route: only whitelisted fields are kept, sizes are capped, and one sender can't flood the list.
 import { json, now, readJson, fail, HttpError } from './http.js';
 import { promoInfo } from './affiliate.js';
+import { notifyTeam } from './push.js';
 
 const str = (v, max = 200) => String(v ?? '').trim().slice(0, max);
 const num = v => (v === null || v === '' || v === undefined || isNaN(+v)) ? null : +v;
@@ -30,7 +31,7 @@ export async function ipHash(request){
   return [...new Uint8Array(d)].slice(0, 12).map(x => x.toString(16).padStart(2, '0')).join('');
 }
 
-export async function postRequest(request, env){
+export async function postRequest(request, env, ctx){
   try {
     const b = await readJson(request, 64e3);
     if (b.website) return json({ ok: true, ref: str(b.ref, 12) });          // robot (hidden field filled): pretend, keep nothing
@@ -53,6 +54,7 @@ export async function postRequest(request, env){
     const data = { ...r, ref, createdAt: at, updatedAt: at, step: 0, docs: {}, livrables: {}, checks: {}, paid: {}, reject: null,
       seen: false, juriste: null, notes: [{ t: 'sys', at, text: 'Demande reçue depuis le site.' }] };
     await env.DB.prepare('INSERT INTO requests (ref, created_at, updated_at, ip_hash, data) VALUES (?, ?, ?, ?, ?)').bind(ref, at, at, ip, JSON.stringify(data)).run();
+    ctx?.waitUntil(notifyTeam(env).catch(e => console.error('push', e)));   // team phones: « Nouvelle demande »
     return json({ ok: true, ref });
   } catch (e) { return fail(e); }
 }
