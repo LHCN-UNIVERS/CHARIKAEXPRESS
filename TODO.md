@@ -60,7 +60,7 @@ Replaces the client referral programme (removed).
 
 ## Domiciliation centres (marketplace)
 
-Centres sign up on `domiciliation.html`, the team checks and activates them (team space → « Centres »), then they work from `centre.html`. In the request form, a client who needs a business address picks an active centre of their city, or lets the team choose. The domiciliation stays **included in the pack**: Charika Express pays the centre its agreed rate (12 months for the Pack Essentiel, 24 months for Pro and Premium). Code: `server/centres.js`; tables `centres`, `centre_sessions`, `centre_files`, `domi` in `server/db.sql`.
+Centres sign up on `partenaires.html` (profile « Centre de domiciliation », also `?type=centre`; the old `domiciliation.html` redirects there), the team checks and activates them (team space → « Centres »), then they sign in on `partenaire.html` like every partner and are sent to their own space, `centre.html`. In the request form, a client who needs a business address picks an active centre of their city, or lets the team choose. The domiciliation stays **included in the pack**: Charika Express pays the centre its agreed rate (12 months for the Pack Essentiel, 24 months for Pro and Premium). Code: `server/centres.js`; tables `centres`, `centre_sessions`, `centre_files`, `domi` in `server/db.sql`.
 
 - [x] Public sign-up page with photos and documents, centre space (accept / refuse, send the attestation as a PDF), « Centres » page in the team space (check, activate, edit the file and rates, mark payments), « Domiciliation » box in each file (assign / change the centre, see the attestation, warn the centre on WhatsApp).
 - [ ] Recruit the first centres (Casablanca, Rabat, Marrakech) and agree on their rates before announcing the page.

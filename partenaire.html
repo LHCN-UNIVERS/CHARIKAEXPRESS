@@ -142,7 +142,7 @@ footer a{color:var(--m)}
   <section class="card login" id="loginView" hidden>
     <div class="lhead"><a class="logo" href="index.html"><i></i><span>Charika <b>Express</b></span></a><div class="lng" role="group" aria-label="Langue"><button type="button" data-lang="fr" aria-pressed="true">FR</button><button type="button" data-lang="en" aria-pressed="false">EN</button></div></div>
     <h1>Espace partenaire</h1>
-    <p class="muted">Connectez-vous avec l'e-mail et le mot de passe de votre compte partenaire.</p>
+    <p class="muted">Apporteurs d'affaires et centres de domiciliation : connectez-vous avec l'e-mail et le mot de passe de votre compte.</p>
     <form id="lf" novalidate>
       <label class="fl" for="l_email">E-mail<input class="f" id="l_email" type="email" dir="ltr" autocomplete="username" required></label>
       <label class="fl" for="l_pw">Mot de passe<input class="f" id="l_pw" type="password" autocomplete="current-password" required></label>
@@ -235,7 +235,7 @@ footer a{color:var(--m)}
   const loc = () => lang === 'en' ? 'en-GB' : 'fr-FR';
   const EN = {
     "Espace partenaire · Charika Express":"Partner space · Charika Express", "Espace partenaire":"Partner space", "Langue":"Language", "Déconnexion":"Sign out",
-    "Connectez-vous avec l'e-mail et le mot de passe de votre compte partenaire.":"Sign in with the e-mail and password of your partner account.",
+    "Apporteurs d'affaires et centres de domiciliation : connectez-vous avec l'e-mail et le mot de passe de votre compte.":"Business referrers and business address centres: sign in with your account's e-mail and password.",
     "Mot de passe":"Password", "Se connecter":"Sign in", "Pas encore partenaire ?":"Not a partner yet?", "Créer un compte":"Create an account",
     "Mot de passe oublié ? Écrivez-nous sur":"Forgot your password? Write to us on",
     "Choisissez votre mot de passe":"Choose your password",
@@ -299,7 +299,10 @@ footer a{color:var(--m)}
     let r;
     try { r = await api('me'); } catch (e) { r = null; }
     if (!r || !r.isJson) { demo = true; data = SAMPLE; render(); return view('appView'); }        // preview without a server
-    if (!r.res.ok) { $('#who').textContent = ''; return view('loginView'); }
+    if (!r.res.ok) {                                                     // a domiciliation centre already signed in goes to its own space
+      try { const c = await fetch('/api/centre/me', { headers:{ 'content-type':'application/json' } }); if (c.ok) return location.replace('centre.html'); } catch (e) {}
+      $('#who').textContent = ''; return view('loginView');
+    }
     data = r.body; demo = false;
     if (data.me.mustChange) return view('pwView');
     render(); view('appView');
@@ -367,12 +370,24 @@ footer a{color:var(--m)}
     refused:tx('Votre candidature n\'a pas été retenue. Contactez-nous sur WhatsApp pour en parler.', 'Your application was not accepted. Contact us on WhatsApp to talk about it.'),
     suspended:tx('Votre compte partenaire est suspendu. Contactez-nous sur WhatsApp.', 'Your partner account is suspended. Contact us on WhatsApp.'),
     too_many_attempts:tx('Trop de tentatives. Réessayez dans 15 minutes.', 'Too many attempts. Try again in 15 minutes.') });
+  const CERR = () => ({ pending:tx('Votre centre est en cours de vérification. Nous vous appelons dès qu\'il est validé.', 'Your centre is being checked. We will call you as soon as it is approved.'),
+    refused:tx('Votre centre n\'a pas été retenu. Contactez-nous sur WhatsApp pour en parler.', 'Your centre was not accepted. Contact us on WhatsApp to talk about it.'),
+    suspended:tx('Votre espace centre est suspendu. Contactez-nous sur WhatsApp.', 'Your centre space is suspended. Contact us on WhatsApp.') });
   $('#lf').addEventListener('submit', async e => {
     e.preventDefault();
     const err = $('#lerr'), b = $('#lgo'); err.hidden = true; b.disabled = true;
     try {
-      const r = await api('login', { method:'POST', body:JSON.stringify({ email:$('#l_email').value, password:$('#l_pw').value }) });
+      // One sign-in for every partner: business referrer first, then domiciliation centre (centre.html)
+      const creds = JSON.stringify({ email:$('#l_email').value, password:$('#l_pw').value });
+      const r = await api('login', { method:'POST', body:creds });
       if (r.res.ok) { $('#p_cur').value = $('#l_pw').value; $('#l_pw').value = ''; return boot(); }
+      if (r.res.status === 401) {
+        const c = await fetch('/api/centre/login', { method:'POST', headers:{ 'content-type':'application/json' }, body:creds });
+        const cj = await c.json().catch(() => ({}));
+        if (c.ok) { try { if (cj.mustChange) sessionStorage.setItem('ce-ctr-tmp', $('#l_pw').value); } catch (e) {} return location.replace('centre.html'); }
+        if (c.status === 403) { err.textContent = CERR()[cj.error] || LERR().bad_credentials; err.hidden = false; return; }
+        if (c.status === 429) { err.textContent = LERR().too_many_attempts; err.hidden = false; return; }
+      }
       err.textContent = LERR()[r.body?.error] || tx('Connexion impossible. Réessayez.', 'Could not sign in. Try again.'); err.hidden = false;
     } catch (e2) { err.textContent = tx('Connexion impossible. Vérifiez votre connexion.', 'Could not sign in. Check your connection.'); err.hidden = false; }
     finally { b.disabled = false; }

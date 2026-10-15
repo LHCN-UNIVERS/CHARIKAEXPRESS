@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Programme partenaires Charika Express : gagnez 350 MAD pour chaque société créée par un client que vous recommandez.">
+<meta name="description" content="Devenez partenaire de Charika Express : apporteur d'affaires (350 MAD par société créée) ou centre de domiciliation (recevez des entrepreneurs).">
 <link rel="canonical" href="https://charikaexpress.ma/partenaires">
 <meta name="theme-color" content="#30102f">
 <title>Devenir partenaire · Charika Express</title>
@@ -83,6 +83,36 @@ footer a{color:var(--m)}
 @media (max-width:860px){.grid{grid-template-columns:minmax(0,1fr)}}
 @media (max-width:480px){.bar{gap:8px}.logo{gap:8px;font-size:.95rem}.logo i{width:24px;height:24px}.lng button{padding:4px 7px}.bar .in{padding:6px 10px;font-size:.72rem}}
 @media (max-width:520px){.how{grid-template-columns:1fr}.g2{grid-template-columns:1fr}}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.sec{font-weight:800;font-size:.86rem;margin:6px 0 -2px}
+.svc{display:flex;flex-wrap:wrap;gap:6px}
+.svc label{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:.8rem;font-weight:600;cursor:pointer;background:#fff}
+.svc input{accent-color:var(--pink)}
+.svc label:has(input:checked){background:var(--plum);color:#fff;border-color:var(--plum)}
+.up{border:2px dashed #f0c9cf;border-radius:14px;padding:12px;text-align:center;color:var(--m);font-size:.8rem;background:#fffafb;cursor:pointer;display:grid;gap:4px}
+.up b{color:var(--ink);font-size:.84rem}
+.up input{display:none}
+.thumbs{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.thumbs img{width:54px;height:40px;object-fit:cover;border-radius:8px}
+.thumbs span{font-size:.72rem;background:var(--blush);border-radius:8px;padding:3px 8px}
+.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
+.facts div{background:#fff;color:var(--ink);border-radius:14px;padding:12px}
+.facts b{display:block;font-size:1.05rem}.facts span{font-size:.76rem;color:var(--m)}
+@media (max-width:860px){.facts{grid-template-columns:1fr}}
+@media (max-width:520px){.g3{grid-template-columns:1fr}}
+.intro{display:grid;gap:12px}
+.intro h1{margin:0;font-size:clamp(1.5rem,3.4vw,2.1rem);letter-spacing:-.03em;line-height:1.15;text-wrap:balance}
+.intro h1 em{font-style:normal;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.prof{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.prof button{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:auto 1fr;gap:4px 14px;align-items:center;background:#fff;border:1.5px solid var(--line);border-radius:20px;padding:16px 18px;transition:border-color .2s,box-shadow .2s}
+.prof button:hover{border-color:#e8c9cf}
+.prof button[aria-selected="true"]{border-color:var(--pink);background:#fff6f9;box-shadow:0 0 0 4px rgba(255,79,145,.12)}
+.prof button:focus-visible{outline:3px solid var(--pink);outline-offset:2px}
+.prof .ic{grid-row:span 2;width:48px;height:48px;border-radius:14px;background:var(--blush);display:grid;place-items:center;font-size:1.5rem}
+.prof button[aria-selected="true"] .ic{background:var(--grad)}
+.prof b{font-size:1rem}.prof small{color:var(--m);font-size:.8rem;line-height:1.45}
+.pane{display:grid;gap:36px}
+@media (max-width:640px){.prof{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -93,6 +123,14 @@ footer a{color:var(--m)}
 </div></header>
 
 <main class="wrap">
+  <section class="intro">
+    <h1>Devenez <em>partenaire</em> de Charika Express</h1>
+    <div class="prof" role="tablist" aria-label="Votre profil">
+      <button type="button" role="tab" id="tAff" aria-selected="true" aria-controls="pAff" data-prof="aff"><span class="ic">🤝</span><b>Apporteur d'affaires</b><small>Comptables, agences, consultants, créateurs : 350 MAD par société créée.</small></button>
+      <button type="button" role="tab" id="tCtr" aria-selected="false" aria-controls="pCtr" data-prof="ctr"><span class="ic">🏢</span><b>Centre de domiciliation</b><small>Recevez des entrepreneurs qui créent leur société, sans prospecter.</small></button>
+    </div>
+  </section>
+  <div class="pane" id="pAff" role="tabpanel" aria-labelledby="tAff">
   <div class="grid">
     <section class="pitch">
       <small>Programme partenaires</small>
@@ -155,6 +193,92 @@ footer a{color:var(--m)}
     <details><summary>Que vois-je de mes clients ?</summary><p>Dans votre espace, vous voyez la référence de chaque dossier apporté et son avancement, étape par étape, jusqu'à la livraison des documents. Les informations personnelles du client restent confidentielles.</p></details>
     <details><summary>Mes clients ont-ils une remise ?</summary><p>Certains codes partenaires donnent une remise au client. Votre code et sa remise éventuelle sont indiqués dans votre espace partenaire.</p></details>
   </section>
+</div>
+  <div class="pane" id="pCtr" role="tabpanel" aria-labelledby="tCtr" hidden>
+  <div class="grid">
+    <section class="pitch">
+      <small>Centres de domiciliation</small>
+      <h1>Recevez des entrepreneurs <em>sans prospecter</em></h1>
+      <p>Chaque jour, des porteurs de projet créent leur société avec Charika Express et ont besoin d'une adresse. Référencez votre centre : ils le choisissent directement dans leur demande, et nous vous réglons votre tarif.</p>
+      <div class="how">
+        <div><i>1</i><b>Inscrivez votre centre</b><span>Adresse, services, tarifs et photos en 5 minutes.</span></div>
+        <div><i>2</i><b>Nous le vérifions</b><span>Documents et appel de validation, sous 48 h ouvrées.</span></div>
+        <div><i>3</i><b>Recevez des clients</b><span>Acceptez la demande et envoyez l'attestation depuis votre espace.</span></div>
+      </div>
+      <div class="facts"><div><b>0 MAD</b><span>pour s'inscrire</span></div><div><b>Payé par nous</b><span>votre tarif, pour chaque contrat</span></div><div><b>En ligne</b><span>attestation envoyée depuis votre espace</span></div></div>
+    </section>
+
+    <section class="card" id="cSignup">
+      <div id="cFormView">
+        <h2>Référencer mon centre</h2>
+        <p class="muted" style="margin:4px 0 0">Gratuit et sans engagement. Votre centre apparaît aux clients après vérification.</p>
+        <form id="csf" novalidate>
+          <p class="sec">Votre centre</p>
+          <div class="g2">
+            <label class="fl" for="c_name">Nom du centre *<input class="f" id="c_name" autocomplete="organization" required></label>
+            <label class="fl" for="c_company"><span>Société <small>(facultatif)</small></span><input class="f" id="c_company"></label>
+          </div>
+          <div class="g2">
+            <label class="fl" for="c_contact">Responsable<input class="f" id="c_contact" autocomplete="name"></label>
+            <label class="fl" for="c_phone">Téléphone / WhatsApp *<input class="f" id="c_phone" type="tel" dir="ltr" autocomplete="tel" placeholder="06 12 34 56 78" required></label>
+          </div>
+          <div class="g2">
+            <label class="fl" for="c_email">E-mail *<input class="f" id="c_email" type="email" dir="ltr" autocomplete="email" required></label>
+            <label class="fl" for="c_city">Ville *<input class="f" id="c_city" list="cities" autocomplete="address-level2" required></label>
+          </div>
+          <datalist id="cities"><option value="Casablanca"><option value="Rabat"><option value="Marrakech"><option value="Tanger"><option value="Agadir"><option value="Fès"><option value="Meknès"><option value="Oujda"><option value="Kénitra"><option value="Tétouan"><option value="El Jadida"><option value="Mohammedia"></datalist>
+          <div class="g2">
+            <label class="fl" for="c_district">Quartier<input class="f" id="c_district"></label>
+            <label class="fl" for="c_address">Adresse exacte *<input class="f" id="c_address" autocomplete="street-address" required></label>
+          </div>
+          <div class="g2">
+            <label class="fl" for="c_rc">RC<input class="f" id="c_rc" dir="ltr"></label>
+            <label class="fl" for="c_ice">ICE<input class="f" id="c_ice" dir="ltr" inputmode="numeric"></label>
+          </div>
+          <p class="sec">Services inclus</p>
+          <div class="svc" id="c_svc">
+            <label><input type="checkbox" value="courrier" checked><span>Réception du courrier</span></label>
+            <label><input type="checkbox" value="scan"><span>Scan du courrier</span></label>
+            <label><input type="checkbox" value="reunion"><span>Salle de réunion</span></label>
+            <label><input type="checkbox" value="bureau"><span>Bureau à l'heure</span></label>
+            <label><input type="checkbox" value="standard"><span>Standard téléphonique</span></label>
+            <label><input type="checkbox" value="parking"><span>Parking</span></label>
+          </div>
+          <p class="sec">Votre tarif pour Charika Express (MAD TTC)</p>
+          <div class="g2">
+            <label class="fl" for="c_r12">12 mois<input class="f" id="c_r12" type="number" min="0" step="50" inputmode="numeric"></label>
+            <label class="fl" for="c_r24">24 mois<input class="f" id="c_r24" type="number" min="0" step="50" inputmode="numeric"></label>
+          </div>
+          <p class="muted" style="margin:-4px 0 0;font-size:.78rem">La domiciliation est incluse dans nos packs : c'est nous qui vous payons ce tarif, le client ne paie rien en plus.</p>
+          <div class="g2">
+            <label class="up" for="c_photos"><b>📷 Photos du centre</b><span>façade, accueil, salle · 3 maximum</span><input type="file" id="c_photos" accept="image/*" multiple><span class="thumbs" id="c_photosL"></span></label>
+            <label class="up" for="c_docs"><b>📄 Justificatifs</b><span>RC, ICE, autorisation de domiciliation · PDF ou photo</span><input type="file" id="c_docs" accept="application/pdf,image/jpeg,image/png" multiple><span class="thumbs" id="c_docsL"></span></label>
+          </div>
+          <label class="fl" for="c_pw"><span>Mot de passe * <small>(10 caractères minimum)</small></span><input class="f" id="c_pw" type="password" autocomplete="new-password" minlength="10" required></label>
+          <input class="hp" id="c_web" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <label class="chk" for="c_cgu"><input type="checkbox" id="c_cgu"><span>J'accepte les <span class="soon" title="Bientôt disponible">conditions du programme centres</span> et la <span class="soon" title="Bientôt disponible">politique de confidentialité</span>.</span></label>
+          <p class="err" id="cserr" role="alert" hidden></p>
+          <button class="btn btn-grad" id="csgo" type="submit">Envoyer ma demande</button>
+        </form>
+      </div>
+      <div class="done" id="cDoneView" hidden>
+        <div class="ic">✓</div>
+        <h2>Demande envoyée</h2>
+        <p class="muted">Nous vérifions votre centre sous 48 h ouvrées et vous appelons. Une fois validé, vous pourrez vous connecter à votre espace centre avec votre e-mail et votre mot de passe.</p>
+        <p class="muted" id="cDemoNote" hidden>(Aperçu : aucune demande n'a été envoyée.)</p>
+        <a class="btn btn-grad" href="partenaire.html">Espace partenaire</a>
+      </div>
+    </section>
+  </div>
+
+  <section class="faq">
+    <h2>Questions fréquentes</h2>
+    <details><summary>Comment suis-je payé ?</summary><p>La domiciliation est incluse dans les packs Charika Express. Pour chaque client qui vous choisit, nous vous réglons le tarif que nous avons validé ensemble (12 ou 24 mois), après l'envoi de l'attestation.</p></details>
+    <details><summary>Comment les clients me trouvent-ils ?</summary><p>Dans le formulaire de demande, le client voit les centres vérifiés de sa ville, avec photos, quartier et services, et choisit le sien.</p></details>
+    <details><summary>Que dois-je faire pour chaque client ?</summary><p>Vous recevez la demande dans votre espace : vous l'acceptez, puis vous envoyez l'attestation de domiciliation (PDF). Elle arrive directement dans le dossier du client.</p></details>
+    <details><summary>Puis-je mettre mon centre en pause ?</summary><p>Oui : depuis votre espace, indiquez que votre centre est complet. Il n'apparaît plus aux nouveaux clients jusqu'à ce que vous le réactiviez.</p></details>
+  </section>
+</div>
 </main>
 
 <footer><div class="wrap"><span>© 2026 Charika Express</span><span><span class="soon" title="Bientôt disponible">Conditions</span> · <span class="soon" title="Bientôt disponible">Confidentialité</span></span></div></footer>
@@ -162,8 +286,7 @@ footer a{color:var(--m)}
 <script>
 (() => {
   const $ = s => document.querySelector(s);
-  const COMMISSION = 350, fmt = n => n.toLocaleString('fr-FR').replace(/ | /g, ' ');
-  const calc = () => { const n = +$('#cn').value; $('#cnv').textContent = n; $('#cnt').textContent = fmt(n * COMMISSION) + ' MAD'; };
+  const onLang = [];
   // Language: FR by default, EN on request (same choice as the homepage, kept in localStorage 'ce-lang').
   // Static text is translated from the French text nodes; JS-built text uses tx('français', 'English').
   let lang = 'fr';
@@ -195,7 +318,39 @@ footer a{color:var(--m)}
     "Dans votre espace, vous voyez la référence de chaque dossier apporté et son avancement, étape par étape, jusqu'à la livraison des documents. Les informations personnelles du client restent confidentielles.":"In your space, you see the reference of each file you referred and its progress, step by step, until the documents are delivered. The client's personal information stays confidential.",
     "Mes clients ont-ils une remise ?":"Do my clients get a discount?",
     "Certains codes partenaires donnent une remise au client. Votre code et sa remise éventuelle sont indiqués dans votre espace partenaire.":"Some partner codes give the client a discount. Your code and any discount are shown in your partner space.",
-    "Conditions":"Terms", "Confidentialité":"Privacy"
+    "Conditions":"Terms", "Confidentialité":"Privacy",
+    // centres de domiciliation
+    "Référencer mon centre de domiciliation · Charika Express":"List my business centre · Charika Express", "Espace centre":"Centre space", "Langue":"Language",
+    "Centres de domiciliation":"Business address centres", "Recevez des entrepreneurs":"Welcome entrepreneurs", "sans prospecter":"without prospecting",
+    "Chaque jour, des porteurs de projet créent leur société avec Charika Express et ont besoin d'une adresse. Référencez votre centre : ils le choisissent directement dans leur demande, et nous vous réglons votre tarif.":"Every day, entrepreneurs create their company with Charika Express and need a registered address. List your centre: they choose it right in their request, and we pay you your rate.",
+    "Inscrivez votre centre":"List your centre", "Adresse, services, tarifs et photos en 5 minutes.":"Address, services, rates and photos in 5 minutes.",
+    "Nous le vérifions":"We check it", "Documents et appel de validation, sous 48 h ouvrées.":"Documents and a validation call, within 48 working hours.",
+    "Recevez des clients":"Get clients", "Acceptez la demande et envoyez l'attestation depuis votre espace.":"Accept the request and send the attestation from your space.",
+    "0 MAD":"0 MAD", "pour s'inscrire":"to sign up", "Payé par nous":"Paid by us", "votre tarif, pour chaque contrat":"your rate, for every contract", "En ligne":"Online", "attestation envoyée depuis votre espace":"attestation sent from your space",
+    "Référencer mon centre":"List my centre", "Gratuit et sans engagement. Votre centre apparaît aux clients après vérification.":"Free, no commitment. Your centre is shown to clients once checked.",
+    "Votre centre":"Your centre", "Nom du centre *":"Centre name *", "Société":"Company", "(facultatif)":"(optional)", "Responsable":"Contact person",
+    "Téléphone / WhatsApp *":"Phone / WhatsApp *", "Ville *":"City *", "Quartier":"District", "Adresse exacte *":"Exact address *",
+    "Services inclus":"Included services", "Réception du courrier":"Mail handling", "Scan du courrier":"Mail scanning", "Salle de réunion":"Meeting room", "Bureau à l'heure":"Office by the hour", "Standard téléphonique":"Phone answering", "Parking":"Parking",
+    "Votre tarif pour Charika Express (MAD TTC)":"Your rate for Charika Express (MAD incl. VAT)", "12 mois":"12 months", "24 mois":"24 months",
+    "La domiciliation est incluse dans nos packs : c'est nous qui vous payons ce tarif, le client ne paie rien en plus.":"The business address is included in our packs: we pay you this rate, the client pays nothing extra.",
+    "📷 Photos du centre":"📷 Centre photos", "façade, accueil, salle · 3 maximum":"front, reception, room · up to 3", "📄 Justificatifs":"📄 Documents", "RC, ICE, autorisation de domiciliation · PDF ou photo":"RC, ICE, domiciliation authorisation · PDF or photo",
+    "Mot de passe *":"Password *", "(10 caractères minimum)":"(at least 10 characters)",
+    "J'accepte les":"I accept the", "conditions du programme centres":"centre programme terms", "et la":"and the", "politique de confidentialité":"privacy policy", "Bientôt disponible":"Coming soon",
+    "Envoyer ma demande":"Send my application", "Demande envoyée":"Application sent",
+    "Nous vérifions votre centre sous 48 h ouvrées et vous appelons. Une fois validé, vous pourrez vous connecter à votre espace centre avec votre e-mail et votre mot de passe.":"We check your centre within 48 working hours and call you. Once approved, you can sign in to your centre space with your e-mail and password.",
+    "(Aperçu : aucune demande n'a été envoyée.)":"(Preview: no application was sent.)", "Questions fréquentes":"Frequently asked questions",
+    "Comment suis-je payé ?":"How do I get paid?",
+    "La domiciliation est incluse dans les packs Charika Express. Pour chaque client qui vous choisit, nous vous réglons le tarif que nous avons validé ensemble (12 ou 24 mois), après l'envoi de l'attestation.":"The business address is included in Charika Express packs. For every client who chooses you, we pay the rate we agreed together (12 or 24 months), once the attestation is sent.",
+    "Comment les clients me trouvent-ils ?":"How do clients find me?",
+    "Dans le formulaire de demande, le client voit les centres vérifiés de sa ville, avec photos, quartier et services, et choisit le sien.":"In the request form, the client sees the checked centres of their city, with photos, district and services, and picks one.",
+    "Que dois-je faire pour chaque client ?":"What do I do for each client?",
+    "Vous recevez la demande dans votre espace : vous l'acceptez, puis vous envoyez l'attestation de domiciliation (PDF). Elle arrive directement dans le dossier du client.":"You receive the request in your space: you accept it, then send the domiciliation attestation (PDF). It goes straight into the client's file.",
+    "Puis-je mettre mon centre en pause ?":"Can I pause my centre?",
+    "Oui : depuis votre espace, indiquez que votre centre est complet. Il n'apparaît plus aux nouveaux clients jusqu'à ce que vous le réactiviez.":"Yes: in your space, mark your centre as full. It is hidden from new clients until you switch it back on.",
+    "Conditions":"Terms", "Confidentialité":"Privacy",
+    "Devenez":"Become a", "partenaire":"partner", "de Charika Express":"of Charika Express", "Votre profil":"Your profile",
+    "Apporteur d'affaires":"Business referrer", "Comptables, agences, consultants, créateurs : 350 MAD par société créée.":"Accountants, agencies, consultants, creators: 350 MAD per company formed.",
+    "Centre de domiciliation":"Business address centre", "Recevez des entrepreneurs qui créent leur société, sans prospecter.":"Welcome entrepreneurs who create their company, without prospecting."
   };
   const trs = s => { if (lang === 'fr') return s; const k = s.trim().replace(/\s+/g, ' '); return EN[k] ? s.replace(s.trim(), EN[k]) : s; };
   const texts = [];
@@ -210,12 +365,18 @@ footer a{color:var(--m)}
     attrs.forEach(([el, ph, al, ti]) => { if (ph) el.placeholder = trs(ph); if (al) el.setAttribute('aria-label', trs(al)); if (ti) el.title = trs(ti); });
     document.querySelectorAll('[data-lang]').forEach(b => b.setAttribute('aria-pressed', b.dataset.lang === lang));
     try { localStorage.setItem('ce-lang', lang); } catch(e) {}
-    payl(); if (!$('#sgo').disabled) $('#sgo').textContent = tx('Envoyer ma candidature', 'Send my application');
+    onLang.forEach(f => f());
   }
   document.querySelectorAll('[data-lang]').forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
+
+  // ---------- Business referrer (affiliate) sign-up ----------
+  {
+  const COMMISSION = 350, fmt = n => n.toLocaleString('fr-FR').replace(/ | /g, ' ');
+  const calc = () => { const n = +$('#cn').value; $('#cnv').textContent = n; $('#cnt').textContent = fmt(n * COMMISSION) + ' MAD'; };
   $('#cn').addEventListener('input', calc); calc();
   const payl = () => { $('#s_payl').textContent = $('#s_pay').value === 'cashplus' ? tx('N° de compte Cash Plus', 'Cash Plus account number') : 'RIB'; };
   $('#s_pay').addEventListener('change', payl);
+  onLang.push(() => { payl(); if (!$('#sgo').disabled) $('#sgo').textContent = tx('Envoyer ma candidature', 'Send my application'); });
 
   const ERR = () => ({ missing_fields:tx('Remplissez votre nom, votre téléphone et un e-mail valide.', 'Please enter your name, your phone number and a valid e-mail.'),
     password_too_short:tx('Le mot de passe doit faire au moins 10 caractères.', 'The password must be at least 10 characters long.'),
@@ -245,6 +406,76 @@ footer a{color:var(--m)}
     } catch (e2) { if (location.protocol === 'file:' || !/charikaexpress/.test(location.host)) return done(true); show('net'); }
     finally { b.disabled = false; b.textContent = tx('Envoyer ma candidature', 'Send my application'); }
   });
+  }
+
+  // ---------- Domiciliation centre sign-up ----------
+  {
+
+  // Files: photos are shrunk in the browser (JPEG, 1400 px max); documents are sent as they are (1.2 MB max each)
+  const MAX = 1.2e6, photos = [], docs = [];
+  const b64 = buf => { let s = ''; const a = new Uint8Array(buf); for (let i = 0; i < a.length; i += 32768) s += String.fromCharCode.apply(null, a.subarray(i, i + 32768)); return btoa(s); };
+  const shrink = file => new Promise((ok, ko) => {
+    const img = new Image(), url = URL.createObjectURL(file);
+    img.onload = () => { const k = Math.min(1, 1400 / Math.max(img.width, img.height)), c = document.createElement('canvas');
+      c.width = Math.round(img.width * k); c.height = Math.round(img.height * k); c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+      URL.revokeObjectURL(url); ok(c.toDataURL('image/jpeg', .8)); };
+    img.onerror = () => { URL.revokeObjectURL(url); ko(new Error('img')); }; img.src = url; });
+  $('#c_photos').addEventListener('change', async e => {
+    for (const f of [...e.target.files].slice(0, 3 - photos.length)) {
+      try { const d = await shrink(f); photos.push({ name: f.name.replace(/\.[^.]+$/, '') + '.jpg', mime: 'image/jpeg', data: d.split(',')[1], src: d }); } catch (err) {}
+    }
+    $('#c_photosL').innerHTML = photos.map(p => `<img src="${p.src}" alt="">`).join(''); e.target.value = '';
+  });
+  $('#c_docs').addEventListener('change', async e => {
+    for (const f of [...e.target.files].slice(0, 3 - docs.length)) {
+      if (f.size > MAX || !['application/pdf', 'image/jpeg', 'image/png'].includes(f.type)) { const err = $('#cserr'); err.textContent = tx('Chaque justificatif doit être un PDF, JPG ou PNG de 1,2 Mo maximum.', 'Each document must be a PDF, JPG or PNG of 1.2 MB max.'); err.hidden = false; continue; }
+      docs.push({ name: f.name.slice(0, 120), mime: f.type, data: b64(await f.arrayBuffer()) });
+    }
+    $('#c_docsL').innerHTML = docs.map(d => `<span>${d.name.replace(/[<>&"]/g, '')}</span>`).join(''); e.target.value = '';
+  });
+
+  const ERR = () => ({ missing_fields:tx('Remplissez le nom du centre, la ville, l\'adresse, le téléphone et un e-mail valide.', 'Please enter the centre name, city, address, phone and a valid e-mail.'),
+    password_too_short:tx('Le mot de passe doit faire au moins 10 caractères.', 'The password must be at least 10 characters long.'),
+    email_exists:tx('Un centre existe déjà avec cet e-mail. Connectez-vous à votre espace centre.', 'A centre already exists with this e-mail. Sign in to your centre space.'),
+    cgu:tx('Merci d\'accepter les conditions du programme.', 'Please accept the programme terms.'),
+    file_too_large:tx('Un fichier est trop lourd (1,2 Mo maximum).', 'A file is too large (1.2 MB max).'), bad_file_type:tx('Type de fichier non accepté.', 'File type not accepted.'),
+    too_many:tx('Trop de demandes depuis cette connexion. Réessayez dans une heure.', 'Too many applications from this connection. Try again in an hour.'),
+    net:tx('Envoi impossible. Vérifiez votre connexion et réessayez.', 'Could not send. Check your connection and try again.') });
+  const done = demo => { $('#cFormView').hidden = true; $('#cDoneView').hidden = false; $('#cDemoNote').hidden = !demo; $('#cSignup').scrollIntoView({ behavior:'smooth', block:'start' }); };
+
+  $('#csf').addEventListener('submit', async e => {
+    e.preventDefault();
+    const err = $('#cserr'), show = k => { const E = ERR(); err.textContent = E[k] || E.net; err.hidden = false; };
+    const v = id => $('#' + id.replace(/^s_/, 'c_')).value.trim();
+    const body = { name:v('s_name'), company:v('s_company'), contact:v('s_contact'), phone:v('s_phone'), email:v('s_email'), city:v('s_city'), district:v('s_district'), address:v('s_address'),
+      rc:v('s_rc'), ice:v('s_ice'), services:[...document.querySelectorAll('#c_svc input:checked')].map(i => i.value), rate12:+v('s_r12') || 0, rate24:+v('s_r24') || 0,
+      photos:photos.map(({ name, mime, data }) => ({ name, mime, data })), docs, password:$('#c_pw').value, cgu:$('#c_cgu').checked, website:$('#c_web').value };
+    if (!body.name || !body.city || !body.address || body.phone.replace(/\D/g, '').length < 9 || !/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(body.email)) return show('missing_fields');
+    if (body.password.length < 10) return show('password_too_short');
+    if (!body.cgu) return show('cgu');
+    err.hidden = true; const b = $('#csgo'); b.disabled = true; b.textContent = tx('Envoi…', 'Sending…');
+    try {
+      const res = await fetch('/api/centre/signup', { method:'POST', headers:{ 'content-type':'application/json' }, body:JSON.stringify(body) });
+      const isJson = (res.headers.get('content-type') || '').includes('application/json');
+      if (!isJson) return done(true);                                     // preview without a server
+      const j = await res.json();
+      if (res.ok) return done(false);
+      show(j.error);
+    } catch (e2) { if (location.protocol === 'file:' || !/charikaexpress/.test(location.host)) return done(true); show('net'); }
+    finally { b.disabled = false; b.textContent = tx('Envoyer ma demande', 'Send my application'); }
+  });
+  onLang.push(() => { if (!$('#csgo').disabled) $('#csgo').textContent = tx('Envoyer ma demande', 'Send my application'); });
+  }
+
+  // ---------- Profile: business referrer or domiciliation centre (?type=centre opens the centre form) ----------
+  const prof = p => {
+    $('#pAff').hidden = p !== 'aff'; $('#pCtr').hidden = p !== 'ctr';
+    $('#tAff').setAttribute('aria-selected', p === 'aff'); $('#tCtr').setAttribute('aria-selected', p === 'ctr');
+    const u = new URL(location.href); if (p === 'ctr') u.searchParams.set('type', 'centre'); else u.searchParams.delete('type');
+    try { history.replaceState(null, '', u); } catch(e) {}
+  };
+  document.querySelectorAll('[data-prof]').forEach(b => b.addEventListener('click', () => prof(b.dataset.prof)));
+  if (new URLSearchParams(location.search).get('type') === 'centre') prof('ctr');
   try { if (localStorage.getItem('ce-lang') === 'en') setLang('en'); } catch(e) {}
 })();
 </script>

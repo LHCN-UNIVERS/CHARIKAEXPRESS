@@ -171,7 +171,7 @@ footer a{color:var(--m)}
       <p class="err" id="lerr" role="alert" hidden></p>
       <button class="btn btn-grad" id="lgo" type="submit">Se connecter</button>
     </form>
-    <p class="muted lhint">Pas encore référencé ? <a href="domiciliation.html">Référencer mon centre</a><br>Mot de passe oublié ? Écrivez-nous sur <a href="https://wa.me/212667154604" target="_blank" rel="noopener">WhatsApp</a>.</p>
+    <p class="muted lhint">Pas encore référencé ? <a href="partenaires.html?type=centre">Référencer mon centre</a><br>Mot de passe oublié ? Écrivez-nous sur <a href="https://wa.me/212667154604" target="_blank" rel="noopener">WhatsApp</a>.</p>
   </section>
 
   <section class="card login" id="pwView" hidden>
@@ -315,9 +315,9 @@ footer a{color:var(--m)}
     let r;
     try { r = await api('me'); } catch (e) { r = null; }
     if (!r || !r.isJson) { demo = true; data = SAMPLE; render(); return view('appView'); }        // preview without a server
-    if (!r.res.ok) { $('#who').textContent = ''; return view('loginView'); }
+    if (!r.res.ok) return location.replace('partenaire.html');           // one sign-in page for every partner
     data = r.body; demo = false;
-    if (data.me.mustChange) return view('pwView');
+    if (data.me.mustChange) { try { const t = sessionStorage.getItem('ce-ctr-tmp'); if (t) { $('#p_cur').value = t; sessionStorage.removeItem('ce-ctr-tmp'); } } catch (e) {} return view('pwView'); }
     render(); view('appView');
   }
 
@@ -411,7 +411,7 @@ footer a{color:var(--m)}
     e.preventDefault(); if (demo) return;
     if (await changePw($('#c_cur').value, $('#c_new').value, $('#cerr'))) { e.target.reset(); flash('#cok'); }
   });
-  $('#out').addEventListener('click', async () => { if (!demo) { try { await api('logout', { method:'POST', body:'{}' }); } catch (e) {} } data = null; view('loginView'); $('#who').textContent = ''; });
+  $('#out').addEventListener('click', async () => { if (!demo) { try { await api('logout', { method:'POST', body:'{}' }); } catch (e) {} } data = null; location.replace('partenaire.html'); });
 
   try { if (localStorage.getItem('ce-lang') === 'en') setLang('en'); } catch(e) {}
   boot();
