@@ -34,6 +34,9 @@ header{background:var(--plum);color:#fff}
 .tag{background:rgba(255,255,255,.12);border-radius:999px;padding:4px 10px;font-size:.74rem;font-weight:700}
 .bar .r{margin-inline-start:auto;display:flex;align-items:center;gap:10px;font-size:.82rem;color:#e8d6e3;min-width:0}
 .bar .r span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lng{display:inline-flex;background:rgba(255,255,255,.1);border-radius:999px;padding:3px;flex:none}
+.lng button{border:0;background:none;cursor:pointer;font:800 .72rem var(--sans);padding:5px 10px;border-radius:999px;color:#fff}
+.lng button[aria-pressed="true"]{background:#fff;color:var(--plum)}
 .out{border:0;background:rgba(255,255,255,.1);color:#fff;border-radius:999px;padding:7px 13px;font-size:.78rem;font-weight:700;cursor:pointer;white-space:nowrap}
 main{padding-block:26px 60px}
 .card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px}
@@ -113,6 +116,7 @@ footer{border-top:1px solid var(--line);background:#fff;padding-block:18px;color
 footer .wrap{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
 footer a{color:var(--m)}
 @media (max-width:980px){.cols{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:480px){.bar{gap:8px}.lng button{padding:4px 7px}.tag{display:none}}
 @media (max-width:640px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.g2{grid-template-columns:1fr}.bar .r span{display:none}}
 </style>
 </head>
@@ -120,7 +124,7 @@ footer a{color:var(--m)}
 <header><div class="wrap bar">
   <a class="logo" href="index.html"><i></i><span>Charika <b>Express</b></span></a>
   <span class="tag">Espace partenaire</span>
-  <div class="r"><span id="who"></span><button class="out" id="out" type="button" hidden>Déconnexion</button></div>
+  <div class="r"><div class="lng" role="group" aria-label="Langue"><button type="button" data-lang="fr" aria-pressed="true">FR</button><button type="button" data-lang="en" aria-pressed="false">EN</button></div><span id="who"></span><button class="out" id="out" type="button" hidden>Déconnexion</button></div>
 </div></header>
 
 <main class="wrap">
@@ -212,12 +216,53 @@ footer a{color:var(--m)}
 <script>
 (() => {
   const $ = s => document.querySelector(s);
+  // Language: FR by default, EN on request (same choice as the homepage, kept in localStorage 'ce-lang').
+  // Static text is translated from the French text nodes; JS-built text uses tx('français', 'English').
+  let lang = 'fr';
+  const tx = (fr, en) => lang === 'en' ? en : fr;
+  const loc = () => lang === 'en' ? 'en-GB' : 'fr-FR';
+  const EN = {
+    "Espace partenaire · Charika Express":"Partner space · Charika Express", "Espace partenaire":"Partner space", "Langue":"Language", "Déconnexion":"Sign out",
+    "Connectez-vous avec l'e-mail et le mot de passe de votre compte partenaire.":"Sign in with the e-mail and password of your partner account.",
+    "Mot de passe":"Password", "Se connecter":"Sign in", "Pas encore partenaire ?":"Not a partner yet?", "Créer un compte":"Create an account",
+    "· Mot de passe oublié ? Écrivez-nous sur":"· Forgot your password? Write to us on",
+    "Choisissez votre mot de passe":"Choose your password",
+    "Vous vous êtes connecté avec un mot de passe temporaire. Choisissez-en un nouveau (10 caractères minimum).":"You signed in with a temporary password. Choose a new one (at least 10 characters).",
+    "Mot de passe temporaire":"Temporary password", "Nouveau mot de passe":"New password", "Enregistrer":"Save",
+    "Aperçu : exemple d'espace partenaire. Sur le site en ligne, vos vrais dossiers s'affichent ici.":"Preview: sample partner space. On the live site, your real files are shown here.",
+    "Dossiers apportés":"Files referred", "En cours":"In progress", "jusqu'à la livraison":"until delivery", "Documents livrés":"Documents delivered", "Mes gains":"My earnings",
+    "Mes dossiers":"My files",
+    "Chaque dossier apporté par vos codes, étape par étape jusqu'à « Documents livrés ». Cliquez sur une ligne pour le détail.":"Every file referred with your codes, step by step until « Documents delivered ». Click a row for details.",
+    "Dossier":"File", "Avancement":"Progress",
+    "Mes codes promo":"My promo codes", "Vos clients indiquent ce code dans leur demande, ou passent par le lien.":"Your clients enter this code in their request, or use the link.",
+    "Mes versements":"My payouts", "Mon compte":"My account", "Recevoir mes gains par":"Receive my earnings by", "Virement (RIB)":"Bank transfer (RIB)", "Téléphone":"Phone",
+    "Enregistré ✓":"Saved ✓", "Changer mon mot de passe":"Change my password", "Mot de passe actuel":"Current password", "Mot de passe changé ✓":"Password changed ✓", "Changer":"Change",
+    "© 2026 Charika Express · Programme partenaires":"© 2026 Charika Express · Partner programme", "Conditions":"Terms", "Confidentialité":"Privacy", "Bientôt disponible":"Coming soon"
+  };
+  const trs = s => { if (lang === 'fr') return s; const k = s.trim().replace(/\s+/g, ' '); return EN[k] ? s.replace(s.trim(), EN[k]) : s; };
+  const texts = [];
+  { const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, { acceptNode:n => n.parentElement.closest('script,style') || !n.nodeValue.trim() ? 2 : 1 });
+    let n; while ((n = w.nextNode())) texts.push([n, n.nodeValue]); }
+  const attrs = [...document.querySelectorAll('[placeholder],[aria-label],[title]')].map(el => [el, el.getAttribute('placeholder'), el.getAttribute('aria-label'), el.getAttribute('title')]);
+  const title0 = document.title;
+  function setLang(l){
+    lang = l === 'en' ? 'en' : 'fr';
+    document.documentElement.lang = lang; document.title = trs(title0);
+    texts.forEach(([n, fr]) => { n.nodeValue = trs(fr); });
+    attrs.forEach(([el, ph, al, ti]) => { if (ph) el.placeholder = trs(ph); if (al) el.setAttribute('aria-label', trs(al)); if (ti) el.title = trs(ti); });
+    document.querySelectorAll('[data-lang]').forEach(b => b.setAttribute('aria-pressed', b.dataset.lang === lang));
+    try { localStorage.setItem('ce-lang', lang); } catch(e) {}
+    if (data && !$('#appView').hidden) render(); payLbl();
+  }
+  document.querySelectorAll('[data-lang]').forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
   const SITE = 'https://charikaexpress.ma/';
-  const STEPS = ['Demande reçue', 'Certificat négatif', 'Rédaction', 'Légalisation', 'Enregistrement', 'OMPIC · Impôts', 'Tribunal', 'Bulletin Officiel', 'Annonce légale', 'Dossier complet'];
-  const DONE = STEPS.length;
+  const STEPS_FR = ['Demande reçue', 'Certificat négatif', 'Rédaction', 'Légalisation', 'Enregistrement', 'OMPIC · Impôts', 'Tribunal', 'Bulletin Officiel', 'Annonce légale', 'Dossier complet'];
+  const STEPS_EN = ['Request received', 'Negative certificate', 'Drafting', 'Legalisation', 'Registration', 'OMPIC · Taxes', 'Court', 'Official Bulletin', 'Legal notice', 'File complete'];
+  const steps = () => lang === 'en' ? STEPS_EN : STEPS_FR;
+  const DONE = STEPS_FR.length;
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
   const fmt = n => n.toLocaleString('fr-FR').replace(/ | /g, ' ') + ' MAD';
-  const day = d => new Date(d).toLocaleDateString('fr-FR', { day:'numeric', month:'short' });
+  const day = d => new Date(d).toLocaleDateString(loc(), { day:'numeric', month:'short' });
   let data = null, demo = false, openRef = null;
 
   const SAMPLE = (() => { const d = n => new Date(Date.now() - n * 864e5).toISOString(); return {
@@ -249,11 +294,11 @@ footer a{color:var(--m)}
   }
 
   function commission(f, c){
-    if (f.affPaid) return `<span class="pill p-paid">Versé le ${day(f.affPaid)}</span>`;
-    if (f.delivered && f.paid) return `<span class="pill p-due">${fmt(c)} à verser</span>`;
-    if (f.delivered) return `<span class="pill p-wait">Livré · solde client attendu</span>`;
-    if (f.step === 0) return `<span class="pill p-new">Nouvelle demande</span>`;
-    return `<span class="pill p-wait">${fmt(c)} à la livraison</span>`;
+    if (f.affPaid) return `<span class="pill p-paid">${tx('Versé le', 'Paid on')} ${day(f.affPaid)}</span>`;
+    if (f.delivered && f.paid) return `<span class="pill p-due">${fmt(c)} ${tx('à verser', 'due')}</span>`;
+    if (f.delivered) return `<span class="pill p-wait">${tx('Livré · solde client attendu', 'Delivered · awaiting client balance')}</span>`;
+    if (f.step === 0) return `<span class="pill p-new">${tx('Nouvelle demande', 'New request')}</span>`;
+    return `<span class="pill p-wait">${fmt(c)} ${tx('à la livraison', 'on delivery')}</span>`;
   }
 
   function render(){
@@ -261,64 +306,70 @@ footer a{color:var(--m)}
     $('#demo').hidden = !demo;
     $('#who').textContent = me.company ? `${me.name} · ${me.company}` : me.name;
     const delivered = files.filter(f => f.delivered), earned = delivered.filter(f => f.paid), paid = files.filter(f => f.affPaid), due = earned.filter(f => !f.affPaid);
-    $('#kN').textContent = files.length; $('#kNs').textContent = files.length ? 'depuis le ' + day(files[files.length - 1].createdAt) : 'aucun pour l\'instant';
+    $('#kN').textContent = files.length; $('#kNs').textContent = files.length ? tx('depuis le ', 'since ') + day(files[files.length - 1].createdAt) : tx('aucun pour l\'instant', 'none yet');
     $('#kC').textContent = files.length - delivered.length;
-    $('#kD').textContent = delivered.length; $('#kDs').textContent = delivered.length - earned.length ? `${delivered.length - earned.length} en attente du solde client` : 'documents remis au client';
-    $('#kG').textContent = fmt(earned.length * c); $('#kGs').textContent = `${fmt(paid.length * c)} versés · ${fmt(due.length * c)} à verser`;
+    $('#kD').textContent = delivered.length; $('#kDs').textContent = delivered.length - earned.length ? `${delivered.length - earned.length} ${tx('en attente du solde client', 'awaiting client balance')}` : tx('documents remis au client', 'documents handed to the client');
+    $('#kG').textContent = fmt(earned.length * c); $('#kGs').textContent = `${fmt(paid.length * c)} ${tx('versés', 'paid')} · ${fmt(due.length * c)} ${tx('à verser', 'due')}`;
 
     $('#rows').innerHTML = files.length ? files.map(f => {
-      const segs = STEPS.map((_, i) => `<i class="${i < f.step ? 'd' : i === f.step && !f.delivered ? 'n' : ''}"></i>`).join('');
-      const lbl = f.delivered ? `<span class="stp ok">✓ Documents livrés</span>` : `<span class="stp">Étape ${f.step + 1}/${DONE} · ${esc(STEPS[f.step])}</span>`;
-      const row = `<tr class="f-row" tabindex="0" data-ref="${esc(f.ref)}" aria-expanded="${openRef === f.ref}"><td><span class="ref">${esc(f.ref)}</span><small>${day(f.createdAt)} · code ${esc(f.code)}</small></td><td><div class="segs">${segs}</div>${lbl}</td><td>${commission(f, c)}</td></tr>`;
+      const STEPS = steps(); const segs = STEPS.map((_, i) => `<i class="${i < f.step ? 'd' : i === f.step && !f.delivered ? 'n' : ''}"></i>`).join('');
+      const lbl = f.delivered ? `<span class="stp ok">✓ ${tx('Documents livrés', 'Documents delivered')}</span>` : `<span class="stp">${tx('Étape', 'Step')} ${f.step + 1}/${DONE} · ${esc(STEPS[f.step])}</span>`;
+      const row = `<tr class="f-row" tabindex="0" data-ref="${esc(f.ref)}" aria-expanded="${openRef === f.ref}"><td><span class="ref">${esc(f.ref)}</span><small>${day(f.createdAt)} · ${tx('code', 'code')} ${esc(f.code)}</small></td><td><div class="segs">${segs}</div>${lbl}</td><td>${commission(f, c)}</td></tr>`;
       if (openRef !== f.ref) return row;
-      const steps = [...STEPS, 'Documents livrés'].map((s, i) => `<div class="${i < f.step || (i === DONE && f.delivered) ? 'd' : i === f.step ? 'n' : ''}${i === DONE ? ' end' : ''}"><i>${i < f.step || (i === DONE && f.delivered) ? '✓' : i === DONE ? '★' : i + 1}</i>${esc(s)}</div>`).join('');
-      return row + `<tr class="detail"><td colspan="3"><div class="steps">${steps}</div></td></tr>`;
-    }).join('') : `<tr><td colspan="3" class="empty">Aucun dossier pour l'instant. Partagez votre code promo : chaque demande envoyée avec votre code apparaît ici.</td></tr>`;
+      const stepsH = [...STEPS, tx('Documents livrés', 'Documents delivered')].map((s, i) => `<div class="${i < f.step || (i === DONE && f.delivered) ? 'd' : i === f.step ? 'n' : ''}${i === DONE ? ' end' : ''}"><i>${i < f.step || (i === DONE && f.delivered) ? '✓' : i === DONE ? '★' : i + 1}</i>${esc(s)}</div>`).join('');
+      return row + `<tr class="detail"><td colspan="3"><div class="steps">${stepsH}</div></td></tr>`;
+    }).join('') : `<tr><td colspan="3" class="empty">${tx('Aucun dossier pour l\'instant. Partagez votre code promo : chaque demande envoyée avec votre code apparaît ici.', 'No files yet. Share your promo code: every request sent with your code appears here.')}</td></tr>`;
 
     $('#codes').innerHTML = codes.length ? codes.map(k => {
       const link = SITE + '?code=' + k.code;
-      const share = `Créez votre société au Maroc 100 % en ligne avec Charika Express${k.discount ? `, avec ${k.discount} MAD de remise grâce à mon code ${k.code}` : ` (code ${k.code})`} : ${link}`;
-      return `<div class="code ${k.active ? '' : 'off'}"><div class="h"><b>${esc(k.code)}</b><span class="pill ${k.discount ? 'p-due' : 'p-wait'}">${k.active ? (k.discount ? `−${k.discount} MAD pour vos clients` : 'sans remise client') : 'désactivé'}</span></div>
-        ${k.active ? `<div class="link"><code>${esc(link.replace('https://', ''))}</code><button type="button" data-copy="${esc(link)}">Copier</button></div>
-        <a class="btn btn-wa" href="https://wa.me/?text=${encodeURIComponent(share)}" target="_blank" rel="noopener">Partager sur WhatsApp</a>` : ''}</div>`;
-    }).join('') : '<p class="muted">Votre code arrive dès la validation de votre compte.</p>';
+      const share = lang === 'en'
+        ? `Create your company in Morocco 100% online with Charika Express${k.discount ? `, with a ${k.discount} MAD discount thanks to my code ${k.code}` : ` (code ${k.code})`}: ${link}`
+        : `Créez votre société au Maroc 100 % en ligne avec Charika Express${k.discount ? `, avec ${k.discount} MAD de remise grâce à mon code ${k.code}` : ` (code ${k.code})`} : ${link}`;
+      return `<div class="code ${k.active ? '' : 'off'}"><div class="h"><b>${esc(k.code)}</b><span class="pill ${k.discount ? 'p-due' : 'p-wait'}">${k.active ? (k.discount ? `−${k.discount} MAD ${tx('pour vos clients', 'for your clients')}` : tx('sans remise client', 'no client discount')) : tx('désactivé', 'disabled')}</span></div>
+        ${k.active ? `<div class="link"><code>${esc(link.replace('https://', ''))}</code><button type="button" data-copy="${esc(link)}">${tx('Copier', 'Copy')}</button></div>
+        <a class="btn btn-wa" href="https://wa.me/?text=${encodeURIComponent(share)}" target="_blank" rel="noopener">${tx('Partager sur WhatsApp', 'Share on WhatsApp')}</a>` : ''}</div>`;
+    }).join('') : `<p class="muted">${tx('Votre code arrive dès la validation de votre compte.', 'Your code arrives as soon as your account is approved.')}</p>`;
 
-    $('#pays').innerHTML = paid.length ? paid.slice().sort((a, b) => b.affPaid.localeCompare(a.affPaid)).map(f => `<div><span>${day(f.affPaid)} · ${esc(f.ref)}</span><b>${fmt(c)}</b></div>`).join('') : '<p class="muted" style="margin:0">Aucun versement pour l\'instant.</p>';
+    $('#pays').innerHTML = paid.length ? paid.slice().sort((a, b) => b.affPaid.localeCompare(a.affPaid)).map(f => `<div><span>${day(f.affPaid)} · ${esc(f.ref)}</span><b>${fmt(c)}</b></div>`).join('') : `<p class="muted" style="margin:0">${tx('Aucun versement pour l\'instant.', 'No payouts yet.')}</p>`;
     const nx = new Date(); nx.setDate(5); if (new Date().getDate() >= 5) nx.setMonth(nx.getMonth() + 1);
     $('#next').hidden = !due.length;
-    $('#next').innerHTML = `Prochain versement le <b>${nx.toLocaleDateString('fr-FR', { day:'numeric', month:'long' })}</b> : <b>${fmt(due.length * c)}</b> (${due.length} dossier${due.length > 1 ? 's' : ''}).`;
+    $('#next').innerHTML = lang === 'en'
+      ? `Next payout on <b>${nx.toLocaleDateString(loc(), { day:'numeric', month:'long' })}</b>: <b>${fmt(due.length * c)}</b> (${due.length} file${due.length > 1 ? 's' : ''}).`
+      : `Prochain versement le <b>${nx.toLocaleDateString(loc(), { day:'numeric', month:'long' })}</b> : <b>${fmt(due.length * c)}</b> (${due.length} dossier${due.length > 1 ? 's' : ''}).`;
 
     $('#a_pay').value = me.payMethod || 'virement'; $('#a_phone').value = me.phone || ''; $('#a_info').value = me.payInfo || ''; payLbl();
   }
-  const payLbl = () => { $('#a_infol').textContent = $('#a_pay').value === 'cashplus' ? 'N° de compte Cash Plus' : 'RIB'; };
+  const payLbl = () => { $('#a_infol').textContent = $('#a_pay').value === 'cashplus' ? tx('N° de compte Cash Plus', 'Cash Plus account number') : 'RIB'; };
   $('#a_pay').addEventListener('change', payLbl);
 
   $('#rows').addEventListener('click', e => { const tr = e.target.closest('tr.f-row'); if (!tr) return; openRef = openRef === tr.dataset.ref ? null : tr.dataset.ref; render(); });
   $('#rows').addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('tr.f-row')) { e.preventDefault(); e.target.click(); } });
   $('#codes').addEventListener('click', e => {
     const b = e.target.closest('[data-copy]'); if (!b) return;
-    const done = () => { b.textContent = 'Copié ✓'; setTimeout(() => b.textContent = 'Copier', 1400); };
+    const done = () => { b.textContent = tx('Copié ✓', 'Copied ✓'); setTimeout(() => b.textContent = tx('Copier', 'Copy'), 1400); };
     try { navigator.clipboard.writeText(b.dataset.copy).then(done, () => {}); } catch (err) {}
   });
 
-  const LERR = { bad_credentials:'E-mail ou mot de passe incorrect.', pending:'Votre compte est en cours de validation. Nous vous prévenons sur WhatsApp dès qu\'il est activé.',
-    refused:'Votre candidature n\'a pas été retenue. Contactez-nous sur WhatsApp pour en parler.', suspended:'Votre compte partenaire est suspendu. Contactez-nous sur WhatsApp.',
-    too_many_attempts:'Trop de tentatives. Réessayez dans 15 minutes.' };
+  const LERR = () => ({ bad_credentials:tx('E-mail ou mot de passe incorrect.', 'Wrong e-mail or password.'),
+    pending:tx('Votre compte est en cours de validation. Nous vous prévenons sur WhatsApp dès qu\'il est activé.', 'Your account is being reviewed. We will let you know on WhatsApp as soon as it is active.'),
+    refused:tx('Votre candidature n\'a pas été retenue. Contactez-nous sur WhatsApp pour en parler.', 'Your application was not accepted. Contact us on WhatsApp to talk about it.'),
+    suspended:tx('Votre compte partenaire est suspendu. Contactez-nous sur WhatsApp.', 'Your partner account is suspended. Contact us on WhatsApp.'),
+    too_many_attempts:tx('Trop de tentatives. Réessayez dans 15 minutes.', 'Too many attempts. Try again in 15 minutes.') });
   $('#lf').addEventListener('submit', async e => {
     e.preventDefault();
     const err = $('#lerr'), b = $('#lgo'); err.hidden = true; b.disabled = true;
     try {
       const r = await api('login', { method:'POST', body:JSON.stringify({ email:$('#l_email').value, password:$('#l_pw').value }) });
       if (r.res.ok) { $('#p_cur').value = $('#l_pw').value; $('#l_pw').value = ''; return boot(); }
-      err.textContent = LERR[r.body?.error] || 'Connexion impossible. Réessayez.'; err.hidden = false;
-    } catch (e2) { err.textContent = 'Connexion impossible. Vérifiez votre connexion.'; err.hidden = false; }
+      err.textContent = LERR()[r.body?.error] || tx('Connexion impossible. Réessayez.', 'Could not sign in. Try again.'); err.hidden = false;
+    } catch (e2) { err.textContent = tx('Connexion impossible. Vérifiez votre connexion.', 'Could not sign in. Check your connection.'); err.hidden = false; }
     finally { b.disabled = false; }
   });
   async function changePw(cur, pw, errEl){
-    if (pw.length < 10) { errEl.textContent = 'Le nouveau mot de passe doit faire au moins 10 caractères.'; errEl.hidden = false; return false; }
+    if (pw.length < 10) { errEl.textContent = tx('Le nouveau mot de passe doit faire au moins 10 caractères.', 'The new password must be at least 10 characters long.'); errEl.hidden = false; return false; }
     const r = await api('password', { method:'POST', body:JSON.stringify({ current:cur, password:pw }) });
     if (r.res.ok) { errEl.hidden = true; return true; }
-    errEl.textContent = r.body?.error === 'bad_current_password' ? 'Le mot de passe actuel est incorrect.' : 'Changement impossible. Réessayez.'; errEl.hidden = false; return false;
+    errEl.textContent = r.body?.error === 'bad_current_password' ? tx('Le mot de passe actuel est incorrect.', 'The current password is wrong.') : tx('Changement impossible. Réessayez.', 'Could not change the password. Try again.'); errEl.hidden = false; return false;
   }
   $('#pf').addEventListener('submit', async e => { e.preventDefault(); if (await changePw($('#p_cur').value, $('#p_new').value, $('#perr'))) boot(); });
   $('#cf').addEventListener('submit', async e => {
@@ -333,6 +384,7 @@ footer a{color:var(--m)}
   });
   $('#out').addEventListener('click', async () => { if (!demo) { try { await api('logout', { method:'POST', body:'{}' }); } catch (e) {} } data = null; view('loginView'); $('#who').textContent = ''; });
 
+  try { if (localStorage.getItem('ce-lang') === 'en') setLang('en'); } catch(e) {}
   boot();
 })();
 </script>

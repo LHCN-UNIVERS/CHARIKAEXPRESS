@@ -31,7 +31,11 @@ header{background:var(--plum);color:#fff}
 .logo i{width:28px;height:28px;border-radius:9px;background:var(--grad);display:grid;place-items:center}
 .logo i::after{content:"";width:10px;height:10px;border-radius:3px;background:#fff}
 .logo b{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
-.bar .in{margin-inline-start:auto;background:rgba(255,255,255,.1);color:#fff;border-radius:999px;padding:7px 14px;font-size:.8rem;font-weight:700;text-decoration:none;white-space:nowrap}
+.lng{display:inline-flex;background:rgba(255,255,255,.1);border-radius:999px;padding:3px;flex:none}
+.lng button{border:0;background:none;cursor:pointer;font:800 .72rem var(--sans);padding:5px 10px;border-radius:999px;color:#fff}
+.lng button[aria-pressed="true"]{background:#fff;color:var(--plum)}
+.bar .lng{margin-inline-start:auto}
+.bar .in{background:rgba(255,255,255,.1);color:#fff;border-radius:999px;padding:7px 14px;font-size:.8rem;font-weight:700;text-decoration:none;white-space:nowrap}
 main{padding-block:30px 60px;display:grid;gap:36px}
 .grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:24px;align-items:start}
 .pitch{background:radial-gradient(70% 90% at 0% 0%,rgba(255,121,91,.3),transparent 70%),linear-gradient(160deg,var(--plum),var(--plum2));color:#fff;border-radius:24px;padding:clamp(22px,4vw,34px)}
@@ -77,12 +81,14 @@ footer{border-top:1px solid var(--line);background:#fff;padding-block:20px;color
 footer .wrap{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
 footer a{color:var(--m)}
 @media (max-width:860px){.grid{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:480px){.bar{gap:8px}.logo{gap:8px;font-size:.95rem}.logo i{width:24px;height:24px}.lng button{padding:4px 7px}.bar .in{padding:6px 10px;font-size:.72rem}}
 @media (max-width:520px){.how{grid-template-columns:1fr}.g2{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <header><div class="wrap bar">
   <a class="logo" href="index.html"><i></i><span>Charika <b>Express</b></span></a>
+  <div class="lng" role="group" aria-label="Langue"><button type="button" data-lang="fr" aria-pressed="true">FR</button><button type="button" data-lang="en" aria-pressed="false">EN</button></div>
   <a class="in" href="partenaire.html">Espace partenaire</a>
 </div></header>
 
@@ -119,7 +125,7 @@ footer a{color:var(--m)}
           </div>
           <div class="g2">
             <label class="fl" for="s_city">Ville<input class="f" id="s_city" autocomplete="address-level2"></label>
-            <label class="fl" for="s_profile">Profil<select class="f" id="s_profile"><option>Expert-comptable / fiduciaire</option><option>Agence</option><option>Consultant</option><option>Créateur de contenu</option><option>Autre</option></select></label>
+            <label class="fl" for="s_profile">Profil<select class="f" id="s_profile"><option value="Expert-comptable / fiduciaire">Expert-comptable / fiduciaire</option><option value="Agence">Agence</option><option value="Consultant">Consultant</option><option value="Créateur de contenu">Créateur de contenu</option><option value="Autre">Autre</option></select></label>
           </div>
           <div class="g2">
             <label class="fl" for="s_pay">Recevoir mes gains par<select class="f" id="s_pay"><option value="virement">Virement (RIB)</option><option value="cashplus">Cash Plus</option></select></label>
@@ -158,24 +164,77 @@ footer a{color:var(--m)}
   const $ = s => document.querySelector(s);
   const COMMISSION = 350, fmt = n => n.toLocaleString('fr-FR').replace(/ | /g, ' ');
   const calc = () => { const n = +$('#cn').value; $('#cnv').textContent = n; $('#cnt').textContent = fmt(n * COMMISSION) + ' MAD'; };
+  // Language: FR by default, EN on request (same choice as the homepage, kept in localStorage 'ce-lang').
+  // Static text is translated from the French text nodes; JS-built text uses tx('français', 'English').
+  let lang = 'fr';
+  const tx = (fr, en) => lang === 'en' ? en : fr;
+  const loc = () => lang === 'en' ? 'en-GB' : 'fr-FR';
+  const EN = {
+    "Devenir partenaire · Charika Express":"Become a partner · Charika Express", "Espace partenaire":"Partner space", "Langue":"Language", "Programme partenaires":"Partner programme",
+    "Gagnez":"Earn", "pour chaque société créée":"for every company formed",
+    "Comptables, agences, consultants, créateurs de contenu : recommandez Charika Express à vos clients et suivez l'avancement de leurs dossiers en temps réel, jusqu'à la livraison des documents.":"Accountants, agencies, consultants, content creators: recommend Charika Express to your clients and follow their files in real time, until the documents are delivered.",
+    "Inscrivez-vous":"Sign up", "Nous validons votre compte sous 24 h ouvrées.":"We approve your account within 24 working hours.",
+    "Partagez votre code":"Share your code", "Vos clients l'indiquent dans leur demande, ou passent par votre lien.":"Your clients enter it in their request, or use your link.",
+    "Encaissez":"Get paid", "350 MAD par dossier livré et payé, versés le 5 de chaque mois.":"350 MAD per file delivered and paid, paid on the 5th of each month.",
+    "Experts-comptables":"Accountants", "Fiduciaires":"Accounting firms", "Agences web":"Web agencies", "Créateurs de contenu":"Content creators", "Incubateurs":"Incubators",
+    "Sociétés créées par mois :":"Companies formed per month:", "Nombre de sociétés par mois":"Number of companies per month",
+    "Créer mon compte partenaire":"Create my partner account", "Gratuit et sans engagement.":"Free, no commitment.",
+    "Nom complet *":"Full name *", "Société":"Company", "(facultatif)":"(optional)", "Téléphone / WhatsApp *":"Phone / WhatsApp *", "Ville":"City", "Profil":"Profile",
+    "Expert-comptable / fiduciaire":"Accountant / accounting firm", "Agence":"Agency", "Créateur de contenu":"Content creator", "Autre":"Other",
+    "Recevoir mes gains par":"Receive my earnings by", "Virement (RIB)":"Bank transfer (RIB)", "(modifiable plus tard)":"(can be changed later)",
+    "Mot de passe *":"Password *", "(10 caractères minimum)":"(at least 10 characters)",
+    "J'accepte les":"I accept the", "conditions du programme partenaires":"partner programme terms", "et la":"and the", "politique de confidentialité":"privacy policy", "Bientôt disponible":"Coming soon",
+    "Envoyer ma candidature":"Send my application", "Candidature envoyée":"Application sent",
+    "Nous validons votre compte sous 24 h ouvrées et vous prévenons sur WhatsApp. Vous pourrez ensuite vous connecter à votre espace partenaire avec votre e-mail et votre mot de passe.":"We approve your account within 24 working hours and let you know on WhatsApp. You can then sign in to your partner space with your e-mail and password.",
+    "(Aperçu : aucune candidature n'a été envoyée.)":"(Preview: no application was sent.)", "Questions fréquentes":"Frequently asked questions",
+    "Quand suis-je payé ?":"When do I get paid?",
+    "Vous gagnez 350 MAD pour chaque dossier arrivé à l'étape « Documents livrés » et entièrement payé par le client. Les commissions sont versées le 5 de chaque mois, par virement ou Cash Plus.":"You earn 350 MAD for every file that reaches the « Documents delivered » step and is fully paid by the client. Commissions are paid on the 5th of each month, by bank transfer or Cash Plus.",
+    "Comment un client est-il rattaché à moi ?":"How is a client linked to me?",
+    "Il indique votre code promo dans le formulaire de demande, ou il passe par votre lien partenaire : le code est alors rempli automatiquement.":"They enter your promo code in the request form, or use your partner link: the code is then filled in automatically.",
+    "Que vois-je de mes clients ?":"What do I see of my clients?",
+    "Dans votre espace, vous voyez la référence de chaque dossier apporté et son avancement, étape par étape, jusqu'à la livraison des documents. Les informations personnelles du client restent confidentielles.":"In your space, you see the reference of each file you referred and its progress, step by step, until the documents are delivered. The client's personal information stays confidential.",
+    "Mes clients ont-ils une remise ?":"Do my clients get a discount?",
+    "Certains codes partenaires donnent une remise au client. Votre code et sa remise éventuelle sont indiqués dans votre espace partenaire.":"Some partner codes give the client a discount. Your code and any discount are shown in your partner space.",
+    "Conditions":"Terms", "Confidentialité":"Privacy"
+  };
+  const trs = s => { if (lang === 'fr') return s; const k = s.trim().replace(/\s+/g, ' '); return EN[k] ? s.replace(s.trim(), EN[k]) : s; };
+  const texts = [];
+  { const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, { acceptNode:n => n.parentElement.closest('script,style') || !n.nodeValue.trim() ? 2 : 1 });
+    let n; while ((n = w.nextNode())) texts.push([n, n.nodeValue]); }
+  const attrs = [...document.querySelectorAll('[placeholder],[aria-label],[title]')].map(el => [el, el.getAttribute('placeholder'), el.getAttribute('aria-label'), el.getAttribute('title')]);
+  const title0 = document.title;
+  function setLang(l){
+    lang = l === 'en' ? 'en' : 'fr';
+    document.documentElement.lang = lang; document.title = trs(title0);
+    texts.forEach(([n, fr]) => { n.nodeValue = trs(fr); });
+    attrs.forEach(([el, ph, al, ti]) => { if (ph) el.placeholder = trs(ph); if (al) el.setAttribute('aria-label', trs(al)); if (ti) el.title = trs(ti); });
+    document.querySelectorAll('[data-lang]').forEach(b => b.setAttribute('aria-pressed', b.dataset.lang === lang));
+    try { localStorage.setItem('ce-lang', lang); } catch(e) {}
+    payl(); if (!$('#sgo').disabled) $('#sgo').textContent = tx('Envoyer ma candidature', 'Send my application');
+  }
+  document.querySelectorAll('[data-lang]').forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
   $('#cn').addEventListener('input', calc); calc();
-  $('#s_pay').addEventListener('change', () => { $('#s_payl').textContent = $('#s_pay').value === 'cashplus' ? 'N° de compte Cash Plus' : 'RIB'; });
+  const payl = () => { $('#s_payl').textContent = $('#s_pay').value === 'cashplus' ? tx('N° de compte Cash Plus', 'Cash Plus account number') : 'RIB'; };
+  $('#s_pay').addEventListener('change', payl);
 
-  const ERR = { missing_fields:'Remplissez votre nom, votre téléphone et un e-mail valide.', password_too_short:'Le mot de passe doit faire au moins 10 caractères.',
-    email_exists:'Un compte partenaire existe déjà avec cet e-mail. Connectez-vous à votre espace partenaire.', cgu:'Merci d\'accepter les conditions du programme.',
-    too_many:'Trop de candidatures depuis cette connexion. Réessayez dans une heure.', net:'Envoi impossible. Vérifiez votre connexion et réessayez.' };
+  const ERR = () => ({ missing_fields:tx('Remplissez votre nom, votre téléphone et un e-mail valide.', 'Please enter your name, your phone number and a valid e-mail.'),
+    password_too_short:tx('Le mot de passe doit faire au moins 10 caractères.', 'The password must be at least 10 characters long.'),
+    email_exists:tx('Un compte partenaire existe déjà avec cet e-mail. Connectez-vous à votre espace partenaire.', 'A partner account already exists with this e-mail. Sign in to your partner space.'),
+    cgu:tx('Merci d\'accepter les conditions du programme.', 'Please accept the programme terms.'),
+    too_many:tx('Trop de candidatures depuis cette connexion. Réessayez dans une heure.', 'Too many applications from this connection. Try again in an hour.'),
+    net:tx('Envoi impossible. Vérifiez votre connexion et réessayez.', 'Could not send. Check your connection and try again.') });
   const done = demo => { $('#formView').hidden = true; $('#doneView').hidden = false; $('#demoNote').hidden = !demo; $('#signup').scrollIntoView({ behavior:'smooth', block:'start' }); };
 
   $('#sf').addEventListener('submit', async e => {
     e.preventDefault();
-    const err = $('#serr'), show = k => { err.textContent = ERR[k] || ERR.net; err.hidden = false; };
+    const err = $('#serr'), show = k => { const E = ERR(); err.textContent = E[k] || E.net; err.hidden = false; };
     const body = { name:$('#s_name').value.trim(), company:$('#s_company').value.trim(), phone:$('#s_phone').value.trim(), email:$('#s_email').value.trim(),
       city:$('#s_city').value.trim(), profile:$('#s_profile').value, payMethod:$('#s_pay').value, payInfo:$('#s_payinfo').value.trim(),
       password:$('#s_pw').value, cgu:$('#s_cgu').checked, website:$('#s_web').value };
     if (!body.name || body.phone.replace(/\D/g, '').length < 9 || !/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(body.email)) return show('missing_fields');
     if (body.password.length < 10) return show('password_too_short');
     if (!body.cgu) return show('cgu');
-    err.hidden = true; const b = $('#sgo'); b.disabled = true; b.textContent = 'Envoi…';
+    err.hidden = true; const b = $('#sgo'); b.disabled = true; b.textContent = tx('Envoi…', 'Sending…');
     try {
       const res = await fetch('/api/aff/signup', { method:'POST', headers:{ 'content-type':'application/json' }, body:JSON.stringify(body) });
       const isJson = (res.headers.get('content-type') || '').includes('application/json');
@@ -184,8 +243,9 @@ footer a{color:var(--m)}
       if (res.ok) return done(false);
       show(j.error);
     } catch (e2) { if (location.protocol === 'file:' || !/charikaexpress/.test(location.host)) return done(true); show('net'); }
-    finally { b.disabled = false; b.textContent = 'Envoyer ma candidature'; }
+    finally { b.disabled = false; b.textContent = tx('Envoyer ma candidature', 'Send my application'); }
   });
+  try { if (localStorage.getItem('ce-lang') === 'en') setLang('en'); } catch(e) {}
 })();
 </script>
 </body>
