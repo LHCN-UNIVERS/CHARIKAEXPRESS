@@ -8,7 +8,7 @@ Things left out of the homepage on purpose, because they would be false today. A
 - [ ] **"Mon espace" button** in the navbar. Needs the client space (login with a code by WhatsApp or e-mail, file progress, documents). See `docs/client-space.md`.
 - [ ] **Social media icons** in the footer (Facebook, Instagram, LinkedIn, YouTube). Add once the profiles exist, with their real links.
 - [ ] **"Voir les conditions" link** on the « Rejeté ? On recommence. À nos frais. » banner. Needs a conditions page that states the guarantee precisely.
-- [ ] **Legal pages**: Mentions légales, Conditions générales, Politique de confidentialité. Drafted in `legal.html` on the `preview/legal` branch (see « Legal pages and CNDP » below); the footer links go live with it.
+- [x] **Legal pages**: Mentions légales, Conditions générales, Politique de confidentialité in `legal.html`, linked from the footer. Remaining items in « Legal pages and CNDP » below.
 - [x] **English version of the new homepage.** Done: FR / EN switch in the navbar.
 - [ ] Have the English text proofread by a native speaker.
 
@@ -28,9 +28,9 @@ Things left out of the homepage on purpose, because they would be false today. A
 
 ## Legal pages and CNDP
 
-`legal.html` (FR / EN) is ready on the `preview/legal` branch: legal notice, terms and conditions, privacy policy (law 09-08). It is linked from the footer, the call-back form notice and the request form consent box. Not on `main` yet.
+`legal.html` (FR / EN) is live at charikaexpress.ma/legal: legal notice, terms and conditions, privacy policy (law 09-08). It is linked from the footer, the call-back form notice and the request form consent box.
 
-- [ ] Review the draft and merge `preview/legal` into `main`.
+- [x] Review the draft and merge `preview/legal` into `main` (live since 15 Oct 2026).
 - [ ] Fill in the yellow `[à compléter]` fields: share capital, full registered office address, RC, ICE, IF, manager's name.
 - [ ] Validate the **cancellation and refund** clause (section 8 of the terms): it is a proposal, the site said nothing about refunds before.
 - [ ] Have a lawyer read the three texts before the ads start.
