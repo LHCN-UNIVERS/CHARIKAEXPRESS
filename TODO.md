@@ -55,5 +55,5 @@ Replaces the client referral programme (removed).
 
 - [x] Compact header, bottom tab bar (Demandes / Partenaires / Compte), 16 px fields (no zoom on iPhone), no Safari translate bar.
 - [x] Installable on the home screen (manifest, icons, plum status bar).
-- [x] Push notifications for every new request (`server/push.js`, `sw.js`). On iPhone they need the team space added to the home screen (iOS 16.4+), then account menu → « Notifications sur ce téléphone ».
+- [x] Push notifications for every new request (`server/push.js`, `sw.js`). On iPhone they need the team space added to the home screen (iOS 16.4+), then account menu → « Notifications sur ce téléphone ». Tested on a real iPhone on 15 Oct 2026: test notification and a real call-back request both arrive with the screen locked.
 - [ ] Swipe actions on a request in the list (Prendre / WhatsApp / Archiver).
