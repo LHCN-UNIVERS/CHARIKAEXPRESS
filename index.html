@@ -209,6 +209,12 @@ details.more .feats{margin-top:12px}
 .band{background:linear-gradient(95deg,#ff7a52,#ff5b7f 55%,#ff4f91);color:#fff;border-radius:24px;padding:clamp(24px,4vw,34px) clamp(22px,4vw,40px);display:grid;grid-template-columns:auto 1fr 1.2fr;gap:28px;align-items:center;box-shadow:0 30px 60px -34px rgba(255,79,145,.8)}
 .shield{width:76px;height:76px;border-radius:22px;background:rgba(255,255,255,.18);display:grid;place-items:center;box-shadow:inset 0 0 0 1px rgba(255,255,255,.4)}
 .shield svg{width:38px;height:38px}
+.refband{margin-top:22px;background:#fff;border:1px solid var(--line);border-radius:24px;padding:clamp(20px,3.4vw,28px) clamp(20px,4vw,36px);display:grid;grid-template-columns:auto 1fr auto;gap:22px;align-items:center;box-shadow:var(--sh)}
+.refband .gift{width:56px;height:56px;border-radius:16px;background:var(--blush);display:grid;place-items:center;font-size:1.7rem}
+.refband h2{font-size:clamp(1.2rem,2.2vw,1.5rem);margin:0}
+.refband p{margin:4px 0 0;font-size:.9rem;color:var(--m)}
+.pbar{background:var(--blush);color:var(--ink);font-size:.84rem;padding:10px 0;border-bottom:1px solid var(--line)}
+.pbar .ltr{direction:ltr;unicode-bidi:isolate}
 .band h2{font-size:clamp(1.5rem,2.6vw,1.9rem);color:#fff}
 .band p{font-size:.92rem;color:#fff3f6}
 .band .btn{margin-top:14px}
@@ -278,6 +284,7 @@ footer a:hover{color:var(--pink)}
   .plans{grid-template-columns:1fr;max-width:520px;margin-inline:auto}
   .plan.top{transform:none}
   .band{grid-template-columns:auto 1fr}.band > div:last-child{grid-column:1/-1}
+  .refband{grid-template-columns:auto 1fr}.refband > .btn{grid-column:1/-1;justify-self:start}
   .fc{grid-template-columns:1fr}
   .f-grid{grid-template-columns:1fr 1fr}
 }
@@ -309,17 +316,20 @@ footer a:hover{color:var(--pink)}
         <a href="#faq">FAQ</a>
         <a href="#pourquoi">À propos</a>
         <a href="#contact">Contact</a>
+        <a href="suivi.html">Mon dossier</a>
       </div>
       <div class="lang" role="group" aria-label="Langue"><button type="button" data-lang="fr" aria-pressed="true">FR</button><button type="button" data-lang="en" aria-pressed="false">EN</button></div>
       <a class="btn btn-grad btn-sm nav-cta" href="demande.html">Créer ma société <span class="arr">→</span></a>
       <button class="burger" id="burger" aria-expanded="false" aria-controls="mnav" aria-label="Ouvrir le menu"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
     </nav>
     <div class="mnav" id="mnav" hidden>
-      <a href="#services">Nos services</a><a href="#tarifs">Tarifs</a><a href="#faq">FAQ</a><a href="#pourquoi">À propos</a><a href="#contact">Contact</a>
+      <a href="#services">Nos services</a><a href="#tarifs">Tarifs</a><a href="#faq">FAQ</a><a href="#pourquoi">À propos</a><a href="#contact">Contact</a><a href="suivi.html">Mon dossier</a>
       <a class="btn btn-grad" href="demande.html">Créer ma société <span class="arr">→</span></a>
     </div>
   </div>
 </div>
+
+<div class="pbar" id="pbar" hidden><div class="wrap"><span>🎁 <b>Code parrain <span class="ltr" id="pbarCode">CE-000000</span></b> · <span>200 MAD de remise sur votre création, appliqués automatiquement dans le formulaire.</span></span></div></div>
 
 <main id="top">
   <!-- HERO -->
@@ -543,6 +553,18 @@ footer a:hover{color:var(--pink)}
     </div>
   </div>
 
+  <!-- REFERRAL -->
+  <div class="wrap">
+    <div class="refband" id="parrainage">
+      <span class="gift" aria-hidden="true">🎁</span>
+      <div>
+        <h2>Parrainez un ami, gagnez 300 MAD</h2>
+        <p>Votre ami a 200 MAD de remise sur sa création. Vous recevez 300 MAD quand sa société est créée. Votre lien de parrainage est dans votre suivi de dossier.</p>
+      </div>
+      <a class="btn btn-grad btn-sm" href="suivi.html#parrainage">Obtenir mon lien <span class="arr">→</span></a>
+    </div>
+  </div>
+
   <!-- FAQ + CONTACT -->
   <section id="faq">
     <div class="wrap fc">
@@ -596,7 +618,7 @@ footer a:hover{color:var(--pink)}
     <div class="f-grid">
       <div><a class="logo dark" href="#top"><i></i><span>Charika <b>Express</b></span></a><p class="f-about">Création d'entreprise au Maroc, simple et rapide. Un juriste dédié, 100 % en ligne.</p></div>
       <div><h4>Nos services</h4><ul><li><a href="#services">Création SARL / SARL AU</a></li><li><a href="#services">Auto-entrepreneur</a></li><li><a href="#services">Domiciliation</a></li><li><a href="#services">Modifications statutaires</a></li><li><a href="#services">Dissolution et liquidation</a></li></ul></div>
-      <div><h4>Informations</h4><ul><li><a href="#pourquoi">À propos</a></li><li><a href="#tarifs">Tarifs</a></li><li><a href="#faq">FAQ</a></li><li><a href="#contact">Contact</a></li><li><a href="admin.html">Espace équipe</a></li></ul></div>
+      <div><h4>Informations</h4><ul><li><a href="#pourquoi">À propos</a></li><li><a href="#tarifs">Tarifs</a></li><li><a href="#faq">FAQ</a></li><li><a href="#contact">Contact</a></li><li><a href="suivi.html">Suivre mon dossier</a></li><li><a href="#parrainage">Parrainage</a></li><li><a href="admin.html">Espace équipe</a></li></ul></div>
       <div><h4>Contact</h4><ul><li dir="ltr">+212 667 154 604</li><li>charikaexpress@gmail.com</li><li>Casablanca, Maroc</li></ul></div>
     </div>
     <div class="f-bottom"><span>© 2026 Charika Express. Tous droits réservés.</span><span class="f-legal"><a href="legal.html#mentions">Mentions légales</a> · <a href="legal.html#cgv">Conditions générales</a> · <a href="legal.html#confidentialite">Confidentialité</a></span></div>
@@ -694,6 +716,7 @@ footer a:hover{color:var(--pink)}
     "Création d'entreprise au Maroc, simple et rapide. Un juriste dédié, 100 % en ligne.":"Company formation in Morocco, simple and fast. A dedicated legal advisor, 100% online.",
     "Informations":"Information", "Espace équipe":"Team space", "Casablanca, Maroc":"Casablanca, Morocco",
     "© 2026 Charika Express. Tous droits réservés.":"© 2026 Charika Express. All rights reserved.",
+    "Mon dossier":"My file", "Suivre mon dossier":"Track my file", "Parrainage":"Referral", "Code parrain":"Referral code", "200 MAD de remise sur votre création, appliqués automatiquement dans le formulaire.":"200 MAD off your company formation, applied automatically in the form.", "Parrainez un ami, gagnez 300 MAD":"Refer a friend, earn 300 MAD", "Votre ami a 200 MAD de remise sur sa création. Vous recevez 300 MAD quand sa société est créée. Votre lien de parrainage est dans votre suivi de dossier.":"Your friend gets 200 MAD off their company formation. You receive 300 MAD once their company is created. Your referral link is in your file tracking page.", "Obtenir mon lien":"Get my link",
     "Mentions légales":"Legal notice", "Conditions générales":"Terms and conditions", "Confidentialité":"Privacy",
     "Vos données sont traitées conformément à la loi n° 09-08 :":"Your data is processed in accordance with law no. 09-08:", "politique de confidentialité":"privacy policy",
     // attributes
@@ -779,6 +802,14 @@ footer a:hover{color:var(--pink)}
         done(res.ok && isJson ? 'ok' : !isJson ? 'ok' : res.status === 429 ? 'busy' : 'fail'); })   // no server behind (preview): demo thank-you
       .catch(() => done('fail'));
   });
+
+  // Referral link (?parrain=CE-123456): remember the code for the request form and say the discount applies
+  (() => {
+    let code = (new URLSearchParams(location.search).get('parrain') || '').toUpperCase();
+    if (/^CE-\d{6}$/.test(code)) { try { localStorage.setItem('ce-parrain', code); } catch(e) {} }
+    else { try { code = localStorage.getItem('ce-parrain') || ''; } catch(e) { code = ''; } }
+    if (/^CE-\d{6}$/.test(code)) { document.getElementById('pbarCode').textContent = code; document.getElementById('pbar').hidden = false; }
+  })();
 })();
 </script>
 

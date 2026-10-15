@@ -19,11 +19,12 @@ function clean(b){
     activite: str(b.activite, 500), ville: str(b.ville, 80), capital: num(b.capital) ?? 0, siege: pick(b.siege, ['dom', 'local'], 'dom'),
     partners, gerant: { name: str(b.gerant?.name), cin: str(b.gerant?.cin, 30) },
     client: { nom: str(b.client?.nom, 120), tel: str(b.client?.tel, 40), email: str(b.client?.email, 160) },
-    message: str(b.message, 2000), cgu: !!b.cgu, secs: num(b.secs)
+    message: str(b.message, 2000), cgu: !!b.cgu, secs: num(b.secs),
+    parrain: /^CE-\d{6}$/.test(str(b.parrain, 12).toUpperCase()) ? str(b.parrain, 12).toUpperCase() : null   // referral code = the referrer's file reference
   };
 }
 
-async function ipHash(request){
+export async function ipHash(request){
   const ip = request.headers.get('cf-connecting-ip') || '';
   const d = await crypto.subtle.digest('SHA-256', new TextEncoder().encode('ce:' + ip));
   return [...new Uint8Array(d)].slice(0, 12).map(x => x.toString(16).padStart(2, '0')).join('');

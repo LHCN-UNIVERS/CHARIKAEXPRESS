@@ -83,6 +83,8 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
 .bell.ring{animation:ring .9s ease-in-out 2}
 @keyframes ring{0%,100%{transform:rotate(0)}15%{transform:rotate(14deg)}30%{transform:rotate(-12deg)}45%{transform:rotate(8deg)}60%{transform:rotate(-5deg)}75%{transform:rotate(2deg)}}
 @media (prefers-reduced-motion:reduce){.bell.ring{animation:none}}
+.phint{margin:6px 0 0;font-size:.76rem;color:var(--m)}
+.pwarn{margin:6px 0 0;font-size:.78rem;color:#a8321e;background:#fde8e4;border-radius:10px;padding:6px 9px}
 .bell b{position:absolute;top:-4px;inset-inline-end:-4px;background:var(--grad);color:#fff;font-size:.62rem;border-radius:999px;padding:1px 6px}
 .demo-bar{background:#fff4d6;color:#7a5400;font-size:.76rem;padding:7px 20px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .demo-bar button{all:unset;cursor:pointer;font-weight:700;text-decoration:underline}
@@ -617,7 +619,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     const askPay = ['recu', 'legal', 'complet'].includes(key) && !r.paid.full;
     return { prenom:(r.client?.nom || '').trim().split(/\s+/)[0], societe:title(r), ref:r.ref, forme:FORMES[r.forme] || '', pack:PLANS[r.plan] || '',
       montant:a && a.v != null ? fmt(a.v) : '', paiement:askPay ? (CM.PAY_INFO[r.payMethod] || CM.PAY_INFO.virement)[lang] : '',
-      motif:r.reject?.motif || '', suivi:CM.SUIVI_URL, sig:CM.SIG[lang], moi:me.name };
+      motif:r.reject?.motif || '', suivi:CM.SUIVI_URL ? CM.SUIVI_URL + '?ref=' + r.ref : '', sig:CM.SIG[lang], moi:me.name };
   }
   // Fill the {placeholders}; a line whose placeholder has no value is left out.
   function fill(tpl, vals){
@@ -1011,6 +1013,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
           ${am.map(a => `<div class="row"><span>${esc(a.label)}</span><b>${a.v == null ? 'Sur devis' : fmt(a.v) + ' MAD'}</b><span class="pill ${payDone(r, a.k) ? 'p-ok' : 'p-wait'}">${payDone(r, a.k) ? 'Reçu' : 'Attendu'}</span></div>`).join('')}
           <div class="prog"><i style="width:${r.total ? paidSum / r.total * 100 : 0}%"></i></div><div style="display:flex;justify-content:space-between;font-size:.76rem;color:var(--m)"><span>Payé</span><b style="color:var(--ink)">${fmt(paidSum)} / ${r.total == null ? 'sur devis' : fmt(r.total) + ' MAD'}</b></div>
         </div>
+        ${parrainBox(r)}
       </div>
       <div class="box"><h4>Historique et notes de l'équipe <small>visibles par l'équipe seulement</small></h4>
         <div class="feed" id="feed">${r.notes.map(n => { const w = member(n.by); return `<div class="msg ${n.t === 'sys' ? 'sys' : ''}"><span class="av" style="--c:${w ? w.c : '#c9b6c4'}">${n.t === 'sys' && !w ? '•' : esc((w?.name || '?')[0])}</span><div><small>${n.t === 'sys' ? 'Suivi' : 'Note'}${w ? ' · ' + esc(w.name) : ''} · ${when(n.at)}</small>${esc(n.text)}</div></div>`; }).join('')}</div>
@@ -1030,10 +1033,46 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     const feed = $('#feed'); feed.scrollTop = feed.scrollHeight;
   }
 
+  // Referral: the referral code is the referrer's reference. The friend's 200 MAD discount is already in their total;
+  // the referrer earns 300 MAD once the friend's file is delivered, and the team marks it paid here.
+  const REWARD = 300, REMISE = 200;
+  const tel9 = s => String(s || '').replace(/\D/g, '').slice(-9);
+  function parrainBox(r){
+    const fl = db.requests.filter(x => x.parrain === r.ref && x.ref !== r.ref && !x.archived);
+    if (!r.parrain && !fl.length) return '';
+    let html = '';
+    if (r.parrain) {
+      const p = get(r.parrain), selfRef = p && tel9(p.client?.tel) && tel9(p.client?.tel) === tel9(r.client?.tel);
+      html += `<div class="row"><span>Parrainé par</span>${p ? `<button class="tg" data-goref="${esc(p.ref)}">${esc(p.client?.nom || '')} · ${esc(p.ref)}</button>` : `<b>${esc(r.parrain)}</b>`}</div>`;
+      html += `<p class="phint">${r.total == null ? `Prix sur devis : pensez à déduire la remise de ${REMISE} MAD.` : `Remise de ${REMISE} MAD déjà déduite du total.`}</p>`;
+      if (!p) html += `<p class="pwarn">⚠️ Code inconnu : aucun dossier ${esc(r.parrain)}. Vérifiez avec le client avant de garder la remise.</p>`;
+      if (selfRef) html += `<p class="pwarn">⚠️ Même téléphone que le parrain : possible auto-parrainage.</p>`;
+    }
+    if (fl.length) {
+      html += `<div class="row"><span>Filleuls</span><b>${fl.length} · ${fl.filter(x => x.parrainPaid).length * REWARD} MAD versés</b></div>`;
+      html += fl.map(x => {
+        const st = x.parrainPaid ? `<span class="pill p-ok">${REWARD} MAD versés</span>` : x.step >= DONE ? `<button class="btn b-grad b-sm" data-rewardpay="${esc(x.ref)}">Marquer ${REWARD} MAD versés</button>` : `<span class="pill p-wait">${esc(stepName(x.step))}</span>`;
+        return `<div class="row"><button class="tg" data-goref="${esc(x.ref)}">${esc(x.client?.nom || x.ref)}</button>${st}</div>`;
+      }).join('');
+      if (fl.some(x => x.step >= DONE && !x.parrainPaid)) html += `<p class="phint">À verser au parrain par virement ou Cash Plus (${esc(r.client?.tel || '')}).</p>`;
+    }
+    return `<div class="box"><h4>Parrainage <small>${REWARD} MAD au parrain · ${REMISE} MAD de remise au filleul</small></h4>${html}</div>`;
+  }
+
   // Actions on the open file (event delegation)
   let rejectOpen = false;
   $('#detail').addEventListener('click', e => {
     const r = current && get(current); if (!r) return;
+    const go = e.target.closest('[data-goref]');
+    if (go) { if (get(go.dataset.goref)) open(go.dataset.goref); return; }
+    const rp = e.target.closest('[data-rewardpay]');
+    if (rp) {
+      const f = get(rp.dataset.rewardpay); if (!f || !armed(rp, 'Confirmer : récompense versée')) return;
+      f.parrainPaid = new Date().toISOString();
+      log(f, `Récompense de parrainage (${REWARD} MAD) versée au parrain ${r.ref}.`);
+      log(r, `Récompense de parrainage versée (${REWARD} MAD) pour le filleul ${f.ref}.`);
+      persist(); renderDetail(); return toast('Récompense marquée comme versée');
+    }
     const wa = e.target.closest('[data-wasend]');
     if (wa) {                                             // the link opens WhatsApp; keep a trace in the file
       const k = wa.dataset.wasend;

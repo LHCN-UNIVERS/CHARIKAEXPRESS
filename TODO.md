@@ -5,7 +5,7 @@ Things left out of the homepage on purpose, because they would be false today. A
 ## Homepage (from the reference design)
 
 - [ ] **Customer reviews.** The reference shows "+1 200 entrepreneurs nous font confiance" and "4,8/5 sur Google". Add a reviews block only with real numbers: a Google Business profile with real reviews, and a real count of companies created.
-- [ ] **"Mon espace" button** in the navbar. Needs the client space (login with a code by WhatsApp or e-mail, file progress, documents). See `docs/client-space.md`.
+- [x] **"Mon dossier" link** in the navbar: client tracking page `suivi.html` (reference + phone). Documents to download could come later (see `docs/client-space.md`).
 - [ ] **Social media icons** in the footer (Facebook, Instagram, LinkedIn, YouTube). Add once the profiles exist, with their real links.
 - [ ] **"Voir les conditions" link** on the « Rejeté ? On recommence. À nos frais. » banner. Needs a conditions page that states the guarantee precisely.
 - [x] **Legal pages**: Mentions légales, Conditions générales, Politique de confidentialité in `legal.html`, linked from the footer. Remaining items in « Legal pages and CNDP » below.
@@ -38,3 +38,9 @@ Things left out of the homepage on purpose, because they would be false today. A
 - [ ] Put the CNDP receipt number in the privacy policy (FR and EN).
 - [ ] Add the « Voir les conditions » link on the guarantee banner, pointing to `legal.html#cgv`.
 - [ ] When the Meta Pixel / Google tag is added: cookie banner, and update section 8 « Cookies » of the privacy policy.
+
+## Referral programme
+
+- [x] Referral code = the referrer's file reference. Link `charikaexpress.ma/?parrain=CE-123456`, shown with share buttons on `suivi.html`.
+- [x] Friend: 200 MAD off, taken from the total in the request form. Referrer: 300 MAD once the friend's file is delivered, marked « versé » in the team space.
+- [ ] Confirm the amounts (300 / 200 MAD). They are in `suivi.html`, `demande.html`, `admin.html`, `index.html` and `legal.html` (terms, section 12).

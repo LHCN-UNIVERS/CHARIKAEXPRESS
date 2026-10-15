@@ -195,6 +195,8 @@ textarea{min-height:96px;resize:vertical}
 .tbar{margin-top:18px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;background:linear-gradient(160deg,var(--plum),#4b1a46);color:#fff;border-radius:16px;padding:14px 18px}
 .tbar small{color:#d9c0d3;font-size:.76rem;display:block}
 .tbar b{font-size:1.3rem;font-weight:800}
+.tbar .rem{display:block;font-size:.72rem;font-weight:700;color:#ffc9b8}
+.pok{display:block;margin-top:6px;color:var(--ok,#1d9a62);font-weight:700;font-size:.8rem}
 .tnow{background:var(--grad);border-radius:12px;padding:8px 12px;text-align:end}
 .tnow small{color:#fff}
 /* Step 6: payment schedule, amount switch, method cards, copy-ready instructions */
@@ -481,7 +483,7 @@ button.vcheck{width:100%;margin-top:12px;border:0;cursor:pointer;text-align:star
             <label class="op"><input class="sr" type="checkbox" name="o_logo" data-price="1500"><span class="sw" aria-hidden="true"></span><span class="oi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg></span><b data-t="o2">Logo et carte de visite</b><span data-t="o2d">Une identité prête pour lancer votre activité.</span><em class="ltr">+1 500 MAD</em></label>
             <label class="op"><input class="sr" type="checkbox" name="o_pacte" data-price="1200"><span class="sw" aria-hidden="true"></span><span class="oi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 11a4 4 0 1 0-8 0M3 20c1-3 4-5 9-5s8 2 9 5"/></svg></span><b data-t="o3">Pacte d'associés</b><span data-t="o3d">Conseillé si vous êtes plusieurs : parts, décisions, sortie.</span><em class="ltr">+1 200 MAD</em></label>
           </div>
-          <div class="tbar"><div><small data-t="ttc">Total TTC</small><b class="ltr" id="tbTotal">4 680 MAD</b></div><div class="tnow"><small data-t="now">À régler maintenant</small><b class="ltr" id="tbNow">700 MAD</b></div></div>
+          <div class="tbar"><div><small data-t="ttc">Total TTC</small><b class="ltr" id="tbTotal">4 680 MAD</b><span class="rem" id="tbRem" hidden data-t="rem">dont −200 MAD de parrainage</span></div><div class="tnow"><small data-t="now">À régler maintenant</small><b class="ltr" id="tbNow">700 MAD</b></div></div>
         </section>
 
         <!-- STEP 5: CONTACT -->
@@ -493,6 +495,7 @@ button.vcheck{width:100%;margin-top:12px;border:0;cursor:pointer;text-align:star
               <div><label for="tel"><span data-t="ft">Téléphone / WhatsApp</span> *</label><input id="tel" name="tel" type="tel" autocomplete="tel" placeholder="06 12 34 56 78" dir="ltr" required></div>
             </div>
             <div><label for="email"><span data-t="fe">E-mail</span> *</label><input id="email" name="email" type="email" autocomplete="email" dir="ltr" required></div>
+            <div><label for="parrain"><span data-t="fp">Code parrain</span> <small data-t="opt">(facultatif)</small></label><input id="parrain" name="parrain" placeholder="CE-123456" dir="ltr" autocomplete="off" autocapitalize="characters" maxlength="12"><small class="pok" id="parrainOk" hidden data-t="pok">✓ Code parrain ajouté : 200 MAD de remise sur votre total</small></div>
             <div><label for="note"><span data-t="fm">Informations complémentaires</span> <small data-t="opt">(facultatif)</small></label><textarea id="note" name="note"></textarea></div>
           </div>
         </section>
@@ -558,7 +561,8 @@ button.vcheck{width:100%;margin-top:12px;border:0;cursor:pointer;text-align:star
             <li><i class="d">4</i><div><h3 data-t="nx3h">Votre juriste vous appelle</h3><p data-t="nx3">Il lance le certificat négatif auprès de l'OMPIC.</p></div></li>
           </ol>
           <div class="ok-foot">
-            <a class="btn btn-grad" href="index.html" data-t="home">Retour à l'accueil</a>
+            <a class="btn btn-grad" id="trackBtn" href="suivi.html" data-t="track">Suivre mon dossier</a>
+            <a class="btn btn-link" href="index.html" data-t="home">Retour à l'accueil</a>
           </div>
         </section>
 
@@ -581,7 +585,7 @@ button.vcheck{width:100%;margin-top:12px;border:0;cursor:pointer;text-align:star
     s1h:"Which legal form?", s1p:"Not sure? Choose SARL AU if you're on your own, SARL if there are several of you.",
     fo1:"SARL AU", fo1d:"One partner", fo2:"SARL", fo2d:"Two or more partners", fo3:"Self-employed", fo3d:"Individual activity", fo4:"Public limited company (SA)", fo4d:"Several shareholders, custom quote", fo5:"SAS", fo5d:"Simplified joint-stock company, custom quote",
     s2h:"Your future company", s2p:"Suggest 3 names, in order of preference. We'll check their availability with OMPIC.",
-    nm1:"Name 1", nm2:"Name 2", nm3:"Name 3", opt:"(optional)", act:"Main activity", actph:"E.g. digital marketing agency, consulting, import-export…",
+    nm1:"Name 1", nm2:"Name 2", nm3:"Name 3", opt:"(optional)", fp:"Referral code", pok:"✓ Referral code added: 200 MAD off your total", rem:"incl. −200 MAD referral", track:"Track my file", act:"Main activity", actph:"E.g. digital marketing agency, consulting, import-export…",
     ville:"City of the registered office", cityph:"Type the name of your city", cityfree:c=>`Use “${c}”`, choose:"Choose…", c1:"Casablanca", c2:"Rabat", c3:"Marrakech", c4:"Tangier", c5:"Agadir", c6:"Fez", c7:"Other city",
     capital:"Share capital (MAD)", siege:"Registered office", sg1:"I need a business address", sg1d:"We provide one for you", sg2:"I already have premises", sg2d:"Lease or title deed",
     s3h:"Partners and manager", s3p:"Enter each partner and their share of the capital. The total must be 100%.",
@@ -817,8 +821,12 @@ button.vcheck{width:100%;margin-top:12px;border:0;cursor:pointer;text-align:star
     let t = plan ? +plan.dataset.price : 0;
     if (val('forme') === 'ae') t = 900;
     $$('#wizard input[type=checkbox][data-price]:checked').forEach(c => t += +c.dataset.price);
+    if (parrainCode()) t -= REMISE;                          // referral: the friend's discount is taken off the total
     return t;
   }
+  // Referral code = the referrer's file reference (CE-123456); checked by the team before the reward is paid
+  const REMISE = 200;
+  const parrainCode = () => { const v = ($('#parrain')?.value || '').trim().toUpperCase().replace(/^CE\s*-?\s*(\d{6})$/, 'CE-$1'); return /^CE-\d{6}$/.test(v) && v !== ref ? v : ''; };
   function optsText(){ const o = $$('#wizard input[type=checkbox][data-price]:checked').map(c => c.closest('label').querySelector('b').textContent); return o.length ? o.join(', ') : T[lang].none; }
   let ref = 'CE-' + String(Math.floor(100000 + Math.random() * 900000));
   // 700 MAD avance at the order (or everything at once); with a price on quote, the avance still applies
@@ -856,6 +864,7 @@ button.vcheck{width:100%;margin-top:12px;border:0;cursor:pointer;text-align:star
     const t = total(), n = payNow();
     $('#tbTotal').textContent = t === null ? T[lang].quote : fmt(t) + ' MAD';
     $('#tbNow').textContent = fmt(n) + ' MAD';
+    const pc = parrainCode(); $('#parrainOk').hidden = !pc; $('#tbRem').hidden = !pc || t === null;
     if (step === 6) { payment(); review(); }
   }
   // ---------- Step 6 summary with an anti-rejection check ----------
@@ -983,6 +992,7 @@ button.vcheck{width:100%;margin-top:12px;border:0;cursor:pointer;text-align:star
     $('#okPay').textContent = T[lang].pm[val('pay_method')] + ' · ' + (val('pay_amount') === 'full' ? T[lang].pa.full : (lang === 'en' ? 'upfront' : 'avance'));
     $('#okAmt').textContent = (fmt(payNow()) + ' MAD');
     $('#waConfirm').href = 'https://wa.me/212667154604?text=' + encodeURIComponent(T[lang].confirm(ref, $('#n1').value.trim()));
+    $('#trackBtn').href = 'suivi.html?ref=' + ref;
     $('#done').hidden = false;
     $('main').classList.add('sent');
     $('.layout').classList.add('sent'); // summary is no longer needed once the request is sent
@@ -1004,7 +1014,7 @@ button.vcheck{width:100%;margin-top:12px;border:0;cursor:pointer;text-align:star
       partners: partners.map(p => ({ name: p.name.trim(), cin: p.cin.trim(), pct: +p.pct || 0 })),
       gerant: g === 'other' ? { name: $('#gn').value.trim(), cin: $('#gc').value.trim() } : { name: partners[+g]?.name || '', cin: partners[+g]?.cin || '' },
       client: { nom: $('#nom').value.trim(), tel: $('#tel').value.trim(), email: $('#email').value.trim() },
-      message: $('#note').value.trim(), cgu: $('#cgu').checked, secs: secs()
+      message: $('#note').value.trim(), cgu: $('#cgu').checked, secs: secs(), parrain: parrainCode() || null
     };
   }
   function save(){
@@ -1039,6 +1049,8 @@ button.vcheck{width:100%;margin-top:12px;border:0;cursor:pointer;text-align:star
   const q = new URLSearchParams(location.search);
   const plan = q.get('plan'); if (plan && document.querySelector(`[name=plan][value="${plan}"]`)) document.querySelector(`[name=plan][value="${plan}"]`).checked = true;
   const svc = q.get('service'); if (svc && document.querySelector(`[name=forme][value="${svc}"]`)) document.querySelector(`[name=forme][value="${svc}"]`).checked = true;
+  let pq = (q.get('parrain') || '').toUpperCase(); try { pq = pq || localStorage.getItem('ce-parrain') || ''; } catch(e) {}
+  if (/^CE-\d{6}$/.test(pq) && !$('#parrain').value) $('#parrain').value = pq;
   if (!document.querySelector('[name=plan]:checked')) document.querySelector('[name=plan][value=essentiel]').checked = true;
   if (!document.querySelector('[name=pay_amount]:checked')) document.querySelector('[name=pay_amount][value=avance]').checked = true;
   let startLang = 'fr'; try { if (localStorage.getItem('ce-lang') === 'en') startLang = 'en'; } catch(e) {}
