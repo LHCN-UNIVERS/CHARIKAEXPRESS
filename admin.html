@@ -150,9 +150,72 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
 .demo-bar button{all:unset;cursor:pointer;font-weight:700;text-decoration:underline}
 .body{display:grid;grid-template-columns:290px 1fr 480px;min-height:0}
 /* Partners page (replaces the requests view when « Partenaires » is selected) */
-.affpage{overflow:auto;min-height:0;padding:22px max(20px,env(safe-area-inset-right)) 40px max(20px,env(safe-area-inset-left))}
-.affpage .mbox{width:min(980px,100%);max-height:none;margin:0 auto;box-shadow:none;border:1px solid var(--line);overflow:visible}
-@media (max-width:820px){.affpage{padding:14px 12px 24px}.affpage .mbox{padding:16px;border-radius:16px}}
+.affpage{overflow:auto;min-height:0;background:var(--bg);display:grid;grid-row:3}
+.ad .tb-codes{display:grid;gap:12px}
+.aw{display:grid;grid-template-columns:340px minmax(0,1fr);min-height:100%}
+.al{background:#fff;border-right:1px solid var(--line);display:flex;flex-direction:column;min-width:0}
+.al .lq{padding:14px;border-bottom:1px solid var(--line)}
+.al .lq input{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:11px;font:inherit;font-size:.84rem;background:var(--bg)}
+.al .grp{padding:9px 16px;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:var(--m);font-weight:700;background:#fdf5f3}
+.al .li{all:unset;box-sizing:border-box;cursor:pointer;display:flex;gap:11px;align-items:center;padding:12px 16px;border-bottom:1px solid var(--line);width:100%}
+.al .li:hover{background:#fffaf8}.al .li.on{background:var(--blush);box-shadow:inset 4px 0 0 var(--pink)}
+.al .li.off{opacity:.6}.al .li .t{flex:1;min-width:0}
+.al .li .t b{display:block;font-size:.86rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.al .li .t span{color:var(--m);font-size:.72rem}
+.al .li .r{text-align:right;font-size:.72rem;color:var(--m);white-space:nowrap}.al .li .r b{display:block;font-size:.84rem;color:var(--ink)}
+.al .li .r b.z{color:var(--m)}
+.al .add{padding:14px}.al .add .btn{width:100%;justify-content:center}
+.al .empty{padding:18px 16px;color:var(--m);font-size:.8rem}
+.aav{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-weight:800;color:#fff;flex:none;font-size:.8rem}
+.ad{padding:24px max(28px,env(safe-area-inset-right)) 40px 28px;min-width:0;display:grid;gap:18px;align-content:start;max-width:1100px}
+.ad .back{display:none}
+.ad .hero{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.ad .hero .aav{width:56px;height:56px;font-size:1.1rem}
+.ad .hero .who{flex:1;min-width:200px}.ad .hero h2{font-size:1.3rem;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.ad .hero p{color:var(--m);font-size:.8rem;margin-top:3px}
+.ad .hero .acts{display:flex;gap:8px;flex-wrap:wrap}
+.ad .payb{display:flex;align-items:center;gap:20px;flex-wrap:wrap;background:linear-gradient(110deg,#3a1239,#5a1d4c);color:#fff;border-radius:18px;padding:18px 22px}
+.ad .payb > div{display:grid;gap:2px}.ad .payb > div + div{border-left:1px solid #ffffff30;padding-left:20px}
+.ad .payb span{color:#ffffffb8;font-size:.74rem}.ad .payb b{font-size:1.2rem}.ad .payb b.big{font-size:1.9rem;color:var(--gold)}
+.ad .payb .btn{margin-left:auto}
+.ad .tabs{display:flex;gap:22px;border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:none}
+.ad .tabs button{all:unset;cursor:pointer;padding:10px 0;font-weight:600;font-size:.84rem;color:var(--m);white-space:nowrap}
+.ad .tabs button.on{color:var(--ink);box-shadow:inset 0 -3px 0 var(--pink)}
+.ad .dos{display:grid;grid-template-columns:120px minmax(0,1fr) 150px 80px;gap:14px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line);font-size:.84rem}
+.ad .dos .ref{all:unset;cursor:pointer;font-weight:700}.ad .dos .ref:hover{color:var(--rose);text-decoration:underline}
+.ad .dos .amt{text-align:right;font-weight:700}.ad .dos .amt.z{color:var(--m);font-weight:500}
+.sbar{display:flex;gap:3px}.sbar i{height:7px;flex:1;border-radius:4px;background:var(--line)}.sbar i.d{background:var(--grad)}
+.ad .cds{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.ad .cd{display:inline-flex;gap:6px;align-items:center;border:1px dashed #f4b8a8;background:var(--blush);border-radius:10px;padding:4px 5px 4px 11px;font:700 .78rem ui-monospace,Menlo,monospace;color:#a8432a}
+.ad .cd.off{opacity:.5}.ad .cd input{width:64px;padding:3px 6px;border:1px solid var(--line);border-radius:8px;font:600 .78rem var(--font)}
+.ad .cd .tg{font:600 .72rem var(--font);border:1px solid var(--line);background:#fff;border-radius:8px;padding:4px 8px;cursor:pointer;color:var(--ink)}
+.ad .addc{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.ad .addc input{width:160px;padding:8px 10px;font-size:.8rem}
+.ad .afi{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.ad .afi div{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px;font-size:.82rem;overflow-wrap:anywhere}
+.ad .afi div span{display:block;color:var(--m);font-size:.64rem;text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px;font-weight:600}
+.ad .afi a{color:var(--rose);font-weight:600}
+.ad .phist{display:grid;grid-template-columns:1fr auto auto;gap:6px 18px;font-size:.84rem;align-items:center}
+.ad .phist .h{color:var(--m);font-size:.66rem;text-transform:uppercase;letter-spacing:.07em;font-weight:600}
+.ad .nil{color:var(--m);font-size:.82rem;padding:6px 0}
+.ad .rule{color:var(--m);font-size:.76rem;background:#fff;border:1px dashed var(--line);border-radius:12px;padding:10px 12px}
+.ad .newbox{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;display:grid;gap:12px}
+.ad .aff-f{display:grid;grid-template-columns:1fr 1.2fr 1fr auto;gap:8px;align-items:end}
+.ad .newpw{background:#fff4d6;border-radius:12px;padding:10px 12px;font-size:.8rem;display:grid;gap:8px}
+.ad .newpw code{font:700 1rem ui-monospace,Menlo,monospace;letter-spacing:.04em}
+.ad .newpw .acts{display:flex;gap:6px;flex-wrap:wrap}
+.ad .merr{color:var(--err);font-size:.78rem;font-weight:600}
+@media (max-width:820px){
+  .aw{grid-template-columns:minmax(0,1fr)}
+  .al{position:static;max-height:none;height:auto;border-right:0}
+  .aw.det .al,.aw:not(.det) .ad{display:none}
+  .ad{padding:14px 14px 24px;gap:14px}
+  .ad .back{display:inline-flex;justify-self:start}
+  .ad .hero .acts{width:100%}
+  .ad .payb{padding:16px;gap:14px}.ad .payb > div + div{border-left:0;padding-left:0}
+  .ad .payb > div:first-child{width:100%}.ad .payb .btn{margin-left:0;width:100%;justify-content:center}
+  .ad .dos{grid-template-columns:1fr auto;gap:6px 10px}.ad .dos .sbar{grid-column:1/-1;order:3}
+  .ad .dos .amt{display:none}
+  .ad .aff-f{grid-template-columns:1fr}
+}
 @media (max-width:1400px){.body{grid-template-columns:270px 1fr 420px}}
 @media (min-width:1181px){.body.nofiche{grid-template-columns:290px 1fr}}
 .detail{display:contents}
@@ -436,7 +499,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     </aside>
     <div class="detail" id="detail"></div>
   </div>
-  <main class="affpage" id="affm" hidden><div class="mbox" id="affBox" aria-label="Partenaires"></div></main>
+  <main class="affpage" id="affm" hidden aria-label="Partenaires"><div class="aw" id="affBox"></div></main>
 </div>
 
 <div class="toast" id="toast" hidden></div>
@@ -1430,7 +1493,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
 
   // ---------- Partners window (admins, real site) ----------
   let affMsg = '';
-  const AFF_ST = { pending:['En attente', 'p-wait'], active:['Actif', 'p-ok'], refused:['Refusé', 'p-wait'], suspended:['Suspendu', 'p-wait'] };
+  const AFF_ST = { pending:['En attente', 'p-wait'], active:['Actif', 'p-ok'], refused:['Refusé', 'p-mute'], suspended:['Suspendu', 'p-mute'] };
   async function loadAffs(){ try { const r = await api('affiliates'); if (r.ok) AFFS = (await r.json()).affiliates; } catch(e) {} }
   const affMsgText = (a, code, pw) => `Bonjour ${a.name}, votre compte partenaire Charika Express est ${pw ? 'prêt' : 'validé'} ✅\n`
     + `Espace partenaire : ${location.origin}/partenaire.html\nE-mail : ${a.email}\n${pw ? `Mot de passe provisoire : ${pw}\n` : ''}`
@@ -1438,43 +1501,102 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   const affNote = (a, code, pw) => { const txt = affMsgText(a, code, pw);
     return `<div class="newpw"><span>${pw ? `Mot de passe provisoire de <b>${esc(a.name)}</b> : <code>${esc(pw)}</code>` : `<b>${esc(a.name)}</b> est validé${code ? `, code <b>${esc(code)}</b>` : ''}.`} Envoyez-lui ce message :</span>
       <div class="acts"><a class="btn b-grad b-sm" href="${waLink(a.phone, txt)}" target="_blank" rel="noopener">Envoyer sur WhatsApp</a><button class="btn b-soft b-sm" data-cp="${esc(txt)}">Copier le message</button></div></div>`; };
-  function affCard(a){
-    const files = db.requests.filter(r => r.affiliate === a.id && !r.archived && r.kind !== 'rappel');
-    const deliv = files.filter(r => r.step >= DONE), due = files.filter(affDue), paid = files.filter(r => r.affPaid);
-    const [stl, stc] = AFF_ST[a.status] || [a.status, 'p-wait'];
-    const acts = a.status === 'pending' ? `<button class="btn b-grad b-sm" data-afst="${a.id}" data-v="active">Valider</button><button class="btn b-soft b-sm" data-afst="${a.id}" data-v="refused">Refuser</button>`
-      : a.status === 'active' ? `${due.length ? `<button class="btn b-grad b-sm" data-afpayall="${a.id}">Marquer versé · ${fmt(due.length * AFF_COMMISSION)} MAD</button>` : ''}<button class="btn b-soft b-sm" data-afreset="${a.id}">Nouveau mot de passe</button><button class="btn b-soft b-sm" data-afst="${a.id}" data-v="suspended">Suspendre</button>`
-      : `<button class="btn b-soft b-sm" data-afst="${a.id}" data-v="active">Réactiver</button>`;
-    const codes = a.codes.map(c => `<span class="cd ${c.active ? '' : 'off'}">${esc(c.code)} · −<input type="number" min="0" step="50" value="${c.discount}" data-cdisc="${esc(c.code)}" aria-label="Remise du code ${esc(c.code)} en MAD"> MAD
-      <button class="tg" data-ctog="${esc(c.code)}" data-v="${c.active ? 0 : 1}">${c.active ? 'Désactiver' : 'Activer'}</button></span>`).join('');
-    return `<div class="af ${a.status === 'pending' ? 'pend' : ''}">
-      <div class="hd"><div><b>${esc(a.name)}${a.company ? ` · ${esc(a.company)}` : ''}</b><small>${esc([a.profile, a.city].filter(Boolean).join(' · '))}</small><small>${esc(a.email)} · ${esc(a.phone)}</small>
-        <small>Paiement : ${a.payMethod === 'cashplus' ? 'Cash Plus' : 'Virement'} ${esc(a.payInfo || '(non renseigné)')}</small></div><span class="pill ${stc}">${stl}</span></div>
-      ${a.status === 'active' || files.length ? `<div class="st"><div><b>${files.length}</b>dossiers</div><div><b>${deliv.length}</b>livrés</div><div><b>${fmt(due.length * AFF_COMMISSION)}</b>MAD à verser</div><div><b>${fmt(paid.length * AFF_COMMISSION)}</b>MAD versés</div></div>` : ''}
-      ${a.codes.length ? `<div class="cds">${codes}</div>` : ''}
-      ${a.status === 'active' ? `<form class="addc" data-addcode="${a.id}" novalidate><input class="f" placeholder="NOUVEAU CODE" maxlength="20" aria-label="Nouveau code"><input class="f" type="number" min="0" step="50" placeholder="Remise MAD" aria-label="Remise en MAD" style="width:120px"><button class="btn b-soft b-sm">Ajouter un code</button></form>` : ''}
-      <div class="acts">${acts}</div></div>`;
+  // Page layout: the list of partners on the left (grouped by status), the selected partner's file on the right
+  // (on a phone: the list, then the partner full screen). affSel = partner id or 'new' (add form).
+  let affSel = null, affTab = 'dos', affDet = false, affQ = '';
+  const AV_COL = ['#e0577a', '#14a39a', '#7a5af0', '#e8a11a', '#3f7fd6', '#c2410c', '#0e8a5f'];
+  const affAv = a => `<span class="aav" style="background:${AV_COL[[...a.id].reduce((n, c) => n + c.charCodeAt(0), 0) % AV_COL.length]}" aria-hidden="true">${esc(a.name.split(/\s+/).map(w => w[0] || '').join('').slice(0, 2).toUpperCase())}</span>`;
+  const affFiles = a => db.requests.filter(r => r.affiliate === a.id && !r.archived && r.kind !== 'rappel').sort((x, y) => String(y.createdAt).localeCompare(String(x.createdAt)));
+  const affSum = a => { const f = affFiles(a); return { f, deliv:f.filter(r => r.step >= DONE).length, due:f.filter(affDue).length, paid:f.filter(r => r.affPaid).length }; };
+  const nextFive = () => { const d = new Date(); if (d.getDate() >= 5) d.setMonth(d.getMonth() + 1); d.setDate(5); return d.toLocaleDateString('fr-FR', { day:'numeric', month:'long' }); };
+  const AFF_GRP = [['pending', 'À valider'], ['active', 'Actifs'], ['suspended', 'Suspendus'], ['refused', 'Refusés']];
+  function affList(){
+    const q = affQ.trim().toLowerCase();
+    const hit = a => !q || [a.name, a.company, a.email, a.phone, a.city, ...a.codes.map(c => c.code)].join(' ').toLowerCase().includes(q);
+    const groups = AFF_GRP.map(([k, label]) => {
+      const xs = AFFS.filter(a => a.status === k && hit(a)); if (!xs.length) return '';
+      return `<div class="grp">${label} · ${xs.length}</div>` + xs.map(a => {
+        const s = affSum(a), codes = a.codes.filter(c => c.active).map(c => c.code).join(' · ');
+        const right = k === 'pending' ? '<span class="pill p-new">Nouveau</span>'
+          : `<div class="r"><b class="${s.due ? '' : 'z'}">${fmt(s.due * AFF_COMMISSION)} MAD</b>${s.f.length} dossier${s.f.length > 1 ? 's' : ''}</div>`;
+        return `<button type="button" class="li ${affSel === a.id ? 'on' : ''} ${k === 'suspended' || k === 'refused' ? 'off' : ''}" data-afsel="${a.id}">${affAv(a)}<div class="t"><b>${esc(a.name)}</b><span>${esc(k === 'pending' ? [a.profile, a.city].filter(Boolean).join(' · ') : codes || 'Aucun code actif')}</span></div>${right}</button>`;
+      }).join('');
+    }).join('');
+    return groups || `<p class="empty">${AFFS.length ? 'Aucun partenaire ne correspond.' : 'Aucun partenaire pour l\'instant. Les inscriptions de la page « Devenir partenaire » apparaissent ici.'}</p>`;
   }
-  async function openAff(){
-    await loadAffs();
-    const order = { pending:0, active:1, suspended:2, refused:3 };
-    const list = AFFS.slice().sort((a, b) => (order[a.status] ?? 9) - (order[b.status] ?? 9));
-    $('#affBox').innerHTML = `<h3>Partenaires <button class="btn b-soft b-sm" id="affClose">← Demandes</button></h3>
-      <p class="hint" style="margin:0">${AFF_COMMISSION} MAD par dossier livré et entièrement payé, versés le 5 du mois. Chaque code peut donner une remise au client (0 = aucune remise). Le partenaire ne voit que la référence et l'avancement de ses dossiers.</p>
-      ${affMsg}
-      ${list.length ? list.map(affCard).join('') : '<p class="hint">Aucun partenaire pour l\'instant. Les inscriptions de la page « Devenir partenaire » apparaissent ici.</p>'}
-      <div class="sec"><h4>Ajouter un partenaire</h4><form id="addAff" class="aff-f" novalidate>
+  function affStatus(r){
+    if (r.step < DONE) return `<span class="pill ${r.step >= 5 ? 'p-wait' : 'p-mute'}">Étape ${r.step + 1}/${DONE}</span>`;
+    if (r.affPaid) return '<span class="pill p-ok">Livré · versée</span>';
+    return affDue(r) ? '<span class="pill p-new">Livré · à verser</span>' : '<span class="pill p-wait">Livré · solde attendu</span>';
+  }
+  function affDetail(a){
+    const back = '<button type="button" class="btn b-soft b-sm back" data-afback>← Partenaires</button>';
+    if (!a) return back + `${affMsg}<div class="newbox"><h3>Ajouter un partenaire</h3>
+      <p class="rule">${AFF_COMMISSION} MAD par dossier livré et entièrement payé, versés le 5 du mois. Un code promo est créé automatiquement ; vous recevez son mot de passe provisoire à lui envoyer.</p>
+      <form id="addAff" class="aff-f" novalidate>
         <label>Nom<input class="f" id="afName" placeholder="Amal Bennani"></label>
         <label>E-mail<input class="f" type="email" id="afEmail" placeholder="amal@exemple.ma"></label>
         <label>Téléphone<input class="f" id="afPhone" placeholder="06 12 34 56 78"></label>
         <button class="btn b-grad">Ajouter</button></form><p class="merr" id="afErr" hidden></p></div>`;
+    const s = affSum(a), [stl, stc] = AFF_ST[a.status] || [a.status, 'p-wait'];
+    const since = a.createdAt ? new Date(a.createdAt).toLocaleDateString('fr-FR', { month:'long', year:'numeric' }) : '';
+    const acts = a.status === 'pending' ? `<button class="btn b-soft b-sm" data-afst="${a.id}" data-v="refused">Refuser</button><button class="btn b-grad b-sm" data-afst="${a.id}" data-v="active">Valider</button>`
+      : a.status === 'active' ? `<button class="btn b-soft b-sm" data-afreset="${a.id}">Nouveau mot de passe</button><button class="btn b-soft b-sm" data-afst="${a.id}" data-v="suspended">Suspendre</button>`
+      : `<button class="btn b-soft b-sm" data-afst="${a.id}" data-v="active">Réactiver</button>`;
+    const hero = `<div class="hero">${affAv(a)}<div class="who"><h2>${esc(a.name)} <span class="pill ${stc}">${stl}</span></h2>
+      <p>${esc([a.company, a.profile, a.city].filter(Boolean).join(' · '))}${since ? `${a.company || a.profile || a.city ? ' · ' : ''}${a.status === 'pending' ? 'inscrit en' : 'partenaire depuis'} ${since}` : ''}</p></div><div class="acts">${acts}</div></div>`;
+    const pay = a.status === 'pending' ? `<p class="rule">Nouvelle inscription : vérifiez le profil puis validez. Un code promo est créé automatiquement et vous pourrez lui envoyer ses accès sur WhatsApp.</p>`
+      : `<div class="payb"><div><span>À verser le ${nextFive()}</span><b class="big">${fmt(s.due * AFF_COMMISSION)} MAD</b></div>
+        <div><span>Déjà versés</span><b>${fmt(s.paid * AFF_COMMISSION)} MAD</b></div><div><span>Livrés / apportés</span><b>${s.deliv} / ${s.f.length}</b></div>
+        ${s.due ? `<button class="btn b-grad" data-afpayall="${a.id}">Marquer ${fmt(s.due * AFF_COMMISSION)} MAD versés</button>` : ''}</div>`;
+    const tabs = [['dos', `Dossiers (${s.f.length})`], ['codes', `Codes promo (${a.codes.length})`], ['info', 'Coordonnées'], ['pays', 'Paiements']];
+    let body = '';
+    if (affTab === 'dos') body = s.f.length ? s.f.map(r => `<div class="dos"><button type="button" class="ref" data-afopen="${esc(r.ref)}">${esc(r.ref)}</button>
+        <div class="sbar" aria-label="Étape ${Math.min(r.step + 1, DONE)} sur ${DONE}">${Array.from({ length:DONE }, (_, i) => `<i class="${i < Math.min(r.step, DONE) ? 'd' : ''}"></i>`).join('')}</div>
+        ${affStatus(r)}<span class="amt ${r.step >= DONE ? '' : 'z'}">${r.step >= DONE ? AFF_COMMISSION + ' MAD' : 'en cours'}</span></div>`).join('')
+      : '<p class="nil">Aucun dossier pour l\'instant. Les demandes envoyées avec son code apparaîtront ici.</p>';
+    if (affTab === 'codes') body = `<p class="rule">Chaque code peut donner une remise au client (0 = aucune remise). Changez le montant puis cliquez ailleurs pour enregistrer.</p>
+      ${a.codes.length ? `<div class="cds">${a.codes.map(c => `<span class="cd ${c.active ? '' : 'off'}">${esc(c.code)} · −<input type="number" min="0" step="50" value="${c.discount}" data-cdisc="${esc(c.code)}" aria-label="Remise du code ${esc(c.code)} en MAD"> MAD
+        <button class="tg" data-ctog="${esc(c.code)}" data-v="${c.active ? 0 : 1}">${c.active ? 'Désactiver' : 'Activer'}</button></span>`).join('')}</div>` : '<p class="nil">Aucun code.</p>'}
+      ${a.status === 'active' ? `<form class="addc" data-addcode="${a.id}" novalidate><input class="f" placeholder="NOUVEAU CODE" maxlength="20" aria-label="Nouveau code"><input class="f" type="number" min="0" step="50" placeholder="Remise MAD" aria-label="Remise en MAD" style="width:120px"><button class="btn b-soft b-sm">Ajouter un code</button></form>` : ''}`;
+    if (affTab === 'info') body = `<div class="afi"><div><span>E-mail</span><a href="mailto:${esc(a.email)}">${esc(a.email)}</a></div>
+      <div><span>Téléphone</span>${a.phone ? `${esc(a.phone)} · <a href="${waLink(a.phone, `Bonjour ${a.name}, `)}" target="_blank" rel="noopener">WhatsApp</a>` : '—'}</div>
+      <div><span>Paiement</span>${a.payMethod === 'cashplus' ? 'Cash Plus' : 'Virement'} · ${esc(a.payInfo || 'non renseigné')}</div>
+      <div><span>Profil</span>${esc([a.company, a.profile, a.city].filter(Boolean).join(' · ') || '—')}</div>
+      <div><span>Inscription</span>${a.createdAt ? esc(new Date(a.createdAt).toLocaleDateString('fr-FR')) : '—'}</div></div>`;
+    if (affTab === 'pays') {
+      const by = {}; s.f.filter(r => r.affPaid).forEach(r => { const d = r.affPaid.slice(0, 10); (by[d] = by[d] || []).push(r.ref); });
+      const days = Object.keys(by).sort().reverse();
+      body = days.length ? `<div class="phist"><span class="h">Date</span><span class="h">Dossiers</span><span class="h">Montant</span>${days.map(d => `<span>${esc(new Date(d).toLocaleDateString('fr-FR'))}</span><span>${by[d].map(esc).join(', ')}</span><b>${fmt(by[d].length * AFF_COMMISSION)} MAD</b>`).join('')}</div>`
+        : '<p class="nil">Aucun versement pour l\'instant.</p>';
+    }
+    return back + affMsg + hero + pay + (a.status === 'pending' && !s.f.length ? `<div class="afi"><div><span>E-mail</span>${esc(a.email)}</div><div><span>Téléphone</span>${esc(a.phone || '—')}</div><div><span>Paiement souhaité</span>${a.payMethod === 'cashplus' ? 'Cash Plus' : 'Virement'} · ${esc(a.payInfo || 'non renseigné')}</div></div>`
+      : `<div class="tabs" role="tablist">${tabs.map(([k, l]) => `<button type="button" role="tab" aria-selected="${affTab === k}" class="${affTab === k ? 'on' : ''}" data-aftab="${k}">${l}</button>`).join('')}</div><div class="tb tb-${affTab}">${body}</div>`);
+  }
+  function renderAff(){
+    if (affSel !== 'new' && !AFFS.some(a => a.id === affSel)) {
+      const order = { pending:0, active:1, suspended:2, refused:3 };
+      affSel = AFFS.slice().sort((a, b) => (order[a.status] ?? 9) - (order[b.status] ?? 9))[0]?.id || 'new';
+    }
+    $('#affBox').classList.toggle('det', affDet);
+    $('#affBox').innerHTML = `<aside class="al"><div class="lq"><input type="search" id="afQ" placeholder="Chercher un partenaire ou un code…" aria-label="Chercher un partenaire" value="${esc(affQ)}"></div>
+      <div id="afList">${affList()}</div><div class="add"><button type="button" class="btn b-grad" data-afnew>+ Ajouter un partenaire</button></div></aside>
+      <section class="ad">${affDetail(AFFS.find(a => a.id === affSel))}</section>`;
     affMsg = '';
-    showAff(true);
+  }
+  async function openAff(){
+    await loadAffs();
+    renderAff();
+    if ($('#affm').hidden) showAff(true);
   }
   $('#affBtn').addEventListener('click', openAff);
   $('#affm').addEventListener('click', async e => {
-    if (e.target.id === 'affClose') { showAff(false); return; }
     const t = e.target.closest('button'); if (!t || t.closest('form')) return;
+    if (t.dataset.afsel) { affSel = t.dataset.afsel; affTab = 'dos'; affDet = true; renderAff(); $('#affm').scrollTop = 0; scrollTo({ top:0 }); return; }
+    if (t.dataset.afnew != null) { affSel = 'new'; affDet = true; renderAff(); setTimeout(() => $('#afName')?.focus(), 30); return; }
+    if (t.dataset.afback != null) { affDet = false; renderAff(); scrollTo({ top:0 }); return; }
+    if (t.dataset.aftab) { affTab = t.dataset.aftab; renderAff(); return; }
+    if (t.dataset.afopen) { showAff(false); open(t.dataset.afopen); return; }
     if (t.dataset.cp != null) { copyText(t.dataset.cp, 'Message copié'); return; }
     const a = AFFS.find(x => x.id === (t.dataset.afst || t.dataset.afreset || t.dataset.afpayall));
     if (t.dataset.afst) {
@@ -1497,6 +1619,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     }
     if (t.dataset.ctog) { await api('codes/' + t.dataset.ctog, { method:'PUT', body:JSON.stringify({ active:t.dataset.v === '1' }) }); openAff(); }
   });
+  $('#affm').addEventListener('input', e => { if (e.target.id === 'afQ') { affQ = e.target.value; $('#afList').innerHTML = affList(); } });
   $('#affm').addEventListener('change', async e => {
     const i = e.target.closest('[data-cdisc]'); if (!i) return;
     const r = await api('codes/' + i.dataset.cdisc, { method:'PUT', body:JSON.stringify({ discount:+i.value || 0 }) });
@@ -1515,13 +1638,13 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
       const body = { name:$('#afName').value.trim(), email:$('#afEmail').value.trim(), phone:$('#afPhone').value.trim() };
       const r = await api('affiliates', { method:'POST', body:JSON.stringify(body) }); const j = await r.json().catch(() => ({}));
       if (!r.ok) { $('#afErr').textContent = j.error === 'email_exists' ? 'Un partenaire existe déjà avec cet e-mail.' : 'Nom et e-mail valide obligatoires.'; $('#afErr').hidden = false; return; }
-      affMsg = affNote({ ...body, email:body.email.toLowerCase() }, j.code, j.tempPassword); openAff();
+      affMsg = affNote({ ...body, email:body.email.toLowerCase() }, j.code, j.tempPassword); affSel = j.id; openAff();
     }
   });
 
   // ---------- Phone: bottom tab bar, file from a notification link (#CE-123456), push notifications ----------
   $('#tbReq').addEventListener('click', () => { showAff(false); $('#body').classList.remove('open'); scrollTo({ top:0, behavior:'smooth' }); });
-  $('#tbAff').addEventListener('click', () => openAff());
+  $('#tbAff').addEventListener('click', () => { affDet = false; openAff(); });
   function openFromHash(){ const m = location.hash.match(/^#(CE-\d{6})$/); if (m && get(m[1])) open(m[1]); }
   addEventListener('hashchange', () => me && openFromHash());
 
