@@ -209,6 +209,11 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
 .ad .photos{display:flex;flex-wrap:wrap;gap:10px}
 .ad .photos a{display:block;width:150px;height:100px;border-radius:12px;background-size:cover;background-position:center;border:1px solid var(--line)}
 .dsel{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.dpanel{margin-top:10px;border:1px solid #ffd0e0;background:#fffafc;border-radius:14px;padding:12px;display:grid;gap:8px}
+.dpanel h5{margin:0;font-size:.84rem;display:flex;flex-wrap:wrap;gap:4px 8px;align-items:baseline}.dpanel h5 small{color:var(--m);font-weight:600;font-size:.7rem}
+.dpanel .row b{margin-inline-start:auto;text-align:end}
+.dpanel .dadr b{font-weight:700}
+.dpanel .cp{border:0;background:none;cursor:pointer;color:var(--m);font-size:.9rem;padding:0 2px}
 .dsel select{flex:1;min-width:150px}
 .ad .newpw{background:#fff4d6;border-radius:12px;padding:10px 12px;font-size:.8rem;display:grid;gap:8px}
 .ad .newpw code{font:700 1rem ui-monospace,Menlo,monospace;letter-spacing:.04em}
@@ -1062,7 +1067,8 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     const noms = r.noms || [], nom1 = noms[0] || '';
     const cinOf = name => (ps.find(p => p.name === name) || {}).cin || (g.name === name ? g.cin : '');
     const demandeur = r.client?.nom || g.name || ps[0]?.name || '';
-    const siege = r.siege === 'local' ? 'Local du client (bail ou titre)' : r.siege === 'dom' ? 'Domiciliation Charika Express' : r.siege;
+    const dm = r.siege === 'dom' ? DOMI[r.ref] : null;      // domiciliation centre: its full address goes in the articles
+    const siege = r.siege === 'local' ? 'Local du client (bail ou titre)' : r.siege === 'dom' ? (dm && dm.centreAddress ? dm.centreAddress : 'Domiciliation : centre à attribuer') : r.siege;
     const gerant = g.name ? `${g.name}${g.cin ? ' · ' + g.cin : ''} (${isPartner ? 'associé' : 'non associé'})` : '';
     const capital = r.capital != null ? fmt(r.capital) + ' MAD' : '';
     return [
@@ -1072,7 +1078,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
       { k:'statuts', title:'Statuts et documents', sub:'Rédaction, légalisation et dépôts', steps:[2, 3, 4, 5, 6, 7, 8], rows:[
         ['Dénomination', nom1 ? nom1 + ' (1er choix)' : ''], ['Forme', FORMES[r.forme] || r.forme], ['Capital', capital],
         ...ps.map((p, i) => [`Associé ${i + 1}`, [p.name, p.cin, p.pct != null ? p.pct + '\u00a0%' : ''].filter(Boolean).join(' · ')]),
-        ['Gérant', gerant], ['Siège', siege], ['Ville', r.ville], ['Activité', r.activite],
+        ['Gérant', gerant], ['Siège', siege], ...(dm ? [['Centre de domiciliation', dm.centreName]] : []), ['Ville', r.ville], ['Activité', r.activite],
         ...((r.options || []).includes('o_pacte') ? [["Pacte d'associés", 'Oui (option choisie)']] : [])] },
       { k:'client', title:'Client et commande', sub:'Contact, formule et paiement', steps:[0, 9, 10], rows:[
         ['Nom', r.client?.nom], ['Téléphone', r.client?.tel, 'ltr'], ['E-mail', r.client?.email, 'ltr'], ['Langue', LANGS[r.lang] || r.lang], ['Message', r.message],
@@ -1203,7 +1209,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
           const meta = all ? `${ok}/${ds.length} ✓${state === 'done' && ds.length > 1 ? ' · ' + esc(names) : ''}` : state === 'now' ? `${ok}/${ds.length} · en cours` : state === 'late' ? `${ok}/${ds.length} · en retard` : `${ds.length} document${ds.length > 1 ? 's' : ''}`;
           return `<div class="dti ${state}${open ? ' open' : ''}"><span class="ddot">${all ? '✓' : i + 1}</span><div>
             <button type="button" class="dth" data-lstep="${i}" aria-expanded="${open}"><b>${esc(x.name)}</b><small>${meta}</small></button>
-            ${open ? `<div class="dds">${ds.map(tk => { const st = r.livrables[tk.k] || 0; return `<div class="dd s${st}"><i class="dcb">${st === 2 ? '✓' : ''}</i><span>${esc(DOCS[tk.k][0])}</span>${docBtn(tk.k)}</div>`; }).join('')}</div>` : ''}
+            ${open ? `<div class="dds">${ds.map(tk => { const st = r.livrables[tk.k] || 0; return `<div class="dd s${st}"><i class="dcb">${st === 2 ? '✓' : ''}</i><span>${esc(DOCS[tk.k][0])}</span>${docBtn(tk.k)}</div>`; }).join('')}</div>${ds.some(tk => tk.k === 'domiciliation') ? domiBox(r) : ''}` : ''}
           </div></div>`; }).join('')}</div>
       </div>
       <div class="two">
@@ -1217,7 +1223,6 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
           <div class="pays3">${am.map(a => `<div class="${payDone(r, a.k) ? 'y' : ''}"><i>${payDone(r, a.k) ? '✓' : ''}</i><span>${esc(a.label)}${payDone(r, a.k) ? ' · reçu' : ''}</span><b>${a.v == null ? 'Sur devis' : fmt(a.v) + ' MAD'}</b></div>`).join('')}</div>
         </div>
         ${affBox(r)}
-        ${domiBox(r)}
       </div>
       <div class="box"><h4>Historique et notes de l'équipe <small>visibles par l'équipe seulement</small></h4>
         <div class="feed" id="feed">${r.notes.map(n => { const w = member(n.by); return `<div class="msg ${n.t === 'sys' ? 'sys' : ''}"><span class="av" style="--c:${w ? w.c : '#c9b6c4'}">${n.t === 'sys' && !w ? '•' : esc((w?.name || '?')[0])}</span><div><small>${n.t === 'sys' ? 'Suivi' : 'Note'}${w ? ' · ' + esc(w.name) : ''} · ${when(n.at)}</small>${esc(n.text)}</div></div>`; }).join('')}</div>
@@ -1277,7 +1282,9 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   function domiBox(r){
     if (!SERVER || r.kind === 'rappel' || r.siege !== 'dom' || r.forme === 'ae') return '';
     const d = DOMI[r.ref], [sl, sc] = d ? DOMI_ST[d.status] || [d.status, 'p-mute'] : ['Aucun centre attribué', 'p-mute'];
-    let html = `<div class="row"><span>Centre</span><b>${d ? esc(d.centreName) : '—'}</b></div><div class="row"><span>Statut</span><span class="pill ${sc}">${sl}</span></div>`;
+    let html = `<div class="row"><span>Centre</span><b>${d ? esc(d.centreName) : '—'}</b></div>`;
+    if (d && d.centreAddress) html += `<div class="row dadr"><span>Adresse du siège</span><b>${esc(d.centreAddress)}</b><button class="cp" data-cp="${esc(d.centreAddress)}" title="Copier l'adresse" aria-label="Copier l'adresse du siège">⧉</button></div>`;
+    html += `<div class="row"><span>Statut</span><span class="pill ${sc}">${sl}</span></div>`;
     if (d) html += `<div class="row"><span>Durée</span><b>${d.months} mois${me.role === 'admin' && d.rate ? ` · ${fmt(d.rate)} MAD au centre` : ''}</b></div>`;
     if (d && d.attFile) html += `<a class="btn b-soft b-sm" href="/api/admin/centre-files/${esc(d.attFile)}" target="_blank" rel="noopener">📎 Voir l'attestation</a>`;
     if (d && d.status === 'new' && d.centrePhone) html += `<a class="btn b-soft b-sm" href="${waLink(d.centrePhone, `Bonjour, une nouvelle demande de domiciliation (${r.ref}) vous attend dans votre espace centre Charika Express : ${location.origin}/centre.html`)}" target="_blank" rel="noopener">Prévenir le centre sur WhatsApp</a>`;
@@ -1286,7 +1293,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     if (DCENTRES.length) html += `<div class="dsel"><select class="f" id="domiSel" aria-label="Centre de domiciliation">${d ? '' : '<option value="">Choisir un centre…</option>'}${DCENTRES.map(c => `<option value="${esc(c.id)}"${d && d.centre === c.id ? ' selected' : ''}>${esc(c.name)} · ${esc([c.district, c.city].filter(Boolean).join(', '))}</option>`).join('')}</select>
       <button class="btn b-soft b-sm" data-domiset="${esc(r.ref)}">${d ? 'Changer de centre' : 'Attribuer'}</button></div>`;
     else html += `<p class="phint">Aucun centre actif pour l'instant${me.role === 'admin' ? ' : ajoutez-en dans l\'onglet « Centres »' : ''}.</p>`;
-    return `<div class="box"><h4>Domiciliation <small>incluse dans le pack · ville : ${esc(r.ville || '—')}</small></h4>${html}</div>`;
+    return `<div class="dpanel"><h5>Domiciliation <small>adresse à reporter dans les statuts · ville du client : ${esc(r.ville || '—')}</small></h5>${html}</div>`;
   }
 
   // Actions on the open file (event delegation)
