@@ -237,11 +237,14 @@ details.more .feats{margin-top:12px}
 .pclose:hover{background:rgba(48,16,47,.14);color:var(--ink)}
 .pgr{padding-right:26px}
 .pact{border:0;border-radius:999px;padding:12px 20px;background:var(--grad);color:#fff;font:700 .84rem var(--sans);cursor:pointer;box-shadow:0 10px 22px -12px rgba(255,79,145,.9);white-space:nowrap}
-.pact.done{background:#e3f6ec;color:var(--ok);box-shadow:none;cursor:default}
-.plink{font-weight:700;font-size:.82rem;color:var(--pink);text-decoration:none}
-.pgift.on{background:#f1fbf5;border-color:#cdeedb}
-.pgift.on .pcard{animation:ppop .7s ease both}
-@keyframes ppop{0%{transform:rotate(-3deg)}45%{transform:rotate(-3deg) translateY(-14px) scale(1.06)}100%{transform:rotate(-3deg)}}
+.pact.done{background:#fff;color:var(--ok);box-shadow:0 0 0 1.5px #bfe8d1 inset;cursor:default}
+.pact.done{animation:ppop2 .5s ease}
+@keyframes ppop2{50%{transform:scale(1.08)}}
+.cbadge{display:inline-block;background:#fff;color:var(--pink);border-radius:999px;padding:2px 9px;font-size:.78em;font-weight:800;line-height:1.5;margin-inline-start:2px}
+.btn-ink .cbadge{color:var(--plum)}
+.btn-line .cbadge{background:var(--blush)}
+@media (max-width:1560px){.nav-cta .cbadge{display:none}}
+.cbadge.pop{animation:ppop2 .6s ease}
 @media (max-width:720px){
   .pgift{flex-direction:column;text-align:center;gap:10px;padding:12px 16px 16px}
   .penv{width:160px;height:96px;margin-top:6px}.penv .back{inset:22px 0 0}.penv .front{height:52px}.penv .seal{width:24px;height:24px;bottom:15px}
@@ -367,7 +370,7 @@ footer a:hover{color:var(--pink)}
   <button type="button" class="pclose" id="pbarX" aria-label="Fermer">✕</button>
   <div class="penv" aria-hidden="true"><i class="back"></i><div class="pcard"><span class="pb">CHARIKA EXPRESS</span><i class="pchip"></i><b class="pamt">−<span data-pamt>0</span><small>MAD</small></b><span class="pnum ltr" data-pcode>CODE</span></div><i class="front"></i><i class="seal">CE</i></div>
   <div class="pgt"><b id="pgTitle"></b><p id="pgText"></p></div>
-  <div class="pgr"><button type="button" class="pact" id="pbarAct"></button><a class="plink" id="pbarGo" href="demande.html" hidden></a></div>
+  <div class="pgr"><button type="button" class="pact" id="pbarAct"></button></div>
 </div></div></div>
 
 <main id="top">
@@ -854,7 +857,6 @@ footer a:hover{color:var(--pink)}
       if (!j.discount) return;
       // Gift card: the code is remembered as soon as the visitor arrives (so the partner is never lost);
       // « Activer » confirms it, ✕ hides the card for this visit.
-      try { if (sessionStorage.getItem('ce-promo-x') === j.code) return; } catch(e) {}
       document.querySelectorAll('[data-pcode]').forEach(el => { el.textContent = j.code; });
       document.querySelectorAll('[data-pamt]').forEach(el => { el.textContent = j.discount; });
       let on = false; try { on = localStorage.getItem('ce-promo-on') === j.code; } catch(e) {}
@@ -863,22 +865,28 @@ footer a:hover{color:var(--pink)}
         fr:{ title: who ? `${who} vous offre une carte cadeau 🎁` : 'Vous avez reçu une carte cadeau 🎁',
              text: `−${amt} sur la création de votre société. Activez votre carte : la remise sera déduite automatiquement dans votre formulaire.`,
              textOn: `Votre carte est activée : −${amt} seront déduits automatiquement de votre création${who ? `, grâce à ${who}` : ''}.`,
-             act:'Activer ma carte', on:'✓ Code activé', go:'Créer ma société →' },
+             act:'Activer ma carte', on:'✓ Code activé' },
         en:{ title: who ? `${who} is giving you a gift card 🎁` : 'You have received a gift card 🎁',
              text: `−${amt} off your company formation. Activate your card: the discount will be deducted automatically in your form.`,
              textOn: `Your card is activated: −${amt} will be deducted automatically from your company formation${who ? `, thanks to ${who}` : ''}.`,
-             act:'Activate my card', on:'✓ Code activated', go:'Create my company →' }
+             act:'Activate my card', on:'✓ Code activated' }
       };
-      const act = document.getElementById('pbarAct'), go = document.getElementById('pbarGo'), box = document.getElementById('pgift');
+      const act = document.getElementById('pbarAct');
       const paint = () => { const t = T[lang] || T.fr;
         document.getElementById('pgTitle').textContent = t.title; document.getElementById('pgText').textContent = on ? t.textOn : t.text;
-        act.textContent = on ? t.on : t.act; act.disabled = on; act.classList.toggle('done', on); go.textContent = t.go; go.hidden = !on; box.classList.toggle('on', on); };
+        act.textContent = on ? t.on : t.act; act.disabled = on; act.classList.toggle('done', on); };
+      // once activated, every « Créer ma société » button shows the discount
+      const badges = () => document.querySelectorAll('a.btn[href="demande.html"]').forEach(a => { if (a.querySelector('.cbadge')) return;
+        const s = document.createElement('span'); s.className = 'cbadge ltr'; s.textContent = '−' + amt; a.insertBefore(s, a.querySelector('.arr')); });
+      if (on) badges();
+      let closed = false; try { closed = sessionStorage.getItem('ce-promo-x') === j.code; } catch(e) {}
+      if (closed) return;
       paint();
       document.getElementById('pbar').hidden = false;
       document.querySelectorAll('[data-lang]').forEach(x => x.addEventListener('click', paint));
       act.addEventListener('click', () => {
         on = true; try { localStorage.setItem('ce-promo', j.code); localStorage.setItem('ce-promo-on', j.code); } catch(e) {}
-        paint();
+        paint(); badges(); document.querySelectorAll('.cbadge').forEach(s => { s.classList.remove('pop'); void s.offsetWidth; s.classList.add('pop'); });
       });
       document.getElementById('pbarX').addEventListener('click', () => {
         try { sessionStorage.setItem('ce-promo-x', j.code); } catch(e) {}
