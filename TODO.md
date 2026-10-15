@@ -15,7 +15,8 @@ Things left out of the homepage on purpose, because they would be false today. A
 ## Before going live
 
 - [x] Real WhatsApp and phone: +212 667 154 604.
-- [ ] Real e-mail and address.
+- [x] Real e-mail: charikaexpress@gmail.com.
+- [ ] Real address (now "Casablanca, Maroc").
 - [x] Real bank details: CHARIKA EXPRESS SARL AU, Attijariwafa bank and CIH Bank RIBs.
 - [x] Cash Plus account number: 0667154604.
 - [x] Backend: requests and call-back form saved in Cloudflare D1, team space shared (see README « Backend »).

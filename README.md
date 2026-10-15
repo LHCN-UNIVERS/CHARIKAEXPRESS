@@ -14,7 +14,7 @@ Single-page marketing site (French + English) for an online company-formation se
 - Every push to `main` redeploys automatically. The same code also runs as a Pages project (`functions/` are thin wrappers around `server/`).
 
 ## Before going live
-- Phone and WhatsApp: `+212 667 154 604`. Create the mailbox `contact@charikaexpress.ma`.
+- Phone and WhatsApp: `+212 667 154 604`. E-mail: `charikaexpress@gmail.com`.
 - Prices: SARL packs Essentiel 4 680, Pro 5 980, Premium 9 980 MAD TTC. Payment: 700 MAD avance at the order, 50% of the rest after légalisation, the balance when the file is complete. SAS packs show "Sur devis" until SAS prices are set (`#plans-sas` in `index.html`; `sas` is priced on quote in `total()` in `demande.html`).
 - Have the English text proofread.
 
