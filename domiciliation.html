@@ -84,7 +84,33 @@ footer a{color:var(--m)}
 @media (max-width:480px){.bar{gap:8px}.logo{gap:8px;font-size:.95rem}.logo i{width:24px;height:24px}.lng button{padding:4px 7px}.bar .in{padding:6px 10px;font-size:.72rem}}
 @media (max-width:520px){.how{grid-template-columns:1fr}.g2{grid-template-columns:1fr}}
 .g3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.sec{font-weight:800;font-size:.86rem;margin:6px 0 -2px}
+.sec{font-weight:800;font-size:.9rem;margin:10px 0 -2px;display:flex;align-items:center;gap:10px}
+.sec i{font-style:normal;width:24px;height:24px;border-radius:50%;background:var(--blush);color:var(--pink);display:grid;place-items:center;font-size:.74rem;font-weight:800;flex:none}
+.sec.ok i{background:var(--grad);color:#fff}
+.sec::after{content:"";flex:1;height:1px;background:var(--line)}
+/* Developed layout: sticky left column (pitch + live preview + help), progress bar on the form */
+.side{display:grid;gap:16px;align-self:start}
+.prog{display:grid;gap:6px;margin-top:14px}
+.prog div{height:6px;border-radius:6px;background:var(--line);overflow:hidden}.prog div i{display:block;height:100%;width:0;background:var(--grad);transition:width .3s}
+.prog span{font-size:.74rem;color:var(--m);font-weight:600}
+.pv{background:#fff;border:1px solid var(--line);border-radius:22px;padding:16px;display:grid;gap:10px}
+.pv .hh{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.pv .hh b{font-size:.86rem}.pv .hh span{font-size:.7rem;color:var(--m);font-weight:600}
+.dcard{border:2px solid var(--pink);border-radius:18px;overflow:hidden;box-shadow:0 0 0 5px rgba(255,79,145,.1);position:relative;background:#fff}
+.dcard .ph{height:120px;background:linear-gradient(135deg,#f7d9c9,#f3b9cf 60%,#d9a3c8);background-size:cover;background-position:center}
+.dcard .inc{position:absolute;top:10px;right:10px;background:#fff;color:var(--ok);font-size:.7rem;font-weight:800;border-radius:99px;padding:3px 9px}
+.dcard .bd{padding:12px 14px;display:grid;gap:5px}
+.dcard .bd b{font-size:1rem}.dcard .bd small{color:var(--m);font-size:.78rem}
+.dcard .vok{color:var(--ok);font-size:.74rem;font-weight:800}
+.dcard .sv{display:flex;flex-wrap:wrap;gap:5px}.dcard .sv span{font-size:.68rem;background:var(--blush);color:#a33a6a;border-radius:99px;padding:2px 8px;font-weight:600}
+.help{display:flex;gap:12px;align-items:center;background:var(--blush);border-radius:18px;padding:14px 16px;font-size:.84rem}
+.help b{display:block}.help a{color:var(--pink);font-weight:700}
+.help i{font-style:normal;font-size:1.4rem}
+.f.bad{border-color:#e25b45;background:#fff6f4}
+.pw{position:relative}.pw .f{padding-right:76px}
+.pw button{position:absolute;right:6px;top:50%;transform:translateY(-50%);border:0;background:var(--blush);border-radius:99px;padding:6px 10px;font:700 .72rem var(--sans);cursor:pointer;color:var(--ink)}
+.thumbs .x{position:relative}.thumbs .x button{position:absolute;top:-6px;right:-6px;width:18px;height:18px;border-radius:50%;border:0;background:var(--plum);color:#fff;font-size:.6rem;cursor:pointer;line-height:18px;padding:0}
+
 .svc{display:flex;flex-wrap:wrap;gap:6px}
 .svc label{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:.8rem;font-weight:600;cursor:pointer;background:#fff}
 .svc input{accent-color:var(--pink)}
@@ -111,6 +137,7 @@ footer a{color:var(--m)}
 
 <main class="wrap">
   <div class="grid">
+    <div class="side">
     <section class="pitch">
       <small>Centres de domiciliation</small>
       <h1>Recevez des entrepreneurs <em>sans prospecter</em></h1>
@@ -122,13 +149,21 @@ footer a{color:var(--m)}
       </div>
       <div class="facts"><div><b>0 MAD</b><span>pour s'inscrire</span></div><div><b>Payé par nous</b><span>votre tarif, pour chaque contrat</span></div><div><b>En ligne</b><span>attestation envoyée depuis votre espace</span></div></div>
     </section>
+    <section class="pv" aria-live="polite">
+      <div class="hh"><b>Aperçu : ce que verront vos clients</b><span>se met à jour pendant que vous remplissez</span></div>
+      <div class="dcard"><span class="inc">Inclus</span><div class="ph" id="pvPh"></div>
+        <div class="bd"><b id="pvName">Votre centre</b><small id="pvLoc">Quartier · Ville</small><span class="vok">✓ Centre vérifié</span><span class="sv" id="pvSvc"></span></div></div>
+    </section>
+    <div class="help"><i>💬</i><div><b>Une question avant de vous inscrire ?</b>Écrivez-nous sur <a href="https://wa.me/212667154604" target="_blank" rel="noopener">WhatsApp</a> : nous répondons dans la journée.</div></div>
+    </div>
 
     <section class="card" id="signup">
       <div id="formView">
         <h2>Référencer mon centre</h2>
         <p class="muted" style="margin:4px 0 0">Gratuit et sans engagement. Votre centre apparaît aux clients après vérification.</p>
+        <div class="prog"><div><i id="progI"></i></div><span id="progT"></span></div>
         <form id="sf" novalidate>
-          <p class="sec">Votre centre</p>
+          <p class="sec" data-sec="1"><i>1</i>Votre centre</p>
           <div class="g2">
             <label class="fl" for="s_name">Nom du centre *<input class="f" id="s_name" autocomplete="organization" required></label>
             <label class="fl" for="s_company"><span>Société <small>(facultatif)</small></span><input class="f" id="s_company"></label>
@@ -150,7 +185,8 @@ footer a{color:var(--m)}
             <label class="fl" for="s_rc">RC<input class="f" id="s_rc" dir="ltr"></label>
             <label class="fl" for="s_ice">ICE<input class="f" id="s_ice" dir="ltr" inputmode="numeric"></label>
           </div>
-          <p class="sec">Services inclus</p>
+          <p class="sec" data-sec="2"><i>2</i>Services et tarifs</p>
+          <p class="muted" style="margin:0;font-size:.8rem;font-weight:600">Services inclus</p>
           <div class="svc" id="s_svc">
             <label><input type="checkbox" value="courrier" checked><span>Réception du courrier</span></label>
             <label><input type="checkbox" value="scan"><span>Scan du courrier</span></label>
@@ -159,17 +195,18 @@ footer a{color:var(--m)}
             <label><input type="checkbox" value="standard"><span>Standard téléphonique</span></label>
             <label><input type="checkbox" value="parking"><span>Parking</span></label>
           </div>
-          <p class="sec">Votre tarif pour Charika Express (MAD TTC)</p>
+          <p class="muted" style="margin:4px 0 0;font-size:.8rem;font-weight:600">Votre tarif pour Charika Express (MAD TTC)</p>
           <div class="g2">
             <label class="fl" for="s_r12">12 mois<input class="f" id="s_r12" type="number" min="0" step="50" inputmode="numeric"></label>
             <label class="fl" for="s_r24">24 mois<input class="f" id="s_r24" type="number" min="0" step="50" inputmode="numeric"></label>
           </div>
           <p class="muted" style="margin:-4px 0 0;font-size:.78rem">La domiciliation est incluse dans nos packs : c'est nous qui vous payons ce tarif, le client ne paie rien en plus.</p>
+          <p class="sec" data-sec="3"><i>3</i>Photos et compte</p>
           <div class="g2">
             <label class="up" for="s_photos"><b>📷 Photos du centre</b><span>façade, accueil, salle · 3 maximum</span><input type="file" id="s_photos" accept="image/*" multiple><span class="thumbs" id="s_photosL"></span></label>
             <label class="up" for="s_docs"><b>📄 Justificatifs</b><span>RC, ICE, autorisation de domiciliation · PDF ou photo</span><input type="file" id="s_docs" accept="application/pdf,image/jpeg,image/png" multiple><span class="thumbs" id="s_docsL"></span></label>
           </div>
-          <label class="fl" for="s_pw"><span>Mot de passe * <small>(10 caractères minimum)</small></span><input class="f" id="s_pw" type="password" autocomplete="new-password" minlength="10" required></label>
+          <label class="fl" for="s_pw"><span>Mot de passe * <small>(10 caractères minimum)</small></span><span class="pw"><input class="f" id="s_pw" type="password" autocomplete="new-password" minlength="10" required><button type="button" id="pwT">Afficher</button></span></label>
           <input class="hp" id="s_web" tabindex="-1" autocomplete="off" aria-hidden="true">
           <label class="chk" for="s_cgu"><input type="checkbox" id="s_cgu"><span>J'accepte les <span class="soon" title="Bientôt disponible">conditions du programme centres</span> et la <span class="soon" title="Bientôt disponible">politique de confidentialité</span>.</span></label>
           <p class="err" id="serr" role="alert" hidden></p>
@@ -191,6 +228,8 @@ footer a{color:var(--m)}
     <details><summary>Comment suis-je payé ?</summary><p>La domiciliation est incluse dans les packs Charika Express. Pour chaque client qui vous choisit, nous vous réglons le tarif que nous avons validé ensemble (12 ou 24 mois), après l'envoi de l'attestation.</p></details>
     <details><summary>Comment les clients me trouvent-ils ?</summary><p>Dans le formulaire de demande, le client voit les centres vérifiés de sa ville, avec photos, quartier et services, et choisit le sien.</p></details>
     <details><summary>Que dois-je faire pour chaque client ?</summary><p>Vous recevez la demande dans votre espace : vous l'acceptez, puis vous envoyez l'attestation de domiciliation (PDF). Elle arrive directement dans le dossier du client.</p></details>
+    <details><summary>Quels documents dois-je fournir ?</summary><p>Le RC et l'ICE de la société qui exploite le centre, et le document qui vous autorise à domicilier des entreprises. Vous pouvez les ajouter à l'inscription ou nous les envoyer plus tard sur WhatsApp.</p></details>
+    <details><summary>Combien de temps prend la validation ?</summary><p>48 heures ouvrées en général : nous vérifions vos documents, nous vous appelons pour valider vos tarifs, puis votre centre devient visible pour les clients de votre ville.</p></details>
     <details><summary>Puis-je mettre mon centre en pause ?</summary><p>Oui : depuis votre espace, indiquez que votre centre est complet. Il n'apparaît plus aux nouveaux clients jusqu'à ce que vous le réactiviez.</p></details>
   </section>
 </main>
@@ -233,7 +272,12 @@ footer a{color:var(--m)}
     "Vous recevez la demande dans votre espace : vous l'acceptez, puis vous envoyez l'attestation de domiciliation (PDF). Elle arrive directement dans le dossier du client.":"You receive the request in your space: you accept it, then send the domiciliation attestation (PDF). It goes straight into the client's file.",
     "Puis-je mettre mon centre en pause ?":"Can I pause my centre?",
     "Oui : depuis votre espace, indiquez que votre centre est complet. Il n'apparaît plus aux nouveaux clients jusqu'à ce que vous le réactiviez.":"Yes: in your space, mark your centre as full. It is hidden from new clients until you switch it back on.",
-    "Conditions":"Terms", "Confidentialité":"Privacy"
+    "Conditions":"Terms", "Confidentialité":"Privacy",
+    "Aperçu : ce que verront vos clients":"Preview: what your clients will see", "se met à jour pendant que vous remplissez":"updates as you fill in the form", "Inclus":"Included", "Votre centre":"Your centre", "Quartier · Ville":"District · City", "✓ Centre vérifié":"✓ Verified centre",
+    "Une question avant de vous inscrire ?":"A question before signing up?", "Écrivez-nous sur":"Write to us on", ": nous répondons dans la journée.":": we answer the same day.",
+    "Services et tarifs":"Services and rates", "Photos et compte":"Photos and account", "Afficher":"Show",
+    "Quels documents dois-je fournir ?":"Which documents do I need?", "Le RC et l'ICE de la société qui exploite le centre, et le document qui vous autorise à domicilier des entreprises. Vous pouvez les ajouter à l'inscription ou nous les envoyer plus tard sur WhatsApp.":"The RC and ICE of the company running the centre, and the document authorising you to domiciliate companies. You can add them now or send them later on WhatsApp.",
+    "Combien de temps prend la validation ?":"How long does approval take?", "48 heures ouvrées en général : nous vérifions vos documents, nous vous appelons pour valider vos tarifs, puis votre centre devient visible pour les clients de votre ville.":"Usually 48 working hours: we check your documents, call you to confirm your rates, then your centre becomes visible to clients in your city."
   };
   const trs = s => { if (lang === 'fr') return s; const k = s.trim().replace(/\s+/g, ' '); return EN[k] ? s.replace(s.trim(), EN[k]) : s; };
   const texts = [];
@@ -249,6 +293,7 @@ footer a{color:var(--m)}
     document.querySelectorAll('[data-lang]').forEach(b => b.setAttribute('aria-pressed', b.dataset.lang === lang));
     try { localStorage.setItem('ce-lang', lang); } catch(e) {}
     if (!$('#sgo').disabled) $('#sgo').textContent = tx('Envoyer ma demande', 'Send my application');
+    if (typeof live === 'function') live();
   }
   document.querySelectorAll('[data-lang]').forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
 
@@ -265,7 +310,7 @@ footer a{color:var(--m)}
     for (const f of [...e.target.files].slice(0, 3 - photos.length)) {
       try { const d = await shrink(f); photos.push({ name: f.name.replace(/\.[^.]+$/, '') + '.jpg', mime: 'image/jpeg', data: d.split(',')[1], src: d }); } catch (err) {}
     }
-    $('#s_photosL').innerHTML = photos.map(p => `<img src="${p.src}" alt="">`).join(''); e.target.value = '';
+    paintPhotos(); e.target.value = '';
   });
   $('#s_docs').addEventListener('change', async e => {
     for (const f of [...e.target.files].slice(0, 3 - docs.length)) {
@@ -274,6 +319,37 @@ footer a{color:var(--m)}
     }
     $('#s_docsL').innerHTML = docs.map(d => `<span>${d.name.replace(/[<>&"]/g, '')}</span>`).join(''); e.target.value = '';
   });
+
+  // ---------- Live preview, progress, photo removal, password toggle ----------
+  const SVC_N = { courrier:['Courrier', 'Mail'], scan:['Scan du courrier', 'Mail scanning'], reunion:['Salle de réunion', 'Meeting room'], bureau:['Bureau', 'Office'], standard:['Standard', 'Phone answering'], parking:['Parking', 'Parking'] };
+  const escH = t => String(t).replace(/[&<>"]/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]));
+  const REQ = ['s_name', 's_phone', 's_email', 's_city', 's_address', 's_pw'];
+  function paintPhotos(){
+    $('#s_photosL').innerHTML = photos.map((p, i) => `<span class="x"><img src="${p.src}" alt=""><button type="button" data-rm="${i}" aria-label="${tx('Retirer la photo', 'Remove the photo')}">✕</button></span>`).join('');
+    live();
+  }
+  $('#s_photosL').addEventListener('click', e => { const b = e.target.closest('[data-rm]'); if (!b) return; e.preventDefault(); photos.splice(+b.dataset.rm, 1); paintPhotos(); });
+  function live(){
+    const v = id => $('#' + id).value.trim();
+    $('#pvName').textContent = v('s_name') || tx('Votre centre', 'Your centre');
+    $('#pvLoc').textContent = [v('s_district'), v('s_city')].filter(Boolean).join(' · ') || tx('Quartier · Ville', 'District · City');
+    $('#pvSvc').innerHTML = [...document.querySelectorAll('#s_svc input:checked')].map(i => `<span>${escH(SVC_N[i.value][lang === 'en' ? 1 : 0])}</span>`).join('');
+    $('#pvPh').style.backgroundImage = photos[0] ? `url('${photos[0].src}')` : '';
+    const ok = REQ.filter(id => id === 's_pw' ? $('#s_pw').value.length >= 10 : id === 's_email' ? /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(v(id)) : id === 's_phone' ? v(id).replace(/\D/g, '').length >= 9 : !!v(id)).length + ($('#s_cgu').checked ? 1 : 0);
+    const n = REQ.length + 1;
+    $('#progI').style.width = Math.round(ok / n * 100) + '%';
+    $('#progT').textContent = ok === n ? tx('Tout est prêt : vous pouvez envoyer ✓', 'All set: you can send ✓') : tx(`${ok} champs obligatoires sur ${n} remplis`, `${ok} of ${n} required fields filled`);
+    const sec1 = ['s_name', 's_phone', 's_email', 's_city', 's_address'].every(id => v(id)), sec2 = document.querySelectorAll('#s_svc input:checked').length > 0, sec3 = $('#s_pw').value.length >= 10 && $('#s_cgu').checked;
+    [[1, sec1], [2, sec2], [3, sec3]].forEach(([k, d]) => { const el = document.querySelector(`[data-sec="${k}"]`); el.classList.toggle('ok', d); el.querySelector('i').textContent = d ? '✓' : k; });
+  }
+  $('#sf').addEventListener('input', e => { e.target.classList?.remove('bad'); live(); });
+  $('#sf').addEventListener('change', live);
+  $('#pwT').addEventListener('click', () => { const i = $('#s_pw'), show = i.type === 'password'; i.type = show ? 'text' : 'password'; $('#pwT').textContent = show ? tx('Masquer', 'Hide') : tx('Afficher', 'Show'); });
+  const markBad = () => { let first = null; REQ.forEach(id => { const el = $('#' + id), val = el.value.trim();
+      const bad = id === 's_pw' ? el.value.length < 10 : id === 's_email' ? !/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(val) : id === 's_phone' ? val.replace(/\D/g, '').length < 9 : !val;
+      el.classList.toggle('bad', bad); if (bad && !first) first = el; });
+    if (first) first.focus(); };
+  live();
 
   const ERR = () => ({ missing_fields:tx('Remplissez le nom du centre, la ville, l\'adresse, le téléphone et un e-mail valide.', 'Please enter the centre name, city, address, phone and a valid e-mail.'),
     password_too_short:tx('Le mot de passe doit faire au moins 10 caractères.', 'The password must be at least 10 characters long.'),
@@ -291,6 +367,7 @@ footer a{color:var(--m)}
     const body = { name:v('s_name'), company:v('s_company'), contact:v('s_contact'), phone:v('s_phone'), email:v('s_email'), city:v('s_city'), district:v('s_district'), address:v('s_address'),
       rc:v('s_rc'), ice:v('s_ice'), services:[...document.querySelectorAll('#s_svc input:checked')].map(i => i.value), rate12:+v('s_r12') || 0, rate24:+v('s_r24') || 0,
       photos:photos.map(({ name, mime, data }) => ({ name, mime, data })), docs, password:$('#s_pw').value, cgu:$('#s_cgu').checked, website:$('#s_web').value };
+    markBad();
     if (!body.name || !body.city || !body.address || body.phone.replace(/\D/g, '').length < 9 || !/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(body.email)) return show('missing_fields');
     if (body.password.length < 10) return show('password_too_short');
     if (!body.cgu) return show('cgu');
