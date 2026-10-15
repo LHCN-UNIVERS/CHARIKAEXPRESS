@@ -2,10 +2,9 @@
 // {placeholders} are filled from the file; a line whose placeholder is empty (e.g. {suivi} while there is no
 // client tracking page) is left out. Edit the texts here: admin.html picks them up as they are.
 window.CE_MSG = (() => {
-  // TODO: replace with the real bank and Cash Plus details (same as demande.html).
   const PAY_INFO = {
-    virement: { fr:'Virement bancaire\nBénéficiaire : CHARIKA EXPRESS SARL\nRIB : 000 000 0000000000000000 00', ar:'تحويل بنكي\nالمستفيد: CHARIKA EXPRESS SARL\nRIB : 000 000 0000000000000000 00' },
-    cashplus: { fr:'Cash Plus\nBénéficiaire : Nom du bénéficiaire', ar:'Cash Plus\nالمستفيد: Nom du bénéficiaire' }
+    virement: { fr:'Virement bancaire\nBénéficiaire : CHARIKA EXPRESS SARL AU\nRIB Attijariwafa bank : 007 121 0013173300310011 77\nRIB CIH Bank : 230 010 6955764211018700 79', ar:'تحويل بنكي\nالمستفيد: CHARIKA EXPRESS SARL AU\nRIB التجاري وفا بنك: 007 121 0013173300310011 77\nRIB CIH Bank: 230 010 6955764211018700 79' },
+    cashplus: { fr:'Cash Plus\nBénéficiaire : demandez-le-nous sur WhatsApp au +212 667 154 604', ar:'Cash Plus\nالمستفيد: اطلبوه منّا على واتساب في الرقم +212 667 154 604' }
   };
   const SUIVI_URL = '';   // client tracking page, once it exists
   const SIG = { fr:"\n\nAvec nos salutations les plus cordiales,\nL'équipe Charika Express\nVotre société au Maroc, 100 % en ligne", ar:"\n\nمع أطيب التحيات،\nفريق Charika Express\nالشركة ديالكم فالمغرب، 100% أونلاين" };

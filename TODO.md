@@ -14,8 +14,10 @@ Things left out of the homepage on purpose, because they would be false today. A
 
 ## Before going live
 
-- [ ] Real contact details: WhatsApp number (now `212500000000`), phone, e-mail, address.
-- [ ] Real payment details: RIB and Cash Plus beneficiary (`demande.html` and `messages.js`).
+- [x] Real WhatsApp and phone: +212 667 154 604.
+- [ ] Real e-mail and address.
+- [x] Real bank details: CHARIKA EXPRESS SARL AU, Attijariwafa bank and CIH Bank RIBs.
+- [ ] Cash Plus beneficiary name (for now the client asks for it on WhatsApp).
 - [x] Backend: requests and call-back form saved in Cloudflare D1, team space shared (see README « Backend »).
 - [x] Cloudflare Access on `/admin*` and `/api/admin/*`, then `ACCESS_AUD` and `ACCESS_TEAM_DOMAIN` in `wrangler.toml`.
 - [ ] Legal pages + CNDP declaration (law 09-08) before collecting client data with ads.

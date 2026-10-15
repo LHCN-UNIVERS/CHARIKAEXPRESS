@@ -14,7 +14,7 @@ Single-page marketing site (French + English) for an online company-formation se
 - Every push to `main` redeploys automatically. The same code also runs as a Pages project (`functions/` are thin wrappers around `server/`).
 
 ## Before going live
-- Replace the placeholders: phone `+212 5 00 00 00 00` and email `contact@charikaexpress.ma` (create this mailbox).
+- Phone and WhatsApp: `+212 667 154 604`. Create the mailbox `contact@charikaexpress.ma`.
 - Prices: SARL packs Essentiel 4 680, Pro 5 980, Premium 9 980 MAD TTC. Payment: 700 MAD avance at the order, 50% of the rest after légalisation, the balance when the file is complete. SAS packs show "Sur devis" until SAS prices are set (`#plans-sas` in `index.html`; `sas` is priced on quote in `total()` in `demande.html`).
 - Have the English text proofread.
 
@@ -22,7 +22,7 @@ Single-page marketing site (French + English) for an online company-formation se
 - `index.html`: homepage, redesigned after the reference design: hero (documents + phone with file statuses), benefits strip, 3-step process, services, « Pourquoi choisir Charika Express ? », pricing (SARL / SAS tabs, full inclusions behind « Voir toutes les inclusions »), rejection guarantee, FAQ, call-back form, footer. « Créer ma société », « Commencer ma demande » and the pack buttons open the request page.
 - `demande.html`: 6-step request form (service, company with 3 required names, partners and manager, plan, payment by bank transfer or Cash Plus with a reference and full or 50/50 payment, contact) with a live price summary, a review step and a confirmation reference. Drafts are kept in the visitor's browser. Supports `?plan=essentiel|premium` and `?service=sarlau|sarl|ae|sa`.
   - `collect()` builds the request object; `finish()` sends it to `/api/requests` and shows the confirmation only once the server has saved it (with an error message and a retry otherwise). Without a server (demo) it is stored in the browser (`ce-requests`) for the team space of the same browser.
-  - Replace the demo payment details in the payment step (`#payVir` bank RIB and `#payCash` Cash Plus beneficiary) with your real ones.
+  - Payment details: `#payVir` (beneficiary and the two RIBs) and `#payCash` (Cash Plus), the same as `PAY_INFO` in `messages.js`.
 - `admin.html`: team space ("Dossier 360°"), not linked from the site and marked `noindex`.
   - Login with roles: the admin sees every file, can assign juristes and export CSV; a juriste sees their own files plus unassigned ones and can take a file.
   - Inbox-style list (À traiter / Mes dossiers / Tous / Terminés, search by ref, name, phone, CIN), unread and late (J+n) markers.
