@@ -418,7 +418,6 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   <nav class="tabbar" id="tabbar" aria-label="Navigation">
     <button type="button" class="on" id="tbReq"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg><span>Demandes</span><b id="tbN" hidden>0</b></button>
     <button type="button" id="tbAff" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M21.5 20a6.5 6.5 0 0 0-4-6"/></svg><span>Partenaires</span></button>
-    <button type="button" id="tbMe"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span>Compte</span></button>
   </nav>
   <div class="demo-bar" id="demoBar"><span>⚠️ Mode démonstration<span class="long"> : les données sont enregistrées dans ce navigateur seulement. Pour que toute l'équipe partage les demandes, il faut connecter une base de données (voir README).</span></span><button id="resetDemo">Réinitialiser la démo</button></div>
   <div class="body" id="body">
@@ -1511,7 +1510,6 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   // ---------- Phone: bottom tab bar, file from a notification link (#CE-123456), push notifications ----------
   $('#tbReq').addEventListener('click', () => { $('#affm').hidden = true; $('#body').classList.remove('open'); scrollTo({ top:0, behavior:'smooth' }); });
   $('#tbAff').addEventListener('click', () => openAff());
-  $('#tbMe').addEventListener('click', e => { e.stopPropagation(); scrollTo({ top:0 }); menu($('#umenu').hidden); });
   function openFromHash(){ const m = location.hash.match(/^#(CE-\d{6})$/); if (m && get(m[1])) open(m[1]); }
   addEventListener('hashchange', () => me && openFromHash());
 
