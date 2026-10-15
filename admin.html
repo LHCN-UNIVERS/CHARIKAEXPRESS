@@ -67,6 +67,22 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
 .mbox .newpw{background:#fff4d6;border-radius:12px;padding:10px 12px;font-size:.8rem;display:grid;gap:8px}
 .mbox .newpw code{font:700 1rem ui-monospace,Menlo,monospace;letter-spacing:.04em}
 .mbox .merr{color:var(--err);font-size:.78rem;font-weight:600}
+.mbox .af{border:1px solid var(--line);border-radius:16px;padding:14px;display:grid;gap:10px}
+.mbox .af.pend{border-color:#ffc2d6;background:#fff7fa}
+.mbox .af .hd{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:flex-start}
+.mbox .af .hd b{font-size:.95rem}.mbox .af .hd small{display:block;color:var(--m);font-size:.74rem}
+.mbox .af .st{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.mbox .af .st div{background:var(--blush);border-radius:10px;padding:7px 9px;font-size:.7rem;color:var(--m)}
+.mbox .af .st b{display:block;font-size:.95rem;color:var(--ink)}
+.mbox .af .cds{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.mbox .af .cd{display:inline-flex;gap:6px;align-items:center;border:1px solid var(--line);border-radius:999px;padding:3px 4px 3px 10px;font-size:.74rem;font-weight:700}
+.mbox .af .cd.off{opacity:.5}
+.mbox .af .cd input{width:64px;padding:3px 6px;border:1px solid var(--line);border-radius:8px;font:inherit}
+.mbox .af .acts{display:flex;gap:6px;flex-wrap:wrap}
+.mbox .af .addc{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.mbox .af .addc input{width:150px;padding:7px 10px;font-size:.78rem}
+.mbox .aff-f{display:grid;grid-template-columns:1fr 1.2fr 1fr auto;gap:8px;align-items:end}
+@media (max-width:640px){.mbox .af .st{grid-template-columns:repeat(2,minmax(0,1fr))}.mbox .aff-f{grid-template-columns:1fr}}
 @media (max-width:640px){.mbox .grid3{grid-template-columns:1fr}.mbox .tm{grid-template-columns:34px 1fr}.mbox .tm .act{grid-column:1/-1;justify-content:flex-start}}
 
 /* App shell */
@@ -316,6 +332,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
       <button class="snd" id="snd" type="button" aria-pressed="true" title="Sonnerie à chaque nouvelle demande">🔊<span>Son</span></button>
       <button class="btn b-soft b-sm" id="exportBtn" title="Exporter la liste en CSV">Exporter</button>
       <div class="me"><span class="av" id="meAv">?</span><div><span id="meName"></span><small id="meRole"></small></div></div>
+      <button class="btn b-soft b-sm" id="affBtn" hidden>Partenaires</button>
       <button class="btn b-soft b-sm" id="acctBtn" hidden>Compte</button>
       <button class="btn b-soft b-sm" id="logout">Déconnexion</button>
     </div>
@@ -336,6 +353,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
 </div>
 
 <div class="toast" id="toast" hidden></div>
+<div class="modal" id="affm" hidden><div class="mbox" id="affBox" role="dialog" aria-modal="true" aria-label="Partenaires"></div></div>
 <div class="modal" id="acct" hidden><div class="mbox" id="acctBox" role="dialog" aria-modal="true" aria-label="Compte et équipe"></div></div>
 
 <script src="messages.js"></script>
@@ -1013,7 +1031,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
           ${am.map(a => `<div class="row"><span>${esc(a.label)}</span><b>${a.v == null ? 'Sur devis' : fmt(a.v) + ' MAD'}</b><span class="pill ${payDone(r, a.k) ? 'p-ok' : 'p-wait'}">${payDone(r, a.k) ? 'Reçu' : 'Attendu'}</span></div>`).join('')}
           <div class="prog"><i style="width:${r.total ? paidSum / r.total * 100 : 0}%"></i></div><div style="display:flex;justify-content:space-between;font-size:.76rem;color:var(--m)"><span>Payé</span><b style="color:var(--ink)">${fmt(paidSum)} / ${r.total == null ? 'sur devis' : fmt(r.total) + ' MAD'}</b></div>
         </div>
-        ${parrainBox(r)}
+        ${affBox(r)}
       </div>
       <div class="box"><h4>Historique et notes de l'équipe <small>visibles par l'équipe seulement</small></h4>
         <div class="feed" id="feed">${r.notes.map(n => { const w = member(n.by); return `<div class="msg ${n.t === 'sys' ? 'sys' : ''}"><span class="av" style="--c:${w ? w.c : '#c9b6c4'}">${n.t === 'sys' && !w ? '•' : esc((w?.name || '?')[0])}</span><div><small>${n.t === 'sys' ? 'Suivi' : 'Note'}${w ? ' · ' + esc(w.name) : ''} · ${when(n.at)}</small>${esc(n.text)}</div></div>`; }).join('')}</div>
@@ -1033,45 +1051,38 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     const feed = $('#feed'); feed.scrollTop = feed.scrollHeight;
   }
 
-  // Referral: the referral code is the referrer's reference. The friend's 200 MAD discount is already in their total;
-  // the referrer earns 300 MAD once the friend's file is delivered, and the team marks it paid here.
-  const REWARD = 300, REMISE = 200;
-  const tel9 = s => String(s || '').replace(/\D/g, '').slice(-9);
-  function parrainBox(r){
-    const fl = db.requests.filter(x => x.parrain === r.ref && x.ref !== r.ref && !x.archived);
-    if (!r.parrain && !fl.length) return '';
+  // Partner programme: a file sent with a partner's promo code records { promo, affiliate, remise }. The partner earns
+  // AFF_COMMISSION MAD once the file is delivered and fully paid; an admin marks it paid (affPaid) here or in « Partenaires ».
+  const AFF_COMMISSION = 350;
+  let AFFS = [];                                                     // partners (loaded for admins)
+  const fullyPaid = r => amounts(r).every(a => payDone(r, a.k));
+  const affDue = r => r.affiliate && !r.archived && r.step >= DONE && fullyPaid(r) && !r.affPaid;
+  function affBox(r){
+    if (!r.promo && !r.promoInvalid) return '';
+    const a = AFFS.find(x => x.id === r.affiliate);
     let html = '';
-    if (r.parrain) {
-      const p = get(r.parrain), selfRef = p && tel9(p.client?.tel) && tel9(p.client?.tel) === tel9(r.client?.tel);
-      html += `<div class="row"><span>Parrainé par</span>${p ? `<button class="tg" data-goref="${esc(p.ref)}">${esc(p.client?.nom || '')} · ${esc(p.ref)}</button>` : `<b>${esc(r.parrain)}</b>`}</div>`;
-      html += `<p class="phint">${r.total == null ? `Prix sur devis : pensez à déduire la remise de ${REMISE} MAD.` : `Remise de ${REMISE} MAD déjà déduite du total.`}</p>`;
-      if (!p) html += `<p class="pwarn">⚠️ Code inconnu : aucun dossier ${esc(r.parrain)}. Vérifiez avec le client avant de garder la remise.</p>`;
-      if (selfRef) html += `<p class="pwarn">⚠️ Même téléphone que le parrain : possible auto-parrainage.</p>`;
+    if (r.promo) {
+      html += `<div class="row"><span>Code promo</span><b>${esc(r.promo)}${a ? ` · ${esc(a.company || a.name)}` : ''}</b></div>`;
+      if (r.remise) html += `<p class="phint">${r.total == null ? `Prix sur devis : pensez à déduire la remise de ${r.remise} MAD.` : `Remise client de ${r.remise} MAD déjà déduite du total.`}</p>`;
+      const st = r.affPaid ? `<span class="pill p-ok">Versée le ${esc(new Date(r.affPaid).toLocaleDateString('fr-FR'))}</span>`
+        : affDue(r) ? (me.role === 'admin' ? `<button class="btn b-grad b-sm" data-affpay="${esc(r.ref)}">Marquer ${AFF_COMMISSION} MAD versés</button>` : `<span class="pill p-wait">À verser</span>`)
+        : r.step >= DONE ? `<span class="pill p-wait">Livré · solde client attendu</span>` : `<span class="pill p-wait">À la livraison</span>`;
+      html += `<div class="row"><span>Commission ${AFF_COMMISSION} MAD</span>${st}</div>`;
     }
-    if (fl.length) {
-      html += `<div class="row"><span>Filleuls</span><b>${fl.length} · ${fl.filter(x => x.parrainPaid).length * REWARD} MAD versés</b></div>`;
-      html += fl.map(x => {
-        const st = x.parrainPaid ? `<span class="pill p-ok">${REWARD} MAD versés</span>` : x.step >= DONE ? `<button class="btn b-grad b-sm" data-rewardpay="${esc(x.ref)}">Marquer ${REWARD} MAD versés</button>` : `<span class="pill p-wait">${esc(stepName(x.step))}</span>`;
-        return `<div class="row"><button class="tg" data-goref="${esc(x.ref)}">${esc(x.client?.nom || x.ref)}</button>${st}</div>`;
-      }).join('');
-      if (fl.some(x => x.step >= DONE && !x.parrainPaid)) html += `<p class="phint">À verser au parrain par virement ou Cash Plus (${esc(r.client?.tel || '')}).</p>`;
-    }
-    return `<div class="box"><h4>Parrainage <small>${REWARD} MAD au parrain · ${REMISE} MAD de remise au filleul</small></h4>${html}</div>`;
+    if (r.promoInvalid) html += `<p class="pwarn">⚠️ Code « ${esc(r.promoInvalid)} » inconnu ou désactivé : vérifiez la remise avec le client.</p>`;
+    return `<div class="box"><h4>Partenaire <small>le partenaire voit seulement la référence et l'avancement</small></h4>${html}</div>`;
   }
 
   // Actions on the open file (event delegation)
   let rejectOpen = false;
   $('#detail').addEventListener('click', e => {
     const r = current && get(current); if (!r) return;
-    const go = e.target.closest('[data-goref]');
-    if (go) { if (get(go.dataset.goref)) open(go.dataset.goref); return; }
-    const rp = e.target.closest('[data-rewardpay]');
-    if (rp) {
-      const f = get(rp.dataset.rewardpay); if (!f || !armed(rp, 'Confirmer : récompense versée')) return;
-      f.parrainPaid = new Date().toISOString();
-      log(f, `Récompense de parrainage (${REWARD} MAD) versée au parrain ${r.ref}.`);
-      log(r, `Récompense de parrainage versée (${REWARD} MAD) pour le filleul ${f.ref}.`);
-      persist(); renderDetail(); return toast('Récompense marquée comme versée');
+    const ap = e.target.closest('[data-affpay]');
+    if (ap) {
+      if (!armed(ap, 'Confirmer : commission versée')) return;
+      r.affPaid = new Date().toISOString();
+      log(r, `Commission partenaire (${AFF_COMMISSION} MAD, code ${r.promo}) versée.`);
+      persist(); renderDetail(); return toast('Commission marquée comme versée');
     }
     const wa = e.target.closest('[data-wasend]');
     if (wa) {                                             // the link opens WhatsApp; keep a trace in the file
@@ -1287,6 +1298,97 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     }
   });
 
+  // ---------- Partners window (admins, real site) ----------
+  let affMsg = '';
+  const AFF_ST = { pending:['En attente', 'p-wait'], active:['Actif', 'p-ok'], refused:['Refusé', 'p-wait'], suspended:['Suspendu', 'p-wait'] };
+  async function loadAffs(){ try { const r = await api('affiliates'); if (r.ok) AFFS = (await r.json()).affiliates; } catch(e) {} }
+  const affMsgText = (a, code, pw) => `Bonjour ${a.name}, votre compte partenaire Charika Express est ${pw ? 'prêt' : 'validé'} ✅\n`
+    + `Espace partenaire : ${location.origin}/partenaire.html\nE-mail : ${a.email}\n${pw ? `Mot de passe provisoire : ${pw}\n` : ''}`
+    + `${code ? `Votre code promo : ${code}\nVotre lien : ${location.origin}/?code=${code}\n` : ''}Vous gagnez ${AFF_COMMISSION} MAD pour chaque dossier livré et payé.`;
+  const affNote = (a, code, pw) => { const txt = affMsgText(a, code, pw);
+    return `<div class="newpw"><span>${pw ? `Mot de passe provisoire de <b>${esc(a.name)}</b> : <code>${esc(pw)}</code>` : `<b>${esc(a.name)}</b> est validé${code ? `, code <b>${esc(code)}</b>` : ''}.`} Envoyez-lui ce message :</span>
+      <div class="acts"><a class="btn b-grad b-sm" href="${waLink(a.phone, txt)}" target="_blank" rel="noopener">Envoyer sur WhatsApp</a><button class="btn b-soft b-sm" data-cp="${esc(txt)}">Copier le message</button></div></div>`; };
+  function affCard(a){
+    const files = db.requests.filter(r => r.affiliate === a.id && !r.archived && r.kind !== 'rappel');
+    const deliv = files.filter(r => r.step >= DONE), due = files.filter(affDue), paid = files.filter(r => r.affPaid);
+    const [stl, stc] = AFF_ST[a.status] || [a.status, 'p-wait'];
+    const acts = a.status === 'pending' ? `<button class="btn b-grad b-sm" data-afst="${a.id}" data-v="active">Valider</button><button class="btn b-soft b-sm" data-afst="${a.id}" data-v="refused">Refuser</button>`
+      : a.status === 'active' ? `${due.length ? `<button class="btn b-grad b-sm" data-afpayall="${a.id}">Marquer versé · ${fmt(due.length * AFF_COMMISSION)} MAD</button>` : ''}<button class="btn b-soft b-sm" data-afreset="${a.id}">Nouveau mot de passe</button><button class="btn b-soft b-sm" data-afst="${a.id}" data-v="suspended">Suspendre</button>`
+      : `<button class="btn b-soft b-sm" data-afst="${a.id}" data-v="active">Réactiver</button>`;
+    const codes = a.codes.map(c => `<span class="cd ${c.active ? '' : 'off'}">${esc(c.code)} · −<input type="number" min="0" step="50" value="${c.discount}" data-cdisc="${esc(c.code)}" aria-label="Remise du code ${esc(c.code)} en MAD"> MAD
+      <button class="tg" data-ctog="${esc(c.code)}" data-v="${c.active ? 0 : 1}">${c.active ? 'Désactiver' : 'Activer'}</button></span>`).join('');
+    return `<div class="af ${a.status === 'pending' ? 'pend' : ''}">
+      <div class="hd"><div><b>${esc(a.name)}${a.company ? ` · ${esc(a.company)}` : ''}</b><small>${esc([a.profile, a.city].filter(Boolean).join(' · '))}</small><small>${esc(a.email)} · ${esc(a.phone)}</small>
+        <small>Paiement : ${a.payMethod === 'cashplus' ? 'Cash Plus' : 'Virement'} ${esc(a.payInfo || '(non renseigné)')}</small></div><span class="pill ${stc}">${stl}</span></div>
+      ${a.status === 'active' || files.length ? `<div class="st"><div><b>${files.length}</b>dossiers</div><div><b>${deliv.length}</b>livrés</div><div><b>${fmt(due.length * AFF_COMMISSION)}</b>MAD à verser</div><div><b>${fmt(paid.length * AFF_COMMISSION)}</b>MAD versés</div></div>` : ''}
+      ${a.codes.length ? `<div class="cds">${codes}</div>` : ''}
+      ${a.status === 'active' ? `<form class="addc" data-addcode="${a.id}" novalidate><input class="f" placeholder="NOUVEAU CODE" maxlength="20" aria-label="Nouveau code"><input class="f" type="number" min="0" step="50" placeholder="Remise MAD" aria-label="Remise en MAD" style="width:120px"><button class="btn b-soft b-sm">Ajouter un code</button></form>` : ''}
+      <div class="acts">${acts}</div></div>`;
+  }
+  async function openAff(){
+    await loadAffs();
+    const order = { pending:0, active:1, suspended:2, refused:3 };
+    const list = AFFS.slice().sort((a, b) => (order[a.status] ?? 9) - (order[b.status] ?? 9));
+    $('#affBox').innerHTML = `<h3>Partenaires <button class="btn b-soft b-sm" id="affClose">Fermer</button></h3>
+      <p class="hint" style="margin:0">${AFF_COMMISSION} MAD par dossier livré et entièrement payé, versés le 5 du mois. Chaque code peut donner une remise au client (0 = aucune remise). Le partenaire ne voit que la référence et l'avancement de ses dossiers.</p>
+      ${affMsg}
+      ${list.length ? list.map(affCard).join('') : '<p class="hint">Aucun partenaire pour l\'instant. Les inscriptions de la page « Devenir partenaire » apparaissent ici.</p>'}
+      <div class="sec"><h4>Ajouter un partenaire</h4><form id="addAff" class="aff-f" novalidate>
+        <label>Nom<input class="f" id="afName" placeholder="Amal Bennani"></label>
+        <label>E-mail<input class="f" type="email" id="afEmail" placeholder="amal@exemple.ma"></label>
+        <label>Téléphone<input class="f" id="afPhone" placeholder="06 12 34 56 78"></label>
+        <button class="btn b-grad">Ajouter</button></form><p class="merr" id="afErr" hidden></p></div>`;
+    affMsg = '';
+    $('#affm').hidden = false;
+  }
+  $('#affBtn').addEventListener('click', openAff);
+  $('#affm').addEventListener('click', async e => {
+    if (e.target.id === 'affm' || e.target.id === 'affClose') { $('#affm').hidden = true; return; }
+    const t = e.target.closest('button'); if (!t || t.closest('form')) return;
+    if (t.dataset.cp != null) { copyText(t.dataset.cp, 'Message copié'); return; }
+    const a = AFFS.find(x => x.id === (t.dataset.afst || t.dataset.afreset || t.dataset.afpayall));
+    if (t.dataset.afst) {
+      if (t.dataset.v !== 'active' && !armed(t, t.dataset.v === 'refused' ? 'Confirmer : refuser' : 'Confirmer : suspendre')) return;
+      const r = await api('affiliates/' + t.dataset.afst, { method:'PUT', body:JSON.stringify({ status:t.dataset.v }) }); const j = await r.json().catch(() => ({}));
+      if (r.ok && t.dataset.v === 'active' && a) { await loadAffs(); const a2 = AFFS.find(x => x.id === a.id) || a; affMsg = affNote(a2, j.code || a2.codes.find(c => c.active)?.code, null); }
+      openAff(); return;
+    }
+    if (t.dataset.afreset) {
+      if (!armed(t, 'Confirmer : nouveau mot de passe')) return;
+      const r = await api('affiliates/' + t.dataset.afreset, { method:'PUT', body:JSON.stringify({ resetPassword:true }) }); const j = await r.json().catch(() => ({}));
+      affMsg = r.ok && a ? affNote(a, a.codes.find(c => c.active)?.code, j.tempPassword) : '<p class="merr">Réinitialisation impossible.</p>'; openAff(); return;
+    }
+    if (t.dataset.afpayall) {
+      const due = db.requests.filter(r => r.affiliate === t.dataset.afpayall && affDue(r)); if (!due.length) return;
+      if (!armed(t, `Confirmer : ${fmt(due.length * AFF_COMMISSION)} MAD versés`)) return;
+      const at = new Date().toISOString();
+      due.forEach(r => { r.affPaid = at; log(r, `Commission partenaire (${AFF_COMMISSION} MAD, code ${r.promo}) versée.`); });
+      persist(); if (current) renderDetail(); toast(`${due.length} commission${due.length > 1 ? 's' : ''} marquée${due.length > 1 ? 's' : ''} comme versée${due.length > 1 ? 's' : ''}`); openAff(); return;
+    }
+    if (t.dataset.ctog) { await api('codes/' + t.dataset.ctog, { method:'PUT', body:JSON.stringify({ active:t.dataset.v === '1' }) }); openAff(); }
+  });
+  $('#affm').addEventListener('change', async e => {
+    const i = e.target.closest('[data-cdisc]'); if (!i) return;
+    const r = await api('codes/' + i.dataset.cdisc, { method:'PUT', body:JSON.stringify({ discount:+i.value || 0 }) });
+    toast(r.ok ? `Remise du code ${i.dataset.cdisc} : ${+i.value || 0} MAD` : 'Modification impossible');
+  });
+  $('#affm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const f = e.target;
+    if (f.dataset.addcode) {
+      const [ci, di] = f.querySelectorAll('input');
+      const r = await api('affiliates/' + f.dataset.addcode + '/codes', { method:'POST', body:JSON.stringify({ code:ci.value.trim().toUpperCase(), discount:+di.value || 0 }) }); const j = await r.json().catch(() => ({}));
+      if (!r.ok) { toast(j.error === 'code_exists' ? 'Ce code existe déjà' : 'Code invalide : 3 à 20 lettres, chiffres ou tirets'); return; }
+      toast('Code ajouté'); openAff(); return;
+    }
+    if (f.id === 'addAff') {
+      const body = { name:$('#afName').value.trim(), email:$('#afEmail').value.trim(), phone:$('#afPhone').value.trim() };
+      const r = await api('affiliates', { method:'POST', body:JSON.stringify(body) }); const j = await r.json().catch(() => ({}));
+      if (!r.ok) { $('#afErr').textContent = j.error === 'email_exists' ? 'Un partenaire existe déjà avec cet e-mail.' : 'Nom et e-mail valide obligatoires.'; $('#afErr').hidden = false; return; }
+      affMsg = affNote({ ...body, email:body.email.toLowerCase() }, j.code, j.tempPassword); openAff();
+    }
+  });
+
   // Start: shared database if the team API answers, demo otherwise.
   let timers = false;
   async function boot(){
@@ -1299,7 +1401,8 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
       if (j.me.mustChange) { showPw(true); return; }
       db = db && db.requests && SERVER && timers ? db : { requests:[] };
       TEAM.splice(0, TEAM.length, ...j.team);
-      $('#demoBar').hidden = true; $('#acctBtn').hidden = false;
+      $('#demoBar').hidden = true; $('#acctBtn').hidden = false; $('#affBtn').hidden = j.me.role !== 'admin';
+      if (j.me.role === 'admin') loadAffs();
       await pull();
       start(TEAM.find(t => t.id === j.me.id) || j.me);
       if (!timers) {

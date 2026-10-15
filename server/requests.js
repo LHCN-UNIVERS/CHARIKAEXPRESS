@@ -1,6 +1,7 @@
 // POST /api/requests : the request form (demande.html) sends a new client request here.
 // Public route: only whitelisted fields are kept, sizes are capped, and one sender can't flood the list.
 import { json, now, readJson, fail, HttpError } from './http.js';
+import { promoInfo } from './affiliate.js';
 
 const str = (v, max = 200) => String(v ?? '').trim().slice(0, max);
 const num = v => (v === null || v === '' || v === undefined || isNaN(+v)) ? null : +v;
@@ -19,8 +20,7 @@ function clean(b){
     activite: str(b.activite, 500), ville: str(b.ville, 80), capital: num(b.capital) ?? 0, siege: pick(b.siege, ['dom', 'local'], 'dom'),
     partners, gerant: { name: str(b.gerant?.name), cin: str(b.gerant?.cin, 30) },
     client: { nom: str(b.client?.nom, 120), tel: str(b.client?.tel, 40), email: str(b.client?.email, 160) },
-    message: str(b.message, 2000), cgu: !!b.cgu, secs: num(b.secs),
-    parrain: /^CE-\d{6}$/.test(str(b.parrain, 12).toUpperCase()) ? str(b.parrain, 12).toUpperCase() : null   // referral code = the referrer's file reference
+    message: str(b.message, 2000), cgu: !!b.cgu, secs: num(b.secs)
   };
 }
 
@@ -45,6 +45,10 @@ export async function postRequest(request, env){
       if (ref && !(await env.DB.prepare('SELECT 1 FROM requests WHERE ref = ?').bind(ref).first())) break;
       ref = 'CE-' + String(100000 + Math.floor(Math.random() * 900000));
     }
+    // Promo code of a partner: the file is credited to that partner; the discount was already taken off the total by the form
+    const promo = b.promo ? await promoInfo(env, b.promo) : null;
+    if (promo) Object.assign(r, { promo: promo.code, affiliate: promo.affiliate_id, remise: promo.discount });
+    else if (b.promo) r.promoInvalid = str(b.promo, 20).toUpperCase();    // shown to the team: discount not to be granted
     const at = now();
     const data = { ...r, ref, createdAt: at, updatedAt: at, step: 0, docs: {}, livrables: {}, checks: {}, paid: {}, reject: null,
       seen: false, juriste: null, notes: [{ t: 'sys', at, text: 'Demande reçue depuis le site.' }] };

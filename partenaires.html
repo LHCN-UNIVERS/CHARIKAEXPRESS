@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Programme partenaires Charika Express : gagnez 350 MAD pour chaque société créée par un client que vous recommandez.">
+<link rel="canonical" href="https://charikaexpress.ma/partenaires">
+<meta name="theme-color" content="#30102f">
+<title>Devenir partenaire · Charika Express</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap">
+<style>
+/* Layout: plum header; two columns on desktop (plum pitch card with the 3 steps, profiles and an earnings example | sign-up form),
+   one column on phones; then a short FAQ. Same colours and font as the rest of the site. */
+:root{
+  --plum:#30102f; --plum2:#4b1a46; --coral:#ff795b; --pink:#ff4f91; --blush:#fff1f5;
+  --bg:#fffcfa; --ink:#30152f; --m:#7a6474; --line:#f2e2e8; --ok:#1d9a62; --okbg:#e3f6ec;
+  --grad:linear-gradient(90deg,var(--coral),var(--pink));
+  --sans:"Sora",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:var(--pink)}
+button,input,select{font:inherit;color:inherit}
+.wrap{max-width:1080px;margin:0 auto;padding-inline:max(16px,env(safe-area-inset-left,0px)) max(16px,env(safe-area-inset-right,0px))}
+header{background:var(--plum);color:#fff}
+.bar{display:flex;align-items:center;gap:14px;padding-block:14px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.1rem;letter-spacing:-.02em;color:#fff;text-decoration:none;white-space:nowrap}
+.logo i{width:28px;height:28px;border-radius:9px;background:var(--grad);display:grid;place-items:center}
+.logo i::after{content:"";width:10px;height:10px;border-radius:3px;background:#fff}
+.logo b{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.bar .in{margin-inline-start:auto;background:rgba(255,255,255,.1);color:#fff;border-radius:999px;padding:7px 14px;font-size:.8rem;font-weight:700;text-decoration:none;white-space:nowrap}
+main{padding-block:30px 60px;display:grid;gap:36px}
+.grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:24px;align-items:start}
+.pitch{background:radial-gradient(70% 90% at 0% 0%,rgba(255,121,91,.3),transparent 70%),linear-gradient(160deg,var(--plum),var(--plum2));color:#fff;border-radius:24px;padding:clamp(22px,4vw,34px)}
+.pitch small{color:#ffd0c2;font-weight:700;font-size:.74rem;letter-spacing:.07em;text-transform:uppercase}
+.pitch h1{margin:8px 0 10px;font-size:clamp(1.7rem,4vw,2.5rem);line-height:1.12;letter-spacing:-.03em;text-wrap:balance}
+.pitch h1 em{font-style:normal;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.pitch p{margin:0;color:#ead6e4}
+.how{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:22px}
+.how div{background:rgba(255,255,255,.08);border-radius:16px;padding:14px}
+.how i{font-style:normal;display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--grad);font-weight:800;font-size:.74rem;margin-bottom:8px}
+.how b{display:block;font-size:.9rem}
+.how span{font-size:.8rem;color:#e3cbdd}
+.who{display:flex;flex-wrap:wrap;gap:6px;margin-top:18px}
+.who span{background:rgba(255,255,255,.12);border-radius:999px;padding:5px 11px;font-size:.78rem;font-weight:600}
+.calc{margin-top:18px;background:#fff;color:var(--ink);border-radius:16px;padding:14px 16px;display:grid;gap:8px}
+.calc label{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:.84rem;color:var(--m);font-weight:600}
+.calc input{width:100%;accent-color:var(--pink)}
+.calc b{font-size:1.35rem;font-variant-numeric:tabular-nums}
+.card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:clamp(18px,3vw,26px)}
+.card h2{margin:0;font-size:1.2rem;letter-spacing:-.02em}
+.muted{color:var(--m);font-size:.86rem}
+form{display:grid;gap:12px;margin-top:14px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+label.fl{display:grid;gap:5px;font-weight:600;font-size:.82rem;align-content:start}
+label.fl small{font-weight:500;color:var(--m)}
+.f{border:1px solid var(--line);border-radius:12px;padding:11px 12px;background:var(--bg);font-size:.95rem;width:100%;min-width:0}
+.f:focus{outline:2px solid #ffc2d6;border-color:var(--pink)}
+.chk{display:flex;gap:10px;align-items:flex-start;font-size:.82rem;color:var(--m)}
+.chk input{width:18px;height:18px;margin-top:2px;accent-color:var(--pink);flex:none}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:999px;padding:13px 20px;font-weight:700;font-size:.92rem;cursor:pointer;text-decoration:none}
+.btn-grad{background:var(--grad);color:#fff;box-shadow:0 10px 24px -12px rgba(255,79,145,.8)}
+.btn:disabled{opacity:.6;cursor:default}
+.err{background:#fde8e4;color:#a8321e;border-radius:12px;padding:10px 12px;font-size:.86rem}
+.done{text-align:center;padding-block:10px}
+.done .ic{width:56px;height:56px;border-radius:50%;background:var(--okbg);color:var(--ok);display:grid;place-items:center;margin:0 auto 10px;font-size:1.6rem;font-weight:800}
+.faq{display:grid;gap:10px}
+.faq h2{margin:0 0 4px;font-size:1.2rem}
+details{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 16px}
+summary{cursor:pointer;font-weight:700}
+details p{margin:8px 0 0;color:var(--m);font-size:.9rem}
+footer{border-top:1px solid var(--line);background:#fff;padding-block:20px;color:var(--m);font-size:.8rem}
+footer .wrap{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+footer a{color:var(--m)}
+@media (max-width:860px){.grid{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:520px){.how{grid-template-columns:1fr}.g2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header><div class="wrap bar">
+  <a class="logo" href="index.html"><i></i><span>Charika <b>Express</b></span></a>
+  <a class="in" href="partenaire.html">Espace partenaire</a>
+</div></header>
+
+<main class="wrap">
+  <div class="grid">
+    <section class="pitch">
+      <small>Programme partenaires</small>
+      <h1>Gagnez <em>350 MAD</em> pour chaque société créée</h1>
+      <p>Comptables, agences, consultants, créateurs de contenu : recommandez Charika Express à vos clients et suivez l'avancement de leurs dossiers en temps réel, jusqu'à la livraison des documents.</p>
+      <div class="how">
+        <div><i>1</i><b>Inscrivez-vous</b><span>Nous validons votre compte sous 24 h ouvrées.</span></div>
+        <div><i>2</i><b>Partagez votre code</b><span>Vos clients l'indiquent dans leur demande, ou passent par votre lien.</span></div>
+        <div><i>3</i><b>Encaissez</b><span>350 MAD par dossier livré et payé, versés le 5 de chaque mois.</span></div>
+      </div>
+      <div class="who"><span>Experts-comptables</span><span>Fiduciaires</span><span>Agences web</span><span>Consultants</span><span>Créateurs de contenu</span><span>Incubateurs</span></div>
+      <div class="calc">
+        <label for="cn"><span>Sociétés créées par mois : <b id="cnv" style="font-size:.95rem">5</b></span><b id="cnt">1 750 MAD</b></label>
+        <input id="cn" type="range" min="1" max="30" value="5" aria-label="Nombre de sociétés par mois">
+      </div>
+    </section>
+
+    <section class="card" id="signup">
+      <div id="formView">
+        <h2>Créer mon compte partenaire</h2>
+        <p class="muted" style="margin:4px 0 0">Gratuit et sans engagement.</p>
+        <form id="sf" novalidate>
+          <div class="g2">
+            <label class="fl" for="s_name">Nom complet *<input class="f" id="s_name" autocomplete="name" required></label>
+            <label class="fl" for="s_company"><span>Société <small>(facultatif)</small></span><input class="f" id="s_company" autocomplete="organization"></label>
+          </div>
+          <div class="g2">
+            <label class="fl" for="s_phone">Téléphone / WhatsApp *<input class="f" id="s_phone" type="tel" dir="ltr" autocomplete="tel" placeholder="06 12 34 56 78" required></label>
+            <label class="fl" for="s_email">E-mail *<input class="f" id="s_email" type="email" dir="ltr" autocomplete="email" required></label>
+          </div>
+          <div class="g2">
+            <label class="fl" for="s_city">Ville<input class="f" id="s_city" autocomplete="address-level2"></label>
+            <label class="fl" for="s_profile">Profil<select class="f" id="s_profile"><option>Expert-comptable / fiduciaire</option><option>Agence</option><option>Consultant</option><option>Créateur de contenu</option><option>Autre</option></select></label>
+          </div>
+          <div class="g2">
+            <label class="fl" for="s_pay">Recevoir mes gains par<select class="f" id="s_pay"><option value="virement">Virement (RIB)</option><option value="cashplus">Cash Plus</option></select></label>
+            <label class="fl" for="s_payinfo"><span><span id="s_payl">RIB</span> <small>(modifiable plus tard)</small></span><input class="f" id="s_payinfo" dir="ltr" inputmode="numeric"></label>
+          </div>
+          <label class="fl" for="s_pw"><span>Mot de passe * <small>(10 caractères minimum)</small></span><input class="f" id="s_pw" type="password" autocomplete="new-password" minlength="10" required></label>
+          <input class="hp" id="s_web" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <label class="chk" for="s_cgu"><input type="checkbox" id="s_cgu"><span>J'accepte les <a href="legal.html#cgv" target="_blank" rel="noopener">conditions du programme partenaires</a> et la <a href="legal.html#confidentialite" target="_blank" rel="noopener">politique de confidentialité</a>.</span></label>
+          <p class="err" id="serr" role="alert" hidden></p>
+          <button class="btn btn-grad" id="sgo" type="submit">Envoyer ma candidature</button>
+        </form>
+      </div>
+      <div class="done" id="doneView" hidden>
+        <div class="ic">✓</div>
+        <h2>Candidature envoyée</h2>
+        <p class="muted">Nous validons votre compte sous 24 h ouvrées et vous prévenons sur WhatsApp. Vous pourrez ensuite vous connecter à votre espace partenaire avec votre e-mail et votre mot de passe.</p>
+        <p class="muted" id="demoNote" hidden>(Aperçu : aucune candidature n'a été envoyée.)</p>
+        <a class="btn btn-grad" href="partenaire.html">Espace partenaire</a>
+      </div>
+    </section>
+  </div>
+
+  <section class="faq">
+    <h2>Questions fréquentes</h2>
+    <details><summary>Quand suis-je payé ?</summary><p>Vous gagnez 350 MAD pour chaque dossier arrivé à l'étape « Documents livrés » et entièrement payé par le client. Les commissions sont versées le 5 de chaque mois, par virement ou Cash Plus.</p></details>
+    <details><summary>Comment un client est-il rattaché à moi ?</summary><p>Il indique votre code promo dans le formulaire de demande, ou il passe par votre lien partenaire : le code est alors rempli automatiquement.</p></details>
+    <details><summary>Que vois-je de mes clients ?</summary><p>Dans votre espace, vous voyez la référence de chaque dossier apporté et son avancement, étape par étape, jusqu'à la livraison des documents. Les informations personnelles du client restent confidentielles.</p></details>
+    <details><summary>Mes clients ont-ils une remise ?</summary><p>Certains codes partenaires donnent une remise au client. Votre code et sa remise éventuelle sont indiqués dans votre espace partenaire.</p></details>
+  </section>
+</main>
+
+<footer><div class="wrap"><span>© 2026 Charika Express</span><span><a href="legal.html#cgv">Conditions</a> · <a href="legal.html#confidentialite">Confidentialité</a></span></div></footer>
+
+<script>
+(() => {
+  const $ = s => document.querySelector(s);
+  const COMMISSION = 350, fmt = n => n.toLocaleString('fr-FR').replace(/ | /g, ' ');
+  const calc = () => { const n = +$('#cn').value; $('#cnv').textContent = n; $('#cnt').textContent = fmt(n * COMMISSION) + ' MAD'; };
+  $('#cn').addEventListener('input', calc); calc();
+  $('#s_pay').addEventListener('change', () => { $('#s_payl').textContent = $('#s_pay').value === 'cashplus' ? 'N° de compte Cash Plus' : 'RIB'; });
+
+  const ERR = { missing_fields:'Remplissez votre nom, votre téléphone et un e-mail valide.', password_too_short:'Le mot de passe doit faire au moins 10 caractères.',
+    email_exists:'Un compte partenaire existe déjà avec cet e-mail. Connectez-vous à votre espace partenaire.', cgu:'Merci d\'accepter les conditions du programme.',
+    too_many:'Trop de candidatures depuis cette connexion. Réessayez dans une heure.', net:'Envoi impossible. Vérifiez votre connexion et réessayez.' };
+  const done = demo => { $('#formView').hidden = true; $('#doneView').hidden = false; $('#demoNote').hidden = !demo; $('#signup').scrollIntoView({ behavior:'smooth', block:'start' }); };
+
+  $('#sf').addEventListener('submit', async e => {
+    e.preventDefault();
+    const err = $('#serr'), show = k => { err.textContent = ERR[k] || ERR.net; err.hidden = false; };
+    const body = { name:$('#s_name').value.trim(), company:$('#s_company').value.trim(), phone:$('#s_phone').value.trim(), email:$('#s_email').value.trim(),
+      city:$('#s_city').value.trim(), profile:$('#s_profile').value, payMethod:$('#s_pay').value, payInfo:$('#s_payinfo').value.trim(),
+      password:$('#s_pw').value, cgu:$('#s_cgu').checked, website:$('#s_web').value };
+    if (!body.name || body.phone.replace(/\D/g, '').length < 9 || !/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(body.email)) return show('missing_fields');
+    if (body.password.length < 10) return show('password_too_short');
+    if (!body.cgu) return show('cgu');
+    err.hidden = true; const b = $('#sgo'); b.disabled = true; b.textContent = 'Envoi…';
+    try {
+      const res = await fetch('/api/aff/signup', { method:'POST', headers:{ 'content-type':'application/json' }, body:JSON.stringify(body) });
+      const isJson = (res.headers.get('content-type') || '').includes('application/json');
+      if (!isJson) return done(true);                                     // preview without a server
+      const j = await res.json();
+      if (res.ok) return done(false);
+      show(j.error);
+    } catch (e2) { if (location.protocol === 'file:' || !/charikaexpress/.test(location.host)) return done(true); show('net'); }
+    finally { b.disabled = false; b.textContent = 'Envoyer ma candidature'; }
+  });
+})();
+</script>
+</body>
+</html>

@@ -329,7 +329,7 @@ footer a:hover{color:var(--pink)}
   </div>
 </div>
 
-<div class="pbar" id="pbar" hidden><div class="wrap"><span>🎁 <b>Code parrain <span class="ltr" id="pbarCode">CE-000000</span></b> · <span>200 MAD de remise sur votre création, appliqués automatiquement dans le formulaire.</span></span></div></div>
+<div class="pbar" id="pbar" hidden><div class="wrap"><span>🎁 <b>Code promo <span class="ltr" id="pbarCode">CODE</span></b> · <span>Remise de <b class="ltr" id="pbarAmt">0 MAD</b> sur votre création, appliquée automatiquement dans le formulaire.</span></span></div></div>
 
 <main id="top">
   <!-- HERO -->
@@ -553,15 +553,15 @@ footer a:hover{color:var(--pink)}
     </div>
   </div>
 
-  <!-- REFERRAL -->
+  <!-- PARTNERS -->
   <div class="wrap">
-    <div class="refband" id="parrainage">
-      <span class="gift" aria-hidden="true">🎁</span>
+    <div class="refband" id="partenaires">
+      <span class="gift" aria-hidden="true">🤝</span>
       <div>
-        <h2>Parrainez un ami, gagnez 300 MAD</h2>
-        <p>Votre ami a 200 MAD de remise sur sa création. Vous recevez 300 MAD quand sa société est créée. Votre lien de parrainage est dans votre suivi de dossier.</p>
+        <h2>Devenez partenaire, gagnez 350 MAD par société</h2>
+        <p>Comptables, agences, consultants, créateurs de contenu : recommandez Charika Express et suivez les dossiers de vos clients jusqu'à la livraison des documents.</p>
       </div>
-      <a class="btn btn-grad btn-sm" href="suivi.html#parrainage">Obtenir mon lien <span class="arr">→</span></a>
+      <a class="btn btn-grad btn-sm" href="partenaires.html">Devenir partenaire <span class="arr">→</span></a>
     </div>
   </div>
 
@@ -618,7 +618,7 @@ footer a:hover{color:var(--pink)}
     <div class="f-grid">
       <div><a class="logo dark" href="#top"><i></i><span>Charika <b>Express</b></span></a><p class="f-about">Création d'entreprise au Maroc, simple et rapide. Un juriste dédié, 100 % en ligne.</p></div>
       <div><h4>Nos services</h4><ul><li><a href="#services">Création SARL / SARL AU</a></li><li><a href="#services">Auto-entrepreneur</a></li><li><a href="#services">Domiciliation</a></li><li><a href="#services">Modifications statutaires</a></li><li><a href="#services">Dissolution et liquidation</a></li></ul></div>
-      <div><h4>Informations</h4><ul><li><a href="#pourquoi">À propos</a></li><li><a href="#tarifs">Tarifs</a></li><li><a href="#faq">FAQ</a></li><li><a href="#contact">Contact</a></li><li><a href="suivi.html">Suivre mon dossier</a></li><li><a href="#parrainage">Parrainage</a></li><li><a href="admin.html">Espace équipe</a></li></ul></div>
+      <div><h4>Informations</h4><ul><li><a href="#pourquoi">À propos</a></li><li><a href="#tarifs">Tarifs</a></li><li><a href="#faq">FAQ</a></li><li><a href="#contact">Contact</a></li><li><a href="suivi.html">Suivre mon dossier</a></li><li><a href="partenaires.html">Devenir partenaire</a></li><li><a href="admin.html">Espace équipe</a></li></ul></div>
       <div><h4>Contact</h4><ul><li dir="ltr">+212 667 154 604</li><li>charikaexpress@gmail.com</li><li>Casablanca, Maroc</li></ul></div>
     </div>
     <div class="f-bottom"><span>© 2026 Charika Express. Tous droits réservés.</span><span class="f-legal"><a href="legal.html#mentions">Mentions légales</a> · <a href="legal.html#cgv">Conditions générales</a> · <a href="legal.html#confidentialite">Confidentialité</a></span></div>
@@ -716,7 +716,7 @@ footer a:hover{color:var(--pink)}
     "Création d'entreprise au Maroc, simple et rapide. Un juriste dédié, 100 % en ligne.":"Company formation in Morocco, simple and fast. A dedicated legal advisor, 100% online.",
     "Informations":"Information", "Espace équipe":"Team space", "Casablanca, Maroc":"Casablanca, Morocco",
     "© 2026 Charika Express. Tous droits réservés.":"© 2026 Charika Express. All rights reserved.",
-    "Mon dossier":"My file", "Suivre mon dossier":"Track my file", "Parrainage":"Referral", "Code parrain":"Referral code", "200 MAD de remise sur votre création, appliqués automatiquement dans le formulaire.":"200 MAD off your company formation, applied automatically in the form.", "Parrainez un ami, gagnez 300 MAD":"Refer a friend, earn 300 MAD", "Votre ami a 200 MAD de remise sur sa création. Vous recevez 300 MAD quand sa société est créée. Votre lien de parrainage est dans votre suivi de dossier.":"Your friend gets 200 MAD off their company formation. You receive 300 MAD once their company is created. Your referral link is in your file tracking page.", "Obtenir mon lien":"Get my link",
+    "Mon dossier":"My file", "Suivre mon dossier":"Track my file", "Devenir partenaire":"Become a partner", "Code promo":"Promo code", "Remise de":"Discount of", "sur votre création, appliquée automatiquement dans le formulaire.":"on your company formation, applied automatically in the form.", "Devenez partenaire, gagnez 350 MAD par société":"Become a partner, earn 350 MAD per company", "Comptables, agences, consultants, créateurs de contenu : recommandez Charika Express et suivez les dossiers de vos clients jusqu'à la livraison des documents.":"Accountants, agencies, consultants, content creators: recommend Charika Express and follow your clients' files until the documents are delivered.",
     "Mentions légales":"Legal notice", "Conditions générales":"Terms and conditions", "Confidentialité":"Privacy",
     "Vos données sont traitées conformément à la loi n° 09-08 :":"Your data is processed in accordance with law no. 09-08:", "politique de confidentialité":"privacy policy",
     // attributes
@@ -803,12 +803,19 @@ footer a:hover{color:var(--pink)}
       .catch(() => done('fail'));
   });
 
-  // Referral link (?parrain=CE-123456): remember the code for the request form and say the discount applies
+  // Partner link (?code=AMAL): remember the promo code for the request form; show the banner when it gives a discount
   (() => {
-    let code = (new URLSearchParams(location.search).get('parrain') || '').toUpperCase();
-    if (/^CE-\d{6}$/.test(code)) { try { localStorage.setItem('ce-parrain', code); } catch(e) {} }
-    else { try { code = localStorage.getItem('ce-parrain') || ''; } catch(e) { code = ''; } }
-    if (/^CE-\d{6}$/.test(code)) { document.getElementById('pbarCode').textContent = code; document.getElementById('pbar').hidden = false; }
+    const ok = c => /^[A-Z0-9-]{3,20}$/.test(c);
+    let code = (new URLSearchParams(location.search).get('code') || '').toUpperCase();
+    if (ok(code)) { try { localStorage.setItem('ce-promo', code); } catch(e) {} }
+    else { try { code = localStorage.getItem('ce-promo') || ''; } catch(e) { code = ''; } }
+    if (!ok(code)) return;
+    fetch('/api/promo?code=' + encodeURIComponent(code)).then(r => (r.headers.get('content-type') || '').includes('application/json') ? r.json() : null).then(j => {
+      if (!j || !j.ok) { if (j) try { localStorage.removeItem('ce-promo'); } catch(e) {} return; }
+      if (!j.discount) return;
+      document.getElementById('pbarCode').textContent = j.code; document.getElementById('pbarAmt').textContent = j.discount + ' MAD';
+      document.getElementById('pbar').hidden = false;
+    }).catch(() => {});
   })();
 })();
 </script>

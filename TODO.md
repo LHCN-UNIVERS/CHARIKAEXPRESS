@@ -39,8 +39,12 @@ Things left out of the homepage on purpose, because they would be false today. A
 - [ ] Add the « Voir les conditions » link on the guarantee banner, pointing to `legal.html#cgv`.
 - [ ] When the Meta Pixel / Google tag is added: cookie banner, and update section 8 « Cookies » of the privacy policy.
 
-## Referral programme
+## Partner programme
 
-- [x] Referral code = the referrer's file reference. Link `charikaexpress.ma/?parrain=CE-123456`, shown with share buttons on `suivi.html`.
-- [x] Friend: 200 MAD off, taken from the total in the request form. Referrer: 300 MAD once the friend's file is delivered, marked « versé » in the team space.
-- [ ] Confirm the amounts (300 / 200 MAD). They are in `suivi.html`, `demande.html`, `admin.html`, `index.html` and `legal.html` (terms, section 12).
+Replaces the client referral programme (removed).
+
+- [x] `partenaires.html`: sign-up page (pending account, validated by an admin). `partenaire.html`: partner space (e-mail + password).
+- [x] Partners see only the reference and the 10 steps of their files, up to « Documents livrés », and their commission (350 MAD per delivered and fully paid file).
+- [x] Promo codes per partner (default code from the name; admins add codes, each with an optional client discount). Link `charikaexpress.ma/?code=CODE`.
+- [x] Team space: « Partenaires » window (validate / refuse / suspend, codes, new password, « Marquer versé »), « Partenaire » box in each file.
+- [ ] English version of the two partner pages.

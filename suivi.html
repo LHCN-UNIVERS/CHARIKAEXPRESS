@@ -175,19 +175,11 @@ footer a{color:var(--m)}
             <a class="btn btn-wa" id="waBtn" href="https://wa.me/212667154604" target="_blank" rel="noopener" data-t="wa">Écrire à mon juriste</a>
           </div>
         </section>
-        <section class="card ref-card" id="parrainage">
-          <h2 data-t="rh">Parrainage</h2>
+        <section class="card ref-card" id="partenaire">
+          <h2 data-t="rh">Devenez partenaire</h2>
           <p class="big" id="rBig"></p>
-          <p class="muted" id="rP"></p>
-          <div class="link"><code id="rLink">—</code><button type="button" id="rCopy" data-t="copy">Copier</button></div>
-          <div class="share"><a class="btn btn-wa" id="rWa" href="#" target="_blank" rel="noopener" data-t="rwa">Partager sur WhatsApp</a></div>
-          <div class="stats">
-            <div><b id="rN">0</b><small data-t="rn">filleuls</small></div>
-            <div><b id="rC">0</b><small data-t="rc">sociétés créées</small></div>
-            <div><b class="ltr" id="rG">0</b><small data-t="rg">MAD gagnés</small></div>
-          </div>
-          <ul class="fl" id="rList"></ul>
-          <ol class="how" id="rHow"></ol>
+          <p class="muted" data-t="rP">Vous connaissez d'autres entrepreneurs ? Recommandez Charika Express avec votre propre code promo et suivez leurs dossiers depuis votre espace partenaire.</p>
+          <div class="share"><a class="btn btn-grad" href="partenaires.html" data-t="rgo">Devenir partenaire</a></div>
         </section>
       </div>
     </div>
@@ -200,7 +192,7 @@ footer a{color:var(--m)}
 (() => {
   const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
   const SITE = 'https://charikaexpress.ma/', WA = '212667154604';
-  const REWARD = 300, REMISE = 200, AVANCE = 700;                 // referral amounts, keep in line with demande.html and legal.html
+  const COMMISSION = 350, AVANCE = 700;                           // partner commission, keep in line with partenaires.html and legal.html
   const FORMES = { sarlau:'SARL AU', sarl:'SARL', sas:'SAS', ae:'Auto-entrepreneur', sa:'SA' };
   const PLANS = { essentiel:'Essentiel', pro:'Pro', premium:'Premium', ae:'Auto-entrepreneur' };
   const fmt = n => n == null ? '—' : n.toLocaleString('fr-FR').replace(/ | /g, ' ') + ' MAD';
@@ -238,7 +230,7 @@ footer a{color:var(--m)}
       lref:'Référence du dossier', ltel:'Téléphone', lgo:'Voir mon dossier', lhelp:'Référence perdue ? Écrivez-nous sur', out1:'Changer', out2:' de dossier',
       demo:"Aperçu : ceci est un exemple de dossier. Sur le site en ligne, vos vraies informations s'affichent ici.",
       done:'terminé', th:'Étapes de votre dossier', tp:'Mis à jour par votre juriste à chaque étape.', ph:'Paiements', wa:'Écrire à mon juriste',
-      rh:'Parrainage', copy:'Copier', copied:'Copié ✓', rwa:'Partager sur WhatsApp', rn:'filleuls', rc:'sociétés créées', rg:'MAD gagnés',
+      rh:'Devenez partenaire', rgo:'Devenir partenaire', rP:"Vous connaissez d'autres entrepreneurs ? Recommandez Charika Express avec votre propre code promo et suivez leurs dossiers depuis votre espace partenaire.",
       errFmt:'Vérifiez la référence (format CE-123456) et le numéro de téléphone.', errNf:"Aucun dossier ne correspond à cette référence et à ce numéro. Vérifiez-les, ou écrivez-nous sur WhatsApp.",
       errBusy:'Trop de tentatives. Réessayez dans 15 minutes.', errNet:'Connexion impossible. Réessayez dans un instant.', wait:'Chargement…',
       you:'À vous', nowLbl:'En cours', okLbl:'Terminé', paid:'Payé', topay:'À régler', quote:'sur devis',
@@ -246,18 +238,15 @@ footer a{color:var(--m)}
       jur:n => 'Juriste : ' + n, since:d => 'Demande du ' + d,
       aTodo:(t, s) => `<b>À faire de votre côté</b>${s}`, aRej:'<b>Un point est à corriger</b>Votre juriste vous contacte. Grâce à notre garantie anti-rejet, la correction est à nos frais si l\'erreur vient de nous.',
       aDone:'<b>Votre société est créée 🎉</b>Tous vos documents vous ont été envoyés. Merci de votre confiance !', aArch:'<b>Dossier clôturé</b>Contactez-nous sur WhatsApp pour toute question.',
-      rBig:`Gagnez <em>${REWARD} MAD</em> par ami`, rP:`Votre ami bénéficie de ${REMISE} MAD de remise sur sa création. Vous recevez ${REWARD} MAD quand sa société est créée.`,
-      rHow:['Partagez votre lien ou votre code ci-dessous.', `Votre ami fait sa demande : ${REMISE} MAD de remise sont appliqués automatiquement.`, `Sa société est créée : nous vous versons ${REWARD} MAD par virement ou Cash Plus.`],
-      fWait:'en cours', fOk:'créée · à verser', fPaid:'créée · versé ✓', fNone:"Pas encore de filleul. Partagez votre lien !",
-      waTxt:r => `Bonjour, je vous écris au sujet de mon dossier ${r}.`,
-      share:(r, l) => `Je viens de créer ma société avec Charika Express, 100 % en ligne et avec un juriste dédié. Avec mon code ${r}, tu as ${REMISE} MAD de remise sur ta création : ${l}`
+      rBig:`Gagnez <em>${COMMISSION} MAD</em> par société créée`,
+      waTxt:r => `Bonjour, je vous écris au sujet de mon dossier ${r}.`
     },
     en: {
       lh:'Track my file', lp:'Enter the reference you received after your request and the phone number you gave.',
       lref:'File reference', ltel:'Phone', lgo:'See my file', lhelp:'Lost your reference? Write to us on', out1:'Change', out2:' file',
       demo:'Preview: this is a sample file. On the live site, your real information is shown here.',
       done:'complete', th:'Your file, step by step', tp:'Updated by your legal advisor at every step.', ph:'Payments', wa:'Message my legal advisor',
-      rh:'Referral', copy:'Copy', copied:'Copied ✓', rwa:'Share on WhatsApp', rn:'referrals', rc:'companies created', rg:'MAD earned',
+      rh:'Become a partner', rgo:'Become a partner', rP:'Know other entrepreneurs? Recommend Charika Express with your own promo code and follow their files from your partner space.',
       errFmt:'Check the reference (format CE-123456) and the phone number.', errNf:'No file matches this reference and phone number. Check them, or write to us on WhatsApp.',
       errBusy:'Too many attempts. Try again in 15 minutes.', errNet:'Connection failed. Please try again in a moment.', wait:'Loading…',
       you:'Your turn', nowLbl:'In progress', okLbl:'Done', paid:'Paid', topay:'To pay', quote:'on quote',
@@ -265,19 +254,15 @@ footer a{color:var(--m)}
       jur:n => 'Legal advisor: ' + n, since:d => 'Request of ' + d,
       aTodo:(t, s) => `<b>Your next step</b>${s}`, aRej:'<b>Something needs fixing</b>Your legal advisor will contact you. With our anti-rejection guarantee, the fix is on us if the error was ours.',
       aDone:'<b>Your company is created 🎉</b>All your documents have been sent to you. Thank you for your trust!', aArch:'<b>File closed</b>Contact us on WhatsApp with any question.',
-      rBig:`Earn <em>${REWARD} MAD</em> per friend`, rP:`Your friend gets ${REMISE} MAD off their company formation. You receive ${REWARD} MAD once their company is created.`,
-      rHow:['Share your link or code below.', `Your friend sends a request: ${REMISE} MAD off is applied automatically.`, `Their company is created: we pay you ${REWARD} MAD by bank transfer or Cash Plus.`],
-      fWait:'in progress', fOk:'created · to pay', fPaid:'created · paid ✓', fNone:'No referrals yet. Share your link!',
-      waTxt:r => `Hello, I am writing about my file ${r}.`,
-      share:(r, l) => `I just created my company with Charika Express, 100% online with a dedicated legal advisor. With my code ${r}, you get ${REMISE} MAD off your company formation: ${l}`
+      rBig:`Earn <em>${COMMISSION} MAD</em> per company created`,
+      waTxt:r => `Hello, I am writing about my file ${r}.`
     }
   };
   let lang = 'fr', file = null, demo = false;
 
   // Sample file for the preview (no server behind the page)
   const SAMPLE = { ref:'CE-482913', societe:'Atlas Digital', forme:'sarlau', plan:'pro', createdAt:new Date(Date.now() - 6 * 864e5).toISOString(),
-    step:3, archived:false, reject:false, juriste:'Salma', total:5980, payAmount:'avance', paid:{ avance:true }, parrain:null,
-    filleuls:[{ nom:'Yo.', at:new Date(Date.now() - 2 * 864e5).toISOString(), created:false, rewardPaid:false }] };
+    step:3, archived:false, reject:false, juriste:'Salma', total:5980, payAmount:'avance', paid:{ avance:true } };
 
   function amounts(f){
     const t = f.total;
@@ -315,14 +300,7 @@ footer a{color:var(--m)}
     }).join('');
     $('#waBtn').href = `https://wa.me/${WA}?text=` + encodeURIComponent(t.waTxt(f.ref));
 
-    const link = SITE + '?parrain=' + f.ref;
-    $('#rBig').innerHTML = t.rBig; $('#rP').textContent = t.rP;
-    $('#rLink').textContent = link.replace('https://', '');
-    $('#rWa').href = 'https://wa.me/?text=' + encodeURIComponent(t.share(f.ref, link));
-    const fl = f.filleuls || [], created = fl.filter(x => x.created);
-    $('#rN').textContent = fl.length; $('#rC').textContent = created.length; $('#rG').textContent = (created.length * REWARD).toLocaleString('fr-FR').replace(/ | /g, ' ');
-    $('#rList').innerHTML = fl.length ? fl.map(x => `<li><span>${esc(x.nom)}</span><em>${x.rewardPaid ? t.fPaid : x.created ? t.fOk : t.fWait}</em></li>`).join('') : `<li class="muted">${t.fNone}</li>`;
-    $('#rHow').innerHTML = t.rHow.map(x => `<li>${esc(x)}</li>`).join('');
+    $('#rBig').innerHTML = t.rBig;
   }
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
 
@@ -355,10 +333,6 @@ footer a{color:var(--m)}
 
   $('#lf').addEventListener('submit', e => { e.preventDefault(); signIn($('#lref').value, $('#ltel').value); });
   $('#out').addEventListener('click', () => { forget(); file = null; $('#ltel').value = ''; history.replaceState(null, '', location.pathname); show(false); });
-  $('#rCopy').addEventListener('click', e => {
-    const b = e.currentTarget, txt = SITE + '?parrain=' + file.ref;
-    navigator.clipboard?.writeText(txt).then(() => { b.textContent = T[lang].copied; setTimeout(() => b.textContent = T[lang].copy, 1500); });
-  });
 
   function setLang(l){
     lang = l === 'en' ? 'en' : 'fr'; document.documentElement.lang = lang;

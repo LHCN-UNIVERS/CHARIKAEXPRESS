@@ -7,7 +7,7 @@ import { json, now, readJson, HttpError } from './http.js';
 const COOKIE = 'ce_session', DAYS = 7, ITER = 100000;
 const hex = buf => [...new Uint8Array(buf)].map(x => x.toString(16).padStart(2, '0')).join('');
 const unhex = h => new Uint8Array(h.match(/../g).map(x => parseInt(x, 16)));
-const sha256 = async s => hex(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s)));
+export const sha256 = async s => hex(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s)));
 export const randomHex = n => hex(crypto.getRandomValues(new Uint8Array(n)));
 
 export async function hashPassword(password, saltHex = randomHex(16)){
@@ -16,7 +16,7 @@ export async function hashPassword(password, saltHex = randomHex(16)){
   return { hash: hex(bits), salt: saltHex };
 }
 // Constant-time comparison of two hex strings
-const same = (a, b) => { if (!a || !b || a.length !== b.length) return false; let d = 0; for (let i = 0; i < a.length; i++) d |= a.charCodeAt(i) ^ b.charCodeAt(i); return d === 0; };
+export const same = (a, b) => { if (!a || !b || a.length !== b.length) return false; let d = 0; for (let i = 0; i < a.length; i++) d |= a.charCodeAt(i) ^ b.charCodeAt(i); return d === 0; };
 
 export function checkPasswordRules(p){
   if (typeof p !== 'string' || p.length < 10) throw new HttpError(400, 'password_too_short');
@@ -45,7 +45,7 @@ export async function sessionEmail(request, env){
   return s.email;
 }
 
-async function ipKey(request){ return 'i:' + (await sha256('ce:' + (request.headers.get('cf-connecting-ip') || ''))).slice(0, 24); }
+export async function ipKey(request){ return 'i:' + (await sha256('ce:' + (request.headers.get('cf-connecting-ip') || ''))).slice(0, 24); }
 
 export async function login(request, env){
   sameOrigin(request);
