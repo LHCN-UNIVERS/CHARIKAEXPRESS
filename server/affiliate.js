@@ -47,7 +47,7 @@ export async function defaultCode(env, name){
 export async function promoInfo(env, code){
   code = str(code, 20).toUpperCase();
   if (!CODE.test(code)) return null;
-  return env.DB.prepare("SELECT p.code, p.discount, p.affiliate_id FROM promo_codes p JOIN affiliates a ON a.id = p.affiliate_id WHERE p.code = ? AND p.active = 1 AND a.status = 'active'").bind(code).first();
+  return env.DB.prepare("SELECT p.code, p.discount, p.affiliate_id, a.name, a.company FROM promo_codes p JOIN affiliates a ON a.id = p.affiliate_id WHERE p.code = ? AND p.active = 1 AND a.status = 'active'").bind(code).first();
 }
 
 async function signedIn(request, env){
@@ -63,7 +63,9 @@ export async function promoApi(request, env){
   try {
     const p = await promoInfo(env, new URL(request.url).searchParams.get('code'));
     if (!p) return json({ error: 'not_found' }, 404);
-    return json({ ok: true, code: p.code, discount: p.discount });
+    // partner shown to the client on the gift card: company name, or first name only
+    const partner = (p.company || String(p.name || '').trim().split(/\s+/)[0] || '').slice(0, 40);
+    return json({ ok: true, code: p.code, discount: p.discount, partner });
   } catch (e) { return fail(e); }
 }
 

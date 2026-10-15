@@ -216,7 +216,7 @@ details.more .feats{margin-top:12px}
 /* Partner promo code: a gift card coming out of a sealed envelope (shown when the visitor has a code with a discount) */
 .pbar{padding:14px 0 2px}
 .pbar .ltr{direction:ltr;unicode-bidi:isolate}
-.pgift{display:flex;align-items:center;gap:clamp(18px,3vw,34px);background:var(--blush);border:1px solid var(--line);border-radius:22px;padding:12px clamp(16px,2.4vw,26px) 10px clamp(16px,2.4vw,28px)}
+.pgift{position:relative;display:flex;align-items:center;gap:clamp(18px,3vw,34px);background:var(--blush);border:1px solid var(--line);border-radius:22px;padding:12px clamp(16px,2.4vw,26px) 10px clamp(16px,2.4vw,28px)}
 .penv{position:relative;width:200px;height:118px;flex:none;margin-top:10px}
 .penv .back{position:absolute;inset:28px 0 0;background:#ffd3df;border-radius:8px}
 .pcard{position:absolute;left:11px;top:0;width:178px;height:106px;border-radius:12px;padding:10px 12px;overflow:hidden;color:#fff;background:linear-gradient(135deg,var(--coral),var(--pink) 50%,#a3207a);transform:rotate(-3deg);box-shadow:0 10px 18px -10px rgba(48,16,47,.8);animation:pcard .9s .3s cubic-bezier(.2,.9,.3,1.2) both}
@@ -233,14 +233,20 @@ details.more .feats{margin-top:12px}
 .pgt b{display:block;font-size:clamp(1rem,1.6vw,1.12rem)}
 .pgt p{margin:3px 0 0;color:var(--m);font-size:.86rem;line-height:1.5}
 .pgr{display:flex;flex-direction:column;align-items:flex-end;gap:9px;flex:none}
-.pok{color:var(--ok);font-weight:700;font-size:.8rem;display:inline-flex;gap:6px;align-items:center}
-.pok i{width:19px;height:19px;border-radius:50%;background:#e3f6ec;display:grid;place-items:center;font-style:normal;font-size:.7rem}
-.pcopy{border:0;border-radius:999px;padding:9px 15px;background:var(--plum);color:#fff;font:700 .76rem var(--sans);cursor:pointer}
+.pclose{position:absolute;top:8px;right:8px;width:30px;height:30px;border-radius:50%;border:0;background:rgba(48,16,47,.07);color:var(--m);font-size:.8rem;cursor:pointer;display:grid;place-items:center}
+.pclose:hover{background:rgba(48,16,47,.14);color:var(--ink)}
+.pgr{padding-right:26px}
+.pact{border:0;border-radius:999px;padding:12px 20px;background:var(--grad);color:#fff;font:700 .84rem var(--sans);cursor:pointer;box-shadow:0 10px 22px -12px rgba(255,79,145,.9);white-space:nowrap}
+.pact.done{background:#e3f6ec;color:var(--ok);box-shadow:none;cursor:default}
+.plink{font-weight:700;font-size:.82rem;color:var(--pink);text-decoration:none}
+.pgift.on{background:#f1fbf5;border-color:#cdeedb}
+.pgift.on .pcard{animation:ppop .7s ease both}
+@keyframes ppop{0%{transform:rotate(-3deg)}45%{transform:rotate(-3deg) translateY(-14px) scale(1.06)}100%{transform:rotate(-3deg)}}
 @media (max-width:720px){
   .pgift{flex-direction:column;text-align:center;gap:10px;padding:12px 16px 16px}
   .penv{width:160px;height:96px;margin-top:6px}.penv .back{inset:22px 0 0}.penv .front{height:52px}.penv .seal{width:24px;height:24px;bottom:15px}
   .pcard{left:8px;width:144px;height:86px;padding:8px 10px}.pcard .pamt{font-size:1.3rem;top:20px;right:10px}.pcard .pchip{width:20px;height:15px;margin-top:5px}.pcard .pb{font-size:.48rem}.pcard .pnum{font-size:.68rem;left:10px;bottom:7px}
-  .pgr{align-items:center;flex-direction:row;flex-wrap:wrap;justify-content:center;gap:10px}
+  .pgr{align-items:center;flex-direction:row;flex-wrap:wrap;justify-content:center;gap:12px;padding-right:0}
 }
 @media (prefers-reduced-motion:reduce){.pcard{animation:none}}
 .band h2{font-size:clamp(1.5rem,2.6vw,1.9rem);color:#fff}
@@ -357,10 +363,11 @@ footer a:hover{color:var(--pink)}
   </div>
 </div>
 
-<div class="pbar" id="pbar" hidden><div class="wrap"><div class="pgift">
+<div class="pbar" id="pbar" hidden><div class="wrap"><div class="pgift" id="pgift">
+  <button type="button" class="pclose" id="pbarX" aria-label="Fermer">✕</button>
   <div class="penv" aria-hidden="true"><i class="back"></i><div class="pcard"><span class="pb">CHARIKA EXPRESS</span><i class="pchip"></i><b class="pamt">−<span data-pamt>0</span><small>MAD</small></b><span class="pnum ltr" data-pcode>CODE</span></div><i class="front"></i><i class="seal">CE</i></div>
-  <div class="pgt"><b>Vous avez reçu une carte cadeau 🎁</b><p><span class="ltr"><span data-pamt>0</span> MAD</span> offerts par votre partenaire sur la création de votre société.<br>Rien à faire : la remise est déjà dans votre formulaire.</p></div>
-  <div class="pgr"><span class="pok"><i>✓</i><span>Code <b class="ltr" data-pcode>CODE</b> activé</span></span><button type="button" class="pcopy" id="pbarCopy">Copier le code</button></div>
+  <div class="pgt"><b id="pgTitle"></b><p id="pgText"></p></div>
+  <div class="pgr"><button type="button" class="pact" id="pbarAct"></button><a class="plink" id="pbarGo" href="demande.html" hidden></a></div>
 </div></div></div>
 
 <main id="top">
@@ -748,7 +755,7 @@ footer a:hover{color:var(--pink)}
     "Création d'entreprise au Maroc, simple et rapide. Un juriste dédié, 100 % en ligne.":"Company formation in Morocco, simple and fast. A dedicated legal advisor, 100% online.",
     "Informations":"Information", "Espace équipe":"Team space", "Casablanca, Maroc":"Casablanca, Morocco",
     "© 2026 Charika Express. Tous droits réservés.":"© 2026 Charika Express. All rights reserved.",
-    "Mon dossier":"My file", "Suivre mon dossier":"Track my file", "Devenir partenaire":"Become a partner", "Vous avez reçu une carte cadeau 🎁":"You have received a gift card 🎁", "offerts par votre partenaire sur la création de votre société.":"off your company formation, offered by your partner.", "Rien à faire : la remise est déjà dans votre formulaire.":"Nothing to do: the discount is already in your form.", "Code":"Code", "activé":"activated", "Copier le code":"Copy the code", "Code copié ✓":"Code copied ✓", "Devenez partenaire, gagnez 350 MAD par société":"Become a partner, earn 350 MAD per company", "Comptables, agences, consultants, créateurs de contenu : recommandez Charika Express et suivez les dossiers de vos clients jusqu'à la livraison des documents.":"Accountants, agencies, consultants, content creators: recommend Charika Express and follow your clients' files until the documents are delivered.",
+    "Mon dossier":"My file", "Suivre mon dossier":"Track my file", "Devenir partenaire":"Become a partner", "Fermer":"Close", "Devenez partenaire, gagnez 350 MAD par société":"Become a partner, earn 350 MAD per company", "Comptables, agences, consultants, créateurs de contenu : recommandez Charika Express et suivez les dossiers de vos clients jusqu'à la livraison des documents.":"Accountants, agencies, consultants, content creators: recommend Charika Express and follow your clients' files until the documents are delivered.",
     "Mentions légales":"Legal notice", "Conditions générales":"Terms and conditions", "Confidentialité":"Privacy",
     "Vos données sont traitées conformément à la loi n° 09-08 :":"Your data is processed in accordance with law no. 09-08:", "politique de confidentialité":"privacy policy",
     // attributes
@@ -845,13 +852,37 @@ footer a:hover{color:var(--pink)}
     fetch('/api/promo?code=' + encodeURIComponent(code)).then(r => (r.headers.get('content-type') || '').includes('application/json') ? r.json() : null).then(j => {
       if (!j || !j.ok) { if (j) try { localStorage.removeItem('ce-promo'); } catch(e) {} return; }
       if (!j.discount) return;
+      // Gift card: the code is remembered as soon as the visitor arrives (so the partner is never lost);
+      // « Activer » confirms it, ✕ hides the card for this visit.
+      try { if (sessionStorage.getItem('ce-promo-x') === j.code) return; } catch(e) {}
       document.querySelectorAll('[data-pcode]').forEach(el => { el.textContent = j.code; });
       document.querySelectorAll('[data-pamt]').forEach(el => { el.textContent = j.discount; });
+      let on = false; try { on = localStorage.getItem('ce-promo-on') === j.code; } catch(e) {}
+      const who = (j.partner || '').trim(), amt = j.discount + ' MAD';
+      const T = {
+        fr:{ title: who ? `${who} vous offre une carte cadeau 🎁` : 'Vous avez reçu une carte cadeau 🎁',
+             text: `−${amt} sur la création de votre société. Activez votre carte : la remise sera déduite automatiquement dans votre formulaire.`,
+             textOn: `Votre carte est activée : −${amt} seront déduits automatiquement de votre création${who ? `, grâce à ${who}` : ''}.`,
+             act:'Activer ma carte', on:'✓ Code activé', go:'Créer ma société →' },
+        en:{ title: who ? `${who} is giving you a gift card 🎁` : 'You have received a gift card 🎁',
+             text: `−${amt} off your company formation. Activate your card: the discount will be deducted automatically in your form.`,
+             textOn: `Your card is activated: −${amt} will be deducted automatically from your company formation${who ? `, thanks to ${who}` : ''}.`,
+             act:'Activate my card', on:'✓ Code activated', go:'Create my company →' }
+      };
+      const act = document.getElementById('pbarAct'), go = document.getElementById('pbarGo'), box = document.getElementById('pgift');
+      const paint = () => { const t = T[lang] || T.fr;
+        document.getElementById('pgTitle').textContent = t.title; document.getElementById('pgText').textContent = on ? t.textOn : t.text;
+        act.textContent = on ? t.on : t.act; act.disabled = on; act.classList.toggle('done', on); go.textContent = t.go; go.hidden = !on; box.classList.toggle('on', on); };
+      paint();
       document.getElementById('pbar').hidden = false;
-      const cp = document.getElementById('pbarCopy');
-      cp.addEventListener('click', () => {
-        const done = () => { cp.textContent = tr('Code copié ✓'); setTimeout(() => { cp.textContent = tr('Copier le code'); }, 2000); };
-        if (navigator.clipboard) navigator.clipboard.writeText(j.code).then(done, () => {}); else done();
+      document.querySelectorAll('[data-lang]').forEach(x => x.addEventListener('click', paint));
+      act.addEventListener('click', () => {
+        on = true; try { localStorage.setItem('ce-promo', j.code); localStorage.setItem('ce-promo-on', j.code); } catch(e) {}
+        paint();
+      });
+      document.getElementById('pbarX').addEventListener('click', () => {
+        try { sessionStorage.setItem('ce-promo-x', j.code); } catch(e) {}
+        document.getElementById('pbar').hidden = true;
       });
     }).catch(() => {});
   })();
