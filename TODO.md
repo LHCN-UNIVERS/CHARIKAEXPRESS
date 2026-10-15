@@ -28,7 +28,8 @@ Things left out of the homepage on purpose, because they would be false today. A
 
 ## Legal pages and CNDP
 
-`legal.html` (FR / EN) is live at charikaexpress.ma/legal: legal notice, terms and conditions, privacy policy (law 09-08). It is linked from the footer, the call-back form notice and the request form consent box.
+`legal.html` (FR / EN) exists at charikaexpress.ma/legal: legal notice, terms and conditions, privacy policy (law 09-08).
+**On hold since 15 Oct 2026:** the links « Mentions légales · Conditions générales · Confidentialité » are plain text (not clickable, `<span class="soon">`) on every page until the texts are finished. The page is also out of the sitemap and marked noindex.
 
 - [x] Review the draft and merge `preview/legal` into `main` (live since 15 Oct 2026).
 - [ ] Fill in the yellow `[à compléter]` fields: share capital, full registered office address, RC, ICE, IF, manager's name.
@@ -36,6 +37,7 @@ Things left out of the homepage on purpose, because they would be false today. A
 - [ ] Have a lawyer read the three texts before the ads start.
 - [ ] File the CNDP declaration on www.cndp.ma with the prepared answers (artifact « Déclaration CNDP »). Check first whether the CNDP asks for an **authorisation** instead, because of the ID card numbers and the transfers outside Morocco (Cloudflare, Gmail, WhatsApp).
 - [ ] Put the CNDP receipt number in the privacy policy (FR and EN).
+- [ ] When the texts are final, make the links clickable again: in `index.html` (source `body.html`: footer and call-back notice), `demande.html` (consent box, FR and EN), `suivi.html`, `partenaires.html` (footer and signup checkbox), `partenaire.html`. Replace each `<span class="soon">` with the `legal.html#mentions` / `#cgv` / `#confidentialite` link, remove the noindex from `legal.html` and put it back in `sitemap.xml`.
 - [ ] Add the « Voir les conditions » link on the guarantee banner, pointing to `legal.html#cgv`.
 - [ ] When the Meta Pixel / Google tag is added: cookie banner, and update section 8 « Cookies » of the privacy policy.
 
