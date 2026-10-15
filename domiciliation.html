@@ -124,6 +124,25 @@ footer a{color:var(--m)}
 .facts{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
 .facts div{background:#fff;color:var(--ink);border-radius:14px;padding:12px}
 .facts b{display:block;font-size:1.05rem}.facts span{font-size:.76rem;color:var(--m)}
+/* More: drag-and-drop, draft banner, rate hint, success steps, phone bar */
+.up.drag{border-color:var(--pink);background:#fff0f5}
+.draft{display:flex;align-items:center;gap:10px;background:#fff8e6;border:1px solid #f6dc9c;border-radius:14px;padding:10px 12px;font-size:.8rem;margin-top:12px}
+.draft button{border:0;background:none;color:var(--pink);font:700 .78rem var(--sans);cursor:pointer;margin-inline-start:auto}
+.hint{font-size:.74rem;color:var(--m);margin-top:-4px}.hint button{border:0;background:var(--blush);border-radius:99px;padding:3px 9px;font:700 .72rem var(--sans);cursor:pointer;color:var(--ink);margin-inline-start:4px}
+.nsteps{display:grid;gap:8px;text-align:start;margin:14px 0}
+.nsteps div{display:flex;gap:10px;align-items:center;background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:10px 12px;font-size:.84rem}
+.nsteps i{font-style:normal;width:26px;height:26px;border-radius:50%;background:var(--blush);display:grid;place-items:center;flex:none;font-size:.8rem}
+.nsteps div:first-child i{background:var(--grad);color:#fff}
+.done .acts{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.btn-wa{background:#1fae5b;color:#fff}
+.mbar{display:none}
+@media (max-width:860px){.side{display:contents}.side .pitch{order:1}#signup{order:2}.side .pv{order:3}.side .help{order:4}}
+@media (max-width:860px){
+  .mbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:30;gap:10px;align-items:center;background:rgba(255,255,255,.96);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-top:1px solid var(--line);padding:10px max(16px,env(safe-area-inset-right)) max(10px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left))}
+  .mbar .pg{flex:1;display:grid;gap:4px;font-size:.72rem;color:var(--m);font-weight:600}.mbar .pg div{height:5px;border-radius:5px;background:var(--line);overflow:hidden}.mbar .pg i{display:block;height:100%;background:var(--grad);width:0}
+  .mbar .btn{padding:11px 16px;font-size:.84rem}
+  body.hasbar footer{padding-bottom:80px}
+}
 @media (max-width:860px){.facts{grid-template-columns:1fr}}
 @media (max-width:520px){.g3{grid-template-columns:1fr}}
 </style>
@@ -162,6 +181,7 @@ footer a{color:var(--m)}
         <h2>Référencer mon centre</h2>
         <p class="muted" style="margin:4px 0 0">Gratuit et sans engagement. Votre centre apparaît aux clients après vérification.</p>
         <div class="prog"><div><i id="progI"></i></div><span id="progT"></span></div>
+        <div class="draft" id="draftBar" hidden><span>📝 <span id="draftT">Brouillon enregistré sur cet appareil</span></span><button type="button" id="draftClr">Effacer</button></div>
         <form id="sf" novalidate>
           <p class="sec" data-sec="1"><i>1</i>Votre centre</p>
           <div class="g2">
@@ -200,6 +220,7 @@ footer a{color:var(--m)}
             <label class="fl" for="s_r12">12 mois<input class="f" id="s_r12" type="number" min="0" step="50" inputmode="numeric"></label>
             <label class="fl" for="s_r24">24 mois<input class="f" id="s_r24" type="number" min="0" step="50" inputmode="numeric"></label>
           </div>
+          <p class="hint" id="rateHint" hidden></p>
           <p class="muted" style="margin:-4px 0 0;font-size:.78rem">La domiciliation est incluse dans nos packs : c'est nous qui vous payons ce tarif, le client ne paie rien en plus.</p>
           <p class="sec" data-sec="3"><i>3</i>Photos et compte</p>
           <div class="g2">
@@ -217,8 +238,9 @@ footer a{color:var(--m)}
         <div class="ic">✓</div>
         <h2>Demande envoyée</h2>
         <p class="muted">Nous vérifions votre centre sous 48 h ouvrées et vous appelons. Une fois validé, vous pourrez vous connecter à votre espace centre avec votre e-mail et votre mot de passe.</p>
+        <div class="nsteps"><div><i>✓</i><span><b>Demande reçue</b> · votre fiche est enregistrée</span></div><div><i>📞</i><span><b>Appel de validation</b> · documents et tarifs, sous 48 h</span></div><div><i>📍</i><span><b>Centre visible</b> · les clients de votre ville vous choisissent</span></div></div>
         <p class="muted" id="demoNote" hidden>(Aperçu : aucune demande n'a été envoyée.)</p>
-        <a class="btn btn-grad" href="centre.html">Espace centre</a>
+        <div class="acts"><a class="btn btn-wa" id="doneWa" href="https://wa.me/212667154604" target="_blank" rel="noopener">Envoyer mes documents sur WhatsApp</a><a class="btn btn-grad" href="centre.html">Espace centre</a></div>
       </div>
     </section>
   </div>
@@ -233,6 +255,8 @@ footer a{color:var(--m)}
     <details><summary>Puis-je mettre mon centre en pause ?</summary><p>Oui : depuis votre espace, indiquez que votre centre est complet. Il n'apparaît plus aux nouveaux clients jusqu'à ce que vous le réactiviez.</p></details>
   </section>
 </main>
+
+<div class="mbar" id="mbar"><div class="pg"><div><i id="mbI"></i></div><span id="mbT"></span></div><button type="button" class="btn btn-grad" id="mbGo">Envoyer</button></div>
 
 <footer><div class="wrap"><span>© 2026 Charika Express</span><span><span class="soon" title="Bientôt disponible">Conditions</span> · <span class="soon" title="Bientôt disponible">Confidentialité</span></span></div></footer>
 
@@ -275,7 +299,9 @@ footer a{color:var(--m)}
     "Conditions":"Terms", "Confidentialité":"Privacy",
     "Aperçu : ce que verront vos clients":"Preview: what your clients will see", "se met à jour pendant que vous remplissez":"updates as you fill in the form", "Inclus":"Included", "Votre centre":"Your centre", "Quartier · Ville":"District · City", "✓ Centre vérifié":"✓ Verified centre",
     "Une question avant de vous inscrire ?":"A question before signing up?", "Écrivez-nous sur":"Write to us on", ": nous répondons dans la journée.":": we answer the same day.",
-    "Services et tarifs":"Services and rates", "Photos et compte":"Photos and account", "Afficher":"Show",
+    "Services et tarifs":"Services and rates", "Photos et compte":"Photos and account", "Afficher":"Show", "Brouillon enregistré sur cet appareil":"Draft saved on this device", "Effacer":"Clear", "Envoyer":"Send",
+    "Demande reçue":"Application received", "· votre fiche est enregistrée":"· your listing is saved", "Appel de validation":"Validation call", "· documents et tarifs, sous 48 h":"· documents and rates, within 48 h",
+    "Centre visible":"Centre visible", "· les clients de votre ville vous choisissent":"· clients in your city choose you", "Envoyer mes documents sur WhatsApp":"Send my documents on WhatsApp",
     "Quels documents dois-je fournir ?":"Which documents do I need?", "Le RC et l'ICE de la société qui exploite le centre, et le document qui vous autorise à domicilier des entreprises. Vous pouvez les ajouter à l'inscription ou nous les envoyer plus tard sur WhatsApp.":"The RC and ICE of the company running the centre, and the document authorising you to domiciliate companies. You can add them now or send them later on WhatsApp.",
     "Combien de temps prend la validation ?":"How long does approval take?", "48 heures ouvrées en général : nous vérifions vos documents, nous vous appelons pour valider vos tarifs, puis votre centre devient visible pour les clients de votre ville.":"Usually 48 working hours: we check your documents, call you to confirm your rates, then your centre becomes visible to clients in your city."
   };
@@ -337,7 +363,13 @@ footer a{color:var(--m)}
     $('#pvPh').style.backgroundImage = photos[0] ? `url('${photos[0].src}')` : '';
     const ok = REQ.filter(id => id === 's_pw' ? $('#s_pw').value.length >= 10 : id === 's_email' ? /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(v(id)) : id === 's_phone' ? v(id).replace(/\D/g, '').length >= 9 : !!v(id)).length + ($('#s_cgu').checked ? 1 : 0);
     const n = REQ.length + 1;
-    $('#progI').style.width = Math.round(ok / n * 100) + '%';
+    $('#progI').style.width = $('#mbI').style.width = Math.round(ok / n * 100) + '%';
+    $('#mbT').textContent = `${ok}/${n} ${tx('champs obligatoires', 'required fields')}`;
+    const r12 = +v('s_r12'), r24 = $('#s_r24');
+    $('#rateHint').hidden = !(r12 > 0 && !r24.value);
+    const hint = `${tx('24 mois : souvent autour de', '24 months: often around')} ${Math.round(r12 * 1.8 / 50) * 50} MAD <button type="button" id="rateUse">${tx('Utiliser', 'Use')}</button>`;
+    if (r12 > 0 && !r24.value && $('#rateHint').innerHTML !== hint) $('#rateHint').innerHTML = hint;
+    saveDraft();
     $('#progT').textContent = ok === n ? tx('Tout est prêt : vous pouvez envoyer ✓', 'All set: you can send ✓') : tx(`${ok} champs obligatoires sur ${n} remplis`, `${ok} of ${n} required fields filled`);
     const sec1 = ['s_name', 's_phone', 's_email', 's_city', 's_address'].every(id => v(id)), sec2 = document.querySelectorAll('#s_svc input:checked').length > 0, sec3 = $('#s_pw').value.length >= 10 && $('#s_cgu').checked;
     [[1, sec1], [2, sec2], [3, sec3]].forEach(([k, d]) => { const el = document.querySelector(`[data-sec="${k}"]`); el.classList.toggle('ok', d); el.querySelector('i').textContent = d ? '✓' : k; });
@@ -349,6 +381,35 @@ footer a{color:var(--m)}
       const bad = id === 's_pw' ? el.value.length < 10 : id === 's_email' ? !/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(val) : id === 's_phone' ? val.replace(/\D/g, '').length < 9 : !val;
       el.classList.toggle('bad', bad); if (bad && !first) first = el; });
     if (first) first.focus(); };
+  $('#rateHint').addEventListener('click', e => { if (e.target.id !== 'rateUse') return; $('#s_r24').value = Math.round(+$('#s_r12').value * 1.8 / 50) * 50; live(); });
+  // Drag and drop on the photo / document boxes
+  [['s_photos', '.up[for="s_photos"]'], ['s_docs', '.up[for="s_docs"]']].forEach(([id, sel]) => {
+    const box = document.querySelector(sel);
+    ['dragenter', 'dragover'].forEach(ev => box.addEventListener(ev, e => { e.preventDefault(); box.classList.add('drag'); }));
+    ['dragleave', 'drop'].forEach(ev => box.addEventListener(ev, e => { e.preventDefault(); box.classList.remove('drag'); }));
+    box.addEventListener('drop', e => { const inp = $('#' + id); try { inp.files = e.dataTransfer.files; } catch (err) { return; } inp.dispatchEvent(new Event('change')); });
+  });
+  // Draft kept on this device (text fields and services only: no password, no files)
+  const DKEY = 'ce-centre-draft', DF = ['s_name', 's_company', 's_contact', 's_phone', 's_email', 's_city', 's_district', 's_address', 's_rc', 's_ice', 's_r12', 's_r24'];
+  let restoring = true;
+  function saveDraft(){
+    if (restoring) return;
+    const d = {}; DF.forEach(id => { d[id] = $('#' + id).value; }); d.svc = [...document.querySelectorAll('#s_svc input:checked')].map(i => i.value);
+    const any = DF.some(id => d[id].trim());
+    try { any ? localStorage.setItem(DKEY, JSON.stringify(d)) : localStorage.removeItem(DKEY); } catch (e) {}
+    $('#draftBar').hidden = !any;
+  }
+  function clearDraft(){ try { localStorage.removeItem(DKEY); } catch (e) {} $('#draftBar').hidden = true; }
+  try { const d = JSON.parse(localStorage.getItem(DKEY) || 'null'); if (d) {
+    DF.forEach(id => { if (d[id]) $('#' + id).value = d[id]; });
+    document.querySelectorAll('#s_svc input').forEach(i => { i.checked = (d.svc || []).includes(i.value); });
+    $('#draftT').textContent = tx('Brouillon repris : vous pouvez continuer là où vous étiez', 'Draft restored: carry on where you left off'); $('#draftBar').hidden = false;
+  } } catch (e) {}
+  $('#draftClr').addEventListener('click', () => { DF.forEach(id => { $('#' + id).value = ''; }); clearDraft(); live(); });
+  // Phone: bottom bar with progress, shown while the form is on screen
+  $('#mbGo').addEventListener('click', () => $('#sgo').click());
+  if ('IntersectionObserver' in window) new IntersectionObserver(es => es.forEach(en => { const on = en.isIntersecting && !$('#formView').hidden; $('#mbar').hidden = !on; document.body.classList.toggle('hasbar', on); }), { threshold:0.05 }).observe($('#formView'));
+  restoring = false;
   live();
 
   const ERR = () => ({ missing_fields:tx('Remplissez le nom du centre, la ville, l\'adresse, le téléphone et un e-mail valide.', 'Please enter the centre name, city, address, phone and a valid e-mail.'),
@@ -358,7 +419,9 @@ footer a{color:var(--m)}
     file_too_large:tx('Un fichier est trop lourd (1,2 Mo maximum).', 'A file is too large (1.2 MB max).'), bad_file_type:tx('Type de fichier non accepté.', 'File type not accepted.'),
     too_many:tx('Trop de demandes depuis cette connexion. Réessayez dans une heure.', 'Too many applications from this connection. Try again in an hour.'),
     net:tx('Envoi impossible. Vérifiez votre connexion et réessayez.', 'Could not send. Check your connection and try again.') });
-  const done = demo => { $('#formView').hidden = true; $('#doneView').hidden = false; $('#demoNote').hidden = !demo; $('#signup').scrollIntoView({ behavior:'smooth', block:'start' }); };
+  const done = demo => { clearDraft(); $('#mbar').hidden = true; document.body.classList.remove('hasbar');
+    $('#doneWa').href = 'https://wa.me/212667154604?text=' + encodeURIComponent(tx(`Bonjour, je viens de référencer mon centre « ${$('#s_name').value.trim()} » sur Charika Express. Voici mes documents (RC, ICE, autorisation de domiciliation) :`, `Hello, I have just listed my centre « ${$('#s_name').value.trim()} » on Charika Express. Here are my documents (RC, ICE, domiciliation authorisation):`));
+    $('#formView').hidden = true; $('#doneView').hidden = false; $('#demoNote').hidden = !demo; $('#signup').scrollIntoView({ behavior:'smooth', block:'start' }); };
 
   $('#sf').addEventListener('submit', async e => {
     e.preventDefault();
