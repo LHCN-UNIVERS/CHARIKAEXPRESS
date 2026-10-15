@@ -58,6 +58,16 @@ label.fl{display:grid;gap:5px;font-weight:600;font-size:.82rem}
 .login{max-width:420px;margin:12px auto 0}
 .login h1{margin:0;font-size:1.45rem;letter-spacing:-.02em}
 .login form{display:grid;gap:12px;margin-top:16px}
+/* Sign-in screens: full page, centred card on a soft gradient (same look as the team space login) */
+body.auth header,body.auth footer{display:none}
+body.auth main{min-height:100vh;min-height:100dvh;max-width:none;display:grid;place-items:center;padding:24px max(16px,env(safe-area-inset-right)) 24px max(16px,env(safe-area-inset-left));
+  background:radial-gradient(600px 400px at 85% 10%,rgba(255,122,89,.25),transparent 70%),radial-gradient(500px 400px at 10% 90%,rgba(255,79,154,.18),transparent 70%),var(--bg)}
+body.auth .login{width:100%;max-width:400px;margin:0;border-radius:26px;padding:28px;box-shadow:0 30px 60px -36px rgba(48,16,47,.45)}
+.lhead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:18px}
+.lhead .logo{color:var(--ink);font-size:1rem}.lhead .logo i{width:24px;height:24px;border-radius:8px}
+.lhead .lng{background:var(--blush)}.lhead .lng button{color:var(--ink)}.lhead .lng button[aria-pressed="true"]{background:var(--plum);color:#fff}
+.login .btn{width:100%}
+.lhint{text-align:center;font-size:.8rem;margin:16px 0 0;line-height:1.7}
 
 .kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
 .kpi{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px 16px}
@@ -130,6 +140,7 @@ footer a{color:var(--m)}
 <main class="wrap">
   <!-- Signed out -->
   <section class="card login" id="loginView" hidden>
+    <div class="lhead"><a class="logo" href="index.html"><i></i><span>Charika <b>Express</b></span></a><div class="lng" role="group" aria-label="Langue"><button type="button" data-lang="fr" aria-pressed="true">FR</button><button type="button" data-lang="en" aria-pressed="false">EN</button></div></div>
     <h1>Espace partenaire</h1>
     <p class="muted">Connectez-vous avec l'e-mail et le mot de passe de votre compte partenaire.</p>
     <form id="lf" novalidate>
@@ -138,11 +149,12 @@ footer a{color:var(--m)}
       <p class="err" id="lerr" role="alert" hidden></p>
       <button class="btn btn-grad" id="lgo" type="submit">Se connecter</button>
     </form>
-    <p class="muted" style="margin-top:14px">Pas encore partenaire ? <a href="partenaires.html">Créer un compte</a> · Mot de passe oublié ? Écrivez-nous sur <a href="https://wa.me/212667154604" target="_blank" rel="noopener">WhatsApp</a>.</p>
+    <p class="muted lhint">Pas encore partenaire ? <a href="partenaires.html">Créer un compte</a><br>Mot de passe oublié ? Écrivez-nous sur <a href="https://wa.me/212667154604" target="_blank" rel="noopener">WhatsApp</a>.</p>
   </section>
 
   <!-- Temporary password: choose a new one -->
   <section class="card login" id="pwView" hidden>
+    <div class="lhead"><a class="logo" href="index.html"><i></i><span>Charika <b>Express</b></span></a><div class="lng" role="group" aria-label="Langue"><button type="button" data-lang="fr" aria-pressed="true">FR</button><button type="button" data-lang="en" aria-pressed="false">EN</button></div></div>
     <h1>Choisissez votre mot de passe</h1>
     <p class="muted">Vous vous êtes connecté avec un mot de passe temporaire. Choisissez-en un nouveau (10 caractères minimum).</p>
     <form id="pf" novalidate>
@@ -225,7 +237,7 @@ footer a{color:var(--m)}
     "Espace partenaire · Charika Express":"Partner space · Charika Express", "Espace partenaire":"Partner space", "Langue":"Language", "Déconnexion":"Sign out",
     "Connectez-vous avec l'e-mail et le mot de passe de votre compte partenaire.":"Sign in with the e-mail and password of your partner account.",
     "Mot de passe":"Password", "Se connecter":"Sign in", "Pas encore partenaire ?":"Not a partner yet?", "Créer un compte":"Create an account",
-    "· Mot de passe oublié ? Écrivez-nous sur":"· Forgot your password? Write to us on",
+    "Mot de passe oublié ? Écrivez-nous sur":"Forgot your password? Write to us on",
     "Choisissez votre mot de passe":"Choose your password",
     "Vous vous êtes connecté avec un mot de passe temporaire. Choisissez-en un nouveau (10 caractères minimum).":"You signed in with a temporary password. Choose a new one (at least 10 characters).",
     "Mot de passe temporaire":"Temporary password", "Nouveau mot de passe":"New password", "Enregistrer":"Save",
@@ -281,7 +293,7 @@ footer a{color:var(--m)}
     const isJson = (res.headers.get('content-type') || '').includes('application/json');
     return { res, isJson, body: isJson ? await res.json() : null };
   }
-  const view = v => { ['loginView', 'pwView', 'appView'].forEach(id => $('#' + id).hidden = id !== v); $('#out').hidden = v === 'loginView'; };
+  const view = v => { ['loginView', 'pwView', 'appView'].forEach(id => $('#' + id).hidden = id !== v); $('#out').hidden = v === 'loginView'; document.body.classList.toggle('auth', v !== 'appView'); };
 
   async function boot(){
     let r;
