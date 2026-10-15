@@ -213,8 +213,36 @@ details.more .feats{margin-top:12px}
 .refband .gift{width:56px;height:56px;border-radius:16px;background:var(--blush);display:grid;place-items:center;font-size:1.7rem}
 .refband h2{font-size:clamp(1.2rem,2.2vw,1.5rem);margin:0}
 .refband p{margin:4px 0 0;font-size:.9rem;color:var(--m)}
-.pbar{background:var(--blush);color:var(--ink);font-size:.84rem;padding:10px 0;border-bottom:1px solid var(--line)}
+/* Partner promo code: a gift card coming out of a sealed envelope (shown when the visitor has a code with a discount) */
+.pbar{padding:14px 0 2px}
 .pbar .ltr{direction:ltr;unicode-bidi:isolate}
+.pgift{display:flex;align-items:center;gap:clamp(18px,3vw,34px);background:var(--blush);border:1px solid var(--line);border-radius:22px;padding:12px clamp(16px,2.4vw,26px) 10px clamp(16px,2.4vw,28px)}
+.penv{position:relative;width:200px;height:118px;flex:none;margin-top:10px}
+.penv .back{position:absolute;inset:28px 0 0;background:#ffd3df;border-radius:8px}
+.pcard{position:absolute;left:11px;top:0;width:178px;height:106px;border-radius:12px;padding:10px 12px;overflow:hidden;color:#fff;background:linear-gradient(135deg,var(--coral),var(--pink) 50%,#a3207a);transform:rotate(-3deg);box-shadow:0 10px 18px -10px rgba(48,16,47,.8);animation:pcard .9s .3s cubic-bezier(.2,.9,.3,1.2) both}
+.pcard::before{content:"";position:absolute;inset:-40% -60%;background:linear-gradient(115deg,transparent 40%,rgba(255,255,255,.28) 48%,transparent 56%)}
+.pcard .pb{font-size:.56rem;font-weight:800;letter-spacing:.08em;display:block}
+.pcard .pchip{display:block;width:26px;height:19px;border-radius:5px;margin-top:7px;background:linear-gradient(135deg,#fff3c4,#e8a11a 60%,#ffe08a)}
+.pcard .pamt{position:absolute;right:12px;top:24px;font-size:1.65rem;font-weight:800;letter-spacing:-.02em;line-height:1}
+.pcard .pamt small{font-size:.66rem;margin-left:3px}
+.pcard .pnum{position:absolute;left:12px;bottom:9px;font:800 .78rem ui-monospace,Menlo,monospace;letter-spacing:.2em}
+.penv .front{position:absolute;left:0;right:0;bottom:0;height:64px;border-radius:0 0 8px 8px;background:linear-gradient(160deg,#ffe7ee,#ffc9d8);clip-path:polygon(0 0,50% 55%,100% 0,100% 100%,0 100%)}
+.penv .seal{position:absolute;left:50%;bottom:19px;transform:translateX(-50%);width:28px;height:28px;border-radius:50%;background:var(--plum);color:#ffc145;display:grid;place-items:center;font-size:.66rem;font-weight:800;font-style:normal;box-shadow:0 3px 6px rgba(48,16,47,.35)}
+@keyframes pcard{from{transform:translateY(34px) rotate(0)}to{transform:rotate(-3deg)}}
+.pgt{flex:1;min-width:0}
+.pgt b{display:block;font-size:clamp(1rem,1.6vw,1.12rem)}
+.pgt p{margin:3px 0 0;color:var(--m);font-size:.86rem;line-height:1.5}
+.pgr{display:flex;flex-direction:column;align-items:flex-end;gap:9px;flex:none}
+.pok{color:var(--ok);font-weight:700;font-size:.8rem;display:inline-flex;gap:6px;align-items:center}
+.pok i{width:19px;height:19px;border-radius:50%;background:#e3f6ec;display:grid;place-items:center;font-style:normal;font-size:.7rem}
+.pcopy{border:0;border-radius:999px;padding:9px 15px;background:var(--plum);color:#fff;font:700 .76rem var(--sans);cursor:pointer}
+@media (max-width:720px){
+  .pgift{flex-direction:column;text-align:center;gap:10px;padding:12px 16px 16px}
+  .penv{width:160px;height:96px;margin-top:6px}.penv .back{inset:22px 0 0}.penv .front{height:52px}.penv .seal{width:24px;height:24px;bottom:15px}
+  .pcard{left:8px;width:144px;height:86px;padding:8px 10px}.pcard .pamt{font-size:1.3rem;top:20px;right:10px}.pcard .pchip{width:20px;height:15px;margin-top:5px}.pcard .pb{font-size:.48rem}.pcard .pnum{font-size:.68rem;left:10px;bottom:7px}
+  .pgr{align-items:center;flex-direction:row;flex-wrap:wrap;justify-content:center;gap:10px}
+}
+@media (prefers-reduced-motion:reduce){.pcard{animation:none}}
 .band h2{font-size:clamp(1.5rem,2.6vw,1.9rem);color:#fff}
 .band p{font-size:.92rem;color:#fff3f6}
 .band .btn{margin-top:14px}
@@ -329,7 +357,11 @@ footer a:hover{color:var(--pink)}
   </div>
 </div>
 
-<div class="pbar" id="pbar" hidden><div class="wrap"><span>🎁 <b>Code promo <span class="ltr" id="pbarCode">CODE</span></b> · <span>Remise de <b class="ltr" id="pbarAmt">0 MAD</b> sur votre création, appliquée automatiquement dans le formulaire.</span></span></div></div>
+<div class="pbar" id="pbar" hidden><div class="wrap"><div class="pgift">
+  <div class="penv" aria-hidden="true"><i class="back"></i><div class="pcard"><span class="pb">CHARIKA EXPRESS</span><i class="pchip"></i><b class="pamt">−<span data-pamt>0</span><small>MAD</small></b><span class="pnum ltr" data-pcode>CODE</span></div><i class="front"></i><i class="seal">CE</i></div>
+  <div class="pgt"><b>Vous avez reçu une carte cadeau 🎁</b><p><span class="ltr"><span data-pamt>0</span> MAD</span> offerts par votre partenaire sur la création de votre société.<br>Rien à faire : la remise est déjà dans votre formulaire.</p></div>
+  <div class="pgr"><span class="pok"><i>✓</i><span>Code <b class="ltr" data-pcode>CODE</b> activé</span></span><button type="button" class="pcopy" id="pbarCopy">Copier le code</button></div>
+</div></div></div>
 
 <main id="top">
   <!-- HERO -->
@@ -716,7 +748,7 @@ footer a:hover{color:var(--pink)}
     "Création d'entreprise au Maroc, simple et rapide. Un juriste dédié, 100 % en ligne.":"Company formation in Morocco, simple and fast. A dedicated legal advisor, 100% online.",
     "Informations":"Information", "Espace équipe":"Team space", "Casablanca, Maroc":"Casablanca, Morocco",
     "© 2026 Charika Express. Tous droits réservés.":"© 2026 Charika Express. All rights reserved.",
-    "Mon dossier":"My file", "Suivre mon dossier":"Track my file", "Devenir partenaire":"Become a partner", "Code promo":"Promo code", "Remise de":"Discount of", "sur votre création, appliquée automatiquement dans le formulaire.":"on your company formation, applied automatically in the form.", "Devenez partenaire, gagnez 350 MAD par société":"Become a partner, earn 350 MAD per company", "Comptables, agences, consultants, créateurs de contenu : recommandez Charika Express et suivez les dossiers de vos clients jusqu'à la livraison des documents.":"Accountants, agencies, consultants, content creators: recommend Charika Express and follow your clients' files until the documents are delivered.",
+    "Mon dossier":"My file", "Suivre mon dossier":"Track my file", "Devenir partenaire":"Become a partner", "Vous avez reçu une carte cadeau 🎁":"You have received a gift card 🎁", "offerts par votre partenaire sur la création de votre société.":"off your company formation, offered by your partner.", "Rien à faire : la remise est déjà dans votre formulaire.":"Nothing to do: the discount is already in your form.", "Code":"Code", "activé":"activated", "Copier le code":"Copy the code", "Code copié ✓":"Code copied ✓", "Devenez partenaire, gagnez 350 MAD par société":"Become a partner, earn 350 MAD per company", "Comptables, agences, consultants, créateurs de contenu : recommandez Charika Express et suivez les dossiers de vos clients jusqu'à la livraison des documents.":"Accountants, agencies, consultants, content creators: recommend Charika Express and follow your clients' files until the documents are delivered.",
     "Mentions légales":"Legal notice", "Conditions générales":"Terms and conditions", "Confidentialité":"Privacy",
     "Vos données sont traitées conformément à la loi n° 09-08 :":"Your data is processed in accordance with law no. 09-08:", "politique de confidentialité":"privacy policy",
     // attributes
@@ -813,8 +845,14 @@ footer a:hover{color:var(--pink)}
     fetch('/api/promo?code=' + encodeURIComponent(code)).then(r => (r.headers.get('content-type') || '').includes('application/json') ? r.json() : null).then(j => {
       if (!j || !j.ok) { if (j) try { localStorage.removeItem('ce-promo'); } catch(e) {} return; }
       if (!j.discount) return;
-      document.getElementById('pbarCode').textContent = j.code; document.getElementById('pbarAmt').textContent = j.discount + ' MAD';
+      document.querySelectorAll('[data-pcode]').forEach(el => { el.textContent = j.code; });
+      document.querySelectorAll('[data-pamt]').forEach(el => { el.textContent = j.discount; });
       document.getElementById('pbar').hidden = false;
+      const cp = document.getElementById('pbarCopy');
+      cp.addEventListener('click', () => {
+        const done = () => { cp.textContent = tr('Code copié ✓'); setTimeout(() => { cp.textContent = tr('Copier le code'); }, 2000); };
+        if (navigator.clipboard) navigator.clipboard.writeText(j.code).then(done, () => {}); else done();
+      });
     }).catch(() => {});
   })();
 })();
