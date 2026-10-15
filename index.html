@@ -233,6 +233,8 @@ details.more .feats{margin-top:12px}
 .form textarea{min-height:76px;resize:vertical}
 .form [aria-invalid="true"]{border-color:#ff8aa9;box-shadow:0 0 0 3px rgba(255,79,145,.25)}
 .consent{font-size:.72rem;color:#cdb3c6;line-height:1.5}
+.consent a{color:#ffd0dd;text-decoration:underline}
+.f-legal a:hover{color:var(--pink)}
 .factions{display:flex;flex-wrap:wrap;gap:10px}
 .factions .btn{flex:1 1 180px}
 .msg{font-size:.84rem;border-radius:12px;padding:10px 12px}
@@ -575,7 +577,7 @@ footer a:hover{color:var(--pink)}
             </select>
           </div>
           <div><label for="msg">Votre message (facultatif)</label><textarea id="msg" placeholder="Votre projet en quelques mots…"></textarea></div>
-          <p class="consent">En envoyant ce formulaire, vous acceptez d'être recontacté par Charika Express au sujet de votre demande.</p>
+          <p class="consent">En envoyant ce formulaire, vous acceptez d'être recontacté par Charika Express au sujet de votre demande. <span>Vos données sont traitées conformément à la loi n° 09-08 :</span> <a href="legal.html#confidentialite">politique de confidentialité</a>.</p>
           <div class="factions">
             <button class="btn btn-grad" type="submit" id="send">Demander un rappel</button>
             <a class="btn btn-wa" href="https://wa.me/212667154604" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.4 14.2c-.2.6-1.3 1.2-1.8 1.3-.5 0-1 .2-3.3-.7-2.8-1.1-4.5-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.9 2c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.6.2.3.7 1.2 1.6 1.9 1.1 1 2 1.3 2.3 1.4.3.1.4.1.6-.1l.8-1c.2-.2.4-.2.6-.1l1.9.9c.3.1.4.2.5.3.1.1.1.6-.1 1.2z"/></svg>Contacter sur WhatsApp</a>
@@ -597,7 +599,7 @@ footer a:hover{color:var(--pink)}
       <div><h4>Informations</h4><ul><li><a href="#pourquoi">À propos</a></li><li><a href="#tarifs">Tarifs</a></li><li><a href="#faq">FAQ</a></li><li><a href="#contact">Contact</a></li><li><a href="admin.html">Espace équipe</a></li></ul></div>
       <div><h4>Contact</h4><ul><li dir="ltr">+212 667 154 604</li><li>charikaexpress@gmail.com</li><li>Casablanca, Maroc</li></ul></div>
     </div>
-    <div class="f-bottom"><span>© 2026 Charika Express. Tous droits réservés.</span><span>Mentions légales · Conditions générales · Confidentialité</span></div>
+    <div class="f-bottom"><span>© 2026 Charika Express. Tous droits réservés.</span><span class="f-legal"><a href="legal.html#mentions">Mentions légales</a> · <a href="legal.html#cgv">Conditions générales</a> · <a href="legal.html#confidentialite">Confidentialité</a></span></div>
   </div>
 </footer>
 
@@ -692,7 +694,8 @@ footer a:hover{color:var(--pink)}
     "Création d'entreprise au Maroc, simple et rapide. Un juriste dédié, 100 % en ligne.":"Company formation in Morocco, simple and fast. A dedicated legal advisor, 100% online.",
     "Informations":"Information", "Espace équipe":"Team space", "Casablanca, Maroc":"Casablanca, Morocco",
     "© 2026 Charika Express. Tous droits réservés.":"© 2026 Charika Express. All rights reserved.",
-    "Mentions légales · Conditions générales · Confidentialité":"Legal notice · Terms and conditions · Privacy",
+    "Mentions légales":"Legal notice", "Conditions générales":"Terms and conditions", "Confidentialité":"Privacy",
+    "Vos données sont traitées conformément à la loi n° 09-08 :":"Your data is processed in accordance with law no. 09-08:", "politique de confidentialité":"privacy policy",
     // attributes
     "Navigation principale":"Main navigation", "Charika Express, accueil":"Charika Express, home", "Ouvrir le menu":"Open the menu", "Fermer le menu":"Close the menu",
     "Forme juridique":"Legal form", "Votre projet en quelques mots…":"Your project in a few words…", "Nous écrire sur WhatsApp":"Write to us on WhatsApp", "Langue":"Language"

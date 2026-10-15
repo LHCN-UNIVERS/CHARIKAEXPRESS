@@ -4,5 +4,5 @@
 set -e
 rm -rf dist
 mkdir -p dist
-cp index.html demande.html admin.html messages.js og-image.jpg robots.txt sitemap.xml _headers dist/
+cp index.html demande.html legal.html admin.html messages.js og-image.jpg robots.txt sitemap.xml _headers dist/
 echo "Built dist/:" && ls -la dist
