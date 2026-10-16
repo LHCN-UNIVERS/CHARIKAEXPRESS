@@ -1358,6 +1358,12 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     sc.onerror = () => { genLoad = null; sc.remove(); ko(new Error('chargement impossible')); };
     document.head.appendChild(sc);
   }));
+  // Where the trade register is kept: the commercial court in the cities that have one, the court of first instance elsewhere.
+  // Commercial courts: the 8 of decree 2-97-771, plus Laâyoune and Dakhla added by decree 2-22-62 (2022). The team can change it per file.
+  const TC_CITIES = ['casablanca', 'rabat', 'fes', 'meknes', 'tanger', 'marrakech', 'agadir', 'oujda', 'laayoune', 'dakhla'];
+  const tcCity = v => TC_CITIES.includes(normTxt(v).replace(/[^a-z]/g, '').replace(/^fez$/, 'fes').replace(/^tangier$/, 'tanger').replace(/^elayoun|^laayoun.*/, 'laayoune'));
+  const tribOf = g => g.trib || (tcCity(g.ville) ? 'tc' : 'tpi');
+  const tribLabel = (t, ville) => `${t === 'tc' ? 'Tribunal de commerce' : 'Tribunal de première instance'} de ${ville || '…'}`;
   const GEN_CENTRES = [{ id:'monde-de-domiciliation', match:'monde de domiciliation', n:3 }, { id:'aam-business-center', match:'aam business', n:2 }];
   const GEN_TASK = { statuts:'statuts', 'declaration-honneur':'honneur', 'rc-modele2':'form-rc', 'contrat-domiciliation':'domiciliation' };   // generated document → task
   const normTxt = v => String(v || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
@@ -1392,7 +1398,13 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
         tp:id.type === 'pass' ? 'Passeport' : 'CIN', np:id.num || '', adr:id.adr || '', qualite:'Associé unique et gérant', parts:'' }] };
   }
   async function genRun(r){
-    const M = await loadGen(), res = M.generer(genPayload(r, M));
+    const M = await loadGen(), res = M.generer(genPayload(r, M)), x = genInfo(r);
+    if (tribOf(x.g) === 'tpi') res.docs.forEach(d => {     // the RC model prints « Tribunal de Commerce De <ville> »
+      if (d.id !== 'rc-modele2' || !window.PizZip) return;
+      const z = new window.PizZip(d.octets), xml = z.file('word/document.xml').asText();
+      z.file('word/document.xml', xml.replace(/>Tribunal de Commerce <\/w:t>/g, '>Tribunal de Première Instance </w:t>'));
+      d.octets = z.generate({ type:'uint8array', compression:'DEFLATE' });
+    });
     GEN[r.ref] = res.docs; return res;
   }
   const DOCX = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
@@ -1426,7 +1438,8 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
           ${g.mandat === 'limitee' ? inp('Durée du mandat', 'mandatDuree', g.mandatDuree, 'placeholder="ex. 3 ans renouvelables"') : ''}</div>
           ${idsDone(r) ? '' : '<p class="gnote">Fiche d\'identité incomplète ou pièce expirée.</p>'}${canEdit ? '<button type="button" class="lk" data-idopen>✎ Modifier la fiche d\'identité</button>' : ''}`,
       () => `<div class="gf">
-          ${ro('Dénomination', r.cn?.nom || '', 'certificat')}${ro('Forme', FORMES[r.forme] || r.forme)}${inp('Ville · tribunal', 'ville', g.ville)}
+          ${ro('Dénomination', r.cn?.nom || '', 'certificat')}${ro('Forme', FORMES[r.forme] || r.forme)}${inp('Ville du siège · « Fait à »', 'ville', g.ville)}
+          <label class="cnl w2">Tribunal (registre de commerce)<select data-gen="trib" ${dis}>${['tc', 'tpi'].map(t => `<option value="${t}" ${tribOf(g) === t ? 'selected' : ''}>${esc(tribLabel(t, g.ville))}${t === (tcCity(g.ville) ? 'tc' : 'tpi') ? ' · conseillé' : ''}</option>`).join('')}</select></label>
           ${+r.capital > 0 ? ro('Capital', fmt(r.capital) + ' MAD', 'demande') : inp('Capital (MAD)', 'capital', g.capital, 'type="number" min="1"')}${inp("Valeur d'une part (MAD)", 'vn', g.vn, 'type="number" min="1"')}${inp('Durée (ans)', 'duree', g.duree, 'type="number" min="1" max="99"')}
           ${ro('N° du certificat négatif', r.cn?.num, 'certificat')}${ro('ICE', r.cn?.ice, 'certificat')}${inp('Date des actes', 'dateActes', g.dateActes, 'type="date"')}
           <label class="cnl w3">Objet social (validé avec le client)<textarea data-gen="objet" rows="3" ${dis}>${esc(g.objet)}</textarea></label></div>
@@ -1441,7 +1454,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
         const blk = (i, rows) => `<div class="gsum"><h6>${GEN_PAGES[i][0]} ${GEN_PAGES[i][1]} ${oks[i] ? '' : '<em>à compléter</em>'}<button type="button" class="lk" data-gpage="${i}">Modifier</button></h6>${rows.map(([k, v]) => `<div><span>${esc(k)}</span><b>${esc(v || '—')}</b></div>`).join('')}</div>`;
         const docs = got ? `<div class="gdocs">${got.map(d => `<div><i>W</i><span>${esc(d.label)}</span><button type="button" class="btn b-soft b-sm" data-gdl="${esc(d.id)}" aria-label="Télécharger ${esc(d.label)}">⬇</button></div>`).join('')}</div>` : '';
         return `<div class="gsums">${blk(0, [['Nom', `${g.civ === 'Mme' ? 'Mme' : 'M.'} ${x.nm.prenom} ${x.nm.nom}`], [id.type === 'pass' ? 'Passeport' : 'CIN', id.num], ['Né(e) le', id.dn ? `${fdate(id.dn)} à ${id.ln}` : ''], ['Qualité', 'Associé unique et gérant']])}
-          ${blk(1, [['Dénomination', r.cn ? `${r.cn.nom} ${FORMES[r.forme] || ''}` : ''], ['Capital', +x.cap > 0 ? `${fmt(x.cap)} MAD · ${fmt(parts)} parts` : ''], ['ICE', r.cn?.ice], ['Actes du', fdate(g.dateActes)]])}
+          ${blk(1, [['Dénomination', r.cn ? `${r.cn.nom} ${FORMES[r.forme] || ''}` : ''], ['Tribunal', tribLabel(tribOf(g), g.ville)], ['Capital', +x.cap > 0 ? `${fmt(x.cap)} MAD · ${fmt(parts)} parts` : ''], ['ICE', r.cn?.ice], ['Actes du', fdate(g.dateActes)]])}
           <div class="w2">${blk(2, r.siege === 'local' ? [['Siège', g.adrLocal]] : [['Centre', x.d ? `${x.d.centreName} · ${x.d.months || 6} mois` : ''], ['Siège', x.d?.centreAddress]])}</div></div>
           ${docs}${done ? `<p class="gsm2">Généré ${esc(when(r.gen.at))}${member(r.gen.by) ? ' · ' + esc(member(r.gen.by).name) : ''}. Relisez, puis cochez chaque document ci-dessous.</p>` : ''}
           ${canEdit ? `<div class="gact"><button type="button" class="btn b-grad" id="genGo" ${x.ok && oks.every(Boolean) ? '' : 'disabled'}>${done ? '↻ Régénérer' : `📄 Générer les ${x.n} documents (.zip)`}</button>${done ? `<button type="button" class="btn b-soft" id="genZip" ${x.ok ? '' : 'disabled'}>⬇ Tout télécharger (.zip)</button>` : ''}</div>` : ''}`;
@@ -1876,6 +1889,8 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     if (e.target.closest('#idForm') && $('#idErr')) $('#idErr').hidden = true;
     if (e.target.dataset.gen) {
       const r = get(current); r.gen = Object.assign({}, r.gen, { [e.target.dataset.gen]:e.target.value });
+      if (e.target.dataset.gen === 'ville' && !r.gen.tribSet) delete r.gen.trib;
+      if (e.target.dataset.gen === 'trib') r.gen.tribSet = true;
       const x = genInfo(r); ['genGo', 'genZip'].forEach(id => { const b = $('#' + id); if (b) b.disabled = !x.ok; }); const a = $('#annGo'); if (a) a.disabled = !(x.ok && x.g.numRC);
     }
     if (e.target.id === 'idExp') { const v = e.target.value, d = v ? daysTo(v) : null, o = $('#idExpOk'); o.textContent = d != null ? validLeft(d) : ''; o.className = d == null ? '' : d < 0 ? 'ko' : 'ok'; e.target.classList.toggle('bad', d != null && d < 0); $('#idWarn').hidden = !(d != null && d < 0); }
@@ -1929,7 +1944,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   });
   $('#detail').addEventListener('change', e => {
     if (e.target.id === 'msgPick') { msgSel = e.target.value; renderDetail(); return; }
-    if (e.target.dataset.gen) { persist(); if (e.target.tagName === 'SELECT') renderDetail(); return; }   // text fields are kept as typed (input event), without redrawing
+    if (e.target.dataset.gen) { persist(); if (e.target.tagName === 'SELECT' || e.target.dataset.gen === 'ville') renderDetail(); return; }   // text fields are kept as typed (input event), without redrawing
     if (e.target.id === 'cnExp') { const r = get(current); r.cnExp = e.target.value || null; log(r, r.cnExp ? `Certificat négatif valable jusqu'au ${new Date(r.cnExp).toLocaleDateString('fr-FR')}.` : 'Date de validité du certificat négatif effacée.'); persist(); renderDetail(); return; }
     if (e.target.id !== 'assign') return;
     const r = get(current); r.juriste = e.target.value || null;
