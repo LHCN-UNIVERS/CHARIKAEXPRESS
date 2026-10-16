@@ -217,7 +217,7 @@ export async function adminCentres(request, env, path, me, tempPassword){
   const method = request.method;
   if (method === 'GET' && path === 'domi') {
     const { results } = await env.DB.prepare('SELECT d.*, c.name AS centre_name, c.phone AS centre_phone, c.address AS centre_address, c.district AS centre_district, c.city AS centre_city, c.rate12, c.rate24 FROM domi d LEFT JOIN centres c ON c.id = d.centre_id').all();
-    return json({ domi: results.map(d => ({ ref: d.ref, centre: d.centre_id, centreName: d.centre_name || '', centrePhone: d.centre_phone || '', centreAddress: [d.centre_address, d.centre_district, d.centre_city].filter(Boolean).join(', '), months: d.months,
+    return json({ domi: results.map(d => ({ ref: d.ref, centre: d.centre_id, centreName: d.centre_name || '', centrePhone: d.centre_phone || '', centreAddress: [d.centre_address, d.centre_district, d.centre_city].filter(Boolean).join(', '), centreCity: d.centre_city || '', months: d.months,
       status: d.status, attFile: d.att_file || null, paidAt: d.paid_at || null, rate: d.months === 12 ? d.rate12 || 0 : d.rate24 || 0, updatedAt: d.updated_at })),
       centres: (await env.DB.prepare("SELECT id, name, city, district FROM centres WHERE status = 'active' ORDER BY city, name").all()).results });
   }
