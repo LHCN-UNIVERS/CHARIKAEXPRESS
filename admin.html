@@ -363,29 +363,32 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
 .li small.rej{color:var(--err);font-weight:600}
 .two{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
 .two > *,.box,.lgrp,.lv{min-width:0}
-/* The current step as the top card of a pile: done steps on the left, the ones to come on the right */
-.deck{display:grid;grid-template-columns:200px minmax(0,1fr) 200px;gap:20px;align-items:start}
-.pile{display:grid;gap:8px;align-content:start}.pile > b{font-size:.68rem;font-weight:800;letter-spacing:.12em;color:var(--m);text-transform:uppercase;margin:0 2px 2px}
-.pc{background:#fff;border-radius:12px;padding:9px 11px;font-size:.76rem;display:flex;gap:8px;align-items:center;border:1px solid #cdeedd;min-width:0}
-.pc i{font-style:normal;width:20px;height:20px;border-radius:50%;background:var(--ok);color:#fff;display:grid;place-items:center;font-size:.66rem;font-weight:800;flex:none}
-.pc.f{border-color:var(--line);color:var(--m)}.pc.f i{background:#f4eef1;color:var(--m)}
-.stack{position:relative;padding-top:38px;min-width:0}
-.stack .sb{position:absolute;left:50%;transform:translateX(-50%);border-radius:22px;background:#fff;border:1px solid var(--line)}
-.stack .sb2{top:0;width:86%;height:60px;opacity:.5}.stack .sb1{top:13px;width:93%;height:60px;opacity:.85;text-align:center;padding-top:5px;font-size:.7rem;font-weight:700;color:var(--m)}
-.scard{position:relative;background:#fff;border-radius:24px;padding:24px;box-shadow:0 30px 60px -30px #30102f66;display:grid;gap:10px;border-top:6px solid var(--pink)}
-.scard.okc{border-top-color:var(--ok)}
-.scard .k{font-size:.7rem;font-weight:800;letter-spacing:.14em;color:var(--pink)}.scard.okc .k{color:var(--ok)}
-.scard h2{font-size:1.6rem;letter-spacing:-.03em;margin:0}.scard .hint{margin:-4px 0 4px}
-.crow{display:flex;gap:12px;align-items:center;padding:11px 13px;border-radius:14px;background:#fdf7f8;font-size:.86rem}
-.crow > i{font-style:normal;width:24px;height:24px;border-radius:8px;border:2px solid #e2cfd7;flex:none;display:grid;place-items:center;color:#fff;font-size:.78rem;font-weight:800;background:#fff}
-.crow > span{flex:1;min-width:0}.crow small{display:block;color:var(--m);font-size:.72rem}
-.crow.y{background:#effaf4}.crow.y > i{background:var(--ok);border:0}.crow.y b{color:var(--m);text-decoration:line-through}
-.crow .tpl{width:auto;min-width:110px;text-align:center}.crow .btn{flex:none}
-.caddr{display:flex;gap:10px;align-items:center;background:var(--blush,#fff1f5);border-radius:14px;padding:11px 13px;font-size:.86rem}.caddr b{flex:1;min-width:0}
-.cfoot{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:12px;margin-top:4px;color:var(--m);font-size:.78rem}
-.cfoot .stepback{border:0;background:none;padding:0}
-.cfoot .off{opacity:.45;pointer-events:none}
-@media (max-width:1300px){.deck{grid-template-columns:1fr}.pile{display:flex;flex-wrap:wrap}.pile > b{width:100%}.deck .pile:first-child{order:2}.deck .pile:last-child{order:3}}
+/* The current step as questions, one at a time: each answer brings the next question, the last one opens the next step */
+.qwrap{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:20px;align-items:start}
+.qcard{background:#fff;border-radius:24px;padding:26px;box-shadow:0 24px 60px -30px #30102f55;display:grid;gap:14px;align-content:start;min-width:0}
+.qcard .k{font-size:.7rem;letter-spacing:.14em;font-weight:800;color:var(--pink);text-transform:uppercase}
+.qprog{display:flex;gap:6px}.qprog i{flex:1;height:6px;border-radius:6px;background:var(--line)}.qprog .d{background:var(--ok)}.qprog .n{background:var(--grad)}
+.qans{display:grid;gap:6px}
+.qans button{all:unset;cursor:pointer;display:flex;gap:10px;align-items:center;font-size:.84rem;color:var(--m)}.qans button b{color:var(--ink)}
+.qans button i{font-style:normal;width:22px;height:22px;border-radius:50%;background:var(--ok);color:#fff;display:grid;place-items:center;font-size:.7rem;font-weight:800;flex:none}
+.qans button:hover b{text-decoration:underline}
+.bigq{font-size:1.7rem;font-weight:800;letter-spacing:-.025em;line-height:1.2}
+.qsub{color:var(--m);font-size:.84rem;margin-top:-6px}
+.qhelp{display:flex;gap:10px;align-items:center;background:var(--blush,#fff1f5);border-radius:14px;padding:12px 14px;font-size:.86rem}.qhelp b{flex:1;min-width:0}
+.qopts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.qopts button{all:unset;box-sizing:border-box;cursor:pointer;border:2px solid var(--line);border-radius:16px;padding:16px;text-align:center;font-weight:800;font-size:.95rem;background:#fff}
+.qopts button:disabled{cursor:default;opacity:.5}
+.qopts .y{background:var(--ok);border-color:var(--ok);color:#fff}.qopts .c{border-color:#ffd98a;background:#fff8e6;color:#a06d00}
+.qopts button:not(:disabled):hover{transform:translateY(-1px);box-shadow:0 8px 18px -12px #30102f66}
+.qnote{color:var(--m);font-size:.76rem;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center}
+.qnote .lk{all:unset;cursor:pointer;color:var(--m);font-weight:700}.qnote .lk:hover{color:var(--ink)}
+.qdone{display:grid;justify-items:center;text-align:center;gap:8px;padding:10px 0}.qdone .ok{width:64px;height:64px;border-radius:50%;background:var(--ok);color:#fff;display:grid;place-items:center;font-size:30px;font-weight:900;box-shadow:0 0 0 10px #1d9a6220}
+.qside{display:grid;gap:14px;min-width:0}
+.qside .box{border-radius:18px}
+.qrow{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);font-size:.8rem}.qrow:last-child{border:0}
+.qrow > span{color:var(--m);min-width:0}.qrow > b{text-align:end}.qrow .tbr{flex:none}
+.qside .tile,.qside .tile.hot{box-shadow:none;padding:0;background:none}
+@media (max-width:1100px){.qwrap{grid-template-columns:1fr}}
 .board{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;align-items:start}
 .bcol{background:#f8f1f2;border-radius:18px;padding:12px;display:grid;gap:10px;min-width:0}
 .bcol > h3{margin:2px 2px 0;font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;color:var(--m);display:flex;justify-content:space-between;align-items:center;gap:8px}
@@ -1176,7 +1179,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   }
   function renderDetail(){
     const r = current && get(current);
-    if (current !== renderDetail.last) { rejectOpen = false; msgMore = false; msgSel = null; renderDetail.last = current; }
+    if (current !== renderDetail.last) { rejectOpen = false; msgMore = false; qFocus = null; msgSel = null; renderDetail.last = current; }
     if (!r || !allowed(r)) {
       $('#detail').innerHTML = '<div class="ctr"><div class="blank"><b>Sélectionnez un dossier</b><span>La liste des demandes est à gauche.</span></div></div>';
       return;
@@ -1205,33 +1208,38 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
           <select class="f" id="rejCause"><option value="client">Problème côté client (le client sera notifié)</option><option value="cabinet">Problème côté cabinet</option></select><div class="tbr"><button class="btn b-ink b-sm">Enregistrer</button><button type="button" class="btn b-soft b-sm" id="rejCancel">Annuler</button></div></form>`;
       }
     }
-    // The step card: one row per task of the current step; done, it goes to the « Fait » pile and the next card comes up
-    const cardRow = tk => {
-      const done = taskDone(r, tk); let lab, sub = '', ctl;
-      if (tk.t === 'doc') { const st = r.livrables[tk.k] || 0; lab = DOCS[tk.k][0]; sub = DOCS[tk.k][1]; ctl = `<button class="tpl s${st}" data-liv="${tk.k}" ${canEdit ? '' : 'disabled'}>${DOC_ST[st]}</button>`; }
-      else if (tk.t === 'check') { lab = tk.label; ctl = `<button class="btn b-soft b-sm" data-check="${tk.k}" ${canEdit ? '' : 'disabled'}>${done ? 'Fait ✓' : 'Marquer fait'}</button>`; }
-      else { const a = am.find(x => x.k === tk.k) || am[0]; lab = payLabel(tk.k); sub = r.paid.full ? 'Totalité payée à la commande' : a.v == null ? 'Montant sur devis' : fmt(a.v) + ' MAD · ' + (PAY[r.payMethod] || '');
-        ctl = r.paid.full ? '<span class="tpl s2">Payé</span>' : `<button class="btn b-soft b-sm" data-pay="${tk.k}" ${canEdit ? '' : 'disabled'}>${done ? 'Reçu ✓' : 'Marquer reçu'}</button>`; }
-      return `<div class="crow ${done ? 'y' : ''}"><i>${done ? '✓' : ''}</i><span><b>${esc(lab)}${opt(tk)}</b>${sub ? `<small>${esc(sub)}</small>` : ''}</span>${ctl}</div>`;
-    };
+    // The step as questions: the first task not done (and not skipped) is asked; « En cours » or « Pas encore » moves on to the next one
     const domStep = WORKFLOW.findIndex(x => x.tasks.some(t => t.k === 'domiciliation')), dAddr = DOMI[r.ref]?.centreAddress;
-    let card;
-    if (r.step >= DONE) card = `<div class="scard okc"><span class="k">✓ TOUTES LES ÉTAPES SONT FAITES</span><h2>Dossier livré</h2><p class="hint">Tous les documents ont été envoyés au client.</p><div class="cfoot">${backBtn ? backBtn.replace('↩ Étape précédente', `↩ Reprendre l'étape ${DONE}`) : '<span></span>'}<span>${DONE} / ${DONE} étapes</span></div></div>`;
+    let qcard;
+    if (r.step >= DONE) qcard = `<div class="qcard"><div class="qdone"><div class="ok">✓</div><div class="bigq">Dossier livré</div><span class="qsub">Tous les documents ont été envoyés au client.</span></div>${backBtn ? `<div class="qnote"><span></span>${backBtn}</div>` : ''}</div>`;
     else {
-      const tks = tasksOf(r, r.step), nDone = tks.length - left;
-      const nextBtn = !left && canEdit && stepDone(r, r.step) ? `<button class="btn b-grad b-sm" id="stepNext">Carte suivante →</button>` : `<span class="btn b-grad b-sm off" title="Se débloque quand tout est fait">Carte suivante →</span>`;
-      card = `<div class="scard"><span class="k">ÉTAPE ${r.step + 1} / ${DONE}</span><h2>${esc(w.name)}</h2><p class="hint">${esc(w.hint)}</p>
+      const tks = tasksOf(r, r.step), skey = r.ref + ':' + r.step, skip = qSkip[skey] || (qSkip[skey] = new Set());
+      const open = tks.filter(tk => !taskDone(r, tk));
+      if (open.length && open.every(tk => skip.has(tk.k))) skip.clear();
+      const cur = tks.find(tk => tk.k === qFocus) || open.find(tk => !skip.has(tk.k));
+      const qi = cur ? tks.indexOf(cur) : -1, nm = tk => tk.t === 'doc' ? DOCS[tk.k][0] : tk.t === 'check' ? tk.label : payLabel(tk.k);
+      const dis = canEdit ? '' : 'disabled';
+      let ask = '';
+      if (cur) {
+        const done = taskDone(r, cur), st = r.livrables[cur.k] || 0, a = am.find(x => x.k === cur.k);
+        const q = cur.t === 'doc' ? `${nm(cur)} : c'est prêt ?` : `${nm(cur)} ?`;
+        const sub = cur.t === 'doc' ? DOCS[cur.k][1] : cur.t === 'pay' ? (r.paid.full ? 'Totalité payée à la commande' : a && a.v != null ? fmt(a.v) + ' MAD · ' + (PAY[r.payMethod] || '') : 'Montant sur devis') : '';
+        const opts = cur.t === 'doc'
+          ? `<button class="y" data-qa="${cur.k}:ok" ${dis}>✓ Oui, obtenu</button><button class="c" data-qa="${cur.k}:cours" ${dis}>${st === 1 ? 'Toujours en cours' : 'En cours'}</button><button data-qa="${cur.k}:non" ${dis}>Pas encore</button>`
+          : cur.t === 'pay' && r.paid.full ? '<button class="y" disabled>✓ Payé à la commande</button>'
+          : `<button class="y" data-qa="${cur.k}:ok" ${dis}>✓ Oui, ${cur.t === 'pay' ? 'reçu' : "c'est fait"}</button><button data-qa="${cur.k}:non" ${dis}>${done ? 'Non, à refaire' : 'Pas encore'}</button>`;
+        const help = dAddr && r.step <= domStep && ['statuts', 'domiciliation'].includes(cur.k) ? `<div class="qhelp"><span>📍</span><b>Adresse à reporter : ${esc(dAddr)}</b><button class="btn b-grad b-sm" data-cp="${esc(dAddr)}">⧉ Copier</button></div>` : '';
+        ask = `<div class="bigq">${esc(q)}${cur.opt ? ' <em class="optb">Option</em>' : ''}</div>${sub ? `<div class="qsub">${esc(sub)}</div>` : ''}${help}<div class="qopts">${opts}</div>`;
+      } else ask = `<div class="qdone"><div class="ok">✓</div><div class="bigq">${esc(w.name)} : tout est fait</div>${canEdit && stepDone(r, r.step) ? `<button class="btn b-grad" id="stepNext">Passer à l'étape ${r.step + 2} : ${esc(stepName(r.step + 1))} →</button>` : ''}</div>`;
+      const answered = tks.filter(tk => taskDone(r, tk) && tk !== cur);
+      qcard = `<div class="qcard"><span class="k">Étape ${r.step + 1} / ${DONE} · ${esc(w.name)}${cur ? ` · question ${qi + 1} sur ${tks.length}` : ''}</span>
+        <div class="qprog">${tks.map(tk => `<i class="${tk === cur ? 'n' : taskDone(r, tk) ? 'd' : ''}"></i>`).join('')}</div>
         ${rej}
-        ${tks.map(cardRow).join('')}
-        ${dAddr && r.step <= domStep ? `<div class="caddr"><span>📍</span><b>Siège : ${esc(dAddr)}</b><button class="btn b-grad b-sm" data-cp="${esc(dAddr)}">⧉ Copier</button></div>` : ''}
-        ${w.reject && canEdit && !r.reject && !rejectOpen ? '<button class="btn b-soft b-sm rejbtn" id="rejOpen">⚠ Signaler un rejet</button>' : ''}
-        <div class="cfoot">${backBtn ? backBtn.replace('↩ Étape précédente', `↩ Reprendre l'étape ${r.step}`) : '<span></span>'}<span>${nDone} / ${tks.length} fait</span>${nextBtn}</div></div>`;
+        ${answered.length ? `<div class="qans">${answered.map(tk => `<button data-qf="${tk.k}" title="Revoir cette question"><i>✓</i><span><b>${esc(nm(tk))}</b> · ${tk.t === 'doc' ? 'obtenu' : tk.t === 'pay' ? 'reçu' : 'fait'}</span></button>`).join('')}</div>` : ''}
+        ${ask}
+        <div class="qnote"><span>${cur ? (r.step + 1 < DONE ? `Après la dernière question, l'étape ${r.step + 2} « ${esc(stepName(r.step + 1))} » commence.` : 'Après la dernière question, le dossier est livré.') + (cur && open.length > 1 ? ` <button class="lk" data-qa="${cur.k}:skip">Passer cette question →</button>` : '') : ''}</span>
+          <span>${w.reject && canEdit && !r.reject && !rejectOpen ? '<button class="lk" id="rejOpen">⚠ Signaler un rejet</button> · ' : ''}${backBtn ? backBtn.replace('class="btn b-soft b-sm stepback"', 'class="lk"').replace('↩ Étape précédente', '↩ Étape précédente') : ''}</span></div></div>`;
     }
-    const deck = `<div class="deck">
-        <div class="pile"><b>Fait · ${Math.min(r.step, DONE)}</b>${WORKFLOW.slice(0, r.step).map((x, i) => `<div class="pc"><i>✓</i>${i + 1} · ${esc(x.name)}</div>`).join('') || '<small class="hint">Rien pour l\'instant</small>'}</div>
-        <div class="stack">${r.step + 1 < DONE ? `<div class="sb sb2"></div><div class="sb sb1">ensuite : ${r.step + 2} · ${esc(WORKFLOW[r.step + 1].name)}</div>` : ''}${card}</div>
-        <div class="pile"><b>À venir · ${Math.max(DONE - r.step - 1, 0)}</b>${WORKFLOW.slice(r.step + 1).map((x, i) => `<div class="pc f"><i>${r.step + i + 2}</i>${esc(x.name)}</div>`).join('') || '<small class="hint">C\'était la dernière</small>'}</div>
-      </div>`;
     // Client: the message of the step (other messages and the preview folded under it), then one card per missing piece
     const toSend = mk === auto && !sentAt && mk !== 'libre';
     const msgTile = `<div class="tile ${toSend ? 'hot' : ''}"><b>${sentAt ? '✓ Message envoyé' : '📩 Message à envoyer'}</b><small>${esc(msgOf(mk).title || 'Message libre')}${sentAt ? ' · ' + when(sentAt) : ''}</small>${waBtn(sentAt ? 'Renvoyer' : 'Envoyer', 'b-sm')}
@@ -1240,13 +1248,19 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
           <div class="mseg" role="group" aria-label="Langue"><button data-ml="fr" class="${lang === 'fr' ? 'on' : ''}">Français</button><button data-ml="ar" class="${lang === 'ar' ? 'on' : ''}">الدارجة</button></div></div>
           <div class="mprev" ${lang === 'ar' ? 'dir="rtl"' : ''}>${esc(waText)}</div>
           ${msgOf(mk)[lang].mail ? '<button class="btn b-soft b-sm" id="mailCopy">Copier l\'e-mail</button>' : ''}</details></div>`;
-    const pieceTiles = docs.map(d => r.docs[d.k]
-      ? `<div class="tile dn"><b>${esc(d.label)}</b><button class="tpl s2" data-doc="${d.k}" ${canEdit ? 'title="Cliquer pour la remettre en manquante"' : 'disabled'}>✓ Reçue</button></div>`
-      : `<div class="tile"><b>${esc(d.label)}</b><div class="tbr"><a class="btn b-soft b-sm" href="${waLink(r.client?.tel, `Bonjour ${r.client?.nom || ''}, pour avancer sur votre dossier ${r.ref}, merci de nous envoyer : ${d.label}.`)}" target="_blank" rel="noopener">Relancer</a>${canEdit ? `<button class="btn b-soft b-sm" data-doc="${d.k}">✓ Reçue</button>` : ''}</div></div>`).join('');
-    const payTiles = am.map(a => {
-      const ok = payDone(r, a.k), m = a.label.match(/^(.*?) \((.*)\)$/), nm = m ? m[1] : a.label, sub = m ? m[2] : '';
-      return `<div class="tile ${ok ? '' : ''}"><b>${ok ? '✓ ' : ''}${esc(nm)} · ${a.v == null ? 'sur devis' : fmt(a.v) + ' MAD'}</b>${ok ? '<span class="pill p-ok">Reçue</span>' : `<small>${esc(sub)}</small>${canEdit && !r.paid.full ? `<button class="btn b-soft b-sm" data-pay="${a.k}">Marquer reçu</button>` : ''}`}</div>`;
-    }).join('');
+    const centre = DOMI[r.ref]?.centreName;
+    const side = `<div class="qside">
+        <div class="box"><h4>Fiche statuts <button class="btn b-soft b-sm" id="ficheCopy">copier</button></h4>
+          <div><div class="qrow"><span>Dénomination</span><b>${esc(title(r))}</b></div>${r.capital != null ? `<div class="qrow"><span>Capital</span><b>${fmt(r.capital)} MAD</b></div>` : ''}${r.gerant?.name ? `<div class="qrow"><span>Gérant</span><b>${esc(r.gerant.name)}</b></div>` : ''}${centre ? `<div class="qrow"><span>Centre</span><b>${esc(centre)}</b></div>` : r.siege === 'local' ? '<div class="qrow"><span>Siège</span><b>Local du client</b></div>' : ''}</div></div>
+        <div class="box"><h4>Message au client <small>${sentAt ? 'envoyé ✓' : toSend ? 'à envoyer' : ''}</small></h4>${msgTile}</div>
+        <div class="box"><h4>Client <small>${piecesOk}/${docs.length} pièce${docs.length > 1 ? 's' : ''}</small></h4><div>${docs.map(d => `<div class="qrow"><span>${esc(d.label)}</span>${r.docs[d.k]
+          ? `<button class="tpl s2" style="width:auto" data-doc="${d.k}" ${canEdit ? 'title="Cliquer pour la remettre en manquante"' : 'disabled'}>✓ Reçue</button>`
+          : `<span class="tbr"><a class="btn b-soft b-sm" href="${waLink(r.client?.tel, `Bonjour ${r.client?.nom || ''}, pour avancer sur votre dossier ${r.ref}, merci de nous envoyer : ${d.label}.`)}" target="_blank" rel="noopener">Relancer</a>${canEdit ? `<button class="btn b-soft b-sm" data-doc="${d.k}">Reçue</button>` : ''}</span>`}</div>`).join('')}</div></div>
+        ${r.forme !== 'ae' && r.siege === 'dom' && SERVER ? `<div class="box"><h4>Domiciliation <small>${DOMI[r.ref] ? esc(DOMI_ST[DOMI[r.ref].status]?.[0] || '') : 'aucun centre'}</small></h4>${domiTiles(r)}</div>` : ''}
+        <div class="box"><h4>Paiements <small>${fmt(paidSum)} / ${r.total == null ? 'devis' : fmt(r.total)}</small></h4><div>${am.map(a => { const ok = payDone(r, a.k);
+          return `<div class="qrow"><span>${ok ? '✓ ' : ''}${esc(a.label)}</span>${ok ? `<b>${a.v == null ? 'sur devis' : fmt(a.v)}</b>` : canEdit && !r.paid.full ? `<button class="btn b-soft b-sm" data-pay="${a.k}">${a.v == null ? 'Reçu' : fmt(a.v) + ' · reçu ?'}</button>` : `<b>${a.v == null ? 'sur devis' : fmt(a.v)}</b>`}</div>`; }).join('')}</div></div>
+        ${affBox(r)}
+      </div>`;
     $('#detail').innerHTML = `
     <section class="ctr">
       <div class="h">
@@ -1261,12 +1275,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
         </div>
       </div>
       ${scored(r) ? scoreBox(r, canEdit) : ''}
-      ${deck}
-      <div class="board">
-        <div class="bcol"><h3>Client <small>${docs.length - piecesOk + (toSend ? 1 : 0)}</small></h3>${msgTile}${pieceTiles}</div>
-        <div class="bcol"><h3>Domiciliation <small>${DOMI[r.ref]?.status === 'done' ? '✓' : ''}</small></h3>${domiTiles(r)}${affBox(r)}</div>
-        <div class="bcol"><h3>Paiements <small>${fmt(paidSum)} / ${r.total == null ? 'devis' : fmt(r.total)}</small></h3>${payTiles}</div>
-      </div>
+      <div class="qwrap">${qcard}${side}</div>
       <div class="box"><h4>Documents de la société <small>${livOk}/${docsTotal(r)} obtenus</small></h4>
         <div class="prog"><i style="width:${livOk / docsTotal(r) * 100}%"></i></div>
         <div class="dtl">${WORKFLOW.map((x, i) => {
@@ -1356,9 +1365,24 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   }
 
   // Actions on the open file (event delegation)
-  let rejectOpen = false, msgMore = false;
+  let rejectOpen = false, msgMore = false, qFocus = null;
+  const qSkip = {};                                    // questions passed with « En cours » / « Pas encore », per file and step
   $('#detail').addEventListener('click', e => {
     const r = current && get(current); if (!r) return;
+    const qf = e.target.closest('[data-qf]');
+    if (qf) { qFocus = qf.dataset.qf; renderDetail(); return; }
+    const qa = e.target.closest('[data-qa]');
+    if (qa) {                                            // an answer to the question on screen
+      const [k, v] = qa.dataset.qa.split(':'), tk = tasksOf(r, r.step).find(x => x.k === k); if (!tk) return;
+      const skip = qSkip[r.ref + ':' + r.step] || (qSkip[r.ref + ':' + r.step] = new Set());
+      qFocus = null;
+      if (v === 'skip') { skip.add(k); renderDetail(); return; }
+      if (tk.t === 'doc') { const n = v === 'ok' ? 2 : v === 'cours' ? 1 : 0; if ((r.livrables[k] || 0) !== n) { r.livrables[k] = n; log(r, `${DOCS[k][0]} : ${DOC_ST[n].toLowerCase()}.`); } }
+      else if (tk.t === 'check') { const on = v === 'ok'; if (!!r.checks[k] !== on) { r.checks[k] = on; log(r, `${tk.label} : ${on ? 'fait ✓' : 'annulé'}.`); } }
+      else { const on = v === 'ok'; if (!!r.paid[k] !== on) { r.paid[k] = on; const a = amounts(r).find(x => x.k === k); log(r, `${a.label}${a.v != null ? ` (${fmt(a.v)} MAD)` : ''} : ${on ? 'reçu ✓' : 'remis en attente'}.`); } }
+      if (v !== 'ok') skip.add(k);
+      advance(r); renderList(); renderDetail(); return;
+    }
     const ls = e.target.closest('[data-lstep]');
     if (ls) { const key = r.ref + ':' + ls.dataset.lstep; openSteps.has(key) ? openSteps.delete(key) : openSteps.add(key); renderDetail(); return; }
     const ds = e.target.closest('[data-domiset]');
