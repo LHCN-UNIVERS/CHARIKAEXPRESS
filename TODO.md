@@ -75,3 +75,16 @@ Centres sign up on `partenaires.html` on their own page `domiciliation.html` (fo
 - [ ] Show the chosen centre and the attestation status on the client tracking page (`suivi.html`).
 - [ ] City pages for Google (« Domiciliation à Casablanca »…), once there are several centres per city.
 - [ ] Optional: notify the centre automatically (e-mail or WhatsApp API) when a new request arrives; for now the team uses the « Prévenir le centre » button.
+
+## Smart workflow (team space)
+
+The file view now shows one action at a time (`admin.html`). Next, make the 10 steps adapt to each file and to time.
+
+- [ ] Steps adapted to the file: hide the tasks that do not apply (no domiciliation contract and no « enregistrement du contrat de domiciliation » when the client has their own premises; specific tasks for auto-entrepreneur and SAS; option tasks only when chosen, as today).
+- [ ] « Qui doit agir ? » on every file: Équipe · Client · Administration (OMPIC, Impôts, Tribunal) · Centre de domiciliation; filter and sort the request list by it.
+- [ ] Normal duration per step (e.g. certificat négatif 2 days, tribunal 5 days) and late files in orange then red in the list.
+- [ ] Reminders: when the client has not sent a piece or a payment after 2 days, « Relancer le client » comes first with the message ready.
+- [ ] Tasks in parallel: the logo option starts as soon as the name is reserved; the registration can be prepared during the legalisation.
+- [ ] Dates on every step (start / end) to estimate the delivery date and give it to the client.
+- [ ] Administration answers at « Dépôt OMPIC · Impôts »: « Déposé le… », « En attente », « Rejeté (motif) », with the waiting time.
+- [ ] Domiciliation centre in the flow: when the centre uploads the attestation, the « Contrat de domiciliation » task is ticked by itself.
