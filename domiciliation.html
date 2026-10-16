@@ -163,7 +163,7 @@ footer a{color:var(--m)}
           </div>
           <p class="muted" style="margin:-4px 0 0;font-size:.78rem">La domiciliation est incluse dans nos packs : c'est nous qui vous payons ce tarif, le client ne paie rien en plus.</p>
           <div class="g2">
-            <label class="up" for="s_photos"><b>📷 Photos du centre</b><span>façade, accueil, salle · 3 maximum</span><input type="file" id="s_photos" accept="image/*" multiple><span class="thumbs" id="s_photosL"></span></label>
+            <label class="up" for="s_photos"><b>📷 Photo du centre</b><span>une seule photo : la façade ou l'accueil</span><input type="file" id="s_photos" accept="image/*"><span class="thumbs" id="s_photosL"></span></label>
             <label class="up" for="s_docs"><b>📄 Justificatifs</b><span>RC, ICE, autorisation de domiciliation · PDF ou photo</span><input type="file" id="s_docs" accept="application/pdf,image/jpeg,image/png" multiple><span class="thumbs" id="s_docsL"></span></label>
           </div>
           <label class="fl" for="s_pw"><span>Mot de passe * <small>(10 caractères minimum)</small></span><input class="f" id="s_pw" type="password" autocomplete="new-password" minlength="10" required></label>
@@ -216,7 +216,7 @@ footer a{color:var(--m)}
     "Services inclus":"Included services", "Réception du courrier":"Mail handling", "Scan du courrier":"Mail scanning", "Salle de réunion":"Meeting room", "Bureau à l'heure":"Office by the hour", "Standard téléphonique":"Phone answering", "Parking":"Parking",
     "Votre tarif pour Charika Express (MAD TTC)":"Your rate for Charika Express (MAD incl. VAT)", "12 mois":"12 months", "24 mois":"24 months",
     "La domiciliation est incluse dans nos packs : c'est nous qui vous payons ce tarif, le client ne paie rien en plus.":"The business address is included in our packs: we pay you this rate, the client pays nothing extra.",
-    "📷 Photos du centre":"📷 Centre photos", "façade, accueil, salle · 3 maximum":"front, reception, room · up to 3", "📄 Justificatifs":"📄 Documents", "RC, ICE, autorisation de domiciliation · PDF ou photo":"RC, ICE, domiciliation authorisation · PDF or photo",
+    "📷 Photo du centre":"📷 Centre photo", "une seule photo : la façade ou l'accueil":"one photo: the front or the reception", "📄 Justificatifs":"📄 Documents", "RC, ICE, autorisation de domiciliation · PDF ou photo":"RC, ICE, domiciliation authorisation · PDF or photo",
     "Mot de passe *":"Password *", "(10 caractères minimum)":"(at least 10 characters)",
     "J'accepte les":"I accept the", "conditions du programme centres":"centre programme terms", "et la":"and the", "politique de confidentialité":"privacy policy", "Bientôt disponible":"Coming soon",
     "Envoyer ma demande":"Send my application", "Demande envoyée":"Application sent",
@@ -259,8 +259,8 @@ footer a{color:var(--m)}
       URL.revokeObjectURL(url); ok(c.toDataURL('image/jpeg', .8)); };
     img.onerror = () => { URL.revokeObjectURL(url); ko(new Error('img')); }; img.src = url; });
   $('#s_photos').addEventListener('change', async e => {
-    for (const f of [...e.target.files].slice(0, 3 - photos.length)) {
-      try { const d = await shrink(f); photos.push({ name: f.name.replace(/\.[^.]+$/, '') + '.jpg', mime: 'image/jpeg', data: d.split(',')[1], src: d }); } catch (err) {}
+    for (const f of [...e.target.files].slice(0, 1)) {
+      try { const d = await shrink(f); photos.length = 0; photos.push({ name: f.name.replace(/\.[^.]+$/, '') + '.jpg', mime: 'image/jpeg', data: d.split(',')[1], src: d }); } catch (err) {}
     }
     $('#s_photosL').innerHTML = photos.map(p => `<img src="${p.src}" alt="">`).join(''); e.target.value = '';
   });

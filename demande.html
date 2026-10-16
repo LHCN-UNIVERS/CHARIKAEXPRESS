@@ -157,7 +157,7 @@ textarea{min-height:96px;resize:vertical}
 .dflt button{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:7px 14px;font:700 .8rem var(--font);color:var(--ink);cursor:pointer}
 .dflt button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
 .dgrid{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding:8px 8px 12px;margin:0 -8px;scroll-padding-inline:8px;scrollbar-width:thin}
-.dc{position:relative;flex:none;width:220px;height:300px;border-radius:22px;overflow:hidden;cursor:pointer;margin:0;scroll-snap-align:start;color:#fff;display:flex;flex-direction:column;justify-content:flex-end;padding:14px;background:linear-gradient(135deg,#6f5a8a,#30102f);transition:box-shadow .2s,transform .2s}
+.dc{position:relative;flex:none;width:250px;height:340px;border-radius:24px;overflow:hidden;cursor:pointer;margin:0;scroll-snap-align:start;color:#fff;display:flex;flex-direction:column;justify-content:flex-end;padding:14px;background:linear-gradient(135deg,#6f5a8a,#30102f);transition:box-shadow .2s,transform .2s}
 .dc input{position:absolute;opacity:0;pointer-events:none}
 .dc .ph{position:absolute;inset:0;background-size:cover;background-position:center}
 .dc::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,6,20,.15),transparent 30%,transparent 42%,rgba(20,6,20,.9));pointer-events:none}
@@ -168,14 +168,14 @@ textarea{min-height:96px;resize:vertical}
 .dc .inc,.dc .vf{position:absolute;z-index:1;top:12px;right:12px;background:#fff;color:var(--ok);font-size:.68rem;font-weight:800;border-radius:99px;padding:3px 9px}
 .dc .vf{right:auto;left:12px;color:#fff;background:rgba(14,138,95,.9)}
 .dc small{font-size:.74rem;color:#f3e6ef}
-.dc b{font-size:1.02rem;line-height:1.25;margin:2px 0 8px}
+.dc b{font-size:1.15rem;line-height:1.25;margin:2px 0 8px}
 .dc .sv{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}.dc .sv span{background:rgba(255,255,255,.18);border-radius:9px;padding:4px 6px;font-size:.85rem;line-height:1}
 .dc .pk{display:block;background:#fff;color:var(--ink);border-radius:12px;padding:9px;text-align:center;font-weight:800;font-size:.84rem}
 .dc .pk i{font-style:normal}.dc .pk .y{display:none}
 .dc:has(input:checked) .pk{background:var(--grad);color:#fff}.dc:has(input:checked) .pk .n{display:none}.dc:has(input:checked) .pk .y{display:inline}
 .dc.auto{background:linear-gradient(160deg,#ffe2ec,#fff4ee);color:var(--ink)}.dc.auto::after{display:none}
 .dc.auto .em{font-size:2.2rem;margin-bottom:auto}.dc.auto small{color:var(--m);margin-bottom:10px}.dc.auto .pk{background:var(--ink);color:#fff}
-@media (max-width:560px){.dc{width:200px;height:280px}}
+@media (max-width:560px){.dc{width:220px;height:310px}}
 .tile .tag{position:absolute;top:-10px;inset-inline-end:14px;background:var(--grad);color:#fff;font-size:.7rem;font-weight:700;padding:4px 12px;border-radius:999px}
 .chk{display:flex;gap:10px;align-items:center;padding:12px 14px;border:1px solid var(--line);border-radius:14px;background:var(--bg);cursor:pointer;margin:0;font-weight:600;font-size:.92rem}
 .chk a{color:var(--rose);text-decoration:underline}
@@ -804,11 +804,10 @@ button.vcheck{width:100%;margin-top:12px;border:0;cursor:pointer;text-align:star
     const auto = `<label class="dc auto"><input type="radio" name="centre" value=""${!cur || !list.some(c => c.id === cur) ? ' checked' : ''}><span class="em">✨</span>
       <b>${en ? 'Let Charika Express choose' : 'Laisser Charika Express choisir'}</b><small>${list.length ? (en ? 'Our team picks a partner centre for you.' : 'Notre équipe vous attribue un centre partenaire.')
         : city ? (en ? `No partner centre in ${escD(city)} yet: our team will find you an address.` : `Pas encore de centre partenaire à ${escD(city)} : notre équipe vous trouve une adresse.`)
-        : (en ? 'Enter your city above to see the centres.' : 'Indiquez votre ville ci-dessus pour voir les centres.')}</small>${pick}</label>`;
+        : (en ? 'Enter your city above to see the centres.' : 'Indiquez votre ville ci-dessus pour voir les centres.')}</small>${pick.replace(en ? 'Choose this centre' : 'Choisir ce centre', en ? 'Let the team choose' : 'Je laisse choisir')}</label>`;
     // Rebuilt only when it changes: a blur of the city field must not replace the card being clicked
     const html = shown.map(c => `<label class="dc"><input type="radio" name="centre" value="${escD(c.id)}"${cur === c.id ? ' checked' : ''}>
-      <span class="ph"${c.photo ? ` style="background-image:url('${escD(c.photo)}')"` : ''}></span><span class="vf">✓ ${en ? 'Verified' : 'Vérifié'}</span><span class="inc">${en ? 'Included' : 'Inclus'}</span>
-      <small>${escD([c.district, c.city].filter(Boolean).join(' · '))}</small><b>${escD(c.name)}</b>
+      <span class="ph"${c.photo ? ` style="background-image:url('${escD(c.photo)}')"` : ''}></span><small>${escD([c.district, c.city].filter(Boolean).join(' · '))}</small><b>${escD(c.name)}</b>
       ${c.services.length ? `<span class="sv">${c.services.map(sv => `<span title="${escD(SVC[en ? 'en' : 'fr'][sv] || sv)}" aria-label="${escD(SVC[en ? 'en' : 'fr'][sv] || sv)}">${SVI[sv] || '•'}</span>`).join('')}</span>` : ''}${pick}</label>`).join('') + auto;
     if (html !== renderDomi.last) { $('#dgrid').innerHTML = html; renderDomi.last = html; }
   }

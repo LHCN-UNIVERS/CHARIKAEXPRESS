@@ -118,7 +118,7 @@ export async function centreApi(request, env, path){
       if (!b.cgu) throw new HttpError(400, 'cgu');
       checkPasswordRules(b.password);
       if (await env.DB.prepare('SELECT 1 FROM centres WHERE email = ?').bind(email).first()) throw new HttpError(409, 'email_exists');
-      const photos = (Array.isArray(b.photos) ? b.photos : []).slice(0, 3).map(f => decodeFile(f, ['image/jpeg', 'image/png', 'image/webp']));
+      const photos = (Array.isArray(b.photos) ? b.photos : []).slice(0, 1).map(f => decodeFile(f, ['image/jpeg', 'image/png', 'image/webp']));
       const docs = (Array.isArray(b.docs) ? b.docs : []).slice(0, 3).map(f => decodeFile(f));
       const h = await hashPassword(b.password), id = 'ct-' + randomHex(5);
       const files = [...photos.map(f => insertFile(env, id, 'photo', null, f)), ...docs.map(f => insertFile(env, id, 'doc', null, f))];
