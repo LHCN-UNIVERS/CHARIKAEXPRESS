@@ -311,6 +311,7 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
 .k1 .tk.half .cb{border-color:#f0a020;background:#fff4d6}
 .k1 .slide.later .tk{opacity:.55}
 .k1 .tk .amt{font-size:.78rem;color:var(--m);white-space:nowrap}
+.k1 .cnx{display:flex;gap:8px;align-items:center;margin-top:6px;color:var(--ink);font-weight:600}.k1 .cnx input{font:inherit;font-size:.78rem;border:1px solid var(--line);border-radius:8px;padding:4px 8px}
 .k1 .tmore{margin:-4px 0 12px}
 .k1 .foot{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.k1 .foot .big{padding:12px 20px;border-radius:14px;font-size:.9rem}
 .k1 .foot .left{font-size:.76rem;color:var(--m)}
@@ -644,17 +645,19 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     'cn': ['Certificat négatif', "Réserve le nom de la société auprès de l'OMPIC."],
     'statuts': ['Statuts', 'Définissent le fonctionnement juridique de la société (associés, gérants, capital, objet social…).'],
     'domiciliation': ['Contrat de domiciliation', "Prouve que la société dispose d'une adresse légale pour recevoir son courrier et exercer son activité."],
-    'procuration': ['Procuration', 'Autorisation donnée à un tiers pour recevoir et gérer le courrier au nom de la société.'],
+    'procuration': ['Procuration', 'Pouvoir donné par le client à Charika Express pour faire les démarches de création en son nom.'],
+    'honneur': ["Déclaration sur l'honneur", "Signée par le gérant, jointe au dossier d'immatriculation."],
+    'blocage': ['Attestation de blocage du capital', 'Délivrée par la banque : obligatoire quand le capital dépasse 100 000 MAD.'],
+    'enr-bail': ["Attestation d'enregistrement du bail", 'Preuve que le bail du local a été enregistré auprès de la Direction des Impôts.'],
     'enr-statuts': ["Attestation d'enregistrement des statuts", "Confirme que les statuts ont été enregistrés auprès de l'administration fiscale."],
     'enr-domiciliation': ["Attestation d'enregistrement du contrat de domiciliation", 'Preuve que le contrat de domiciliation a été enregistré auprès de la Direction des Impôts.'],
     'ice': ['Attestation ICE', "Atteste de l'identifiant commun de l'entreprise (ICE), utilisé auprès des administrations."],
     'tp': ["Attestation d'inscription à la Taxe Professionnelle (TP)", 'Document fiscal permettant de déclarer et payer la taxe professionnelle (patente).'],
     'if': ["Bulletin de notification de l'Identifiant Fiscal (IF)", "L'identifiant fiscal unique pour toutes les démarches fiscales."],
-    'identifiants': ['Document des identifiants', 'Numéros attribués après immatriculation (RC, ICE, IF, CNSS).'],
     'rc': ['Registre de Commerce (RC)', "La carte d'identité juridique de la société, indispensable pour exercer légalement."],
     'cnss': ['Affiliation à la CNSS', 'Immatricule la société à la CNSS, obligatoire pour déclarer les salariés.'],
     'bo': ['Publication au Bulletin Officiel', 'Obligatoire pour rendre publique la création de la société.'],
-    'annonce': ['Annonce légale (PDF du journal)', 'Obligatoire pour rendre publique la création de la société.'],
+    'annonce': ['Annonce légale (journal)', 'Obligatoire pour rendre publique la création de la société.'],
     // Option documents: only in files where the client chose the option (see OPT_DOC)
     'pacte': ["Pacte d'associés", "Option choisie par le client. Rédigé avec les statuts et envoyé avec eux pour signature."],
     'logo': ['Logo et carte de visite', 'Option choisie par le client. À lancer dès que le nom est réservé, validé par le client, remis avec le dossier.']
@@ -662,19 +665,37 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   const DOC_ST = ['En attente', 'En cours', 'Obtenu'];
   const openSteps = new Set();                       // document steps opened by hand in the file view (ref:step)
   const AVANCE = 700;
-  // The creation workflow. A step is finished when all its tasks are done; the file then moves on by itself.
-  // Task types: doc (a document above, done when "Obtenu"), check (an action ticked by the team), pay (a payment received).
+  // The creation workflow (SARL / SARL AU, 9 steps). A step is finished when all its tasks are done; the file then moves on by itself.
+  // Task types: doc (a document above, done when "Obtenu"), check (an action ticked by the team), pay (a payment received),
+  // conf (the client confirmed the request), piece (the client's pieces received: 'cin' or 'all'), siege (centre attributed, or lease received).
+  // opt: only when the client chose that option; cond(r): only when it applies to this file.
+  const isDom = r => r.siege !== 'local', bigCapital = r => +r.capital > 100000;
+  const REJ = {
+    nom:{ open:'⚠ Nom refusé', title:"Nom refusé par l'OMPIC", ph:"Motif (ex. nom déjà pris, trop proche d'une marque…)", again:'Nouveaux noms déposés', who:"l'OMPIC", client:true },
+    adm:{ open:'⚠ Signaler un rejet', title:'Signaler un rejet', ph:'Motif du rejet (ex. CIN expirée…)', again:'Dossier corrigé et redéposé', who:"l'administration" }
+  };
   const WORKFLOW = [
-    { name:'Demande reçue', short:'Reçue', hint:"Le client règle l'avance de 700 MAD. Le certificat négatif démarre dès réception.", tasks:[{ t:'check', k:'prio', opt:'o_prio', label:'Traitement prioritaire : dossier signalé en priorité à l\'équipe' }, { t:'pay', k:'avance' }] },
-    { name:'Certificat négatif', short:'Certificat', hint:"Demande du certificat négatif à l'OMPIC pour réserver le nom.", tasks:[{ t:'doc', k:'cn' }] },
-    { name:'Rédaction', short:'Rédaction', hint:'Préparation des documents, puis envoi au client pour légalisation.', tasks:[{ t:'doc', k:'statuts' }, { t:'doc', k:'pacte', opt:'o_pacte' }, { t:'doc', k:'domiciliation' }, { t:'doc', k:'procuration' }, { t:'check', k:'form-rc', label:"Formulaire RC (déclaration d'immatriculation) préparé" }, { t:'check', k:'sent-legal', label:'Documents envoyés au client pour légalisation' }] },
-    { name:'Légalisation', short:'Légalis', hint:'Le client légalise les documents, les renvoie et règle 50 % du reste.', tasks:[{ t:'check', k:'legal-back', label:'Documents légalisés reçus du client' }, { t:'pay', k:'second' }] },
-    { name:'Enregistrement', short:'Enregistrement', hint:'Enregistrement des statuts et du contrat de domiciliation.', tasks:[{ t:'doc', k:'enr-statuts' }, { t:'doc', k:'enr-domiciliation' }] },
-    { name:'Dépôt OMPIC · Impôts', short:'OMPIC · Impôts', hint:"Dépôt à l'OMPIC, traitement par les Impôts. En cas de rejet, indiquez le motif.", reject:true, tasks:[{ t:'check', k:'depot', label:"Dossier déposé à l'OMPIC" }, { t:'doc', k:'ice' }, { t:'doc', k:'tp' }, { t:'doc', k:'if' }, { t:'doc', k:'identifiants' }] },
-    { name:'Tribunal', short:'Tribunal', hint:'Immatriculation au registre de commerce, puis affiliation CNSS.', tasks:[{ t:'doc', k:'rc' }, { t:'doc', k:'cnss' }] },
-    { name:'Bulletin Officiel', short:'BO', hint:'Publication de la création au Bulletin Officiel.', tasks:[{ t:'doc', k:'bo' }] },
-    { name:'Annonce légale', short:'Annonce', hint:"Rédaction de l'annonce, envoi au journal, réception du PDF.", tasks:[{ t:'check', k:'annonce-sent', label:'Annonce envoyée au journal' }, { t:'doc', k:'annonce' }, { t:'doc', k:'logo', opt:'o_logo' }] },
-    { name:'Dossier complet', short:'Complet', hint:'Le client règle le solde, puis on lui envoie tous les documents.', tasks:[{ t:'pay', k:'final' }, { t:'check', k:'delivered', label:'Tous les documents envoyés au client' }] }
+    { name:'Demande reçue', short:'Reçue', hint:"Le client confirme sa demande, règle l'avance de 700 MAD et envoie sa CIN ou son passeport.", tasks:[
+      { t:'conf', k:'conf', label:'Client confirmé' }, { t:'pay', k:'avance' }, { t:'piece', k:'cin', label:'CIN / passeport reçus' },
+      { t:'check', k:'prio', opt:'o_prio', label:"Traitement prioritaire : dossier signalé en priorité à l'équipe" }] },
+    { name:'Certificat négatif', short:'Certificat', hint:"Dépôt à l'OMPIC pour réserver le nom. Notez la date de fin de validité, ou signalez un nom refusé.", reject:REJ.nom, tasks:[
+      { t:'check', k:'cn-depot', label:"Demande déposée à l'OMPIC" }, { t:'doc', k:'cn' }] },
+    { name:'Rédaction', short:'Rédaction', hint:'Pièces et siège réunis, documents rédigés, puis envoyés au client en PDF sur WhatsApp.', tasks:[
+      { t:'piece', k:'all', label:'Toutes les pièces reçues' }, { t:'siege', k:'siege' },
+      { t:'doc', k:'statuts' }, { t:'doc', k:'domiciliation', cond:isDom }, { t:'doc', k:'procuration' }, { t:'doc', k:'honneur' }, { t:'doc', k:'pacte', opt:'o_pacte' },
+      { t:'check', k:'sent-pdf', label:'Documents envoyés au client en PDF sur WhatsApp' }] },
+    { name:'Légalisation', short:'Légalis.', hint:'Le client légalise les documents, les renvoie et règle 50 % du reste.', tasks:[
+      { t:'check', k:'legal-back', label:'Documents légalisés reçus du client' }, { t:'pay', k:'second' }, { t:'doc', k:'blocage', cond:bigCapital }] },
+    { name:'Enregistrement', short:'Enregistr.', hint:'Enregistrement des statuts et du contrat de domiciliation (ou du bail).', tasks:[
+      { t:'doc', k:'enr-statuts' }, { t:'doc', k:'enr-domiciliation', cond:isDom }, { t:'doc', k:'enr-bail', cond:r => !isDom(r) }] },
+    { name:'Immatriculation', short:'Immatric.', hint:'Dépôt du dossier, puis TP, IF, RC, ICE et CNSS. En cas de rejet, indiquez le motif.', reject:REJ.adm, tasks:[
+      { t:'check', k:'depot', label:"Dossier d'immatriculation déposé" }, { t:'doc', k:'tp' }, { t:'doc', k:'if' }, { t:'doc', k:'rc' }, { t:'doc', k:'ice' }, { t:'doc', k:'cnss' }] },
+    { name:'Publications', short:'Publications', hint:'Annonce au journal et Bulletin Officiel en parallèle, puis on attend les exemplaires publiés à notre boîte.', tasks:[
+      { t:'check', k:'annonce-sent', label:'Annonce envoyée au journal' }, { t:'check', k:'bo-sent', label:'Demande envoyée au Bulletin Officiel' },
+      { t:'doc', k:'annonce', label:'Annonce publiée reçue à notre boîte' }, { t:'doc', k:'bo', label:'Bulletin Officiel reçu à notre boîte' }] },
+    { name:'Solde', short:'Solde', hint:'Le client règle le solde.', tasks:[{ t:'pay', k:'final' }] },
+    { name:'Livraison', short:'Livraison', hint:'Tous les documents sont envoyés au client.', tasks:[
+      { t:'doc', k:'logo', opt:'o_logo' }, { t:'check', k:'delivered', label:'Tous les documents envoyés au client' }] }
   ];
   const DONE = WORKFLOW.length;           // step index of a delivered file
   const stepName = i => i >= DONE ? 'Livré' : WORKFLOW[i].name;
@@ -698,12 +719,16 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   function persist(){ if (SERVER) { clearTimeout(persist.t); persist.t = setTimeout(sync, 300); } else store.write(DB_KEY, db); }
 
   // Empty workflow state for a new file
-  const fresh = () => ({ step:0, docs:{}, livrables:{}, checks:{}, paid:{}, reject:null });
+  const fresh = () => ({ step:0, wf:2, docs:{}, livrables:{}, checks:{}, paid:{}, reject:null });
 
   // Mark everything before `step` as done, and the current step's documents as in progress (demo data)
   function progress(r, step){
     WORKFLOW.forEach((w, i) => tasksOf(r, i).forEach(tk => {
-      if (i < step) { if (tk.t === 'doc') r.livrables[tk.k] = 2; else if (tk.t === 'check') r.checks[tk.k] = true; else r.paid[tk.k] = true; }
+      if (i < step) {
+        if (tk.t === 'doc') r.livrables[tk.k] = 2; else if (tk.t === 'check') r.checks[tk.k] = true; else if (tk.t === 'conf') r.waConfirmed = true;
+        else if (tk.t === 'piece') pieceList(r, tk.k).forEach(d => r.docs[d.k] = true); else if (tk.t === 'siege') { if (r.siege === 'local') r.docs.bail = true; else r.checks.siege = true; }
+        else r.paid[tk.k] = true;
+      }
       else if (i === step && tk.t === 'doc') r.livrables[tk.k] = 1;
     }));
     r.step = step;
@@ -755,8 +780,6 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     list.forEach(r => {
       if (r.payAmount === 'full' && r._step) r.paid.full = true;
       progress(r, r._step || 0); delete r._step;
-      if (r.step >= 1) { r.docs.pay = true; r.docs['cin-0'] = true; }
-      if (r.step >= 3) r.partners.forEach((p, i) => r.docs['cin-' + i] = true);
       r.notes.push({ t:'sys', at:r.createdAt, text:'Demande reçue depuis le site.' });
       for (let i = 0; i < Math.min(r.step, DONE); i++) r.notes.push({ t:'sys', by:r.juriste, at:new Date(Date.parse(r.createdAt) + (i + 1) * DAY * .8).toISOString(), text:`Étape terminée : ${WORKFLOW[i].name} → ${stepName(i + 1)}.` });
     });
@@ -770,7 +793,18 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   }
 
   // A file with every field the team space expects
-  const normalize = r => Object.assign(fresh(), { seen:false, juriste:null, payAmount:'avance', options:[], notes:[], updatedAt:r.createdAt }, r);
+  const normalize = r => migrate(Object.assign(fresh(), { seen:false, juriste:null, payAmount:'avance', options:[], notes:[], updatedAt:r.createdAt }, r));
+  // Files made with the former 10-step workflow (no wf field): same step mapping as server/workflow.js
+  const OLD_STEP = [0, 1, 2, 3, 4, 5, 5, 6, 6, 7, 9];
+  function migrate(r){
+    if (r.wf === 2 || r.kind === 'rappel') return r;
+    const old = Math.min(r.step || 0, 10);
+    r.step = old === 9 && (r.paid.full || r.paid.final) ? 8 : OLD_STEP[old];
+    if (r.checks['sent-legal']) r.checks['sent-pdf'] = true;
+    if (r.step > 0) r.waConfirmed = true;
+    r.wf = 2;
+    return r;
+  }
 
   // ---------- Shared database (real site) ----------
   const api = (path, opt = {}) => fetch('/api/admin/' + path, Object.assign({ credentials:'same-origin', headers:{ accept:'application/json', 'content-type':'application/json' } }, opt));
@@ -853,12 +887,18 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   // Option tasks (opt) only count in files where the client chose that option.
   const OPT_DOC = { pacte:'o_pacte', logo:'o_logo' };
   const hasOpt = (r, o) => (r.options || []).includes(o);
-  const tasksOf = (r, i) => WORKFLOW[i].tasks.filter(tk => !tk.opt || hasOpt(r, tk.opt));
-  const docKeys = r => Object.keys(DOCS).filter(k => !OPT_DOC[k] || hasOpt(r, OPT_DOC[k]));
+  const tasksOf = (r, i) => WORKFLOW[i].tasks.filter(tk => (!tk.opt || hasOpt(r, tk.opt)) && (!tk.cond || tk.cond(r)));
+  const docKeys = r => WORKFLOW.flatMap((w, i) => tasksOf(r, i)).filter(tk => tk.t === 'doc').map(tk => tk.k);
   const isPrio = r => hasOpt(r, 'o_prio');
   const payDone = (r, k) => !!(r.paid.full || r.paid[k]);
   const payLabel = k => ({ avance:'Avance de 700 MAD reçue', second:'50 % du reste reçu', final:'Solde reçu' })[k];
-  const taskDone = (r, tk) => tk.t === 'doc' ? r.livrables[tk.k] === 2 : tk.t === 'check' ? !!r.checks[tk.k] : payDone(r, tk.k);
+  const pieceList = (r, k) => docsOf(r).filter(d => k === 'all' || d.k.startsWith('cin'));
+  const siegeDone = r => r.siege === 'local' ? !!r.docs.bail : !!(DOMI[r.ref] || r.checks.siege);
+  const taskDone = (r, tk) => tk.t === 'doc' ? r.livrables[tk.k] === 2 : tk.t === 'check' ? !!r.checks[tk.k] : tk.t === 'conf' ? !!r.waConfirmed
+    : tk.t === 'piece' ? pieceList(r, tk.k).every(d => r.docs[d.k]) : tk.t === 'siege' ? siegeDone(r) : payDone(r, tk.k);
+  const taskLabel = (r, tk) => tk.label && tk.t !== 'pay' ? tk.label : tk.t === 'doc' ? DOCS[tk.k][0] : tk.t === 'pay' ? payLabel(tk.k)
+    : tk.t === 'siege' ? (r.siege === 'local' ? 'Bail ou titre de propriété reçu' : 'Centre de domiciliation attribué') : tk.label;
+  const clientTask = tk => tk.t === 'pay' || tk.t === 'conf' || tk.t === 'piece' || tk.k === 'legal-back';
   const stepDone = (r, i) => tasksOf(r, i).every(tk => taskDone(r, tk)) && !(WORKFLOW[i].reject && r.reject);
   const docsTotal = r => docKeys(r).length;
   const docsOk = r => docKeys(r).filter(k => r.livrables[k] === 2).length;
@@ -888,14 +928,14 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   };
   // ---------- Client messages (texts in messages.js) ----------
   const CM = window.CE_MSG;
-  const STEP_MSG = ['avance', 'cn', 'legal', 'legalOk', 'enr', 'accepte', 'rc', 'bo', 'complet', 'livre'];   // message sent when step i is finished
+  const STEP_MSG = ['avance', 'cn', 'legal', 'legalOk', 'enr', 'rc', 'complet', null, 'livre'];   // message sent when step i is finished (none after the balance: the delivery follows)
   const LIBRE = { title:'Message libre', fr:{ wa:"Bonjour {prenom}, c'est {moi} de Charika Express au sujet de votre demande {ref}." }, ar:{ wa:'السلام عليكم {prenom}، معاكم {moi} من Charika Express بخصوص الطلب ديالكم {ref}.' } };
   const msgOf = k => k === 'libre' ? LIBRE : CM.MSG[k];
   // The message that matches the file right now: the step just finished, or the rejection to fix.
   function msgKey(r){
     const w = WORKFLOW[r.step];
-    if (w && w.reject && r.reject && r.reject.cause === 'client') return 'rejet';
-    return r.step === 0 ? 'recu' : STEP_MSG[r.step - 1];
+    if (w && w.reject && r.reject && r.reject.cause === 'client') return w.reject === REJ.nom ? 'nomRefus' : 'rejet';
+    return r.step === 0 ? 'recu' : STEP_MSG[r.step - 1] || 'libre';
   }
   function msgVals(r, key, lang){
     const payKey = { recu:'avance', legal:'second', legalOk:'second', complet:'final' }[key];
@@ -903,7 +943,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     const askPay = ['recu', 'legal', 'complet'].includes(key) && !r.paid.full;
     return { prenom:(r.client?.nom || '').trim().split(/\s+/)[0], societe:title(r), ref:r.ref, forme:FORMES[r.forme] || '', pack:PLANS[r.plan] || '',
       montant:a && a.v != null ? fmt(a.v) : '', paiement:askPay ? (CM.PAY_INFO[r.payMethod] || CM.PAY_INFO.virement)[lang] : '',
-      motif:r.reject?.motif || '', suivi:CM.SUIVI_URL ? CM.SUIVI_URL + '?ref=' + r.ref : '', sig:CM.SIG[lang], moi:me.name };
+      motif:r.reject?.motif || '', blocage:bigCapital(r) ? CM.BLOCAGE[lang] : '', suivi:CM.SUIVI_URL ? CM.SUIVI_URL + '?ref=' + r.ref : '', sig:CM.SIG[lang], moi:me.name };
   }
   // Fill the {placeholders}; a line whose placeholder has no value is left out.
   function fill(tpl, vals){
@@ -1000,8 +1040,8 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   }
   // Next unfinished task of the current step, and who must act on it.
   const nextTask = r => r.step < DONE ? tasksOf(r, r.step).find(tk => !taskDone(r, tk)) : null;
-  const taskName = (r, tk) => tk.t === 'doc' ? DOCS[tk.k][0] : tk.t === 'pay' ? 'Paiement · ' + (amounts(r).find(a => a.k === tk.k)?.label || '').replace(/ \(.*\)$/, '') : tk.label;
-  const waitsClient = r => { const tk = nextTask(r); return !!tk && (tk.t === 'pay' || tk.k === 'legal-back'); };
+  const taskName = (r, tk) => tk.t === 'pay' ? 'Paiement · ' + (amounts(r).find(a => a.k === tk.k)?.label || '').replace(/ \(.*\)$/, '') : taskLabel(r, tk);
+  const waitsClient = r => { const tk = nextTask(r); return !!tk && clientTask(tk); };
   const GROUPS = [
     { k:'new', title:'🆕 Nouvelles demandes' },
     { k:'client', title:'⏳ En attente du client', sub:'paiement, documents', cls:'y' },
@@ -1176,17 +1216,17 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     };
     const assoc = ps.map((p, n) => [ps.length > 1 ? `Associé ${n + 1}` : 'Associé unique', [p.name, p.cin, p.pct != null ? p.pct + '\u00a0%' : ''].filter(Boolean).join(' · ')]);
     const pick = (...ks) => ks.map(k => F[k]).filter(Boolean);
+    const cnv = r.cnExp ? [['Certificat négatif', "valable jusqu'au " + new Date(r.cnExp).toLocaleDateString('fr-FR')]] : [];
     const S = [
-      { sub:'Pour vérifier le client et encaisser l\'avance', rows:pick('client', 'tel', 'formule', 'paiement', 'ville') },
-      { sub:'À saisir sur le site de l\'OMPIC', rows:[...noms.map((n, k) => [`Nom ${k + 1}`, n]), ...pick('activite', 'forme', 'demandeur')] },
-      { sub:'Pour rédiger les statuts et les documents', rows:[...pick('denom', 'capital'), ...assoc, ...pick('gerant', 'siege', 'activite')] },
-      { sub:'Pour suivre la légalisation et le paiement', rows:[...pick('client', 'tel'), ['50 % du reste', am('second')], ...pick('moyen')] },
-      { sub:'Pour l\'enregistrement', rows:[...pick('denom', 'capital', 'siege', 'centre'), ...assoc] },
-      { sub:'Pour le dépôt à l\'OMPIC et aux Impôts', rows:pick('denom', 'forme', 'activite', 'capital', 'gerant', 'siege') },
-      { sub:'Pour le registre de commerce et la CNSS', rows:pick('denom', 'gerant', 'siege', 'activite', 'ville') },
-      { sub:'Pour la publication au Bulletin Officiel', rows:pick('denom', 'capital', 'siege', 'gerant') },
-      { sub:'Pour rédiger l\'annonce légale', rows:[...pick('denom', 'capital', 'siege', 'activite', 'gerant'), ...assoc] },
-      { sub:'Pour encaisser le solde et livrer', rows:[...pick('client', 'tel', 'email'), ['Solde', am('final')], ...pick('moyen')] },
+      { sub:"Pour vérifier le client et encaisser l'avance", rows:pick('client', 'tel', 'formule', 'paiement', 'ville') },
+      { sub:"À saisir sur le site de l'OMPIC", rows:[...noms.map((n, k) => [`Nom ${k + 1}`, n]), ...pick('activite', 'forme', 'demandeur')] },
+      { sub:'Pour rédiger les statuts et les documents', rows:[...pick('denom', 'capital'), ...assoc, ...pick('gerant', 'siege', 'activite'), ...cnv] },
+      { sub:'Pour suivre la légalisation et le paiement', rows:[...pick('client', 'tel'), ['50 % du reste', am('second')], ...pick('moyen'), ...(bigCapital(r) ? pick('capital') : []), ...cnv] },
+      { sub:"Pour l'enregistrement", rows:[...pick('denom', 'capital', 'siege', 'centre'), ...assoc, ...cnv] },
+      { sub:"Pour le dossier d'immatriculation", rows:[...pick('denom', 'forme', 'activite', 'capital', 'gerant', 'siege'), ...cnv] },
+      { sub:"Pour l'annonce au journal et le Bulletin Officiel", rows:[...pick('denom', 'capital', 'siege', 'activite', 'gerant'), ...assoc] },
+      { sub:'Pour encaisser le solde', rows:[...pick('client', 'tel'), ['Solde', am('final')], ...pick('moyen')] },
+      { sub:'Pour livrer les documents', rows:pick('client', 'tel', 'email', 'denom') },
     ];
     return S[Math.min(i, S.length - 1)];
   }
@@ -1234,11 +1274,11 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     if (r.step < DONE) {
       left = tasksOf(r, r.step).filter(tk => !taskDone(r, tk)).length;
       if (w.reject && r.reject) {
-        rej = `<div class="tile rjt"><b>⚠ Dossier rejeté</b><small>Motif : ${esc(r.reject.motif)} · ${r.reject.cause === 'client' ? 'côté client' : 'côté cabinet'} · ${when(r.reject.at)}</small>
-          ${r.reject.cause === 'client' ? waBtn('Notifier le client', 'b-sm', 'rejet', msgText(r, 'rejet', lang)) : ''}${canEdit ? '<button class="btn b-soft b-sm" id="redepot">Dossier corrigé et redéposé</button>' : ''}</div>`;
+        rej = `<div class="tile rjt"><b>⚠ ${w.reject === REJ.nom ? 'Nom refusé' : 'Dossier rejeté'}</b><small>Motif : ${esc(r.reject.motif)} · ${r.reject.cause === 'client' ? 'côté client' : 'côté cabinet'} · ${when(r.reject.at)}</small>
+          ${r.reject.cause === 'client' ? waBtn('Notifier le client', 'b-sm', msgKey(r), msgText(r, msgKey(r), lang)) : ''}${canEdit ? `<button class="btn b-soft b-sm" id="redepot">${esc(w.reject.again)}</button>` : ''}</div>`;
       } else if (w.reject && canEdit && rejectOpen) {
-        rej = `<form class="tile rejf" id="rejForm"><b>Signaler un rejet</b><input class="f" id="rejMotif" placeholder="Motif du rejet (ex. CIN expirée…)" required autocomplete="off">
-          <select class="f" id="rejCause"><option value="client">Problème côté client (le client sera notifié)</option><option value="cabinet">Problème côté cabinet</option></select><div class="tbr"><button class="btn b-ink b-sm">Enregistrer</button><button type="button" class="btn b-soft b-sm" id="rejCancel">Annuler</button></div></form>`;
+        rej = `<form class="tile rejf" id="rejForm"><b>${esc(w.reject.title)}</b><input class="f" id="rejMotif" placeholder="${esc(w.reject.ph)}" required autocomplete="off">
+          <select class="f" id="rejCause" ${w.reject.client ? 'hidden' : ''}><option value="client">Problème côté client (le client sera notifié)</option><option value="cabinet">Problème côté cabinet</option></select><div class="tbr"><button class="btn b-ink b-sm">Enregistrer</button><button type="button" class="btn b-soft b-sm" id="rejCancel">Annuler</button></div></form>`;
       }
     }
     // Client: the message of the step (other messages and the preview folded under it), then one card per missing piece
@@ -1250,7 +1290,6 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
           <div class="mprev" ${lang === 'ar' ? 'dir="rtl"' : ''}>${esc(waText)}</div>
           ${msgOf(mk)[lang].mail ? '<button class="btn b-soft b-sm" id="mailCopy">Copier l\'e-mail</button>' : ''}</details></div>`;
     const tks = r.step < DONE ? tasksOf(r, r.step) : [], missing = docs.filter(d => !r.docs[d.k]);
-    const nm = tk => tk.t === 'doc' ? DOCS[tk.k][0] : tk.t === 'check' ? tk.label : payLabel(tk.k);
     const domStep = WORKFLOW.findIndex(x => x.tasks.some(t => t.k === 'domiciliation')), dAddr = DOMI[r.ref]?.centreAddress;
     const msgMoreHtml = `<details class="tmore" ${msgMore ? 'open' : ''}><summary>Aperçu · changer de message ▾</summary>
           <div class="mrow"><select class="f" id="msgPick" aria-label="Message">${Object.entries(CM.MSG).map(([k, m]) => `<option value="${k}" ${k === mk ? 'selected' : ''}>${esc(m.n)}. ${esc(m.title)}${k === auto ? ' · étape actuelle' : ''}${(r.sent || {})[k] ? ' ✓' : ''}</option>`).join('')}<option value="libre" ${mk === 'libre' ? 'selected' : ''}>Message libre</option></select>
@@ -1270,35 +1309,47 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     const state = past ? ['e-ok', 'Terminée ✓'] : isNow ? ['e-now', 'En cours'] : ['e-later', 'À venir'];
     const ed = isNow && canEdit;
     const rows = [];
-    if (vi === 0 && scored(r) && !r.paid.full && !payDone(r, 'avance')) {
-      const s0 = serieux(r), ask = !r.waConfirmed && s0.sig[0].ok, sentC = (r.sent || {}).confirmer;
-      rows.push(`<div class="tk ${r.waConfirmed ? 'dn' : ''}"><button class="cb" id="waConf" ${canEdit || !r.juriste ? '' : 'disabled'} aria-label="Client confirmé sur WhatsApp">${r.waConfirmed ? '✓' : ''}</button><span>Client confirmé sur WhatsApp${sentC && !r.waConfirmed ? `<small>Demande envoyée ${esc(when(sentC))}</small>` : ''}</span>
-        ${ask ? `<a class="btn b-wa b-sm" data-wasend="confirmer" href="${waLink(r.client?.tel, msgText(r, 'confirmer', lang))}" target="_blank" rel="noopener">${sentC ? 'Relancer' : 'Demander'}</a>` : ''}</div>`);
-    }
-    if (isNow && mk !== 'libre') rows.push(`<div class="tk ${sentAt ? 'dn' : ''}"><span class="cb" aria-hidden="true">${sentAt ? '✓' : ''}</span><span>Prévenir le client : ${esc(msgOf(mk).title)}${sentAt ? `<small>Envoyé ${esc(when(sentAt))}</small>` : '<small>Message WhatsApp prêt</small>'}</span>${waBtn(sentAt ? 'Renvoyer' : 'Envoyer', 'b-sm')}</div>`);
+    const showMsg = (isNow || (r.step >= DONE && vi === DONE - 1)) && mk !== 'libre';
+    if (showMsg) rows.push(`<div class="tk ${sentAt ? 'dn' : ''}"><span class="cb" aria-hidden="true">${sentAt ? '✓' : ''}</span><span>Prévenir le client : ${esc(msgOf(mk).title)}${sentAt ? `<small>Envoyé ${esc(when(sentAt))}</small>` : '<small>Message WhatsApp prêt</small>'}</span>${waBtn(sentAt ? 'Renvoyer' : 'Envoyer', 'b-sm')}</div>`);
     tasksOf(r, vi).forEach(tk => {
       const done = taskDone(r, tk), half = tk.t === 'doc' && r.livrables[tk.k] === 1;
       const a = tk.t === 'pay' ? am.find(x => x.k === tk.k) : null;
-      const sub = tk.t === 'doc' ? DOC_ST[r.livrables[tk.k] || 0] : tk.t === 'pay' ? (r.paid.full ? 'Payé à la commande' : a && a.v != null ? fmt(a.v) + ' MAD · ' + (PAY[r.payMethod] || '') : 'Sur devis') : '';
-      const qa = done ? (tk.t === 'doc' ? 'cours' : 'no') : 'ok';
-      const right = !ed ? '' : tk.t === 'doc' && !done ? `<button class="btn b-soft b-sm" data-qa="${tk.k}:${half ? 'ok' : 'cours'}">${half ? '✓ Obtenu' : 'En cours'}</button>`
-        : tk.t === 'pay' && !done ? `<button class="btn b-soft b-sm" data-qa="${tk.k}:ok">Encaisser</button>` : '';
+      let sub = tk.t === 'doc' ? DOC_ST[r.livrables[tk.k] || 0] : '', amt = '', right = '', qa = done ? (tk.t === 'doc' ? 'cours' : 'no') : 'ok', lock = !ed;
+      if (tk.t === 'pay') { amt = r.paid.full ? 'Payé à la commande' : a && a.v != null ? fmt(a.v) + ' MAD · ' + (PAY[r.payMethod] || '') : 'Sur devis'; if (r.paid.full) lock = true; if (ed && !done) right = `<button class="btn b-soft b-sm" data-qa="${tk.k}:ok">Encaisser</button>`; }
+      if (tk.t === 'doc' && ed && !done) right = `<button class="btn b-soft b-sm" data-qa="${tk.k}:${half ? 'ok' : 'cours'}">${half ? '✓ Obtenu' : 'En cours'}</button>`;
+      if (tk.t === 'conf') {
+        const sentC = (r.sent || {}).confirmer; lock = !(isNow && (canEdit || !r.juriste));
+        if (!done && sentC) sub = 'Demande envoyée ' + when(sentC);
+        if (!done && isNow && serieux(r).sig[0].ok) right = `<a class="btn b-wa b-sm" data-wasend="confirmer" href="${waLink(r.client?.tel, msgText(r, 'confirmer', lang))}" target="_blank" rel="noopener">${sentC ? 'Relancer' : 'Demander'}</a>`;
+      }
+      if (tk.t === 'piece') {
+        const miss = pieceList(r, tk.k).filter(d => !r.docs[d.k]);
+        sub = done ? pieceList(r, tk.k).map(d => d.label).join(', ') : 'Manque : ' + miss.map(d => d.label).join(', ');
+        if (!done && isNow) right = `<a class="btn b-wa b-sm" href="${waLink(r.client?.tel, `Bonjour ${r.client?.nom || ''}, pour avancer sur votre dossier ${r.ref}, merci de nous envoyer : ${miss.map(d => d.label).join(', ')}.`)}" target="_blank" rel="noopener">Relancer</a>`;
+      }
+      if (tk.t === 'siege') {
+        if (r.siege === 'local') sub = 'Local du client';
+        else { const d = DOMI[r.ref]; sub = d ? (d.centreName || 'Centre attribué') + (d.centreAddress ? ' · ' + d.centreAddress : '') : 'Aucun centre pour l\'instant';
+          if (SERVER) { lock = true; if (isNow && !d) right = '<button class="btn b-soft b-sm" data-more="centre">Choisir le centre</button>'; } }
+      }
+      if (tk.k === 'cn' && vi === 1) sub += `<label class="cnx">Valable jusqu'au <input type="date" id="cnExp" value="${esc(r.cnExp || '')}" ${canEdit ? '' : 'disabled'}></label>`;
       const help = isNow && dAddr && vi <= domStep && ['statuts', 'domiciliation'].includes(tk.k) ? `<small>📍 ${esc(dAddr)}</small>` : '';
-      rows.push(`<div class="tk ${done ? 'dn' : half ? 'half' : ''}"><button class="cb" ${ed && !(tk.t === 'pay' && r.paid.full) ? `data-qa="${tk.k}:${qa}"` : 'disabled'} aria-label="${esc(nm(tk))}">${done ? '✓' : ''}</button><span>${esc(nm(tk))}${tk.opt ? ' <em class="optb">Option</em>' : ''}${sub && tk.t !== 'pay' ? `<small>${esc(sub)}</small>` : ''}${help}</span>${tk.t === 'pay' ? `<span class="amt">${esc(sub)}</span>` : ''}${right}</div>`);
+      rows.push(`<div class="tk ${done ? 'dn' : half ? 'half' : ''}"><button class="cb" ${lock ? 'disabled' : `data-qa="${tk.k}:${qa}"`} aria-label="${esc(taskLabel(r, tk))}">${done ? '✓' : ''}</button><span>${esc(taskLabel(r, tk))}${tk.opt ? ' <em class="optb">Option</em>' : ''}${tk.cond === bigCapital ? ' <em class="optb">Capital > 100 000 MAD</em>' : ''}${sub ? `<small>${tk.k === 'cn' ? sub.replace(/^[^<]*/, m => esc(m)) : esc(sub)}</small>` : ''}${help}</span>${amt ? `<span class="amt">${esc(amt)}</span>` : ''}${right}</div>`);
     });
-    if (isNow && missing.length) rows.push(`<div class="tk"><span class="cb" aria-hidden="true"></span><span>Pièce${missing.length > 1 ? 's' : ''} manquante${missing.length > 1 ? 's' : ''}<small>${esc(missing.map(d => d.label).join(', '))}</small></span>
-      <a class="btn b-wa b-sm" href="${waLink(r.client?.tel, `Bonjour ${r.client?.nom || ''}, pour avancer sur votre dossier ${r.ref}, merci de nous envoyer : ${missing.map(d => d.label).join(', ')}.`)}" target="_blank" rel="noopener">Relancer</a></div>`);
+    // The negative certificate expires: warn on the steps that still need it
+    const cnLeft = r.cnExp ? Math.ceil((Date.parse(r.cnExp + 'T23:59:59') - Date.now()) / DAY) : null;
+    const cnWarn = cnLeft != null && vi >= 2 && vi <= 5 && r.step <= 5 ? `<div class="vl ${cnLeft <= 7 ? 'bad' : cnLeft <= 20 ? 'mid' : 'ok'}"><b>📅</b>Certificat négatif valable jusqu'au ${esc(new Date(r.cnExp).toLocaleDateString('fr-FR'))} · ${cnLeft < 0 ? 'expiré' : cnLeft === 0 ? "expire aujourd'hui" : `encore ${cnLeft} jour${cnLeft > 1 ? 's' : ''}`}</div>` : '';
     const fz = stepFiche(r, vi), fzText = `${vw.name.toUpperCase()} · ${r.ref}\n` + fz.rows.map(([k, v]) => `${k} : ${v || '—'}`).join('\n');
     const foot = isNow
       ? `<button class="btn b-grad big" id="stepNext" ${ed && stepDone(r, r.step) ? '' : 'disabled'}>Étape suivante →</button>${left ? `<span class="left">Encore ${left} tâche${left > 1 ? 's' : ''}</span>` : ''}${vi === 0 && !payDone(r, 'avance') && (canEdit || !r.juriste) ? '<button class="btn b-soft" id="markFake" style="color:var(--err)">Faux client</button>' : ''}`
       : r.step < DONE ? `<button class="btn b-soft big" data-view="${r.step}">Aller à l'étape en cours : ${esc(WORKFLOW[r.step].name)} →</button>` : '';
-    const lks = isNow ? [vw.reject && canEdit && !r.reject && !rejectOpen ? '<button class="lk" id="rejOpen">⚠ Signaler un rejet</button>' : '', backBtn ? backBtn.replace('class="btn b-soft b-sm stepback"', 'class="lk"') : ''].filter(Boolean).join('') : '';
+    const lks = isNow ? [vw.reject && canEdit && !r.reject && !rejectOpen ? `<button class="lk" id="rejOpen">${esc(vw.reject.open)}</button>` : '', backBtn ? backBtn.replace('class="btn b-soft b-sm stepback"', 'class="lk"') : ''].filter(Boolean).join('') : '';
     const slide = `<div class="k1">${r.step >= DONE ? '<div class="tile hot" style="text-align:center"><b>✓ Dossier livré</b><small>Tous les documents ont été envoyés au client.</small></div>' : ''}
       <div class="stage"><button class="arr" data-view="${vi - 1}" ${vi > 0 ? '' : 'disabled'} aria-label="Étape précédente">‹</button>
       <div class="slide ${past ? 'past' : isNow ? 'now' : 'later'}" id="slide">
         <div><div class="no">Étape ${vi + 1} / ${DONE} <em class="${state[0]}">${state[1]}</em></div><h2>${esc(vw.name)}</h2><p class="hint">${esc(vw.hint)}</p>
-          ${vi === 0 && scored(r) ? verdictLine(r) : ''}${isNow && rej ? rej : ''}
-          <div class="tasks">${rows.join('')}</div>${isNow && mk !== 'libre' ? msgMoreHtml : ''}
+          ${vi === 0 && scored(r) ? verdictLine(r) : ''}${cnWarn}${isNow && rej ? rej : ''}
+          <div class="tasks">${rows.join('')}</div>${showMsg ? msgMoreHtml : ''}
           <div class="foot">${foot}</div>${lks ? `<div class="lks">${lks}</div>` : ''}</div>
         <div class="fz"><h4>Fiche de l'étape <button class="btn b-soft b-sm" data-cps="${esc(fzText)}">⧉ Tout copier</button></h4><small>${esc(fz.sub)}</small>
           <div>${fz.rows.map(([k, v]) => `<div class="fr"><span>${esc(k)}</span>${v ? `<b>${esc(v)}</b><button class="cp" data-cp="${esc(v)}" title="Copier" aria-label="Copier ${esc(k)}">⧉</button>` : '<b class="na">Non renseigné</b>'}</div>`).join('')}</div></div>
@@ -1421,12 +1472,15 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     if (qf) { qFocus = qf.dataset.qf; renderDetail(); return; }
     const qa = e.target.closest('[data-qa]');
     if (qa) {                                            // an answer to the question on screen
-      const [k, v] = qa.dataset.qa.split(':'), tk = tasksOf(r, r.step).find(x => x.k === k); if (!tk) return;
+      const [k, v] = qa.dataset.qa.split(':'), tk = r.step < DONE && tasksOf(r, r.step).find(x => x.k === k); if (!tk) return;
       const skip = qSkip[r.ref + ':' + r.step] || (qSkip[r.ref + ':' + r.step] = new Set());
       qFocus = null;
       if (v === 'skip') { skip.add(k); renderDetail(); return; }
       if (tk.t === 'doc') { const n = v === 'ok' ? 2 : v === 'cours' ? 1 : 0; if ((r.livrables[k] || 0) !== n) { r.livrables[k] = n; log(r, `${DOCS[k][0]} : ${DOC_ST[n].toLowerCase()}.`); } }
       else if (tk.t === 'check') { const on = v === 'ok'; if (!!r.checks[k] !== on) { r.checks[k] = on; log(r, `${tk.label} : ${on ? 'fait ✓' : 'annulé'}.`); } }
+      else if (tk.t === 'conf') { const on = v === 'ok'; if (!!r.waConfirmed !== on) { r.waConfirmed = on; log(r, on ? 'Demande confirmée par le client.' : 'Confirmation du client annulée.'); } }
+      else if (tk.t === 'piece') { const on = v === 'ok'; pieceList(r, k).forEach(d => r.docs[d.k] = on); log(r, `${tk.label} : ${on ? 'oui ✓' : 'remis en attente'}.`); }
+      else if (tk.t === 'siege') { const on = v === 'ok'; if (r.siege === 'local') r.docs.bail = on; else r.checks.siege = on; log(r, `${taskLabel(r, tk)} : ${on ? 'oui ✓' : 'annulé'}.`); }
       else { const on = v === 'ok'; if (!!r.paid[k] !== on) { r.paid[k] = on; const a = amounts(r).find(x => x.k === k); log(r, `${a.label}${a.v != null ? ` (${fmt(a.v)} MAD)` : ''} : ${on ? 'reçu ✓' : 'remis en attente'}.`); } }
       if (v !== 'ok') skip.add(k);
       advance(r); view = null; renderList(); renderDetail(); return;
@@ -1440,8 +1494,8 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
       if (DOMI[r.ref] && !armed(ds, 'Confirmer : changer de centre')) return;
       api('domi/' + r.ref, { method:'PUT', body:JSON.stringify({ centre }) }).then(async res => {
         if (!res.ok) return toast('Attribution impossible');
-        const c = DCENTRES.find(x => x.id === centre); log(r, `Domiciliation attribuée au centre ${c ? c.name : centre}.`); persist();
-        await loadDomi(); renderDetail(); toast('Centre attribué');
+        const c = DCENTRES.find(x => x.id === centre); log(r, `Domiciliation attribuée au centre ${c ? c.name : centre}.`);
+        await loadDomi(); advance(r); persist(); renderList(); renderDetail(); toast('Centre attribué');
       });
       return;
     }
@@ -1494,7 +1548,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
       persist(); renderList(); renderDetail(); toast(`Retour à l'étape « ${WORKFLOW[r.step].name} »`); return;
     }
     if (t.id === 'take') { r.juriste = me.id; log(r, `${me.name} prend le dossier.`); toast('Dossier assigné à vous'); }
-    else if (t.id === 'redepot') { log(r, `Dossier corrigé et redéposé (rejet précédent : ${r.reject.motif}).`); r.reject = null; toast('Dossier redéposé'); }
+    else if (t.id === 'redepot') { const again = WORKFLOW[r.step]?.reject?.again || 'Dossier redéposé'; log(r, `${again} (motif précédent : ${r.reject.motif}).`); r.reject = null; toast(again); }
     else if (t.dataset.liv) {
       const k = t.dataset.liv; r.livrables[k] = ((r.livrables[k] || 0) + 1) % 3;
       log(r, `${DOCS[k][0]} : ${DOC_ST[r.livrables[k]].toLowerCase()}.`);
@@ -1524,7 +1578,8 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     e.preventDefault();
     const r = get(current), motif = $('#rejMotif').value.trim(); if (!r || !motif) return;
     r.reject = { motif, cause:$('#rejCause').value, at:new Date().toISOString(), by:me.id }; rejectOpen = false;
-    log(r, `Dossier rejeté par les Impôts. Motif : ${motif} (${r.reject.cause === 'client' ? 'problème côté client' : 'problème côté cabinet'}).`);
+    const rj = WORKFLOW[r.step]?.reject || REJ.adm;
+    log(r, rj === REJ.nom ? `Nom refusé par l'OMPIC. Motif : ${motif}.` : `Dossier rejeté par ${rj.who}. Motif : ${motif} (${r.reject.cause === 'client' ? 'problème côté client' : 'problème côté cabinet'}).`);
     renderList(); renderDetail(); toast('Rejet enregistré');
   });
   $('#detail').addEventListener('submit', e => {
@@ -1535,6 +1590,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   });
   $('#detail').addEventListener('change', e => {
     if (e.target.id === 'msgPick') { msgSel = e.target.value; renderDetail(); return; }
+    if (e.target.id === 'cnExp') { const r = get(current); r.cnExp = e.target.value || null; log(r, r.cnExp ? `Certificat négatif valable jusqu'au ${new Date(r.cnExp).toLocaleDateString('fr-FR')}.` : 'Date de validité du certificat négatif effacée.'); persist(); renderDetail(); return; }
     if (e.target.id !== 'assign') return;
     const r = get(current); r.juriste = e.target.value || null;
     log(r, r.juriste ? `Dossier assigné à ${member(r.juriste).name}.` : 'Dossier désassigné.');
@@ -1629,7 +1685,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
       const d = daysSince(r.updatedAt), who = all && member(r.juriste) ? ' · ' + member(r.juriste).name : '', base = `${r.ref} · ${title(r)} · ${stepName(r.step)}${who}`;
       if (r.reject) { late.push(row('⚠', 'i5', 'Dossier rejeté : ' + (r.reject.motif || ''), base, openBtn(r), Math.max(d, 2))); return; }
       const k = msgKey(r);
-      if (k && !(r.sent || {})[k]) {
+      if (k && k !== 'libre' && !(r.sent || {})[k]) {
         const btn = `<a class="btn b-wa b-sm" data-hsend="${esc(r.ref)}" href="${waLink(r.client?.tel, msgText(r, k, r.msgLang || 'fr'))}" target="_blank" rel="noopener">Envoyer</a>`;
         (d >= 2 ? late : today).push(row('📩', 'i1', 'Prévenir le client : ' + msgOf(k).title, base, btn, d)); return;
       }

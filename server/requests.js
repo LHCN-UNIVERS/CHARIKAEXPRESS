@@ -55,7 +55,7 @@ export async function postRequest(request, env, ctx){
     const centre = r.kind === 'demande' && r.siege === 'dom' && r.forme !== 'ae' ? await centreForRequest(env, b.centre) : null;
     if (centre) r.centre = { id: centre.id, name: centre.name };
     const at = now();
-    const data = { ...r, ref, createdAt: at, updatedAt: at, step: 0, docs: {}, livrables: {}, checks: {}, paid: {}, reject: null,
+    const data = { ...r, ref, createdAt: at, updatedAt: at, step: 0, wf: 2, docs: {}, livrables: {}, checks: {}, paid: {}, reject: null,
       seen: false, juriste: null, notes: [{ t: 'sys', at, text: 'Demande reçue depuis le site.' }] };
     const st = [env.DB.prepare('INSERT INTO requests (ref, created_at, updated_at, ip_hash, data) VALUES (?, ?, ?, ?, ?)').bind(ref, at, at, ip, JSON.stringify(data))];
     if (centre) st.push(env.DB.prepare("INSERT INTO domi (ref, centre_id, months, status, att_file, created_at, updated_at, paid_at) VALUES (?, ?, ?, 'new', NULL, ?, ?, NULL)").bind(ref, centre.id, monthsOf(r.plan), at, at));

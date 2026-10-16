@@ -190,31 +190,29 @@ footer a{color:var(--m)}
   const PLANS = { essentiel:'Essentiel', pro:'Pro', premium:'Premium', ae:'Auto-entrepreneur' };
   const fmt = n => n == null ? '—' : n.toLocaleString('fr-FR').replace(/ | /g, ' ') + ' MAD';
 
-  // Client-side wording of the team's 10 steps (admin.html WORKFLOW); you:true = the client has something to do
+  // Client-side wording of the team's 9 steps (admin.html WORKFLOW); you:true = the client has something to do
   const STEPS = {
     fr: [
-      ['Demande reçue', "Réglez l'avance de 700 MAD et envoyez le reçu sur WhatsApp.", true],
+      ['Demande reçue', "Confirmez votre demande, réglez l'avance de 700 MAD et envoyez votre CIN ou passeport sur WhatsApp.", true],
       ['Certificat négatif', "Nous réservons le nom de votre société auprès de l'OMPIC."],
-      ['Rédaction', 'Votre juriste rédige les statuts et les documents de la société.'],
+      ['Rédaction', 'Votre juriste rédige les statuts et les documents, puis vous les envoie en PDF sur WhatsApp.'],
       ['Légalisation', 'Légalisez les documents reçus, renvoyez-les et réglez 50 % du reste.', true],
-      ['Enregistrement', 'Enregistrement des statuts et du contrat de domiciliation.'],
-      ['OMPIC · Impôts', 'Dépôt du dossier, identifiant fiscal et ICE.'],
-      ['Tribunal', 'Immatriculation au registre du commerce, puis affiliation CNSS.'],
-      ['Bulletin Officiel', 'Publication de la création de votre société.'],
-      ['Annonce légale', "Publication de l'annonce légale dans un journal."],
-      ['Dossier complet', 'Réglez le solde : nous vous envoyons tous vos documents.', true]
+      ['Enregistrement', 'Enregistrement des statuts et du contrat de domiciliation (ou du bail).'],
+      ['Immatriculation', 'Taxe professionnelle, identifiant fiscal, registre de commerce, ICE et CNSS.'],
+      ['Publications', 'Annonce légale dans un journal et publication au Bulletin Officiel.'],
+      ['Solde', 'Réglez le solde : nous vous envoyons ensuite tous vos documents.', true],
+      ['Livraison', 'Envoi de tous les documents de votre société.']
     ],
     en: [
-      ['Request received', 'Pay the 700 MAD advance and send the receipt on WhatsApp.', true],
+      ['Request received', 'Confirm your request, pay the 700 MAD advance and send your ID card or passport on WhatsApp.', true],
       ['Negative certificate', 'We reserve your company name with OMPIC.'],
-      ['Drafting', 'Your legal advisor drafts the articles and company documents.'],
+      ['Drafting', 'Your legal advisor drafts the articles and documents, then sends them to you as PDFs on WhatsApp.'],
       ['Legalisation', 'Legalise the documents you received, send them back and pay 50% of the remainder.', true],
-      ['Registration', 'Registration of the articles and the domiciliation contract.'],
-      ['OMPIC · Taxes', 'Filing, tax ID and ICE.'],
-      ['Commercial court', 'Registration in the trade register, then CNSS affiliation.'],
-      ['Official Bulletin', 'Publication of your company formation.'],
-      ['Legal notice', 'Publication of the legal notice in a newspaper.'],
-      ['File complete', 'Pay the balance: we send you all your documents.', true]
+      ['Registration', 'Registration of the articles and the domiciliation contract (or the lease).'],
+      ['Incorporation', 'Business tax, tax ID, trade register, ICE and CNSS.'],
+      ['Publications', 'Legal notice in a newspaper and publication in the Official Bulletin.'],
+      ['Balance', 'Pay the balance: we then send you all your documents.', true],
+      ['Delivery', 'All your company documents are sent to you.']
     ]
   };
   const T = {

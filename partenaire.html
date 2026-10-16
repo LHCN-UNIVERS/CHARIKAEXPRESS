@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap">
 <style>
 /* Layout: plum header. Signed out: one centred card. Signed in: a row of 4 figures (files, in progress, delivered, earnings),
-   then two columns on desktop: the files table (reference + 10-step bar + commission) | codes, payouts and account cards. */
+   then two columns on desktop: the files table (reference + 9-step bar + commission) | codes, payouts and account cards. */
 :root{
   --plum:#30102f; --plum2:#4b1a46; --coral:#ff795b; --pink:#ff4f91; --blush:#fff1f5;
   --bg:#fffcfa; --ink:#30152f; --m:#7a6474; --line:#f2e2e8;
@@ -267,8 +267,8 @@ body:has(#loginView:not([hidden])) .cxn,body:has(#pwView:not([hidden])) .cxn{dis
   }
   document.querySelectorAll('[data-lang]').forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
   const SITE = 'https://charikaexpress.ma/';
-  const STEPS_FR = ['Demande reçue', 'Certificat négatif', 'Rédaction', 'Légalisation', 'Enregistrement', 'OMPIC · Impôts', 'Tribunal', 'Bulletin Officiel', 'Annonce légale', 'Dossier complet'];
-  const STEPS_EN = ['Request received', 'Negative certificate', 'Drafting', 'Legalisation', 'Registration', 'OMPIC · Taxes', 'Court', 'Official Bulletin', 'Legal notice', 'File complete'];
+  const STEPS_FR = ['Demande reçue', 'Certificat négatif', 'Rédaction', 'Légalisation', 'Enregistrement', 'Immatriculation', 'Publications', 'Solde', 'Livraison'];
+  const STEPS_EN = ['Request received', 'Negative certificate', 'Drafting', 'Legalisation', 'Registration', 'Incorporation', 'Publications', 'Balance', 'Delivery'];
   const steps = () => lang === 'en' ? STEPS_EN : STEPS_FR;
   const DONE = STEPS_FR.length;
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
@@ -283,8 +283,8 @@ body:has(#loginView:not([hidden])) .cxn,body:has(#pwView:not([hidden])) .cxn{dis
       { ref:'CE-514208', createdAt:d(1), step:0, delivered:false, paid:false, affPaid:null, code:'AMAL' },
       { ref:'CE-482913', createdAt:d(13), step:5, delivered:false, paid:false, affPaid:null, code:'AMAL200' },
       { ref:'CE-377120', createdAt:d(25), step:8, delivered:false, paid:false, affPaid:null, code:'AMAL' },
-      { ref:'CE-290455', createdAt:d(37), step:10, delivered:true, paid:true, affPaid:null, code:'AMAL' },
-      { ref:'CE-241876', createdAt:d(43), step:10, delivered:true, paid:true, affPaid:d(10), code:'AMAL' }
+      { ref:'CE-290455', createdAt:d(37), step:9, delivered:true, paid:true, affPaid:null, code:'AMAL' },
+      { ref:'CE-241876', createdAt:d(43), step:9, delivered:true, paid:true, affPaid:d(10), code:'AMAL' }
     ] }; })();
 
   async function api(path, opts = {}){

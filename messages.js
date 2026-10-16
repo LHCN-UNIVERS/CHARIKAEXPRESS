@@ -7,6 +7,8 @@ window.CE_MSG = (() => {
     cashplus: { fr:'Cash Plus\nN° de compte : 0667154604', ar:'Cash Plus\nرقم الحساب: 0667154604' }
   };
   const SUIVI_URL = 'https://charikaexpress.ma/suivi.html';   // client tracking page; the team space adds ?ref=<reference>
+  // added to the « documents à légaliser » message when the capital is above 100 000 MAD (bank attestation needed)
+  const BLOCAGE = { fr:"Votre capital dépassant 100 000 MAD, merci de le déposer sur un compte bloqué à la banque et de nous envoyer l'attestation de blocage.", ar:'بما أن الرأسمال ديالكم فايت 100.000 درهم، من فضلكم حطوه فحساب مجمد فالبنك وصيفطو لينا شهادة التجميد (Attestation de blocage).' };
   const SIG = { fr:"\n\nAvec nos salutations les plus cordiales,\nL'équipe Charika Express\nVotre société au Maroc, 100 % en ligne", ar:"\n\nمع أطيب التحيات،\nفريق Charika Express\nالشركة ديالكم فالمغرب، 100% أونلاين" };
   const MSG = {
     // sent by hand from the score card to a new request that is not confirmed yet
@@ -56,28 +58,42 @@ window.CE_MSG = (() => {
       "n": "3",
       "title": "Certificat négatif obtenu",
       "fr": {
-        "wa": "Excellente nouvelle {prenom} 🎉\nLe certificat négatif est délivré : le nom *« {societe} »* est désormais réservé pour vous !\n\nVotre juriste rédige dès maintenant vos documents sur mesure : statuts, contrat de domiciliation, procuration et formulaire RC. Vous les recevrez très prochainement.",
+        "wa": "Excellente nouvelle {prenom} 🎉\nLe certificat négatif est délivré : le nom *« {societe} »* est désormais réservé pour vous !\n\nVotre juriste rédige dès maintenant vos documents sur mesure : statuts, contrat de domiciliation, procuration et déclaration sur l'honneur. Vous les recevrez très prochainement.",
         "subj": "Félicitations, le nom « {societe} » est à vous !",
-        "mail": "Bonjour {prenom},\n\nNous avons le plaisir de vous annoncer que le certificat négatif est délivré. Le nom « {societe} » est désormais réservé pour votre société : c'est la première pierre de votre projet !\n\nVotre juriste rédige maintenant vos documents, sur mesure et dans le respect de la loi :\n• les statuts\n• le contrat de domiciliation\n• la procuration\n• le formulaire RC (déclaration d'immatriculation)\n\nVous les recevrez très prochainement par e-mail, accompagnés d'instructions simples pour la légalisation.\n\nSuivi de votre dossier : {suivi}{sig}"
+        "mail": "Bonjour {prenom},\n\nNous avons le plaisir de vous annoncer que le certificat négatif est délivré. Le nom « {societe} » est désormais réservé pour votre société : c'est la première pierre de votre projet !\n\nVotre juriste rédige maintenant vos documents, sur mesure et dans le respect de la loi :\n• les statuts\n• le contrat de domiciliation\n• la procuration\n• la déclaration sur l'honneur\n\nVous les recevrez très prochainement en PDF sur WhatsApp, accompagnés d'instructions simples pour la légalisation.\n\nSuivi de votre dossier : {suivi}{sig}"
       },
       "ar": {
-        "wa": "خبر زوين {prenom} 🎉\nخرجات الشهادة السلبية: الإسم *« {societe} »* ولا محجوز ليكم!\n\nالمستشار القانوني ديالكم بدا دابا كيوجد الوثائق ديالكم على حساب المشروع ديالكم: القانون الأساسي، عقد التوطين، الوكالة والمطبوع ديال السجل التجاري. غادي يوصلوكم قريب إن شاء الله.",
+        "wa": "خبر زوين {prenom} 🎉\nخرجات الشهادة السلبية: الإسم *« {societe} »* ولا محجوز ليكم!\n\nالمستشار القانوني ديالكم بدا دابا كيوجد الوثائق ديالكم على حساب المشروع ديالكم: القانون الأساسي، عقد التوطين، الوكالة والتصريح بالشرف. غادي يوصلوكم قريب إن شاء الله.",
         "subj": "مبروك، الإسم « {societe} » ولا ديالكم!",
-        "mail": "السلام عليكم {prenom}،\n\nيسعدنا نخبروكم بلي الشهادة السلبية خرجات. الإسم « {societe} » ولا محجوز للشركة ديالكم: هادي هي أول حجرة فالمشروع ديالكم!\n\nالمستشار القانوني ديالكم كيكتب دابا الوثائق ديالكم، على حساب المشروع ديالكم وطبقا للقانون:\n• القانون الأساسي (Statuts)\n• عقد التوطين (Domiciliation)\n• الوكالة (Procuration)\n• مطبوع السجل التجاري (Formulaire RC)\n\nغادي يوصلوكم قريب فالإيميل، مع شرح ساهل ديال المصادقة.\n\nتتبع الملف ديالكم: {suivi}{sig}"
+        "mail": "السلام عليكم {prenom}،\n\nيسعدنا نخبروكم بلي الشهادة السلبية خرجات. الإسم « {societe} » ولا محجوز للشركة ديالكم: هادي هي أول حجرة فالمشروع ديالكم!\n\nالمستشار القانوني ديالكم كيكتب دابا الوثائق ديالكم، على حساب المشروع ديالكم وطبقا للقانون:\n• القانون الأساسي (Statuts)\n• عقد التوطين (Domiciliation)\n• الوكالة (Procuration)\n• التصريح بالشرف (Déclaration sur l'honneur)\n\nغادي يوصلوكم قريب PDF فالواتساب، مع شرح ساهل ديال المصادقة.\n\nتتبع الملف ديالكم: {suivi}{sig}"
+      }
+    },
+    nomRefus: {
+      "n": "3 bis",
+      "title": "Nom refusé par l'OMPIC",
+      "fr": {
+        "wa": "Bonjour {prenom}, l'OMPIC n'a pas accepté le nom « {societe} » pour la raison suivante :\n« {motif} »\n\nPas d'inquiétude, cela arrive souvent 🙂 Envoyez-nous simplement 3 nouveaux noms, par ordre de préférence, ici sur WhatsApp. Nous redéposons la demande dès réception.",
+        "subj": "Votre dossier {ref} : choisissons un autre nom",
+        "mail": "Bonjour {prenom},\n\nL'OMPIC n'a pas accepté le nom « {societe} » pour le motif suivant :\n« {motif} »\n\nPas d'inquiétude : cela arrive souvent, par exemple quand un nom très proche existe déjà. Il vous suffit de nous proposer 3 nouveaux noms, par ordre de préférence, en répondant à cet e-mail ou sur WhatsApp.\n\nNous redéposons la demande de certificat négatif dès réception.\n\nSuivi de votre dossier : {suivi}{sig}"
+      },
+      "ar": {
+        "wa": "السلام عليكم {prenom}، OMPIC ما قبلش الإسم « {societe} » على هاد السبب:\n« {motif} »\n\nما تقلقوش، هادشي كيوقع بزاف 🙂 غير صيفطو لينا 3 ديال الأسماء جداد، بالترتيب اللي عجبكم، هنا فالواتساب. وغير نتوصلو بيهم كنعاودو نديرو الطلب.",
+        "subj": "الملف ديالكم {ref}: نختارو إسم آخر",
+        "mail": "السلام عليكم {prenom}،\n\nOMPIC ما قبلش الإسم « {societe} » على هاد السبب:\n« {motif} »\n\nما تقلقوش: هادشي كيوقع بزاف، مثلا ملي كيكون شي إسم قريب بزاف ديجا كاين. غير قترحو علينا 3 ديال الأسماء جداد، بالترتيب اللي عجبكم، وجاوبو على هاد الإيميل ولا فالواتساب.\n\nغير نتوصلو بيهم، كنعاودو نديرو طلب الشهادة السلبية.\n\nتتبع الملف ديالكم: {suivi}{sig}"
       }
     },
     legal: {
       "n": "4",
       "title": "Documents à légaliser + 2e paiement",
       "fr": {
-        "wa": "Bonjour {prenom}, vos documents sont prêts ✍️ Nous venons de vous les envoyer par e-mail :\n• Statuts\n• Contrat de domiciliation\n• Procuration\n• Formulaire RC\n\nIl ne vous reste que 3 petites étapes :\n1. Signer les documents\n2. Faire légaliser votre signature à l'arrondissement (moqataa)\n3. Nous faire parvenir les originaux\n\nPour poursuivre sans délai, nous vous remercions de régler la 2e tranche : *{montant} MAD* (50 % du reste).\n{paiement}\n\nUne question ? Votre juriste vous répond avec plaisir, ici même.",
+        "wa": "Bonjour {prenom}, vos documents sont prêts ✍️ Nous venons de vous les envoyer en PDF, ici sur WhatsApp :\n• Statuts\n• Contrat de domiciliation\n• Procuration\n• Déclaration sur l'honneur\n\nIl ne vous reste que 3 petites étapes :\n1. Signer les documents\n2. Faire légaliser votre signature à l'arrondissement (moqataa)\n3. Nous faire parvenir les originaux\n\nPour poursuivre sans délai, nous vous remercions de régler la 2e tranche : *{montant} MAD* (50 % du reste).\n{paiement}\n{blocage}\n\nUne question ? Votre juriste vous répond avec plaisir, ici même.",
         "subj": "Vos documents sont prêts : plus que 3 étapes simples",
-        "mail": "Bonjour {prenom},\n\nVotre juriste a finalisé vos documents avec le plus grand soin. Vous les trouverez en pièces jointes :\n• Statuts\n• Contrat de domiciliation\n• Procuration\n• Formulaire RC\n\nIl ne vous reste que 3 étapes simples :\n1. Imprimer et signer chaque document aux endroits indiqués.\n2. Faire légaliser votre signature à l'arrondissement (moqataa), muni de votre CIN en cours de validité.\n3. Nous faire parvenir les originaux légalisés.\n\nPour poursuivre sans délai, nous vous remercions de régler en même temps la deuxième tranche de {montant} MAD (50 % du reste) :\n{paiement}\nMerci d'indiquer la référence {ref} dans le motif du virement.\n\nDès réception des documents et du paiement, nous lançons l'enregistrement. Si vous avez le moindre doute, appelez-nous ou écrivez-nous sur WhatsApp : nous vous guidons avec plaisir.\n\nSuivi de votre dossier : {suivi}{sig}"
+        "mail": "Bonjour {prenom},\n\nVotre juriste a finalisé vos documents avec le plus grand soin. Vous les trouverez en pièces jointes :\n• Statuts\n• Contrat de domiciliation\n• Procuration\n• Déclaration sur l'honneur\n\nIl ne vous reste que 3 étapes simples :\n1. Imprimer et signer chaque document aux endroits indiqués.\n2. Faire légaliser votre signature à l'arrondissement (moqataa), muni de votre CIN en cours de validité.\n3. Nous faire parvenir les originaux légalisés.\n\nPour poursuivre sans délai, nous vous remercions de régler en même temps la deuxième tranche de {montant} MAD (50 % du reste) :\n{paiement}\nMerci d'indiquer la référence {ref} dans le motif du virement.\n{blocage}\n\nDès réception des documents et du paiement, nous lançons l'enregistrement. Si vous avez le moindre doute, appelez-nous ou écrivez-nous sur WhatsApp : nous vous guidons avec plaisir.\n\nSuivi de votre dossier : {suivi}{sig}"
       },
       "ar": {
-        "wa": "السلام عليكم {prenom}، الوثائق ديالكم واجدين ✍️ صيفطناهم ليكم دابا فالإيميل:\n• القانون الأساسي (Statuts)\n• عقد التوطين (Domiciliation)\n• الوكالة (Procuration)\n• مطبوع السجل التجاري (Formulaire RC)\n\nبقات ليكم غير 3 خطوات ساهلين:\n1. توقعو على الوثائق\n2. تصادقو على التوقيع فالمقاطعة\n3. ترجعو لينا الأصل\n\nباش نكملو بلا تعطال، من فضلكم خلصو الدفعة الثانية: *{montant} درهم* (50% من الباقي).\n{paiement}\n\nعندكم شي سؤال؟ المستشار ديالكم كيجاوبكم بكل فرح، هنا مباشرة.",
+        "wa": "السلام عليكم {prenom}، الوثائق ديالكم واجدين ✍️ صيفطناهم ليكم دابا PDF هنا فالواتساب:\n• القانون الأساسي (Statuts)\n• عقد التوطين (Domiciliation)\n• الوكالة (Procuration)\n• التصريح بالشرف (Déclaration sur l'honneur)\n\nبقات ليكم غير 3 خطوات ساهلين:\n1. توقعو على الوثائق\n2. تصادقو على التوقيع فالمقاطعة\n3. ترجعو لينا الأصل\n\nباش نكملو بلا تعطال، من فضلكم خلصو الدفعة الثانية: *{montant} درهم* (50% من الباقي).\n{paiement}\n{blocage}\n\nعندكم شي سؤال؟ المستشار ديالكم كيجاوبكم بكل فرح، هنا مباشرة.",
         "subj": "الوثائق ديالكم واجدين: بقات غير 3 خطوات ساهلين",
-        "mail": "السلام عليكم {prenom}،\n\nالمستشار القانوني ديالكم وجد الوثائق ديالكم بعناية كبيرة. غادي تلقاوهم مرفقين مع هاد الإيميل:\n• القانون الأساسي (Statuts)\n• عقد التوطين (Domiciliation)\n• الوكالة (Procuration)\n• مطبوع السجل التجاري (Formulaire RC)\n\nبقات ليكم غير 3 خطوات ساهلين:\n1. طبعو الوثائق وتوقعو عليهم فالبلايص المحددة.\n2. صادقو على التوقيع فالمقاطعة، وخودو معاكم البطاقة الوطنية صالحة.\n3. رجعو لينا الأصل ديال الوثائق المصادق عليها.\n\nباش نكملو بلا تعطال، من فضلكم خلصو فنفس الوقت الدفعة الثانية ديال {montant} درهم (50% من الباقي):\n{paiement}\nمن فضلكم كتبو المرجع {ref} فسبب التحويل.\n\nغير نتوصلو بالوثائق والخلاص، كنبداو التسجيل. إلا كان عندكم أي شك، عيطو لينا ولا كتبو لينا فالواتساب: نعاونوكم بكل فرح.\n\nتتبع الملف ديالكم: {suivi}{sig}"
+        "mail": "السلام عليكم {prenom}،\n\nالمستشار القانوني ديالكم وجد الوثائق ديالكم بعناية كبيرة. غادي تلقاوهم مرفقين مع هاد الإيميل:\n• القانون الأساسي (Statuts)\n• عقد التوطين (Domiciliation)\n• الوكالة (Procuration)\n• التصريح بالشرف (Déclaration sur l'honneur)\n\nبقات ليكم غير 3 خطوات ساهلين:\n1. طبعو الوثائق وتوقعو عليهم فالبلايص المحددة.\n2. صادقو على التوقيع فالمقاطعة، وخودو معاكم البطاقة الوطنية صالحة.\n3. رجعو لينا الأصل ديال الوثائق المصادق عليها.\n\nباش نكملو بلا تعطال، من فضلكم خلصو فنفس الوقت الدفعة الثانية ديال {montant} درهم (50% من الباقي):\n{paiement}\nمن فضلكم كتبو المرجع {ref} فسبب التحويل.\n{blocage}\n\nغير نتوصلو بالوثائق والخلاص، كنبداو التسجيل. إلا كان عندكم أي شك، عيطو لينا ولا كتبو لينا فالواتساب: نعاونوكم بكل فرح.\n\nتتبع الملف ديالكم: {suivi}{sig}"
       }
     },
     legalOk: {
@@ -98,14 +114,14 @@ window.CE_MSG = (() => {
       "n": "6",
       "title": "Enregistrement terminé",
       "fr": {
-        "wa": "Bonjour {prenom}, encore une étape franchie 💪 Les statuts et le contrat de domiciliation sont enregistrés.\n\nNous déposons maintenant votre dossier à l'OMPIC et aux Impôts pour obtenir l'ICE, l'identifiant fiscal et la taxe professionnelle. Plus de la moitié du chemin est déjà faite !",
+        "wa": "Bonjour {prenom}, encore une étape franchie 💪 Les statuts et le contrat de domiciliation sont enregistrés.\n\nNous déposons maintenant le dossier d'immatriculation : taxe professionnelle, identifiant fiscal, registre de commerce, ICE et CNSS. Plus de la moitié du chemin est déjà faite !",
         "subj": "Encore une étape franchie : dépôt de votre dossier",
-        "mail": "Bonjour {prenom},\n\nBonne nouvelle : les statuts et le contrat de domiciliation de {societe} sont enregistrés.\n\nNous déposons maintenant votre dossier à l'OMPIC et aux Impôts afin d'obtenir :\n• l'ICE (Identifiant Commun de l'Entreprise)\n• l'identifiant fiscal (IF)\n• la taxe professionnelle\n\nPlus de la moitié du chemin est déjà faite. Nous vous tenons informé du résultat.\n\nSuivi de votre dossier : {suivi}{sig}"
+        "mail": "Bonjour {prenom},\n\nBonne nouvelle : les statuts et le contrat de domiciliation de {societe} sont enregistrés.\n\nNous déposons maintenant le dossier d'immatriculation afin d'obtenir :\n• la taxe professionnelle\n• l'identifiant fiscal (IF)\n• le registre de commerce (RC)\n• l'ICE (Identifiant Commun de l'Entreprise)\n• l'affiliation à la CNSS\n\nPlus de la moitié du chemin est déjà faite. Nous vous tenons informé du résultat.\n\nSuivi de votre dossier : {suivi}{sig}"
       },
       "ar": {
-        "wa": "السلام عليكم {prenom}، دوزنا خطوة أخرى 💪 تسجلو القانون الأساسي وعقد التوطين.\n\nدابا كنديرو الملف ديالكم فـ OMPIC والضرائب باش نجيبو ICE، التعريف الضريبي والضريبة المهنية (الباتنتا). دوزنا كثر من النص ديال الطريق!",
+        "wa": "السلام عليكم {prenom}، دوزنا خطوة أخرى 💪 تسجلو القانون الأساسي وعقد التوطين.\n\nدابا كندفعو ملف التقييد: الباتنتا، التعريف الضريبي، السجل التجاري، ICE و CNSS. دوزنا كثر من النص ديال الطريق!",
         "subj": "دوزنا خطوة أخرى: الملف ديالكم تدفع",
-        "mail": "السلام عليكم {prenom}،\n\nخبر زوين: تسجلو القانون الأساسي وعقد التوطين ديال {societe}.\n\nدابا كندفعو الملف ديالكم فـ OMPIC والضرائب باش نجيبو:\n• ICE (المعرف الموحد للمقاولة)\n• التعريف الضريبي (IF)\n• الضريبة المهنية (الباتنتا)\n\nدوزنا كثر من النص ديال الطريق. غادي نعلموكم بالنتيجة.\n\nتتبع الملف ديالكم: {suivi}{sig}"
+        "mail": "السلام عليكم {prenom}،\n\nخبر زوين: تسجلو القانون الأساسي وعقد التوطين ديال {societe}.\n\nدابا كندفعو ملف التقييد باش نجيبو:\n• الضريبة المهنية (الباتنتا)\n• التعريف الضريبي (IF)\n• السجل التجاري (RC)\n• ICE (المعرف الموحد للمقاولة)\n• التسجيل فـ CNSS\n\nدوزنا كثر من النص ديال الطريق. غادي نعلموكم بالنتيجة.\n\nتتبع الملف ديالكم: {suivi}{sig}"
       }
     },
     rejet: {
@@ -122,53 +138,25 @@ window.CE_MSG = (() => {
         "mail": "السلام عليكم {prenom}،\n\nبغينا نعلموكم بلي الإدارة رجعات لينا الملف ديال {societe} على هاد السبب:\n« {motif} »\n\nما تقلقوش: هادشي كيوقع وكيتحل بالزربة. غير صيفطو لينا الوثيقة المصححة (مثلا نسخة ديال البطاقة الوطنية صالحة، ولا الوثيقة مصادق عليها من جديد).\n\nغير نتوصلو بيها، كنعاودو ندفعو الملف ديالكم بالأولوية. المستشار ديالكم رهن الإشارة فالتيليفون ولا فالواتساب باش يعاونكم خطوة بخطوة.\n\nشكرا على التفهم ديالكم.\n\nتتبع الملف ديالكم: {suivi}{sig}"
       }
     },
-    accepte: {
-      "n": "7",
-      "title": "ICE, IF et taxe professionnelle obtenus",
-      "fr": {
-        "wa": "Excellente nouvelle {prenom} 🎉 Votre dossier est accepté ! {societe} dispose désormais de :\n• son ICE\n• son identifiant fiscal (IF)\n• sa taxe professionnelle\n\nProchaine étape : l'immatriculation au registre de commerce (RC) au tribunal. Votre société prend vie !",
-        "subj": "Dossier accepté : votre société prend vie !",
-        "mail": "Bonjour {prenom},\n\nNous avons le plaisir de vous annoncer que votre dossier est accepté. {societe} dispose désormais de :\n• son ICE\n• son identifiant fiscal (IF)\n• sa taxe professionnelle\n\nVotre société prend vie ! Nous déposons maintenant le dossier au tribunal de commerce pour l'immatriculation au registre de commerce (RC), puis nous effectuerons l'affiliation à la CNSS.\n\nSuivi de votre dossier : {suivi}{sig}"
-      },
-      "ar": {
-        "wa": "خبر زوين بزاف {prenom} 🎉 الملف ديالكم تقبل! {societe} دابا عندها:\n• ICE\n• التعريف الضريبي (IF)\n• الضريبة المهنية (الباتنتا)\n\nالخطوة الجاية: التقييد فالسجل التجاري (RC) فالمحكمة. الشركة ديالكم بدات كتولد!",
-        "subj": "الملف تقبل: الشركة ديالكم بدات كتولد!",
-        "mail": "السلام عليكم {prenom}،\n\nيسعدنا نخبروكم بلي الملف ديالكم تقبل. {societe} دابا عندها:\n• ICE\n• التعريف الضريبي (IF)\n• الضريبة المهنية (الباتنتا)\n\nالشركة ديالكم بدات كتولد! دابا كندفعو الملف فالمحكمة التجارية باش نقيدوها فالسجل التجاري (RC)، ومن بعد كنديرو التسجيل فـ CNSS.\n\nتتبع الملف ديالكم: {suivi}{sig}"
-      }
-    },
     rc: {
-      "n": "8",
-      "title": "Registre de commerce et CNSS",
+      "n": "7",
+      "title": "Société immatriculée : TP, IF, RC, ICE, CNSS",
       "fr": {
-        "wa": "{prenom}, c'est officiel 🏛️ {societe} est immatriculée au registre de commerce, et l'affiliation à la CNSS est faite. Toutes nos félicitations !\n\nIl ne reste que deux formalités de publication, et nous nous en chargeons pour vous.",
+        "wa": "{prenom}, c'est officiel 🏛️ {societe} est immatriculée ! Registre de commerce, ICE, identifiant fiscal, taxe professionnelle et CNSS : tout est obtenu. Toutes nos félicitations !\n\nIl ne reste que les publications (annonce au journal et Bulletin Officiel), et nous nous en chargeons pour vous.",
         "subj": "C'est officiel : {societe} est immatriculée !",
-        "mail": "Bonjour {prenom},\n\nToutes nos félicitations : {societe} est officiellement immatriculée au registre de commerce. L'affiliation à la CNSS est également faite.\n\nIl ne reste que deux formalités de publication, dont nous nous chargeons pour vous :\n• la publication au Bulletin Officiel\n• l'annonce légale dans un journal\n\nSuivi de votre dossier : {suivi}{sig}"
+        "mail": "Bonjour {prenom},\n\nToutes nos félicitations : {societe} est officiellement immatriculée. Votre société dispose désormais de son registre de commerce (RC), de son ICE, de son identifiant fiscal (IF), de sa taxe professionnelle et de son affiliation à la CNSS.\n\nIl ne reste que deux formalités de publication, dont nous nous chargeons pour vous :\n• la publication au Bulletin Officiel\n• l'annonce légale dans un journal\n\nSuivi de votre dossier : {suivi}{sig}"
       },
       "ar": {
-        "wa": "{prenom}، ولات رسمية 🏛️ {societe} تقيدات فالسجل التجاري، وتسجلات فـ CNSS. ألف مبروك!\n\nبقاو غير جوج ديال النشرات، وحنا اللي غادي نتكلفو بيهم.",
+        "wa": "{prenom}، ولات رسمية 🏛️ {societe} تقيدات! السجل التجاري، ICE، التعريف الضريبي، الباتنتا و CNSS: كلشي واجد. ألف مبروك!\n\nبقاو غير جوج ديال النشرات، وحنا اللي غادي نتكلفو بيهم.",
         "subj": "ولات رسمية: {societe} تقيدات!",
-        "mail": "السلام عليكم {prenom}،\n\nألف مبروك: {societe} تقيدات رسميا فالسجل التجاري، وتسجلات حتى فـ CNSS.\n\nبقاو غير جوج ديال النشرات، وحنا اللي غادي نتكلفو بيهم:\n• النشر فالجريدة الرسمية (Bulletin Officiel)\n• الإعلان القانوني فجريدة\n\nتتبع الملف ديالكم: {suivi}{sig}"
-      }
-    },
-    bo: {
-      "n": "9",
-      "title": "Publication au Bulletin Officiel",
-      "fr": {
-        "wa": "Bonjour {prenom}, la création de {societe} est publiée au Bulletin Officiel 📰\n\nDernière ligne droite : l'annonce légale dans un journal. Nous la rédigeons et l'envoyons pour vous. Nous y sommes presque !",
-        "subj": "Dernière ligne droite pour {societe}",
-        "mail": "Bonjour {prenom},\n\nLa création de {societe} est publiée au Bulletin Officiel.\n\nNous entrons dans la dernière ligne droite : l'annonce légale dans un journal d'annonces légales. Nous la rédigeons et l'envoyons au journal pour vous, et nous vous écrirons dès sa publication.\n\nNous y sommes presque !\n\nSuivi de votre dossier : {suivi}{sig}"
-      },
-      "ar": {
-        "wa": "السلام عليكم {prenom}، التأسيس ديال {societe} تنشر فالجريدة الرسمية 📰\n\nآخر خطوة: الإعلان القانوني فجريدة. حنا كنكتبوه وكنصيفطوه عليكم. قربنا بزاف!",
-        "subj": "آخر خطوة لـ {societe}",
-        "mail": "السلام عليكم {prenom}،\n\nالتأسيس ديال {societe} تنشر فالجريدة الرسمية (Bulletin Officiel).\n\nوصلنا لآخر خطوة: الإعلان القانوني فجريدة ديال الإعلانات القانونية. حنا كنكتبوه وكنصيفطوه للجريدة عليكم، وغادي نكتبو ليكم غير يتنشر.\n\nقربنا بزاف!\n\nتتبع الملف ديالكم: {suivi}{sig}"
+        "mail": "السلام عليكم {prenom}،\n\nألف مبروك: {societe} تقيدات رسميا. الشركة ديالكم دابا عندها السجل التجاري (RC)، ICE، التعريف الضريبي (IF)، الباتنتا والتسجيل فـ CNSS.\n\nبقاو غير جوج ديال النشرات، وحنا اللي غادي نتكلفو بيهم:\n• النشر فالجريدة الرسمية (Bulletin Officiel)\n• الإعلان القانوني فجريدة\n\nتتبع الملف ديالكم: {suivi}{sig}"
       }
     },
     complet: {
-      "n": "10",
+      "n": "8",
       "title": "Dossier complet : paiement du solde",
       "fr": {
-        "wa": "Félicitations {prenom} 🥳 Votre société *{societe}* est créée ! L'annonce légale est publiée et l'ensemble de vos documents est prêt.\n\nPour les recevoir, il ne reste plus qu'à régler le solde : *{montant} MAD*.\n{paiement}\n\nDès réception, nous vous envoyons tous vos documents. Merci pour votre confiance tout au long de ce parcours 🙏",
+        "wa": "Félicitations {prenom} 🥳 Votre société *{societe}* est créée ! L'annonce légale et le Bulletin Officiel sont publiés, et l'ensemble de vos documents est prêt.\n\nPour les recevoir, il ne reste plus qu'à régler le solde : *{montant} MAD*.\n{paiement}\n\nDès réception, nous vous envoyons tous vos documents. Merci pour votre confiance tout au long de ce parcours 🙏",
         "subj": "Félicitations, votre société {societe} est créée !",
         "mail": "Bonjour {prenom},\n\nC'est avec une grande joie que nous vous annonçons que la création de {societe} est terminée. L'annonce légale est publiée et tous vos documents sont prêts :\nstatuts enregistrés, certificat négatif, registre de commerce, ICE, identifiant fiscal, taxe professionnelle, CNSS, Bulletin Officiel et annonce légale.\n\nPour les recevoir, il ne reste plus qu'à régler le solde de {montant} MAD :\n{paiement}\nMerci d'indiquer la référence {ref} dans le motif du virement.\n\nDès réception, nous vous envoyons l'ensemble de vos documents.\n\nMerci pour votre confiance tout au long de ce parcours.{sig}"
       },
@@ -179,7 +167,7 @@ window.CE_MSG = (() => {
       }
     },
     livre: {
-      "n": "11",
+      "n": "9",
       "title": "Solde reçu : documents envoyés",
       "fr": {
         "wa": "Merci {prenom} ! Paiement bien reçu ✅ Tous les documents de {societe} viennent de vous être envoyés par e-mail.\n\nBienvenue dans le monde des entrepreneurs 🚀 Ce fut un plaisir de vous accompagner.\n\nBesoin d'un logo, de cartes de visite ou d'un pacte d'associés ? Répondez simplement à ce message.\n\n🎁 Un proche veut créer sa société ? Recommandez-nous : nous en prendrons soin comme de vous.",
@@ -193,5 +181,5 @@ window.CE_MSG = (() => {
       }
     }
   };
-  return { PAY_INFO, SUIVI_URL, SIG, MSG };
+  return { PAY_INFO, SUIVI_URL, SIG, BLOCAGE, MSG };
 })();

@@ -13,9 +13,9 @@
 // Team side (admin only, called from server/admin.js): list / create / validate partners, manage their promo codes.
 import { json, now, readJson, fail, HttpError } from './http.js';
 import { sameOrigin, hashPassword, checkPasswordRules, randomHex, sha256, same, ipKey } from './auth.js';
+import { DONE, stepOf } from './workflow.js';
 
 export const COMMISSION = 350;
-const DONE = 10;                                  // index of "Documents livrés" (admin.html WORKFLOW length)
 const COOKIE = 'ce_aff', DAYS = 30;
 const str = (v, max = 120) => String(v ?? '').trim().slice(0, max);
 const EMAIL = /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i;
@@ -122,7 +122,7 @@ export async function affApi(request, env, path){
       const { results: codes } = await env.DB.prepare('SELECT code, discount, active FROM promo_codes WHERE affiliate_id = ? ORDER BY created_at').bind(a.id).all();
       const { results } = await env.DB.prepare("SELECT data FROM requests WHERE json_extract(data, '$.affiliate') = ? ORDER BY created_at DESC").bind(a.id).all();
       const files = results.map(x => JSON.parse(x.data)).filter(r => !r.archived && r.kind !== 'rappel').map(r => ({
-        ref: r.ref, createdAt: r.createdAt, step: r.step || 0, delivered: (r.step || 0) >= DONE, paid: fullyPaid(r), affPaid: r.affPaid || null, code: r.promo || ''
+        ref: r.ref, createdAt: r.createdAt, step: stepOf(r), delivered: stepOf(r) >= DONE, paid: fullyPaid(r), affPaid: r.affPaid || null, code: r.promo || ''
       }));
       return json({ me: { ...pubAff(a), mustChange: !!a.must_change }, codes: codes.map(c => ({ ...c, active: !!c.active })), files, commission: COMMISSION });
     }

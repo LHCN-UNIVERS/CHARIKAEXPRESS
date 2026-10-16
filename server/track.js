@@ -5,6 +5,7 @@
 import { json, now, readJson, fail, HttpError } from './http.js';
 import { sameOrigin } from './auth.js';
 import { ipHash } from './requests.js';
+import { stepOf } from './workflow.js';
 
 const MAX_FAILS = 10;                       // per IP, per 15 minutes
 const firstName = s => String(s || '').trim().split(/\s+/)[0] || '';
@@ -32,7 +33,7 @@ export async function track(request, env){
 
     return json({
       ref, societe: (r.noms || [])[0] || '', forme: r.forme, plan: r.plan, createdAt: r.createdAt,
-      step: r.step || 0, archived: !!r.archived, reject: !!r.reject, juriste,
+      step: stepOf(r), archived: !!r.archived, reject: !!r.reject, juriste,
       total: r.total ?? null, payAmount: r.payAmount, paid: r.paid || {}, remise: r.remise || 0
     });
   } catch (e) { return fail(e); }
