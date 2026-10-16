@@ -151,6 +151,8 @@ footer a{color:var(--m)}
 .files{display:grid;gap:6px;margin-top:8px}
 .files a{font-size:.8rem;display:flex;justify-content:space-between;gap:8px;border-bottom:1px solid var(--line);padding-bottom:6px;text-decoration:none;color:var(--ink)}
 @media (max-width:640px){.req{grid-template-columns:minmax(0,1fr)}.req .acts{justify-content:flex-start}.req .acts .btn{flex:1}}
+/* Sign-in screen: no site navbar, like the team login */
+body:has(#loginView:not([hidden])) .cxn,body:has(#pwView:not([hidden])) .cxn{display:none}
 </style>
 </head>
 <body>
@@ -159,6 +161,7 @@ footer a{color:var(--m)}
 
 <main class="wrap">
   <section class="card login" id="loginView" hidden>
+    <div class="lhead"><a class="logo" href="index.html"><i></i><span>Charika <b>Express</b></span></a><div class="lng" role="group" aria-label="Langue"><button type="button" data-lang="fr" aria-pressed="true">FR</button><button type="button" data-lang="en" aria-pressed="false">EN</button></div></div>
     <h1>Espace centre</h1>
     <p class="muted">Connectez-vous avec l'e-mail et le mot de passe de votre centre.</p>
     <form id="lf" novalidate>
@@ -171,6 +174,7 @@ footer a{color:var(--m)}
   </section>
 
   <section class="card login" id="pwView" hidden>
+    <div class="lhead"><a class="logo" href="index.html"><i></i><span>Charika <b>Express</b></span></a><div class="lng" role="group" aria-label="Langue"><button type="button" data-lang="fr" aria-pressed="true">FR</button><button type="button" data-lang="en" aria-pressed="false">EN</button></div></div>
     <h1>Choisissez votre mot de passe</h1>
     <p class="muted">Vous vous êtes connecté avec un mot de passe temporaire. Choisissez-en un nouveau (10 caractères minimum).</p>
     <form id="pf" novalidate>

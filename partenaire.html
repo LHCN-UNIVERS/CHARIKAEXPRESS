@@ -128,6 +128,8 @@ footer a{color:var(--m)}
 @media (max-width:980px){.cols{grid-template-columns:minmax(0,1fr)}}
 @media (max-width:480px){.bar{gap:8px}.lng button{padding:4px 7px}.tag{display:none}}
 @media (max-width:640px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.g2{grid-template-columns:1fr}.bar .r span{display:none}}
+/* Sign-in screen: no site navbar, like the team login */
+body:has(#loginView:not([hidden])) .cxn,body:has(#pwView:not([hidden])) .cxn{display:none}
 </style>
 </head>
 <body>
@@ -137,6 +139,7 @@ footer a{color:var(--m)}
 <main class="wrap">
   <!-- Signed out -->
   <section class="card login" id="loginView" hidden>
+    <div class="lhead"><a class="logo" href="index.html"><i></i><span>Charika <b>Express</b></span></a><div class="lng" role="group" aria-label="Langue"><button type="button" data-lang="fr" aria-pressed="true">FR</button><button type="button" data-lang="en" aria-pressed="false">EN</button></div></div>
     <h1>Espace partenaire</h1>
     <p class="muted">Apporteurs d'affaires et centres de domiciliation : connectez-vous avec l'e-mail et le mot de passe de votre compte.</p>
     <form id="lf" novalidate>
@@ -150,6 +153,7 @@ footer a{color:var(--m)}
 
   <!-- Temporary password: choose a new one -->
   <section class="card login" id="pwView" hidden>
+    <div class="lhead"><a class="logo" href="index.html"><i></i><span>Charika <b>Express</b></span></a><div class="lng" role="group" aria-label="Langue"><button type="button" data-lang="fr" aria-pressed="true">FR</button><button type="button" data-lang="en" aria-pressed="false">EN</button></div></div>
     <h1>Choisissez votre mot de passe</h1>
     <p class="muted">Vous vous êtes connecté avec un mot de passe temporaire. Choisissez-en un nouveau (10 caractères minimum).</p>
     <form id="pf" novalidate>
