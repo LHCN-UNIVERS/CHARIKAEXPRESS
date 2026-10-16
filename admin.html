@@ -646,6 +646,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     'statuts': ['Statuts', 'Définissent le fonctionnement juridique de la société (associés, gérants, capital, objet social…).'],
     'domiciliation': ['Contrat de domiciliation', "Prouve que la société dispose d'une adresse légale pour recevoir son courrier et exercer son activité."],
     'procuration': ['Procuration', 'Pouvoir donné par le client à Charika Express pour faire les démarches de création en son nom.'],
+    'form-rc': ['Formulaire du registre de commerce (RC)', "Déclaration d'immatriculation au registre de commerce, préparée avec les statuts et signée par le gérant."],
     'honneur': ["Déclaration sur l'honneur", "Signée par le gérant, jointe au dossier d'immatriculation."],
     'blocage': ['Attestation de blocage du capital', 'Délivrée par la banque : obligatoire quand le capital dépasse 100 000 MAD.'],
     'enr-bail': ["Attestation d'enregistrement du bail", 'Preuve que le bail du local a été enregistré auprès de la Direction des Impôts.'],
@@ -682,7 +683,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
       { t:'check', k:'cn-depot', label:"Demande déposée à l'OMPIC" }, { t:'doc', k:'cn' }] },
     { name:'Rédaction', short:'Rédaction', hint:'Pièces et siège réunis, documents rédigés, puis envoyés au client en PDF sur WhatsApp.', tasks:[
       { t:'piece', k:'all', label:'Toutes les pièces reçues' }, { t:'siege', k:'siege' },
-      { t:'doc', k:'statuts' }, { t:'doc', k:'domiciliation', cond:isDom }, { t:'doc', k:'procuration' }, { t:'doc', k:'honneur' }, { t:'doc', k:'pacte', opt:'o_pacte' },
+      { t:'doc', k:'statuts' }, { t:'doc', k:'domiciliation', cond:isDom }, { t:'doc', k:'procuration' }, { t:'doc', k:'honneur' }, { t:'doc', k:'form-rc' }, { t:'doc', k:'pacte', opt:'o_pacte' },
       { t:'check', k:'sent-pdf', label:'Documents envoyés au client en PDF sur WhatsApp' }] },
     { name:'Légalisation', short:'Légalis.', hint:'Le client légalise les documents, les renvoie et règle 50 % du reste.', tasks:[
       { t:'check', k:'legal-back', label:'Documents légalisés reçus du client' }, { t:'pay', k:'second' }, { t:'doc', k:'blocage', cond:bigCapital }] },
