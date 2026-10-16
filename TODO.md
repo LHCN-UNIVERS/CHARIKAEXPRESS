@@ -64,6 +64,13 @@ Centres sign up on `partenaires.html` on their own page `domiciliation.html` (fo
 
 - [x] Public sign-up page with photos and documents, centre space (accept / refuse, send the attestation as a PDF), « Centres » page in the team space (check, activate, edit the file and rates, mark payments), « Domiciliation » box in each file (assign / change the centre, see the attestation, warn the centre on WhatsApp).
 - [ ] Recruit the first centres (Casablanca, Rabat, Marrakech) and agree on their rates before announcing the page.
+- [ ] Build the list of centres to contact (Google Sheet: Ville · Quartier · Nom du centre · Téléphone · WhatsApp · E-mail · Site · Source · Date de contact · Réponse · Statut). Start with 30 centres in Casablanca, then Rabat.
+  - Google Maps by hand: search « domiciliation Casablanca », « centre d'affaires Maârif », « business center Rabat »…; note name, phone, website, district; take the e-mail from the centre's website (Contact page, footer). No website: phone / WhatsApp.
+  - Google searches: `domiciliation Casablanca "@gmail.com"`, `"centre d'affaires" Rabat contact email`, `domiciliation entreprise Maroc "contact@"`, `site:facebook.com domiciliation Casablanca`.
+  - Moroccan directories: Telecontact.ma (« Domiciliation », « Centres d'affaires »), Kerix.net, Charika.ma; Facebook / Instagram pages (« À propos »); LinkedIn (« business center Casablanca »).
+  - Optional tools (paid, use sparingly, check the addresses; they may go against Google's terms): Outscraper, Apify Google Maps Scraper, PhantomBuster.
+  - Law 09-08: professional addresses shown publicly by the centre only, a message about their activity, always a way to opt out (« répondez Stop »), never bought lists of unknown origin. Check with the lawyer together with the CNDP filing.
+- [ ] Send the HTML e-mail `docs/email-centres.html` (fill in the [placeholders]; one by one or in Bcc, or through Brevo / Mailchimp), then a short reminder after 4–5 days. Prepare the Arabic version and the reminder e-mail.
 - [ ] Write the « conditions du programme centres » (payment terms, attestation delay, what happens if a centre refuses).
 - [ ] Show the chosen centre and the attestation status on the client tracking page (`suivi.html`).
 - [ ] City pages for Google (« Domiciliation à Casablanca »…), once there are several centres per city.
