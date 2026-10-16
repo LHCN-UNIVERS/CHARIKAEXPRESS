@@ -190,7 +190,7 @@ def shell(title, desc, url, ld, body):
 <main class="wrap">
 {body}
 </main>
-<footer><div class="wrap"><span>© 2026 Charika Express · Création d'entreprise au Maroc, 100 % en ligne.</span><span><a href="index.html">Accueil</a> · <a href="guides">Guides</a> · <a href="index.html#tarifs">Tarifs</a> · <a href="https://wa.me/212667154604" target="_blank" rel="noopener">WhatsApp</a></span></div></footer>
+<script src="footer.js"></script>
 <script>
   // French only: the navbar FR / EN remembers the choice for the other pages
   document.querySelectorAll('[data-lang]').forEach(b => b.addEventListener('click', () => {{ try {{ localStorage.setItem('ce-lang', b.dataset.lang); }} catch(e) {{}} if (b.dataset.lang === 'en') location.href = 'index.html'; }}));
