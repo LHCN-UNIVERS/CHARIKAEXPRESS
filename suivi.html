@@ -135,7 +135,6 @@ footer a{color:var(--m)}
     <p class="muted" data-t="lp">Entrez la référence reçue après votre demande et le numéro de téléphone que vous avez indiqué.</p>
     <form id="lf" novalidate>
       <label><span data-t="lref">Référence du dossier</span><input class="f ltr" id="lref" placeholder="CE-123456" autocomplete="off" autocapitalize="characters" required></label>
-      <label><span data-t="ltel">Téléphone</span><input class="f ltr" id="ltel" type="tel" placeholder="06 12 34 56 78" autocomplete="tel" required></label>
       <p class="err" id="lerr" role="alert" hidden></p>
       <button class="btn btn-grad" type="submit" id="lgo" data-t="lgo">Voir mon dossier</button>
     </form>
@@ -220,12 +219,12 @@ footer a{color:var(--m)}
   };
   const T = {
     fr: {
-      lh:'Suivre mon dossier', lp:'Entrez la référence reçue après votre demande et le numéro de téléphone que vous avez indiqué.',
+      lh:'Suivre mon dossier', lp:'Entrez la référence reçue après votre demande (par exemple CE-123456).',
       lref:'Référence du dossier', ltel:'Téléphone', lgo:'Voir mon dossier', lhelp:'Référence perdue ? Écrivez-nous sur', out1:'Changer', out2:' de dossier',
       demo:"Aperçu : ceci est un exemple de dossier. Sur le site en ligne, vos vraies informations s'affichent ici.",
       done:'terminé', th:'Étapes de votre dossier', tp:'Mis à jour par votre juriste à chaque étape.', ph:'Paiements', wa:'Écrire à mon juriste',
       rh:'Devenez partenaire', rgo:'Devenir partenaire', rP:"Vous connaissez d'autres entrepreneurs ? Recommandez Charika Express avec votre propre code promo et suivez leurs dossiers depuis votre espace partenaire.",
-      errFmt:'Vérifiez la référence (format CE-123456) et le numéro de téléphone.', errNf:"Aucun dossier ne correspond à cette référence et à ce numéro. Vérifiez-les, ou écrivez-nous sur WhatsApp.",
+      errFmt:'Vérifiez la référence (format CE-123456).', errNf:"Aucun dossier ne correspond à cette référence. Vérifiez-la, ou écrivez-nous sur WhatsApp.",
       errBusy:'Trop de tentatives. Réessayez dans 15 minutes.', errNet:'Connexion impossible. Réessayez dans un instant.', wait:'Chargement…',
       you:'À vous', nowLbl:'En cours', okLbl:'Terminé', paid:'Payé', topay:'À régler', quote:'sur devis',
       payL:{ avance:'Avance (à la commande)', second:'50 % du reste (après légalisation)', final:'Solde (dossier complet)', full:'Totalité (à la commande)' },
@@ -236,12 +235,12 @@ footer a{color:var(--m)}
       waTxt:r => `Bonjour, je vous écris au sujet de mon dossier ${r}.`
     },
     en: {
-      lh:'Track my file', lp:'Enter the reference you received after your request and the phone number you gave.',
+      lh:'Track my file', lp:'Enter the reference you received after your request (for example CE-123456).',
       lref:'File reference', ltel:'Phone', lgo:'See my file', lhelp:'Lost your reference? Write to us on', out1:'Change', out2:' file',
       demo:'Preview: this is a sample file. On the live site, your real information is shown here.',
       done:'complete', th:'Your file, step by step', tp:'Updated by your legal advisor at every step.', ph:'Payments', wa:'Message my legal advisor',
       rh:'Become a partner', rgo:'Become a partner', rP:'Know other entrepreneurs? Recommend Charika Express with your own promo code and follow their files from your partner space.',
-      errFmt:'Check the reference (format CE-123456) and the phone number.', errNf:'No file matches this reference and phone number. Check them, or write to us on WhatsApp.',
+      errFmt:'Check the reference (format CE-123456).', errNf:'No file matches this reference. Check it, or write to us on WhatsApp.',
       errBusy:'Too many attempts. Try again in 15 minutes.', errNet:'Connection failed. Please try again in a moment.', wait:'Loading…',
       you:'Your turn', nowLbl:'In progress', okLbl:'Done', paid:'Paid', topay:'To pay', quote:'on quote',
       payL:{ avance:'Advance (with the order)', second:'50% of the remainder (after legalisation)', final:'Balance (file complete)', full:'Full amount (with the order)' },
@@ -300,9 +299,9 @@ footer a{color:var(--m)}
 
   function show(on){ $('#loginView').hidden = on; $('#fileView').hidden = !on; $('#out').hidden = !on; if (on) render(); }
 
-  async function fetchFile(ref, tel){
+  async function fetchFile(ref){
     try {
-      const res = await fetch('/api/track', { method:'POST', headers:{ 'content-type':'application/json' }, body:JSON.stringify({ ref, tel }) });
+      const res = await fetch('/api/track', { method:'POST', headers:{ 'content-type':'application/json' }, body:JSON.stringify({ ref }) });
       const isJson = (res.headers.get('content-type') || '').includes('application/json');
       if (!isJson) return { demo:true };                                 // preview without a server
       if (res.ok) return { file:await res.json() };
@@ -310,23 +309,23 @@ footer a{color:var(--m)}
     } catch (e) { return location.protocol === 'file:' || !/charikaexpress/.test(location.host) ? { demo:true } : { err:'errNet' }; }
   }
 
-  async function signIn(ref, tel, quiet){
+  async function signIn(ref, quiet){
     const t = T[lang], err = $('#lerr'), btn = $('#lgo');
-    ref = ref.trim().toUpperCase().replace(/^CE(\d)/, 'CE-$1');
-    if (!/^CE-\d{6}$/.test(ref) || tel.replace(/\D/g, '').length < 9) { if (!quiet) { err.textContent = t.errFmt; err.hidden = false; } return; }
+    ref = ref.trim().toUpperCase().replace(/\s/g, '').replace(/^(\d{6})$/, 'CE-$1').replace(/^CE(\d)/, 'CE-$1');
+    if (!/^CE-\d{6}$/.test(ref)) { if (!quiet) { err.textContent = t.errFmt; err.hidden = false; } return; }
     err.hidden = true; btn.disabled = true; btn.textContent = t.wait;
-    const r = await fetchFile(ref, tel);
+    const r = await fetchFile(ref);
     btn.disabled = false; btn.textContent = T[lang].lgo;
     if (r.err) { if (!quiet) { err.textContent = t[r.err]; err.hidden = false; } else forget(); return; }
     demo = !!r.demo; file = r.demo ? { ...SAMPLE, ref } : r.file;
-    try { localStorage.setItem('ce-suivi', JSON.stringify({ ref, tel })); } catch (e) {}
+    try { localStorage.setItem('ce-suivi', JSON.stringify({ ref })); } catch (e) {}
     history.replaceState(null, '', location.pathname + '?ref=' + ref + location.hash);
     show(true);
   }
   function forget(){ try { localStorage.removeItem('ce-suivi'); } catch (e) {} }
 
-  $('#lf').addEventListener('submit', e => { e.preventDefault(); signIn($('#lref').value, $('#ltel').value); });
-  $('#out').addEventListener('click', () => { forget(); file = null; $('#ltel').value = ''; history.replaceState(null, '', location.pathname); show(false); });
+  $('#lf').addEventListener('submit', e => { e.preventDefault(); signIn($('#lref').value); });
+  $('#out').addEventListener('click', () => { forget(); file = null; history.replaceState(null, '', location.pathname); show(false); });
 
   function setLang(l){
     lang = l === 'en' ? 'en' : 'fr'; document.documentElement.lang = lang;
@@ -343,7 +342,8 @@ footer a{color:var(--m)}
   const q = new URLSearchParams(location.search), qref = (q.get('ref') || '').toUpperCase();
   let saved = null; try { saved = JSON.parse(localStorage.getItem('ce-suivi') || 'null'); } catch (e) {}
   if (qref) $('#lref').value = qref;
-  if (saved && (!qref || saved.ref === qref)) { $('#lref').value = saved.ref; $('#ltel').value = saved.tel; signIn(saved.ref, saved.tel, true); }
+  if (saved && (!qref || saved.ref === qref)) { $('#lref').value = saved.ref; signIn(saved.ref, true); }
+  else if (qref) signIn(qref);                         // from the footer « Suivre mon dossier » or a shared link
 })();
 </script>
 </body>
