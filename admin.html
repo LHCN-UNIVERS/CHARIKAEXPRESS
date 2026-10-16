@@ -341,6 +341,18 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
 .cnl{display:grid;gap:5px;white-space:nowrap;font-size:.66rem;font-weight:800;color:var(--m);text-transform:uppercase;letter-spacing:.05em}
 .cnl input{font:600 .88rem var(--font);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px;text-transform:none;letter-spacing:0;min-width:0}
 .cnl em{font-style:normal;text-transform:none;letter-spacing:0;font-weight:600;color:var(--m);font-size:.7rem;min-height:1em}.cnl em.ok{color:var(--ok)}
+.gen{border:1.5px solid #ffc2d6;background:linear-gradient(120deg,#fff4f8,#fffaf7);border-radius:18px;padding:14px 16px;display:grid;gap:12px;margin-bottom:12px}
+.gen h5{margin:0;font-size:.95rem;display:flex;align-items:center;gap:8px;flex-wrap:wrap}.gen h5 small{margin-inline-start:auto;font-weight:600;color:var(--m);font-size:.72rem}
+.gchk{display:grid;grid-template-columns:1fr 1fr;gap:6px 14px}.gchk div{display:flex;gap:8px;align-items:flex-start;font-size:.8rem;font-weight:600}.gchk small{font-weight:500;color:#7a5a12}
+.gchk i{font-style:normal;width:18px;height:18px;border-radius:50%;display:grid;place-items:center;font-size:.62rem;font-weight:900;flex:none}.gchk .y i{background:var(--ok);color:#fff}.gchk .n i{background:#fff4d6;color:#a06500;box-shadow:inset 0 0 0 1px #f0c060}.gchk .n{color:#7a5a12}
+.gf{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;align-items:start}.gf .w2{grid-column:span 2}.gf .w4{grid-column:1/-1}
+.gf select,.gf textarea{font:600 .88rem var(--font);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px;text-transform:none;letter-spacing:0;background:#fff;min-width:0;width:100%;box-sizing:border-box}
+.gf textarea{resize:vertical;font-weight:500;white-space:normal}.gf .cnl{white-space:normal}
+.gnote{margin:0;font-size:.76rem;color:#7a5a12;background:#fff4d6;border-radius:10px;padding:8px 10px}
+.gdocs{display:grid;gap:6px}.gdocs div{display:flex;gap:10px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:6px 8px 6px 10px;background:#fff;font-weight:600;font-size:.8rem}
+.gdocs i{font-style:normal;width:26px;height:26px;border-radius:7px;background:#e8f0fe;color:#2b5797;display:grid;place-items:center;font-size:.66rem;font-weight:800;flex:none}.gdocs span{flex:1;min-width:0}
+.gact{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.gact .gsm{font-size:.74rem;color:var(--m)}
+@media (max-width:640px){.gchk{grid-template-columns:1fr}.gf{grid-template-columns:1fr 1fr}.gf .w2{grid-column:1/-1}}
 .idf{width:min(760px,100%)}
 .idts{display:flex;gap:6px;flex-wrap:wrap}
 .idt{display:flex;gap:8px;align-items:center;border:1.5px solid var(--line);background:#fff;border-radius:12px;padding:8px 12px;font:inherit;cursor:pointer;color:var(--ink)}
@@ -1279,7 +1291,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
       paiement:['Paiement', [r.payAmount === 'full' ? 'Totalité' : 'Avance 700 MAD', PAY[r.payMethod] || r.payMethod].filter(Boolean).join(' · ')],
       moyen:['Moyen de paiement', PAY[r.payMethod] || r.payMethod], ville:['Ville', r.ville],
       denom:['Dénomination', title(r) && (r.cn || noms[0]) ? `${r.cn?.nom || noms[0]} ${FORMES[r.forme] || ''}`.trim() : ''], forme:['Forme', FORMES[r.forme] || r.forme],
-      capital:['Capital', r.capital != null ? fmt(r.capital) + ' MAD' : ''], activite:['Activité', r.activite], siege:['Siège', siege],
+      capital:['Capital', +r.capital > 0 ? fmt(r.capital) + ' MAD' : +r.gen?.capital > 0 ? fmt(r.gen.capital) + ' MAD' : ''], activite:['Activité', r.activite], siege:['Siège', siege],
       gerant:['Gérant', g.name ? g.name + (g.cin ? ' · ' + g.cin : '') : ''], demandeur:['Demandeur', demandeur + (cinOf(demandeur) ? ' · ' + cinOf(demandeur) : '')],
       centre:dm ? ['Centre', dm.centreName] : null,
     };
@@ -1294,7 +1306,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
       { sub:'Pour suivre la légalisation et le paiement', rows:[...pick('client', 'tel'), ['50 % du reste', am('second')], ...pick('moyen'), ...(bigCapital(r) ? pick('capital') : []), ...cnv] },
       { sub:"Pour l'enregistrement", rows:[...pick('denom', 'capital', 'siege', 'centre'), ...assoc, ...cnv] },
       { sub:"Pour le dossier d'immatriculation", rows:[...pick('denom', 'forme', 'activite', 'capital', 'gerant', 'siege'), ...idRows, ...cnv] },
-      { sub:"Pour l'annonce au journal et le Bulletin Officiel", rows:[...pick('denom', 'capital', 'siege', 'activite', 'gerant'), ...assoc] },
+      { sub:"Pour l'annonce au journal et le Bulletin Officiel", rows:[...pick('denom', 'capital', 'siege', 'activite', 'gerant'), ...assoc, ...(r.gen?.numRC ? [['N° RC', r.gen.numRC]] : []), ...(r.cn ? [['ICE', r.cn.ice]] : [])] },
       { sub:'Pour encaisser le solde', rows:[...pick('client', 'tel'), ['Solde', am('final')], ...pick('moyen')] },
       { sub:'Pour livrer les documents', rows:pick('client', 'tel', 'email', 'denom') },
     ];
@@ -1320,6 +1332,84 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
       <p class="cnerr" id="cnErr" hidden></p>
       <button class="btn b-grad big">${r.cn ? 'Enregistrer' : 'Enregistrer et passer à la rédaction →'}</button>
     </form></div>`;
+  }
+  // ---------- Document generation: the owner's Word models (admin-docgen.js, loaded on the first click) filled from the file ----------
+  // Models today: SARL AU with one partner who is the manager, plus the own models of two domiciliation centres.
+  let genLoad = null; const GEN = {};                      // GEN[ref]: the last generated documents, kept in memory (regenerated when needed)
+  const loadGen = () => genLoad || (genLoad = new Promise((ok, ko) => {
+    const sc = document.createElement('script'); sc.src = 'admin-docgen.js';
+    sc.onload = () => window.Moteur ? ok(window.Moteur) : ko(new Error('moteur absent'));
+    sc.onerror = () => { genLoad = null; sc.remove(); ko(new Error('chargement impossible')); };
+    document.head.appendChild(sc);
+  }));
+  const GEN_CENTRES = [{ id:'monde-de-domiciliation', match:'monde de domiciliation', n:3 }, { id:'aam-business-center', match:'aam business', n:2 }];
+  const GEN_TASK = { statuts:'statuts', 'declaration-honneur':'honneur', 'rc-modele2':'form-rc', 'contrat-domiciliation':'domiciliation' };   // generated document → task
+  const normTxt = v => String(v || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+  const genCentre = r => { const d = r.siege === 'local' ? null : DOMI[r.ref]; return d ? GEN_CENTRES.find(c => normTxt(d.centreName).includes(c.match)) || null : null; };
+  const splitName = full => {                              // « KABBOUD Youssef »: the words in capitals are the family name
+    const w = String(full || '').trim().split(/\s+/).filter(Boolean), up = w.filter(x => x.length > 1 && x === x.toUpperCase()), rest = w.filter(x => !up.includes(x));
+    return up.length && rest.length ? { nom:up.join(' '), prenom:rest.join(' ') } : { nom:w[0] || '', prenom:w.slice(1).join(' ') };
+  };
+  function genInfo(r){
+    const ps = people(r), g = Object.assign({ dateActes:isoDay(new Date()), civ:'Mr', vn:'100', mandat:'illimitee', mandatDuree:'', objet:r.activite || '', adrLocal:'', numRC:'' }, r.gen || {});
+    const p = ps[0], id = p ? (r.ids || {})[p.k] : null, sp = splitName(id?.nom || p?.name);
+    const nm = { prenom:g.prenom != null ? g.prenom : sp.prenom, nom:g.nom != null ? g.nom : sp.nom };
+    const d = r.siege === 'local' ? null : DOMI[r.ref], c = genCentre(r), cap = +r.capital > 0 ? r.capital : g.capital;
+    const checks = [
+      [!!r.cn, 'Dénomination, N° et ICE du certificat négatif', "à saisir à l'étape 2"],
+      [ps.length === 1, ps.length > 1 ? `${ps.length} personnes (associés et gérant)` : 'Associé unique et gérant', 'modèles SARL à plusieurs personnes à venir'],
+      [idsDone(r), "Identité complète de l'associé", "à saisir à l'étape 1"],
+      [+cap > 0, `Capital ${+cap > 0 ? fmt(cap) + ' MAD' : ''}`, 'à saisir ci-dessous'],
+      [r.siege === 'local' ? !!String(g.adrLocal).trim() : !!d, r.siege === 'local' ? 'Adresse du local' : `Centre : ${d ? d.centreName : '—'}`, r.siege === 'local' ? 'à saisir ci-dessous' : 'centre à attribuer'],
+      [!!String(g.objet).trim() && !!String(nm.nom).trim(), 'Objet social et nom de l\'associé', 'à saisir ci-dessous'],
+    ];
+    return { g, nm, id, d, c, cap, checks, ok:checks.every(x => x[0]) && /^\d{4}-\d\d-\d\d$/.test(g.dateActes), n:6 + (c ? c.n : 0) };
+  }
+  function genPayload(r, M){
+    const x = genInfo(r), id = x.id || {}, g = x.g, C = x.c && M.listerCentres().find(c => c.id === x.c.id);
+    const months = String(x.d?.months || C?.dureeMois || 6), lm = C ? +C.loyerMois : 0;
+    return { forme:'SARL_AU', denomination:r.cn?.nom || title(r), siege:C ? '' : r.siege === 'local' ? g.adrLocal : x.d?.centreAddress || '', ville:r.ville || '', duree:'99',
+      capital:String(x.cap || ''), vn:String(g.vn || 100), dateCN:r.cn?.date || '', numCN:r.cn?.num || '', ice:r.cn?.ice || '', numRC:g.numRC || '', dateActes:g.dateActes,
+      dureeDom:months, loyerMois:C ? C.loyerMois : '', loyerTotal:C ? (lm * +months).toFixed(2) : '', mandat:g.mandat, mandatDuree:g.mandatDuree,
+      objetResume:g.objet, objetDetailKeep:false, objetDetail:g.objet, remarques:'', centreId:C ? C.id : 'aucun',
+      associes:[{ civ:g.civ, prenom:x.nm.prenom, nom:x.nm.nom, dn:id.dn || '', ln:id.ln || '', nat:id.type === 'pass' ? String(id.nat || '').toUpperCase() : 'MAROCAINE',
+        tp:id.type === 'pass' ? 'Passeport' : 'CIN', np:id.num || '', adr:id.adr || '', qualite:'Associé unique et gérant', parts:'' }] };
+  }
+  async function genRun(r){
+    const M = await loadGen(), res = M.generer(genPayload(r, M));
+    GEN[r.ref] = res.docs; return res;
+  }
+  const DOCX = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+  const download = (name, bytes, mime) => { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([bytes], { type:mime })); a.download = name; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 2000); };
+  const genErr = e => e && e.erreurs ? 'À corriger : ' + e.erreurs.map(x => `${x.libelle || x.champ} (${x.message})`).join(', ') : 'Génération impossible : ' + (e && e.message || e);
+  const genChecks = x => x.checks.map(([ok, t, why]) => `<div class="${ok ? 'y' : 'n'}"><i>${ok ? '✓' : '!'}</i><span>${esc(t)}${ok ? '' : ` <small>· ${esc(why)}</small>`}</span></div>`).join('');
+  function genCardHtml(r, canEdit){
+    const x = genInfo(r), g = x.g, got = GEN[r.ref], done = !!r.gen?.at;
+    const chk = genChecks(x);
+    const note = x.d && !x.c ? `<p class="gnote">Contrat et attestation de ${esc(x.d.centreName)} : modèle à recevoir du centre. Les 6 documents de constitution sont générés.</p>` : '';
+    const sel = (k, opts) => `<select data-gen="${k}">${opts.map(([v, l]) => `<option value="${v}" ${String(g[k]) === v ? 'selected' : ''}>${l}</option>`).join('')}</select>`;
+    const fields = `<div class="gf">
+      <label class="cnl">Date des actes<input type="date" data-gen="dateActes" value="${esc(g.dateActes)}"></label>
+      ${+r.capital > 0 ? '' : `<label class="cnl">Capital (MAD)<input type="number" min="1" data-gen="capital" value="${esc(g.capital || '')}"></label>`}
+      <label class="cnl">Civilité${sel('civ', [['Mr', 'M.'], ['Mme', 'Mme']])}</label>
+      <label class="cnl">Prénom<input data-gen="prenom" value="${esc(x.nm.prenom)}" autocomplete="off"></label>
+      <label class="cnl">Nom de famille<input data-gen="nom" value="${esc(x.nm.nom)}" autocomplete="off"></label>
+      <label class="cnl">Valeur d'une part (MAD)<input type="number" min="1" data-gen="vn" value="${esc(g.vn)}"></label>
+      <label class="cnl">Mandat du gérant${sel('mandat', [['illimitee', 'Illimité'], ['limitee', 'Limité']])}</label>
+      ${g.mandat === 'limitee' ? `<label class="cnl w2">Durée du mandat<input data-gen="mandatDuree" value="${esc(g.mandatDuree)}" placeholder="ex. 3 ans renouvelables" autocomplete="off"></label>` : ''}
+      ${r.siege === 'local' ? `<label class="cnl w4">Adresse du local (siège social)<input data-gen="adrLocal" value="${esc(g.adrLocal)}" autocomplete="off"></label>` : ''}
+      <label class="cnl w4">Objet social (validé avec le client)<textarea data-gen="objet" rows="3">${esc(g.objet)}</textarea></label></div>`;
+    const list = got ? `<div class="gdocs">${got.map(d => `<div><i>W</i><span>${esc(d.label)}</span><button type="button" class="btn b-soft b-sm" data-gdl="${esc(d.id)}" aria-label="Télécharger ${esc(d.label)}">⬇</button></div>`).join('')}</div>` : '';
+    const sub = done ? `généré ${when(r.gen.at)}${member(r.gen.by) ? ' · ' + member(r.gen.by).name : ''}` : `${x.n} documents Word`;
+    return `<div class="gen"><h5>📄 ${done ? 'Documents générés' : 'Générer les documents'} <small>${esc(sub)}</small></h5><div class="gchk">${chk}</div>${note}${canEdit ? fields : ''}${list}
+      ${canEdit ? `<div class="gact"><button type="button" class="btn b-grad" id="genGo" ${x.ok ? '' : 'disabled'}>${done ? '↻ Régénérer' : `📄 Générer les ${x.n} documents`}</button>${done ? `<button type="button" class="btn b-soft" id="genZip" ${x.ok ? '' : 'disabled'}>⬇ Tout télécharger (.zip)</button>` : ''}${done ? '<span class="gsm">Relisez, puis cochez chaque document ci-dessous.</span>' : ''}</div>` : ''}</div>`;
+  }
+  function annCardHtml(r, canEdit){
+    const x = genInfo(r), rc = x.g.numRC || '';
+    return `<div class="gen"><h5>📰 Annonce légale <small>avec le N° du registre de commerce</small></h5>
+      ${canEdit ? `<div class="gf"><label class="cnl">N° du registre de commerce<input data-gen="numRC" value="${esc(rc)}" placeholder="ex. 746433" autocomplete="off"></label></div>
+      <div class="gact"><button type="button" class="btn b-grad" id="annGo" ${x.ok && rc ? '' : 'disabled'}>📄 Générer l'annonce légale</button></div>` : ''}
+      ${x.ok ? '' : '<p class="gnote">Complétez d\'abord la carte « Générer les documents » de l\'étape Rédaction.</p>'}</div>`;
   }
   // Identity sheets: what the documents need about each partner and the manager (from the CIN or passport the client sent)
   function idWindow(r){
@@ -1426,6 +1516,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
       const a = tk.t === 'pay' ? am.find(x => x.k === tk.k) : null;
       let sub = tk.t === 'doc' ? DOC_ST[r.livrables[tk.k] || 0] : '', amt = '', right = '', qa = done ? (tk.t === 'doc' ? 'cours' : 'no') : 'ok', lock = !ed;
       if (tk.t === 'pay') { amt = r.paid.full ? 'Payé à la commande' : a && a.v != null ? fmt(a.v) + ' MAD · ' + (PAY[r.payMethod] || '') : 'Sur devis'; if (r.paid.full) lock = true; if (ed && !done) right = `<button class="btn b-soft b-sm" data-qa="${tk.k}:ok">Encaisser</button>`; }
+      if (tk.t === 'doc' && !done && (r.gen?.files || []).some(f => GEN_TASK[f] === tk.k)) sub = 'Généré · à relire';
       if (tk.t === 'doc' && ed && !done) right = `<button class="btn b-soft b-sm" data-qa="${tk.k}:${half ? 'ok' : 'cours'}">${half ? '✓ Obtenu' : 'En cours'}</button>`;
       if (tk.t === 'ids') {                             // identity sheets: one per person, filled from the piece the client sent
         const ps = people(r), sts = ps.map(p => ({ p, st:idState((r.ids || {})[p.k]) })), ok = sts.filter(x => x.st.complete && !x.st.expired).length, exp = sts.filter(x => x.st.expired);
@@ -1505,6 +1596,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
       <div class="slide ${past ? 'past' : isNow ? 'now' : 'later'}" id="slide">
         <div><div class="no">Étape ${vi + 1} / ${DONE} <em class="${state[0]}">${state[1]}</em></div><h2>${esc(vw.name)}</h2><p class="hint">${esc(vw.hint)}</p>
           ${vi === 0 && scored(r) ? verdictLine(r) : ''}${cnWarn}${isNow && rej ? rej : ''}
+          ${vi === 2 && r.forme !== 'ae' ? genCardHtml(r, canEdit) : vi === 6 && r.forme !== 'ae' ? annCardHtml(r, canEdit) : ''}
           <div class="tasks">${rows.join('')}</div>${showMsg ? msgMoreHtml : ''}
           <div class="foot">${foot}</div>${lks ? `<div class="lks">${lks}</div>` : ''}</div>
         <div class="fz"><h4>Fiche de l'étape <button class="btn b-soft b-sm" data-cps="${esc(fzText)}">⧉ Tout copier</button></h4><small>${esc(fz.sub)}</small>
@@ -1590,6 +1682,25 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   const qSkip = {};                                    // questions passed with « En cours » / « Pas encore », per file and step
   $('#detail').addEventListener('click', e => {
     const r = current && get(current); if (!r) return;
+    if (e.target.closest('#genGo') || e.target.closest('#genZip') || e.target.closest('[data-gdl]') || e.target.closest('#annGo')) {
+      const b = e.target.closest('button'); if (b.disabled) return;
+      const kind = b.id === 'genGo' ? 'go' : b.id === 'genZip' ? 'zip' : b.id === 'annGo' ? 'ann' : 'one', label = b.textContent; b.disabled = true; b.textContent = 'Génération…';
+      (async () => {
+        try {
+          const docs = kind === 'one' && GEN[r.ref] ? GEN[r.ref] : (await genRun(r)).docs, M = window.Moteur;
+          if (kind === 'go') {
+            r.gen = Object.assign({}, r.gen, { at:new Date().toISOString(), by:me.id, files:docs.map(d => d.id) });
+            docs.forEach(d => { const k = GEN_TASK[d.id]; if (k && !r.livrables[k]) r.livrables[k] = 1; });
+            log(r, `Documents générés (${docs.length}) : ${docs.map(d => d.label).join(', ')}.`);
+            download(`${r.ref} - ${title(r)}.zip`, M.zipper(docs), 'application/zip'); toast(`${docs.length} documents générés ✓`);
+          } else if (kind === 'zip') download(`${r.ref} - ${title(r)}.zip`, M.zipper(docs), 'application/zip');
+          else if (kind === 'ann') { const d = docs.find(x => x.id === 'annonce-legale'); download(d.filename, d.octets, DOCX); log(r, `Annonce légale générée avec le RC n° ${r.gen.numRC}.`); toast('Annonce légale générée ✓'); }
+          else { const d = docs.find(x => x.id === b.dataset.gdl); if (d) download(d.filename, d.octets, DOCX); }
+        } catch (err) { toast(genErr(err)); console.warn(err); }
+        renderDetail(); if (b.isConnected) { b.disabled = false; b.textContent = label; }
+      })();
+      return;
+    }
     if (e.target.closest('[data-idopen]')) { const ps = people(r); idOpen = (ps.find(p => !idState((r.ids || {})[p.k]).complete || idState(r.ids[p.k]).expired) || ps[0])?.k || null; renderDetail(); setTimeout(() => $('#idNom')?.focus(), 0); return; }
     if (e.target.closest('[data-idtab]')) { idOpen = e.target.closest('[data-idtab]').dataset.idtab; renderDetail(); return; }
     if (e.target.id === 'idModal' || e.target.closest('#idClose') || e.target.closest('#idClose2')) { idOpen = null; renderDetail(); return; }
@@ -1710,6 +1821,10 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   $('#detail').addEventListener('input', e => {
     if (e.target.closest('#cnForm') && $('#cnErr')) $('#cnErr').hidden = true;
     if (e.target.closest('#idForm') && $('#idErr')) $('#idErr').hidden = true;
+    if (e.target.dataset.gen) {
+      const r = get(current); r.gen = Object.assign({}, r.gen, { [e.target.dataset.gen]:e.target.value });
+      const x = genInfo(r); if ($('.gchk')) $('.gchk').innerHTML = genChecks(x); ['genGo', 'genZip'].forEach(id => { const b = $('#' + id); if (b) b.disabled = !x.ok; }); const a = $('#annGo'); if (a) a.disabled = !(x.ok && x.g.numRC);
+    }
     if (e.target.id === 'idExp') { const v = e.target.value, d = v ? daysTo(v) : null, o = $('#idExpOk'); o.textContent = d != null ? validLeft(d) : ''; o.className = d == null ? '' : d < 0 ? 'ko' : 'ok'; e.target.classList.toggle('bad', d != null && d < 0); $('#idWarn').hidden = !(d != null && d < 0); }
     if (e.target.id === 'cnIce') { e.target.value = e.target.value.replace(/\D/g, '').slice(0, 15); const n = e.target.value.length; $('#cnIceOk').textContent = n === 15 ? '✓ 15 chiffres' : n ? `${n} / 15 chiffres` : ''; $('#cnIceOk').className = n === 15 ? 'ok' : ''; }
     if (e.target.id === 'cnExpIn') e.target.dataset.auto = '';
@@ -1761,6 +1876,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   });
   $('#detail').addEventListener('change', e => {
     if (e.target.id === 'msgPick') { msgSel = e.target.value; renderDetail(); return; }
+    if (e.target.dataset.gen) { persist(); if (e.target.tagName === 'SELECT') renderDetail(); return; }   // text fields are kept as typed (input event), without redrawing
     if (e.target.id === 'cnExp') { const r = get(current); r.cnExp = e.target.value || null; log(r, r.cnExp ? `Certificat négatif valable jusqu'au ${new Date(r.cnExp).toLocaleDateString('fr-FR')}.` : 'Date de validité du certificat négatif effacée.'); persist(); renderDetail(); return; }
     if (e.target.id !== 'assign') return;
     const r = get(current); r.juriste = e.target.value || null;
