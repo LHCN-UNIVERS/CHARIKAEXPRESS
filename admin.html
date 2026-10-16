@@ -760,8 +760,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
       { t:'check', k:'prio', opt:'o_prio', label:"Traitement prioritaire : dossier signalé en priorité à l'équipe" }] },
     { name:'Certificat négatif', short:'Certificat', hint:"Dépôt à l'OMPIC pour réserver le nom. Notez la date de fin de validité, ou signalez un nom refusé.", reject:REJ.nom, tasks:[
       { t:'check', k:'cn-depot', label:"Demande déposée à l'OMPIC" }, { t:'doc', k:'cn' }] },
-    { name:'Rédaction', short:'Rédaction', hint:'Pièces et siège réunis, documents rédigés, puis envoyés au client en PDF sur WhatsApp.', tasks:[
-      { t:'piece', k:'all', label:'Toutes les pièces reçues' }, { t:'siege', k:'siege' },
+    { name:'Rédaction', short:'Rédaction', hint:'Documents générés et relus, puis envoyés au client en PDF sur WhatsApp.', tasks:[
       { t:'doc', k:'statuts' }, { t:'doc', k:'domiciliation', cond:isDom }, { t:'doc', k:'procuration' }, { t:'doc', k:'honneur' }, { t:'doc', k:'form-rc' }, { t:'doc', k:'pacte', opt:'o_pacte' },
       { t:'check', k:'sent-pdf', label:'Documents envoyés au client en PDF sur WhatsApp' }] },
     { name:'Légalisation', short:'Légalis.', hint:'Le client légalise les documents, les renvoie et règle 50 % du reste.', tasks:[
@@ -1433,9 +1432,10 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
           <label class="cnl w3">Objet social (validé avec le client)<textarea data-gen="objet" rows="3" ${dis}>${esc(g.objet)}</textarea></label></div>
           ${r.cn ? '' : '<p class="gnote">Certificat négatif à enregistrer à l\'étape 2 (dénomination, N°, ICE).</p>'}`,
       () => r.siege === 'local' ? `<div class="gf"><label class="cnl w3">Adresse du local (siège social)<input data-gen="adrLocal" value="${esc(g.adrLocal)}" autocomplete="off" ${dis}></label></div><p class="gsm2">Local du client : les 6 documents de constitution sont générés.</p>`
-        : !x.d ? `<p class="gnote">Aucun centre attribué : choisissez-le dans la tâche « Centre de domiciliation attribué » ci-dessous.</p>`
+        : !x.d ? `<p class="gnote">Aucun centre attribué pour ce dossier.</p>${canEdit && SERVER ? '<button type="button" class="btn b-grad" data-more="centre">Choisir le centre</button>' : ''}`
         : `<div class="gf">${ro('Centre', x.d.centreName)}${ro('Durée', (x.d.months || 6) + ' mois')}${ro('Ville', x.d.centreCity || '')}
           <label class="cnl w3">Siège social<input value="${esc(x.d.centreAddress || '')}" readonly tabindex="-1" class="ro"></label></div>
+          ${canEdit && SERVER ? '<button type="button" class="lk" data-more="centre">✎ Changer de centre</button>' : ''}
           ${x.c ? `<p class="gsm2">✓ Modèles du centre disponibles : ${x.c.n === 3 ? 'contrat, attestation et procuration' : 'contrat et attestation'}.</p>` : `<p class="gnote">Contrat et attestation de ${esc(x.d.centreName)} : modèle à recevoir du centre. Les 6 documents de constitution sont générés.</p>`}`,
       () => {
         const blk = (i, rows) => `<div class="gsum"><h6>${GEN_PAGES[i][0]} ${GEN_PAGES[i][1]} ${oks[i] ? '' : '<em>à compléter</em>'}<button type="button" class="lk" data-gpage="${i}">Modifier</button></h6>${rows.map(([k, v]) => `<div><span>${esc(k)}</span><b>${esc(v || '—')}</b></div>`).join('')}</div>`;
