@@ -151,6 +151,28 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
 .body{display:grid;grid-template-columns:290px 1fr 480px;min-height:0}
 /* Partners page (replaces the requests view when « Partenaires » is selected) */
 .affpage{overflow:auto;min-height:0;background:var(--bg);display:grid;grid-row:3}
+/* « Ma journée »: the team home, every action of the day across the files, most urgent first */
+.hw{padding:22px max(26px,env(safe-area-inset-right)) 40px 26px;display:grid;gap:16px;align-content:start;max-width:1320px;width:100%;margin:0 auto;box-sizing:border-box}
+.hw .hi{display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap}.hw .hi h1{margin:0;font-size:1.5rem;letter-spacing:-.02em}.hw .hi p{margin:2px 0 0;color:var(--m);font-size:.86rem}
+.hw .hi .r{margin-inline-start:auto;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.hw .sw{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:3px;background:#fff}.hw .sw button{all:unset;cursor:pointer;padding:6px 12px;border-radius:999px;font-size:.78rem;font-weight:700;color:var(--m)}.hw .sw button.on{background:var(--ink);color:#fff}
+.hg{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:16px;align-items:start}
+.hl{background:#fff;border:1px solid var(--line);border-radius:20px;padding:4px 0;min-width:0}
+.hl .sec{padding:12px 18px 6px;font-size:.7rem;letter-spacing:.1em;font-weight:800;color:var(--m);text-transform:uppercase}
+.hl .it{display:flex;gap:12px;align-items:center;padding:11px 18px;border-top:1px solid var(--line)}
+.hl .it > i{font-style:normal;width:34px;height:34px;border-radius:10px;display:grid;place-items:center;font-size:1rem;flex:none}
+.hl .it .t{flex:1;min-width:0}.hl .it .t b{display:block;font-size:.86rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.hl .it .t small{color:var(--m);font-size:.74rem;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hl .it .late{color:var(--err);font-weight:800;font-size:.72rem;white-space:nowrap}
+.hl .it.wait{opacity:.65}.hl .empty{padding:22px 18px;color:var(--m);font-size:.86rem}
+.i1{background:#ffe9f2}.i2{background:#e3f5ec}.i3{background:#fff4d6}.i4{background:#f1e9ff}.i5{background:#fde8e6}
+.hs{display:grid;gap:12px;min-width:0}
+.hk{display:grid;grid-template-columns:1fr 1fr;gap:10px}.hk > div{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px;min-width:0}.hk small{color:var(--m);font-size:.74rem;display:block}.hk b{display:block;font-size:1.45rem;letter-spacing:-.02em;margin:2px 0}
+.hk .dk{background:var(--plum,#30102f);border:0;color:#fff}.hk .dk small{color:#e3cbdd}.hk .dk b{color:#ffc145}
+.hk .pb{height:7px;border-radius:7px;background:var(--line);overflow:hidden;margin-top:8px}.hk .pb i{display:block;height:100%;background:var(--grad)}
+.hn{background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px 16px}.hn h4{margin:0 0 8px;font-size:.88rem;display:flex;justify-content:space-between}.hn h4 small{color:var(--m);font-weight:600}
+.hn .rw{display:flex;gap:10px;align-items:center;padding:8px 0;border-top:1px solid var(--line);font-size:.82rem}.hn .rw span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.hn .rw small{color:var(--m)}
+@media (max-width:980px){.hg{grid-template-columns:1fr}.hs{order:-1}}
+@media (max-width:520px){.hw{padding:16px}.hl .it{padding:10px 12px;gap:10px}.hl .it .btn{padding:6px 10px}}
 .ad .tb-codes{display:grid;gap:12px}
 .aw{display:grid;grid-template-columns:340px minmax(0,1fr);min-height:100%}
 .al{background:#fff;border-right:1px solid var(--line);display:flex;flex-direction:column;min-width:0}
@@ -524,7 +546,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
 <div class="app" id="appView" hidden>
   <header class="top">
     <div class="logo"><i></i>Charika <span>Express</span></div>
-    <nav class="seg" aria-label="Sections"><button type="button" class="on" id="segReq" aria-current="page">Demandes</button><button type="button" id="affBtn" hidden>Partenaires</button><button type="button" id="ctrBtn" hidden>Centres</button></nav>
+    <nav class="seg" aria-label="Sections"><button type="button" class="on" id="segHome" aria-current="page">Accueil</button><button type="button" id="segReq">Demandes</button><button type="button" id="affBtn" hidden>Partenaires</button><button type="button" id="ctrBtn" hidden>Centres</button></nav>
     <label class="search" for="q"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="q" type="search" placeholder="Rechercher : réf, nom, téléphone, CIN…" aria-label="Rechercher" autocomplete="off"><kbd title="Raccourci clavier">/</kbd></label>
     <div class="r">
       <button class="ib bell" id="bell" type="button" title="Nouvelles demandes non lues" aria-label="Nouvelles demandes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><b id="bellN" hidden>0</b></button>
@@ -543,7 +565,8 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     </div>
   </header>
   <nav class="tabbar" id="tabbar" aria-label="Navigation">
-    <button type="button" class="on" id="tbReq"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg><span>Demandes</span><b id="tbN" hidden>0</b></button>
+    <button type="button" class="on" id="tbHome"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg><span>Accueil</span></button>
+    <button type="button" id="tbReq"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg><span>Demandes</span><b id="tbN" hidden>0</b></button>
     <button type="button" id="tbAff" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M21.5 20a6.5 6.5 0 0 0-4-6"/></svg><span>Partenaires</span></button>
     <button type="button" id="tbCtr" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16M16 9h3a1 1 0 0 1 1 1v11M2 21h20M8 7h4M8 11h4M8 15h4"/></svg><span>Centres</span></button>
   </nav>
@@ -560,6 +583,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     </aside>
     <div class="detail" id="detail"></div>
   </div>
+  <main class="affpage" id="homem" aria-label="Ma journée"><div class="hw" id="homeBox"></div></main>
   <main class="affpage" id="affm" hidden aria-label="Partenaires"><div class="aw" id="affBox"></div></main>
   <main class="affpage" id="ctrm" hidden aria-label="Centres de domiciliation"><div class="aw" id="ctrBox"></div></main>
 </div>
@@ -938,9 +962,8 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     $('#meName').textContent = u.name; $('#meRole').textContent = u.role === 'admin' ? 'Administrateur' : 'Juriste';
     $('#mWho').textContent = u.name; $('#mWhoS').textContent = [u.email, u.role === 'admin' ? 'Administrateur' : 'Juriste'].filter(Boolean).join('\n');
     $('#exportBtn').hidden = u.role !== 'admin';
-    renderList();
-    const first = visible()[0];
-    if (first && matchMedia('(min-width:821px)').matches) open(first.ref); else renderDetail();
+    renderList(); renderDetail();
+    showPage('home');
   }
 
   // ---------- List ----------
@@ -1061,6 +1084,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     $$('#filters button').forEach(b => { b.querySelector('i').textContent = mine.filter(r => inView(r, b.dataset.f)).length; b.setAttribute('aria-pressed', b.dataset.f === filter); });
     const n = db.requests.filter(r => !r.seen && !r.archived && allowed(r)).length;
     $('#bellN').hidden = !n; $('#bellN').textContent = n; $('#tbN').hidden = !n; $('#tbN').textContent = n;
+    if (PAGE === 'home') renderHome();
   }
   function archive(r, why){
     r.archived = true; r.archivedNote = why; log(r, 'Demande archivée : ' + why + '.');
@@ -1093,6 +1117,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   // ---------- Detail ----------
   const get = ref => db.requests.find(r => r.ref === ref);
   function open(ref){
+    if (PAGE !== 'req') showPage('req');
     current = ref;
     const r = get(ref);
     if (r && !r.seen) { r.seen = true; persist(); }
@@ -1579,16 +1604,81 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     if (e.key === '/' && !e.target.closest('input,textarea,select,[contenteditable]') && !$('#appView').hidden) { e.preventDefault(); $('#q').focus(); }
   });
   // Sections: « Demandes » (list + file), the « Partenaires » page or the « Centres » page
-  let PAGE = 'req';
+  let PAGE = 'home';
+  // « Ma journée »: one list of the next action of every file, sorted by urgency. A file not touched for 2 days is late.
+  let homeAll = false;
+  const daysSince = iso => Math.floor((Date.now() - Date.parse(iso || 0)) / 864e5);
+  function renderHome(){
+    if (!me || !db) return;
+    const all = me.role === 'admin' && homeAll;
+    const live = db.requests.filter(r => allowed(r) && !r.archived);
+    const files = live.filter(r => r.kind !== 'rappel' && r.step < DONE && r.juriste && (all || r.juriste === me.id));
+    const late = [], today = [], wait = [];
+    const row = (ico, cls, t, sub, act, d) => `<div class="it"><i class="${cls}">${ico}</i><div class="t"><b>${esc(t)}</b><small>${esc(sub)}</small></div>${d >= 2 ? `<span class="late">+${d} j</span>` : ''}${act}</div>`;
+    const openBtn = r => `<button class="btn b-soft b-sm" data-hopen="${esc(r.ref)}">Ouvrir</button>`;
+    // Call-back requests from the homepage
+    live.filter(r => r.kind === 'rappel' && (all || !r.juriste || r.juriste === me.id)).forEach(r => {
+      const d = daysSince(r.createdAt), tel = (r.client?.tel || '').replace(/\s/g, '');
+      (d >= 1 ? late : today).push(row('📞', 'i1', 'Rappeler ' + (r.client?.nom || ''), `${r.ref} · demande de rappel · ${when(r.createdAt)}`, tel ? `<a class="btn b-wa b-sm" href="tel:${esc(tel)}">Appeler</a>` : openBtn(r), d >= 1 ? Math.max(d, 2) : 0));
+    });
+    files.forEach(r => {
+      const d = daysSince(r.updatedAt), who = all && member(r.juriste) ? ' · ' + member(r.juriste).name : '', base = `${r.ref} · ${title(r)} · ${stepName(r.step)}${who}`;
+      if (r.reject) { late.push(row('⚠', 'i5', 'Dossier rejeté : ' + (r.reject.motif || ''), base, openBtn(r), Math.max(d, 2))); return; }
+      const k = msgKey(r);
+      if (k && !(r.sent || {})[k]) {
+        const btn = `<a class="btn b-wa b-sm" data-hsend="${esc(r.ref)}" href="${waLink(r.client?.tel, msgText(r, k, r.msgLang || 'fr'))}" target="_blank" rel="noopener">Envoyer</a>`;
+        (d >= 2 ? late : today).push(row('📩', 'i1', 'Prévenir le client : ' + msgOf(k).title, base, btn, d)); return;
+      }
+      const tk = nextTask(r); if (!tk) return;
+      if (waitsClient(r)) {
+        const msg = `Bonjour ${r.client?.nom || ''}, petit rappel pour votre dossier ${r.ref} : ${taskName(r, tk).toLowerCase()}. Merci !`;
+        (d >= 2 ? late : wait).push(row(tk.t === 'pay' ? '💳' : '⏳', 'i3', (d >= 2 ? 'Relancer : ' : 'Attend le client : ') + taskName(r, tk), base, d >= 2 ? `<a class="btn b-wa b-sm" href="${waLink(r.client?.tel, msg)}" target="_blank" rel="noopener">Relancer</a>` : openBtn(r), d));
+        return;
+      }
+      (d >= 2 ? late : today).push(row(tk.t === 'doc' ? '✍️' : '🏛️', tk.t === 'doc' ? 'i2' : 'i4', taskName(r, tk), base, openBtn(r), d));
+    });
+    // Figures
+    const act = live.filter(r => r.kind !== 'rappel' && r.step < DONE);
+    let paid = 0, due = 0;
+    live.filter(r => r.kind !== 'rappel').forEach(r => amounts(r).forEach(a => { if (a.v == null) return; due += a.v; if (payDone(r, a.k)) paid += a.v; }));
+    const m0 = new Date(); m0.setDate(1); m0.setHours(0, 0, 0, 0);
+    const delivered = live.filter(r => r.step >= DONE && Date.parse(r.updatedAt) >= +m0).length;
+    const week = live.filter(r => daysSince(r.createdAt) < 7).length;
+    const take = live.filter(r => r.kind !== 'rappel' && r.step < DONE && !r.juriste);
+    const n = late.length + today.length, hour = new Date().getHours();
+    const sec = (t, list) => list.length ? `<div class="sec">${t}</div>${list.join('')}` : '';
+    $('#homeBox').innerHTML = `
+      <div class="hi"><div><h1>${hour < 18 ? 'Bonjour' : 'Bonsoir'} ${esc(me.name.split(' ')[0])} 👋</h1><p>${esc(new Date().toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long' }))} · ${n ? `${n} action${n > 1 ? 's' : ''} aujourd'hui${late.length ? `, dont ${late.length} en retard` : ''}` : 'rien d\'urgent pour l\'instant'}</p></div>
+        <div class="r">${me.role === 'admin' ? `<div class="sw" role="group" aria-label="Dossiers"><button data-hall="0" class="${all ? '' : 'on'}">Mes dossiers</button><button data-hall="1" class="${all ? 'on' : ''}">Toute l'équipe</button></div>` : ''}<button class="btn b-soft b-sm" data-hgo="req">Tous les dossiers</button></div></div>
+      <div class="hg"><div class="hl">${sec('🔴 En retard', late)}${sec("Aujourd'hui", today)}${sec('En attente du client · rien à faire', wait)}${!late.length && !today.length && !wait.length ? `<div class="empty">✓ Aucune action pour l'instant.${take.length ? ' Prenez une nouvelle demande à droite.' : ''}</div>` : ''}</div>
+        <div class="hs"><div class="hk">
+          <div class="dk"><small>Encaissé · dossiers ouverts</small><b>${fmt(paid)} MAD</b><small>sur ${fmt(due)} attendus</small></div>
+          <div><small>Nouvelles demandes</small><b>${week}</b><small>ces 7 derniers jours</small></div>
+          <div><small>Dossiers en cours</small><b>${act.length}</b><small>dont ${act.filter(r => r.juriste === me.id).length} à moi</small></div>
+          <div><small>Livrés ce mois</small><b>${delivered}</b><div class="pb"><i style="width:${act.length + delivered ? Math.round(delivered / (act.length + delivered) * 100) : 0}%"></i></div></div></div>
+          <div class="hn"><h4>Nouvelles demandes <small>${take.length ? 'à prendre' : 'aucune'}</small></h4>${take.slice(0, 6).map(r => `<div class="rw"><span><b>${esc(title(r))}</b> <small>· ${esc(FORMES[r.forme] || '')}${r.ville ? ' · ' + esc(r.ville) : ''}</small></span><button class="btn b-soft b-sm" data-hopen="${esc(r.ref)}">Voir</button><button class="btn b-ink b-sm" data-htake="${esc(r.ref)}">Prendre</button></div>`).join('') || '<p class="hint" style="margin:0">Tout est attribué.</p>'}</div></div></div>`;
+  }
+  $('#homeBox').addEventListener('click', e => {
+    const o = e.target.closest('[data-hopen]'); if (o) { open(o.dataset.hopen); return; }
+    const g = e.target.closest('[data-hgo]'); if (g) { showPage(g.dataset.hgo); return; }
+    const a = e.target.closest('[data-hall]'); if (a) { homeAll = a.dataset.hall === '1'; renderHome(); return; }
+    const t = e.target.closest('[data-htake]');
+    if (t) { const r = get(t.dataset.htake); if (r && !r.juriste) { r.juriste = me.id; r.seen = true; log(r, `${me.name} prend le dossier.`); renderList(); toast('Dossier assigné à vous'); } return; }
+    const s = e.target.closest('[data-hsend]');
+    if (s) { const r = get(s.dataset.hsend), k = r && msgKey(r); if (r && k) { r.sent = r.sent || {}; r.sent[k] = new Date().toISOString(); log(r, `Message WhatsApp envoyé au client : ${msgOf(k).title} (${(r.msgLang || 'fr') === 'ar' ? 'darija' : 'français'}).`); setTimeout(() => { renderList(); }, 0); } }
+  });
   function showPage(p){
     PAGE = p;
-    $('#body').hidden = p !== 'req'; $('#affm').hidden = p !== 'aff'; $('#ctrm').hidden = p !== 'ctr';
-    [['segReq', 'tbReq', 'req'], ['affBtn', 'tbAff', 'aff'], ['ctrBtn', 'tbCtr', 'ctr']].forEach(([sg, tb, k]) => {
+    $('#body').hidden = p !== 'req'; $('#affm').hidden = p !== 'aff'; $('#ctrm').hidden = p !== 'ctr'; $('#homem').hidden = p !== 'home';
+    if (p === 'home') renderHome();
+    [['segHome', 'tbHome', 'home'], ['segReq', 'tbReq', 'req'], ['affBtn', 'tbAff', 'aff'], ['ctrBtn', 'tbCtr', 'ctr']].forEach(([sg, tb, k]) => {
       $('#' + sg).classList.toggle('on', p === k); $('#' + sg).toggleAttribute('aria-current', p === k); $('#' + tb).classList.toggle('on', p === k); });
-    if (p !== 'req') { $(p === 'aff' ? '#affm' : '#ctrm').scrollTop = 0; scrollTo({ top:0 }); }
+    if (p !== 'req') { $(p === 'aff' ? '#affm' : p === 'ctr' ? '#ctrm' : '#homem').scrollTop = 0; scrollTo({ top:0 }); }
   }
   const showAff = on => showPage(on ? 'aff' : 'req');
   $('#segReq').addEventListener('click', () => { if (PAGE !== 'req') showPage('req'); else $('#q').focus(); });
+  $('#segHome').addEventListener('click', () => showPage('home'));
+  $('#tbHome').addEventListener('click', () => { showPage('home'); scrollTo({ top:0, behavior:'smooth' }); });
   $('#snd').addEventListener('click', () => {
     soundOn = !soundOn; try { localStorage.setItem('ce-sound', soundOn ? 'on' : 'off'); } catch(e) {}
     paintSnd();
