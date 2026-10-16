@@ -341,6 +341,22 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
 .cnl{display:grid;gap:5px;white-space:nowrap;font-size:.66rem;font-weight:800;color:var(--m);text-transform:uppercase;letter-spacing:.05em}
 .cnl input{font:600 .88rem var(--font);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px;text-transform:none;letter-spacing:0;min-width:0}
 .cnl em{font-style:normal;text-transform:none;letter-spacing:0;font-weight:600;color:var(--m);font-size:.7rem;min-height:1em}.cnl em.ok{color:var(--ok)}
+.idf{width:min(760px,100%)}
+.idts{display:flex;gap:6px;flex-wrap:wrap}
+.idt{display:flex;gap:8px;align-items:center;border:1.5px solid var(--line);background:#fff;border-radius:12px;padding:8px 12px;font:inherit;cursor:pointer;color:var(--ink)}
+.idt small{color:var(--m);font-size:.7rem}.idt.on{background:var(--ink);border-color:var(--ink);color:#fff}.idt.on small{color:#e3cbdd}
+.idt i{font-style:normal;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:.66rem;font-weight:800;background:#f4eef1;color:var(--m)}.idt i.ok{background:var(--ok);color:#fff}.idt i.ko{background:var(--err);color:#fff}
+.idty{display:flex;gap:4px;align-items:center;border-bottom:1px solid var(--line);padding-bottom:12px}
+.idty label{display:block!important}.idty input{position:absolute;opacity:0}.idty span{display:block;border:1px solid var(--line);padding:7px 16px;border-radius:999px;font-weight:700;font-size:.8rem;color:var(--m);cursor:pointer}
+.idty label:has(input:checked) span{background:var(--ink);color:#fff;border-color:var(--ink)}.idty small{margin-inline-start:auto;color:var(--m);font-size:.74rem}
+.idg{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;align-items:start}.idg .w2{grid-column:span 2}.idg .w3{grid-column:1/-1}
+.idf .natf,.idf .t-pass{display:none}.idf:has(input[value="pass"]:checked) .natf{display:grid}.idf:has(input[value="pass"]:checked) .t-pass{display:inline}.idf:has(input[value="pass"]:checked) .t-cin{display:none}
+.idf:has(input[value="pass"]:checked) .adrf{grid-column:span 2}
+.cnl input.bad{border-color:#f5c2bd;background:#fff6f5;color:#8a2a22}.cnl em.ko{color:var(--err)}
+.idwarn{display:flex;gap:10px;align-items:center;background:#fdecea;border:1px solid #f5c2bd;color:#8a2a22;border-radius:12px;padding:10px 12px;font-weight:700;font-size:.8rem}.idwarn b{width:24px;height:24px;border-radius:8px;background:var(--err);color:#fff;display:grid;place-items:center;flex:none}.idwarn a{margin-inline-start:auto;flex:none}
+.idwarn[hidden]{display:none}
+.idact{display:flex;gap:10px}.idact .big{flex:1}
+@media (max-width:640px){.idg{grid-template-columns:1fr 1fr}.idg .w2,.idf:has(input[value="pass"]:checked) .adrf{grid-column:1/-1}.idwarn{flex-wrap:wrap}}
 .cnerr{margin:0;color:var(--err);font-weight:700;font-size:.82rem}
 @media (max-width:640px){.cng{grid-template-columns:1fr 1fr}}
 .k1 .cnx{display:flex;gap:8px;align-items:center;margin-top:6px;color:var(--ink);font-weight:600}.k1 .cnx input{font:inherit;font-size:.78rem;border:1px solid var(--line);border-radius:8px;padding:4px 8px}
@@ -702,7 +718,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   const AVANCE = 700;
   // The creation workflow (SARL / SARL AU, 9 steps). A step is finished when all its tasks are done; the file then moves on by itself.
   // Task types: doc (a document above, done when "Obtenu"), check (an action ticked by the team), pay (a payment received),
-  // conf (the client confirmed the request), piece (the client's pieces received: 'cin' or 'all'), siege (centre attributed, or lease received).
+  // conf (the client confirmed the request), ids (an identity sheet per partner and manager, none expired), piece (the client's pieces received: 'cin' or 'all'), siege (centre attributed, or lease received).
   // opt: only when the client chose that option; cond(r): only when it applies to this file.
   const isDom = r => r.siege !== 'local', bigCapital = r => +r.capital > 100000;
   const REJ = {
@@ -711,7 +727,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   };
   const WORKFLOW = [
     { name:'Demande reçue', short:'Reçue', hint:"Le client confirme sa demande, règle l'avance de 700 MAD et envoie sa CIN ou son passeport.", tasks:[
-      { t:'conf', k:'conf', label:'Client confirmé' }, { t:'pay', k:'avance' }, { t:'piece', k:'cin', label:'CIN / passeport reçus' },
+      { t:'conf', k:'conf', label:'Client confirmé' }, { t:'pay', k:'avance' }, { t:'ids', k:'ids', label:"Pièces d'identité" },
       { t:'check', k:'prio', opt:'o_prio', label:"Traitement prioritaire : dossier signalé en priorité à l'équipe" }] },
     { name:'Certificat négatif', short:'Certificat', hint:"Dépôt à l'OMPIC pour réserver le nom. Notez la date de fin de validité, ou signalez un nom refusé.", reject:REJ.nom, tasks:[
       { t:'check', k:'cn-depot', label:"Demande déposée à l'OMPIC" }, { t:'doc', k:'cn' }] },
@@ -761,7 +777,8 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     WORKFLOW.forEach((w, i) => tasksOf(r, i).forEach(tk => {
       if (i < step) {
         if (tk.t === 'doc') r.livrables[tk.k] = 2; else if (tk.t === 'check') r.checks[tk.k] = true; else if (tk.t === 'conf') r.waConfirmed = true;
-        else if (tk.t === 'piece') pieceList(r, tk.k).forEach(d => r.docs[d.k] = true); else if (tk.t === 'siege') { if (r.siege === 'local') r.docs.bail = true; else r.checks.siege = true; }
+        else if (tk.t === 'piece') pieceList(r, tk.k).forEach(d => r.docs[d.k] = true);
+        else if (tk.t === 'ids') { r.ids = {}; people(r).forEach(p => { r.ids[p.k] = { type:'cin', nom:p.name, num:p.cin, dn:'1990-01-01', ln:r.ville || 'Casablanca', exp:'2031-01-01', adr:'Adresse de démonstration, ' + (r.ville || 'Casablanca') }; r.docs[p.k] = true; }); } else if (tk.t === 'siege') { if (r.siege === 'local') r.docs.bail = true; else r.checks.siege = true; }
         else r.paid[tk.k] = true;
       }
       else if (i === step && tk.t === 'doc') r.livrables[tk.k] = 1;
@@ -930,10 +947,10 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   const pieceList = (r, k) => docsOf(r).filter(d => k === 'all' || d.k.startsWith('cin'));
   const siegeDone = r => r.siege === 'local' ? !!r.docs.bail : !!(DOMI[r.ref] || r.checks.siege);
   const taskDone = (r, tk) => tk.t === 'doc' ? r.livrables[tk.k] === 2 : tk.t === 'check' ? !!r.checks[tk.k] : tk.t === 'conf' ? !!r.waConfirmed
-    : tk.t === 'piece' ? pieceList(r, tk.k).every(d => r.docs[d.k]) : tk.t === 'siege' ? siegeDone(r) : payDone(r, tk.k);
+    : tk.t === 'piece' ? pieceList(r, tk.k).every(d => r.docs[d.k]) : tk.t === 'ids' ? idsDone(r) : tk.t === 'siege' ? siegeDone(r) : payDone(r, tk.k);
   const taskLabel = (r, tk) => tk.label && tk.t !== 'pay' ? tk.label : tk.t === 'doc' ? DOCS[tk.k][0] : tk.t === 'pay' ? payLabel(tk.k)
     : tk.t === 'siege' ? (r.siege === 'local' ? 'Bail ou titre de propriété reçu' : 'Centre de domiciliation attribué') : tk.label;
-  const clientTask = tk => tk.t === 'pay' || tk.t === 'conf' || tk.t === 'piece' || tk.k === 'legal-back';
+  const clientTask = tk => tk.t === 'pay' || tk.t === 'conf' || tk.t === 'piece' || tk.t === 'ids' || tk.k === 'legal-back';
   const stepDone = (r, i) => tasksOf(r, i).every(tk => taskDone(r, tk)) && !(WORKFLOW[i].reject && r.reject);
   const docsTotal = r => docKeys(r).length;
   const docsOk = r => docKeys(r).filter(k => r.livrables[k] === 2).length;
@@ -948,6 +965,23 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     }
     if (moved) { msgSel = null; toast((r.step >= DONE ? 'Dossier terminé ✓' : `Étape suivante : ${WORKFLOW[r.step].name}`) + ' · message client prêt'); }
   }
+  // The people whose identity goes in the documents: each partner, and the manager when not a partner (keys = their CIN piece in docsOf)
+  function people(r){
+    const ps = r.partners || [], g = r.gerant || {};
+    const list = ps.map((p, i) => ({ k:'cin-' + i, name:p.name || 'Associé ' + (i + 1), cin:p.cin || '', role:`Associé ${p.pct != null ? p.pct + ' %' : ''}${g.name && g.name === p.name ? ' · gérant' : ''}`.trim() }));
+    if (g.name && !ps.some(p => p.name === g.name)) list.push({ k:'cin-g', name:g.name, cin:g.cin || '', role:'Gérant' });
+    return list;
+  }
+  const ID_FIELDS = ['nom', 'num', 'dn', 'ln', 'exp', 'adr'];
+  const daysTo = iso => Math.ceil((Date.parse(iso + 'T23:59:59') - Date.now()) / DAY);
+  function idState(x){
+    if (!x) return { complete:false, expired:false };
+    const complete = ID_FIELDS.every(f => String(x[f] || '').trim()) && (x.type !== 'pass' || String(x.nat || '').trim());
+    return { complete, expired:!!x.exp && daysTo(x.exp) < 0, days:x.exp ? daysTo(x.exp) : null };
+  }
+  const idsDone = r => { const ps = people(r); return ps.length > 0 && ps.every(p => { const st = idState((r.ids || {})[p.k]); return st.complete && !st.expired; }); };
+  const fdate = iso => iso ? new Date(iso + 'T12:00:00').toLocaleDateString('fr-FR') : '';
+  const validLeft = d => d < 0 ? `expiré depuis ${-d} jour${d < -1 ? 's' : ''}` : d < 60 ? `✓ valide encore ${d} jour${d > 1 ? 's' : ''}` : d < 730 ? `✓ valide encore ${Math.floor(d / 30)} mois` : `✓ valide encore ${Math.floor(d / 365)} ans`;
   function docsOf(r){
     const d = [{ k:'pay', label:'Preuve de paiement' }];
     (r.partners || []).forEach((p, i) => d.push({ k:'cin-' + i, label:'CNIE · ' + (p.name || 'Associé ' + (i + 1)) }));
@@ -1251,14 +1285,15 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     };
     const assoc = ps.map((p, n) => [ps.length > 1 ? `Associé ${n + 1}` : 'Associé unique', [p.name, p.cin, p.pct != null ? p.pct + '\u00a0%' : ''].filter(Boolean).join(' · ')]);
     const pick = (...ks) => ks.map(k => F[k]).filter(Boolean);
+    const idRows = people(r).filter(p => idState((r.ids || {})[p.k]).complete).map(p => { const x = r.ids[p.k]; return [p.name, `${x.type === 'pass' ? 'Passeport' : 'CIN'} ${x.num} · né(e) le ${fdate(x.dn)} à ${x.ln}${x.type === 'pass' && x.nat ? ' · ' + x.nat : ''} · ${x.adr}`]; });
     const cnv = [...(r.cn ? [['ICE', r.cn.ice], ['N° certificat négatif', r.cn.num]] : []), ...(r.cnExp ? [['Certificat négatif', "valable jusqu'au " + new Date(r.cnExp).toLocaleDateString('fr-FR')]] : [])];
     const S = [
       { sub:"Pour vérifier le client et encaisser l'avance", rows:pick('client', 'tel', 'formule', 'paiement', 'ville') },
       { sub:"À saisir sur le site de l'OMPIC", rows:[...noms.map((n, k) => [`Nom ${k + 1}`, n]), ...pick('activite', 'forme', 'demandeur')] },
-      { sub:'Pour rédiger les statuts et les documents', rows:[...pick('denom', 'capital'), ...assoc, ...pick('gerant', 'siege', 'activite'), ...cnv] },
+      { sub:'Pour rédiger les statuts et les documents', rows:[...pick('denom', 'capital'), ...assoc, ...pick('gerant', 'siege', 'activite'), ...idRows, ...cnv] },
       { sub:'Pour suivre la légalisation et le paiement', rows:[...pick('client', 'tel'), ['50 % du reste', am('second')], ...pick('moyen'), ...(bigCapital(r) ? pick('capital') : []), ...cnv] },
       { sub:"Pour l'enregistrement", rows:[...pick('denom', 'capital', 'siege', 'centre'), ...assoc, ...cnv] },
-      { sub:"Pour le dossier d'immatriculation", rows:[...pick('denom', 'forme', 'activite', 'capital', 'gerant', 'siege'), ...cnv] },
+      { sub:"Pour le dossier d'immatriculation", rows:[...pick('denom', 'forme', 'activite', 'capital', 'gerant', 'siege'), ...idRows, ...cnv] },
       { sub:"Pour l'annonce au journal et le Bulletin Officiel", rows:[...pick('denom', 'capital', 'siege', 'activite', 'gerant'), ...assoc] },
       { sub:'Pour encaisser le solde', rows:[...pick('client', 'tel'), ['Solde', am('final')], ...pick('moyen')] },
       { sub:'Pour livrer les documents', rows:pick('client', 'tel', 'email', 'denom') },
@@ -1286,6 +1321,32 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
       <button class="btn b-grad big">${r.cn ? 'Enregistrer' : 'Enregistrer et passer à la rédaction →'}</button>
     </form></div>`;
   }
+  // Identity sheets: what the documents need about each partner and the manager (from the CIN or passport the client sent)
+  function idWindow(r){
+    const ps = people(r), cur = ps.find(p => p.k === idOpen) || ps[0]; if (!cur) return '';
+    const x = Object.assign({ type:'cin', nom:cur.name, num:cur.cin }, (r.ids || {})[cur.k]), st = idState((r.ids || {})[cur.k]);
+    const tab = p => { const s2 = idState((r.ids || {})[p.k]); return `<button type="button" class="idt ${p.k === cur.k ? 'on' : ''}" data-idtab="${p.k}"><i class="${s2.expired ? 'ko' : s2.complete ? 'ok' : ''}">${s2.expired ? '!' : s2.complete ? '✓' : ps.indexOf(p) + 1}</i><b>${esc(p.name)}</b><small>${esc(p.role)}</small></button>`; };
+    const d = x.exp ? daysTo(x.exp) : null, next = ps.slice(ps.indexOf(cur) + 1).concat(ps.slice(0, ps.indexOf(cur))).find(p => !idState((r.ids || {})[p.k]).complete);
+    const ask = waLink(r.client?.tel, `Bonjour ${r.client?.nom || ''}, la pièce d'identité de ${cur.name} a expiré. Pour continuer votre dossier ${r.ref}, merci de nous envoyer une copie d'une pièce valide (CIN ou passeport).`);
+    return `<div class="modal" id="idModal"><form class="mbox cnf idf" id="idForm" role="dialog" aria-modal="true" aria-label="Pièces d'identité" novalidate>
+      <h3>🪪 Pièces d'identité <button type="button" class="btn b-soft b-sm" id="idClose" aria-label="Fermer">✕</button></h3>
+      <p class="hint">Une fiche par personne : elles serviront à rédiger les statuts, la procuration et la déclaration sur l'honneur.</p>
+      ${ps.length > 1 ? `<div class="idts">${ps.map(tab).join('')}</div>` : ''}
+      <div class="idty"><label><input type="radio" name="idType" value="cin" ${x.type !== 'pass' ? 'checked' : ''}><span>CIN</span></label><label><input type="radio" name="idType" value="pass" ${x.type === 'pass' ? 'checked' : ''}><span>Passeport</span></label>${x.at ? `<small>Fiche enregistrée le ${new Date(x.at).toLocaleDateString('fr-FR')}</small>` : ''}</div>
+      <div class="idg">
+        <label class="cnl w2">Nom complet (comme sur la pièce)<input id="idNom" value="${esc(x.nom || '')}" autocomplete="off"></label>
+        <label class="cnl"><span class="t-cin">N° CIN</span><span class="t-pass">N° passeport</span><input id="idNum" value="${esc(x.num || '')}" autocomplete="off" style="text-transform:uppercase"></label>
+        <label class="cnl">Date de naissance<input type="date" id="idDn" value="${esc(x.dn || '')}"></label>
+        <label class="cnl">Lieu de naissance<input id="idLn" value="${esc(x.ln || '')}" autocomplete="off"></label>
+        <label class="cnl">Expire le<input type="date" id="idExp" value="${esc(x.exp || '')}" class="${d != null && d < 0 ? 'bad' : ''}"><em id="idExpOk" class="${d != null && d >= 0 ? 'ok' : d != null ? 'ko' : ''}">${d != null ? validLeft(d) : ''}</em></label>
+        <label class="cnl natf">Nationalité<input id="idNat" value="${esc(x.nat || '')}" autocomplete="off"></label>
+        <label class="cnl w3 adrf">Adresse complète<input id="idAdr" value="${esc(x.adr || '')}" autocomplete="off"></label>
+      </div>
+      <div class="idwarn" id="idWarn" ${d != null && d < 0 ? '' : 'hidden'}><b>!</b><span>Pièce expirée : elle ne sera pas acceptée pour les statuts ni au registre de commerce. Demandez une pièce valide au client.</span><a class="btn b-wa b-sm" href="${ask}" target="_blank" rel="noopener">Demander sur WhatsApp</a></div>
+      <p class="cnerr" id="idErr" hidden></p>
+      <div class="idact"><button type="button" class="btn b-soft" id="idClose2">Annuler</button><button class="btn b-grad big" data-next="${next && next.k !== cur.k ? next.k : ''}">${next && next.k !== cur.k ? `Enregistrer et passer à ${esc(next.name)} →` : 'Enregistrer'}</button></div>
+    </form></div>`;
+  }
   // Call-back request from the homepage form: no creation file yet, the team calls the person back.
   function rappelView(r, canEdit){
     const tel = r.client?.tel || '', hi = `Bonjour ${r.client?.nom || ''}, c'est ${me.name} de Charika Express. Vous avez demandé à être rappelé${r.service ? ` au sujet de : ${r.service}` : ''}. Quand êtes-vous disponible pour un court appel ?`;
@@ -1307,7 +1368,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   }
   function renderDetail(){
     const r = current && get(current);
-    if (current !== renderDetail.last) { rejectOpen = false; msgMore = false; qFocus = null; moreOpen = null; msgSel = null; view = null; cnOpen = false; renderDetail.last = current; }
+    if (current !== renderDetail.last) { rejectOpen = false; msgMore = false; qFocus = null; moreOpen = null; msgSel = null; view = null; cnOpen = false; idOpen = null; renderDetail.last = current; }
     if (!r || !allowed(r)) {
       $('#detail').innerHTML = '<div class="ctr"><div class="blank"><b>Sélectionnez un dossier</b><span>La liste des demandes est à gauche.</span></div></div>';
       return;
@@ -1360,12 +1421,19 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     const rows = [];
     const showMsg = (isNow || (r.step >= DONE && vi === DONE - 1)) && mk !== 'libre';
     if (showMsg) rows.push(`<div class="tk ${sentAt ? 'dn' : ''}"><span class="cb" aria-hidden="true">${sentAt ? '✓' : ''}</span><span>Prévenir le client : ${esc(msgOf(mk).title)}${sentAt ? `<small>Envoyé ${esc(when(sentAt))}</small>` : '<small>Message WhatsApp prêt</small>'}</span>${waBtn(sentAt ? 'Renvoyer' : 'Envoyer', 'b-sm')}</div>`);
-    tasksOf(r, vi).forEach(tk => {
+    tasksOf(r, vi).forEach(tk => {   // tk may be replaced by a copy with a computed label (identity sheets)
       const done = taskDone(r, tk), half = tk.t === 'doc' && r.livrables[tk.k] === 1;
       const a = tk.t === 'pay' ? am.find(x => x.k === tk.k) : null;
       let sub = tk.t === 'doc' ? DOC_ST[r.livrables[tk.k] || 0] : '', amt = '', right = '', qa = done ? (tk.t === 'doc' ? 'cours' : 'no') : 'ok', lock = !ed;
       if (tk.t === 'pay') { amt = r.paid.full ? 'Payé à la commande' : a && a.v != null ? fmt(a.v) + ' MAD · ' + (PAY[r.payMethod] || '') : 'Sur devis'; if (r.paid.full) lock = true; if (ed && !done) right = `<button class="btn b-soft b-sm" data-qa="${tk.k}:ok">Encaisser</button>`; }
       if (tk.t === 'doc' && ed && !done) right = `<button class="btn b-soft b-sm" data-qa="${tk.k}:${half ? 'ok' : 'cours'}">${half ? '✓ Obtenu' : 'En cours'}</button>`;
+      if (tk.t === 'ids') {                             // identity sheets: one per person, filled from the piece the client sent
+        const ps = people(r), sts = ps.map(p => ({ p, st:idState((r.ids || {})[p.k]) })), ok = sts.filter(x => x.st.complete && !x.st.expired).length, exp = sts.filter(x => x.st.expired);
+        sub = exp.length ? `⚠ Pièce expirée : ${exp.map(x => x.p.name).join(', ')}` : done ? sts.map(x => `${x.p.name} · ${(r.ids[x.p.k].type === 'pass' ? 'passeport ' : 'CIN ') + r.ids[x.p.k].num}`).join(' · ') : 'À saisir : ' + sts.filter(x => !x.st.complete).map(x => x.p.name).join(', ');
+        if (canEdit) right = `<button class="btn ${done ? 'b-soft' : 'b-grad'} b-sm" data-idopen>${done ? 'Modifier' : 'Saisir'}</button>`;
+        lock = !canEdit; qa = null;
+        if (ps.length) tk = Object.assign({}, tk, { label:`Pièces d'identité · ${ok} / ${ps.length}` });
+      }
       if (tk.k === 'cn') {                              // obtained: the accepted name, ICE, number and dates go through a window
         if (ed && !done) right = `${half ? '' : `<button class="btn b-soft b-sm" data-qa="cn:cours">En cours</button>`}<button class="btn b-grad b-sm" data-cnopen>✓ Obtenu</button>`;
         if (r.cn && done) { sub = `${r.cn.nom} · ICE ${r.cn.ice} · N° ${r.cn.num} · obtenu le ${new Date(r.cn.date).toLocaleDateString('fr-FR')}`; if (canEdit) right = '<button class="btn b-soft b-sm" data-cnopen>Modifier</button>'; }
@@ -1386,7 +1454,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
           if (SERVER) { lock = true; if (isNow && !d) right = '<button class="btn b-soft b-sm" data-more="centre">Choisir le centre</button>'; } }
       }
       const help = isNow && dAddr && vi <= domStep && ['statuts', 'domiciliation'].includes(tk.k) ? `<small>📍 ${esc(dAddr)}</small>` : '';
-      rows.push(`<div class="tk ${done ? 'dn' : half ? 'half' : ''}"><button class="cb" ${lock ? 'disabled' : tk.k === 'cn' && !done ? 'data-cnopen' : `data-qa="${tk.k}:${qa}"`} aria-label="${esc(taskLabel(r, tk))}">${done ? '✓' : ''}</button><span>${esc(taskLabel(r, tk))}${tk.opt ? ' <em class="optb">Option</em>' : ''}${tk.cond === bigCapital ? ' <em class="optb">Capital > 100 000 MAD</em>' : ''}${sub ? `<small>${esc(sub)}</small>` : ''}${help}</span>${amt ? `<span class="amt">${esc(amt)}</span>` : ''}${right}</div>`);
+      rows.push(`<div class="tk ${done ? 'dn' : half ? 'half' : ''}"><button class="cb" ${lock ? 'disabled' : tk.t === 'ids' ? 'data-idopen' : tk.k === 'cn' && !done ? 'data-cnopen' : `data-qa="${tk.k}:${qa}"`} aria-label="${esc(taskLabel(r, tk))}">${done ? '✓' : ''}</button><span>${esc(taskLabel(r, tk))}${tk.opt ? ' <em class="optb">Option</em>' : ''}${tk.cond === bigCapital ? ' <em class="optb">Capital > 100 000 MAD</em>' : ''}${sub ? `<small>${esc(sub)}</small>` : ''}${help}</span>${amt ? `<span class="amt">${esc(amt)}</span>` : ''}${right}</div>`);
     });
     // The negative certificate expires: warn on the steps that still need it
     const cnLeft = r.cnExp ? Math.ceil((Date.parse(r.cnExp + 'T23:59:59') - Date.now()) / DAY) : null;
@@ -1441,7 +1509,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
           <div class="foot">${foot}</div>${lks ? `<div class="lks">${lks}</div>` : ''}</div>
         <div class="fz"><h4>Fiche de l'étape <button class="btn b-soft b-sm" data-cps="${esc(fzText)}">⧉ Tout copier</button></h4><small>${esc(fz.sub)}</small>
           <div>${fz.rows.map(([k, v]) => `<div class="fr"><span>${esc(k)}</span>${v ? `<b>${esc(v)}</b><button class="cp" data-cp="${esc(v)}" title="Copier" aria-label="Copier ${esc(k)}">⧉</button>` : '<b class="na">Non renseigné</b>'}</div>`).join('')}</div></div>
-      </div>${panelHtml}</div></div>${cnOpen && canEdit ? cnWindow(r) : ''}`;
+      </div>${panelHtml}</div></div>${cnOpen && canEdit ? cnWindow(r) : ''}${idOpen && canEdit ? idWindow(r) : ''}`;
     $('#detail').innerHTML = `
     <section class="ctr">
       <div class="h">
@@ -1518,10 +1586,14 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   }
 
   // Actions on the open file (event delegation)
-  let rejectOpen = false, msgMore = false, qFocus = null, moreOpen = null, view = null, cnOpen = false;   // cnOpen: the « certificat obtenu » window   // view: the step shown in the carousel (null: the current one)
+  let rejectOpen = false, msgMore = false, qFocus = null, moreOpen = null, view = null, cnOpen = false, idOpen = null;   // cnOpen: the « certificat obtenu » window   // view: the step shown in the carousel (null: the current one)
   const qSkip = {};                                    // questions passed with « En cours » / « Pas encore », per file and step
   $('#detail').addEventListener('click', e => {
     const r = current && get(current); if (!r) return;
+    if (e.target.closest('[data-idopen]')) { const ps = people(r); idOpen = (ps.find(p => !idState((r.ids || {})[p.k]).complete || idState(r.ids[p.k]).expired) || ps[0])?.k || null; renderDetail(); setTimeout(() => $('#idNom')?.focus(), 0); return; }
+    if (e.target.closest('[data-idtab]')) { idOpen = e.target.closest('[data-idtab]').dataset.idtab; renderDetail(); return; }
+    if (e.target.id === 'idModal' || e.target.closest('#idClose') || e.target.closest('#idClose2')) { idOpen = null; renderDetail(); return; }
+    if (e.target.closest('#idForm')) { if (!e.target.closest('button')) return; }
     if (e.target.closest('[data-cnopen]')) { cnOpen = true; renderDetail(); setTimeout(() => $('#cnIce')?.focus(), 0); return; }
     if (e.target.id === 'cnModal' || e.target.closest('#cnClose')) { cnOpen = false; renderDetail(); return; }
     if (e.target.closest('#cnForm')) { if (!e.target.closest('button')) return; }
@@ -1637,11 +1709,28 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   });
   $('#detail').addEventListener('input', e => {
     if (e.target.closest('#cnForm') && $('#cnErr')) $('#cnErr').hidden = true;
+    if (e.target.closest('#idForm') && $('#idErr')) $('#idErr').hidden = true;
+    if (e.target.id === 'idExp') { const v = e.target.value, d = v ? daysTo(v) : null, o = $('#idExpOk'); o.textContent = d != null ? validLeft(d) : ''; o.className = d == null ? '' : d < 0 ? 'ko' : 'ok'; e.target.classList.toggle('bad', d != null && d < 0); $('#idWarn').hidden = !(d != null && d < 0); }
     if (e.target.id === 'cnIce') { e.target.value = e.target.value.replace(/\D/g, '').slice(0, 15); const n = e.target.value.length; $('#cnIceOk').textContent = n === 15 ? '✓ 15 chiffres' : n ? `${n} / 15 chiffres` : ''; $('#cnIceOk').className = n === 15 ? 'ok' : ''; }
     if (e.target.id === 'cnExpIn') e.target.dataset.auto = '';
     if (e.target.id === 'cnDate' && e.target.value && $('#cnExpIn').dataset.auto) $('#cnExpIn').value = plus3m(e.target.value);
   });
   $('#detail').addEventListener('toggle', e => { if (e.target.classList?.contains('tmore')) msgMore = e.target.open; }, true);
+  $('#detail').addEventListener('submit', e => {
+    if (e.target.id !== 'idForm') return;
+    e.preventDefault();
+    const r = get(current); if (!r) return;
+    const ps = people(r), cur = ps.find(p => p.k === idOpen) || ps[0]; if (!cur) return;
+    const v = id => ($('#' + id)?.value || '').trim();
+    const x = { type:$('#idForm input[name="idType"]:checked')?.value || 'cin', nom:v('idNom'), num:v('idNum').toUpperCase(), dn:v('idDn'), ln:v('idLn'), exp:v('idExp'), nat:v('idNat'), adr:v('idAdr'), at:new Date().toISOString() };
+    const miss = [[!x.nom, 'le nom complet'], [!x.num, 'le numéro de la pièce'], [!x.dn, 'la date de naissance'], [!x.ln, 'le lieu de naissance'], [!x.exp, "la date d'expiration"], [x.type === 'pass' && !x.nat, 'la nationalité'], [!x.adr, "l'adresse complète"]].filter(m => m[0]).map(m => m[1]);
+    if (miss.length) { const p = $('#idErr'); p.textContent = 'Il manque ' + miss.join(', ') + '.'; p.hidden = false; return; }
+    r.ids = r.ids || {}; r.ids[cur.k] = x; r.docs[cur.k] = true;
+    const expired = daysTo(x.exp) < 0;
+    log(r, `Pièce d'identité de ${cur.name} : ${x.type === 'pass' ? 'passeport' : 'CIN'} ${x.num}, expire le ${fdate(x.exp)}${expired ? ' (EXPIRÉE)' : ''}.`);
+    const nk = e.submitter?.dataset.next; idOpen = nk && !expired ? nk : expired ? cur.k : null;
+    advance(r); renderList(); renderDetail(); toast(expired ? 'Enregistré · pièce expirée : demandez une pièce valide' : 'Fiche enregistrée ✓');
+  });
   $('#detail').addEventListener('submit', e => {
     if (e.target.id !== 'cnForm') return;
     e.preventDefault();
