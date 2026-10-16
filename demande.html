@@ -152,22 +152,30 @@ textarea{min-height:96px;resize:vertical}
 /* Domiciliation centre picker (step 2, « J'ai besoin d'une domiciliation »): partner centres of the client's city, included in the pack */
 .domi{margin-top:16px;display:grid;gap:10px}
 .domi .dmp{margin:-6px 0 0;color:var(--m);font-size:.84rem}
-.dgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
-.dc{position:relative;display:grid;grid-template-rows:auto 1fr;border:1.5px solid var(--line);border-radius:18px;background:#fff;cursor:pointer;overflow:hidden;margin:0;transition:border-color .2s,box-shadow .2s}
+/* Centres as stories: tall photo cards in a row that scrolls sideways (swipe on phones), a district filter when useful */
+.dflt{display:flex;gap:8px;flex-wrap:wrap}
+.dflt button{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:7px 14px;font:700 .8rem var(--font);color:var(--ink);cursor:pointer}
+.dflt button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.dgrid{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding:8px 8px 12px;margin:0 -8px;scroll-padding-inline:8px;scrollbar-width:thin}
+.dc{position:relative;flex:none;width:220px;height:300px;border-radius:22px;overflow:hidden;cursor:pointer;margin:0;scroll-snap-align:start;color:#fff;display:flex;flex-direction:column;justify-content:flex-end;padding:14px;background:linear-gradient(135deg,#6f5a8a,#30102f);transition:box-shadow .2s,transform .2s}
 .dc input{position:absolute;opacity:0;pointer-events:none}
-.dc:hover{border-color:#e8c9cf}
-.dc:has(input:checked){border-color:var(--pink);box-shadow:0 0 0 4px rgba(255,79,145,.12)}
-.dc:has(input:focus-visible){outline:3px solid var(--rose);outline-offset:2px}
-.dc .ph{height:86px;background:linear-gradient(135deg,#f7d9c9,#f3b9cf 60%,#d9a3c8);background-size:cover;background-position:center}
-.dc .bd{padding:10px 12px 12px;display:grid;gap:5px;align-content:start}
-.dc .bd b{font-size:.92rem}
-.dc .bd small{color:var(--m);font-size:.76rem}
-.dc .ok{color:var(--ok);font-size:.72rem;font-weight:800}
-.dc .sv{display:flex;flex-wrap:wrap;gap:4px}.dc .sv span{font-size:.68rem;background:#fff1f5;color:#a33a6a;border-radius:99px;padding:2px 7px;font-weight:600}
-.dc .inc{position:absolute;top:8px;right:8px;background:#fff;color:var(--ok);font-size:.68rem;font-weight:800;border-radius:99px;padding:3px 8px;box-shadow:0 2px 6px rgba(48,16,47,.15)}
-.dc .chk2{position:absolute;top:8px;left:8px;width:22px;height:22px;border-radius:50%;background:#fff;border:2px solid #fff;box-shadow:0 2px 6px rgba(48,16,47,.2);display:grid;place-items:center;font-size:.7rem;color:#fff}
-.dc:has(input:checked) .chk2{background:var(--grad)}
-.dc.auto .ph{display:grid;place-items:center;font-size:1.8rem;background:linear-gradient(135deg,#fff1f5,#ffe4ec)}
+.dc .ph{position:absolute;inset:0;background-size:cover;background-position:center}
+.dc::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,6,20,.15),transparent 30%,transparent 42%,rgba(20,6,20,.9));pointer-events:none}
+.dc > *:not(input):not(.ph):not(.inc):not(.vf){position:relative;z-index:1}
+.dc:hover{transform:translateY(-2px)}
+.dc:has(input:checked){box-shadow:0 0 0 3px #fff,0 0 0 6px var(--pink)}
+.dc:has(input:focus-visible){outline:3px solid var(--rose);outline-offset:4px}
+.dc .inc,.dc .vf{position:absolute;z-index:1;top:12px;right:12px;background:#fff;color:var(--ok);font-size:.68rem;font-weight:800;border-radius:99px;padding:3px 9px}
+.dc .vf{right:auto;left:12px;color:#fff;background:rgba(14,138,95,.9)}
+.dc small{font-size:.74rem;color:#f3e6ef}
+.dc b{font-size:1.02rem;line-height:1.25;margin:2px 0 8px}
+.dc .sv{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}.dc .sv span{background:rgba(255,255,255,.18);border-radius:9px;padding:4px 6px;font-size:.85rem;line-height:1}
+.dc .pk{display:block;background:#fff;color:var(--ink);border-radius:12px;padding:9px;text-align:center;font-weight:800;font-size:.84rem}
+.dc .pk i{font-style:normal}.dc .pk .y{display:none}
+.dc:has(input:checked) .pk{background:var(--grad);color:#fff}.dc:has(input:checked) .pk .n{display:none}.dc:has(input:checked) .pk .y{display:inline}
+.dc.auto{background:linear-gradient(160deg,#ffe2ec,#fff4ee);color:var(--ink)}.dc.auto::after{display:none}
+.dc.auto .em{font-size:2.2rem;margin-bottom:auto}.dc.auto small{color:var(--m);margin-bottom:10px}.dc.auto .pk{background:var(--ink);color:#fff}
+@media (max-width:560px){.dc{width:200px;height:280px}}
 .tile .tag{position:absolute;top:-10px;inset-inline-end:14px;background:var(--grad);color:#fff;font-size:.7rem;font-weight:700;padding:4px 12px;border-radius:999px}
 .chk{display:flex;gap:10px;align-items:center;padding:12px 14px;border:1px solid var(--line);border-radius:14px;background:var(--bg);cursor:pointer;margin:0;font-weight:600;font-size:.92rem}
 .chk a{color:var(--rose);text-decoration:underline}
@@ -465,6 +473,7 @@ button.vcheck{width:100%;margin-top:12px;border:0;cursor:pointer;text-align:star
               <div class="domi" id="domi" hidden>
                 <span class="lbl" data-t="dmh">Choisissez votre centre de domiciliation</span>
                 <p class="dmp" data-t="dmp">Inclus dans votre pack : aucun supplément, quel que soit le centre choisi.</p>
+                <div class="dflt" id="dflt" hidden></div>
                 <div class="dgrid" id="dgrid" role="radiogroup" aria-label="Centre de domiciliation"></div>
               </div>
             </div>
@@ -771,7 +780,8 @@ button.vcheck{width:100%;margin-top:12px;border:0;cursor:pointer;text-align:star
 
   // ---------- Domiciliation centre (included in the pack) ----------
   // Active partner centres come from /api/centres; the client sees those of their city, or lets the team choose.
-  let CENTRES = [];
+  let CENTRES = [], domiQ = '';
+  const SVI = { courrier:'📬', scan:'📄', reunion:'👥', bureau:'🖥️', standard:'☎️', parking:'🅿️' };
   const SVC = { fr:{ courrier:'Courrier', scan:'Scan du courrier', reunion:'Salle de réunion', bureau:'Bureau', standard:'Standard', parking:'Parking' },
     en:{ courrier:'Mail', scan:'Mail scanning', reunion:'Meeting room', bureau:'Office', standard:'Phone answering', parking:'Parking' } };
   const normCity = c => String(c || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z]/g, '');
@@ -782,15 +792,27 @@ button.vcheck{width:100%;margin-top:12px;border:0;cursor:pointer;text-align:star
     box.hidden = !on; if (!on) return;
     const city = $('#ville').value.trim(), list = CENTRES.filter(c => normCity(c.city) === normCity(city));
     const cur = val('centre'), en = lang === 'en';
-    const auto = `<label class="dc auto"><input type="radio" name="centre" value=""${!cur || !list.some(c => c.id === cur) ? ' checked' : ''}><span class="chk2">✓</span><div class="ph">✨</div>
-      <div class="bd"><b>${en ? 'Let Charika Express choose' : 'Laisser Charika Express choisir'}</b><small>${list.length ? (en ? 'Our team picks a partner centre for you.' : 'Notre équipe vous attribue un centre partenaire.')
+    // District filter, only when the city has centres in more than one district
+    const dists = [...new Set(list.map(c => (c.district || '').trim()).filter(Boolean))];
+    if (domiQ && !dists.includes(domiQ)) domiQ = '';
+    const fl = $('#dflt'); fl.hidden = dists.length < 2;
+    const flHtml = dists.length < 2 ? '' : [['', (en ? 'All' : 'Tous') + ' · ' + list.length], ...dists.map(d => [d, d + ' · ' + list.filter(c => (c.district || '').trim() === d).length])]
+      .map(([v, l]) => `<button type="button" data-dq="${escD(v)}" aria-pressed="${domiQ === v}">${escD(l)}</button>`).join('');
+    if (fl.innerHTML !== flHtml) fl.innerHTML = flHtml;
+    const shown = domiQ ? list.filter(c => (c.district || '').trim() === domiQ || c.id === cur) : list;
+    const pick = `<span class="pk"><i class="n">${en ? 'Choose this centre' : 'Choisir ce centre'}</i><i class="y">✓ ${en ? 'Chosen' : 'Choisi'}</i></span>`;
+    const auto = `<label class="dc auto"><input type="radio" name="centre" value=""${!cur || !list.some(c => c.id === cur) ? ' checked' : ''}><span class="em">✨</span>
+      <b>${en ? 'Let Charika Express choose' : 'Laisser Charika Express choisir'}</b><small>${list.length ? (en ? 'Our team picks a partner centre for you.' : 'Notre équipe vous attribue un centre partenaire.')
         : city ? (en ? `No partner centre in ${escD(city)} yet: our team will find you an address.` : `Pas encore de centre partenaire à ${escD(city)} : notre équipe vous trouve une adresse.`)
-        : (en ? 'Enter your city above to see the centres.' : 'Indiquez votre ville ci-dessus pour voir les centres.')}</small></div></label>`;
-    $('#dgrid').innerHTML = list.map(c => `<label class="dc"><input type="radio" name="centre" value="${escD(c.id)}"${cur === c.id ? ' checked' : ''}><span class="chk2">✓</span><span class="inc">${en ? 'Included' : 'Inclus'}</span>
-      <div class="ph"${c.photo ? ` style="background-image:url('${escD(c.photo)}')"` : ''}></div>
-      <div class="bd"><b>${escD(c.name)}</b><small>${escD([c.district, c.city].filter(Boolean).join(' · '))}</small><span class="ok">✓ ${en ? 'Verified centre' : 'Centre vérifié'}</span>
-      ${c.services.length ? `<span class="sv">${c.services.map(s => `<span>${SVC[en ? 'en' : 'fr'][s] || s}</span>`).join('')}</span>` : ''}</div></label>`).join('') + auto;
+        : (en ? 'Enter your city above to see the centres.' : 'Indiquez votre ville ci-dessus pour voir les centres.')}</small>${pick}</label>`;
+    // Rebuilt only when it changes: a blur of the city field must not replace the card being clicked
+    const html = shown.map(c => `<label class="dc"><input type="radio" name="centre" value="${escD(c.id)}"${cur === c.id ? ' checked' : ''}>
+      <span class="ph"${c.photo ? ` style="background-image:url('${escD(c.photo)}')"` : ''}></span><span class="vf">✓ ${en ? 'Verified' : 'Vérifié'}</span><span class="inc">${en ? 'Included' : 'Inclus'}</span>
+      <small>${escD([c.district, c.city].filter(Boolean).join(' · '))}</small><b>${escD(c.name)}</b>
+      ${c.services.length ? `<span class="sv">${c.services.map(sv => `<span title="${escD(SVC[en ? 'en' : 'fr'][sv] || sv)}" aria-label="${escD(SVC[en ? 'en' : 'fr'][sv] || sv)}">${SVI[sv] || '•'}</span>`).join('')}</span>` : ''}${pick}</label>`).join('') + auto;
+    if (html !== renderDomi.last) { $('#dgrid').innerHTML = html; renderDomi.last = html; }
   }
+  $('#dflt').addEventListener('click', e => { const b = e.target.closest('[data-dq]'); if (!b) return; domiQ = b.dataset.dq; renderDomi(); });
   fetch('/api/centres').then(r => (r.headers.get('content-type') || '').includes('application/json') ? r.json() : null).then(j => { if (j && j.centres) { CENTRES = j.centres; renderDomi(); } }).catch(() => {});
   ['input', 'change', 'blur'].forEach(ev => $('#ville').addEventListener(ev, () => renderDomi()));
   $('#villeList').addEventListener('click', () => setTimeout(renderDomi, 0));
