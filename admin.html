@@ -292,21 +292,21 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
 .sc{display:inline-flex;align-items:center;gap:4px;font-size:.6rem;font-weight:700;border-radius:999px;padding:1px 7px;white-space:nowrap}
 .sc::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
 .sc-ok{background:#e3f5ec;color:var(--ok)}.sc-mid{background:#fff4d6;color:#a06500}.sc-bad{background:#fdecea;color:var(--err)}
-.scb{border-width:1.5px}.scb.ok{border-color:#c5ead7}.scb.mid{border-color:#f5dc9c}.scb.bad{border-color:#f5c2bd}
-.scb .big{display:flex;align-items:center;gap:12px}
-.scb .big b{font-size:1.5rem;letter-spacing:-.03em;line-height:1}
-.scb .big b small{font-size:.75rem;color:var(--m);font-weight:600}
-.scb .bar{flex:1;height:8px;border-radius:99px;background:#f4eef1;overflow:hidden}
-.scb .bar i{display:block;height:100%;border-radius:99px}
-.scb.ok .bar i{background:var(--ok)}.scb.mid .bar i{background:#e0a100}.scb.bad .bar i{background:var(--err)}
-.sigs{display:flex;flex-wrap:wrap;gap:6px}
-.sig{font-size:.7rem;border-radius:8px;padding:4px 8px;background:#f2faf6;color:#145c3e}
-.sig.ko{background:#fff1f0;color:#9b2c22}
-.scb .ra{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.askc{background:#eafaf0;border-radius:12px;padding:10px 12px;display:grid;gap:6px}
-.askc b{font-size:.8rem}
-.askr{display:grid;gap:8px;border-top:1px solid #c9ead6;padding-top:10px;margin-top:4px}
-.askc .askr .b-wa{background:#fff;color:#14864a;border:1.5px solid #8fd5ab}.askc > span{font-size:.72rem;color:#3d5a49}
+.vd{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.vh{grid-column:1/-1;border-radius:18px;padding:16px 18px;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.vh .gr{width:56px;height:56px;border-radius:16px;color:#fff;display:grid;place-items:center;font-size:28px;font-weight:800;flex:none}
+.vh > div:nth-child(2){flex:1;min-width:200px}.vh h3{margin:0;font-size:1.05rem;letter-spacing:-.01em}.vh p{margin:3px 0 0;font-size:.8rem}
+.vh .lg2{display:flex;gap:5px;font-size:.68rem;font-weight:800;color:var(--m)}.vh .lg2 span{padding:4px 8px;border-radius:8px;background:#fff}
+.vd.ok .vh{background:linear-gradient(120deg,#e3f5ec,#f6fcf9);border:1px solid #c5ead7}.vd.ok .gr,.vd.ok .lg2 .on{background:var(--ok);color:#fff}.vd.ok .vh p{color:#145c3e}
+.vd.mid .vh{background:linear-gradient(120deg,#fff4d6,#fffaf0);border:1px solid #f6e2a9}.vd.mid .gr,.vd.mid .lg2 .on{background:#f0a020;color:#fff}.vd.mid .vh p{color:#7a5a12}
+.vd.bad .vh{background:linear-gradient(120deg,#fdecea,#fff8f7);border:1px solid #f5c2bd}.vd.bad .gr,.vd.bad .lg2 .on{background:var(--err);color:#fff}.vd.bad .vh p{color:#8a2a22}
+.vd .vc{background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px 14px}.vd .vc h4{margin:0 0 6px;font-size:.7rem;letter-spacing:.06em;text-transform:uppercase}
+.vd .vc div{padding:4px 0;font-size:.8rem}.vd .vc.g h4{color:var(--ok)}.vd .vc.r h4{color:var(--err)}.vd .vc.r div{color:#7d2a22}.vd .vc p{margin:0;font-size:.78rem;color:var(--m)}
+.vd .va{grid-column:1/-1;background:var(--plum,#30102f);color:#fff;border-radius:16px;padding:14px 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.vd .va b{font-size:.9rem}.vd .va .t{flex:1;min-width:180px;color:#e3cbdd;font-size:.76rem}
+.vd .va .btn{border:0}.vd .va .vg{background:#ffffff1c;color:#fff}.vd .va .vg:hover{background:#ffffff2e}.vd .va .b-wa{background:#25d366;color:#fff}
+.vd .va .mseg{border-color:#ffffff33}.vd .va .mseg button{color:#e3cbdd}.vd .va .mseg button.on{background:#fff;color:var(--plum,#30102f)}
+@media (max-width:640px){.vd{grid-template-columns:1fr}.vh .lg2{display:none}}
 .items{overflow:auto}
 .li{display:grid;grid-template-columns:36px 1fr auto;gap:10px;padding:12px 14px;border-bottom:1px solid var(--line);align-items:center;cursor:pointer;width:100%;background:none;border-inline:0;border-top:0;text-align:start}
 .li:hover{background:#fffaf7}
@@ -1018,7 +1018,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     const max = sig.reduce((t, x) => t + x.pts, 0), score = Math.round(sig.reduce((t, x) => t + (x.ok ? x.pts : 0), 0) / max * 100);
     const paid = payDone(r, 'avance'), fake = !r.waConfirmed && ([title(r), r.client?.nom].some(unreadable) || (r.secs != null && r.secs < 30));
     const level = paid ? 'ok' : fake ? 'bad' : score >= 75 ? 'ok' : score >= 50 ? 'mid' : 'bad';
-    return { score, level, sig, paid, text:paid ? 'Avance payée' : { ok:'Sérieux', mid:'À vérifier', bad:'Probablement faux' }[level] };
+    return { score, level, sig, paid, text:paid ? 'A · Payé' : { ok:'A · Sérieux', mid:'B · À vérifier', bad:'C · Douteux' }[level] };
   }
   const SC_RANK = { ok:0, mid:1, bad:2 };
   const scored = r => r.step === 0 && !r.archived && r.kind !== 'rappel';   // the score matters until the avance is paid and the work starts
@@ -1051,7 +1051,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     return `<button class="li ${r.ref === current ? 'on' : ''} ${extra}" data-ref="${esc(r.ref)}">
         <span class="av ${extra.includes('dup') ? 'stack' : ''}" style="--c:${j ? j.c : '#c9b6c4'}">${esc(title(r)[0] || '?')}</span>
         <div><b>${esc(title(r))}${r._tag || ''}</b><small><span class="mono">${esc(r.ref)}</span> · ${r.kind === 'rappel' ? 'Rappel' : esc(FORMES[r.forme] || '')}${isPrio(r) && r.step < DONE ? ' <em class="prio">⚡ Prioritaire</em>' : ''}</small><small class="${r.reject && r.step < DONE ? 'rej' : ''}">${esc(statusLine(r))}</small></div>
-        <div class="r"><span>${when(r.updatedAt)}</span>${!r.seen ? '<span class="dot" title="Non lue"></span>' : isLate(r) ? `<span class="pill p-late">J+${days(r.updatedAt)}</span>` : ''}${scored(r) ? (s => `<span class="sc sc-${s.level}" title="Score de sérieux : ${s.score}/100">${s.text === 'Probablement faux' ? 'Faux ?' : s.text}</span>`)(serieux(r)) : ''}</div>
+        <div class="r"><span>${when(r.updatedAt)}</span>${!r.seen ? '<span class="dot" title="Non lue"></span>' : isLate(r) ? `<span class="pill p-late">J+${days(r.updatedAt)}</span>` : ''}${scored(r) ? (s => `<span class="sc sc-${s.level}" title="Verdict : A sérieux · B à vérifier · C douteux">${s.text}</span>`)(serieux(r)) : ''}</div>
       </button>`;
   }
   function renderList(){
@@ -1168,19 +1168,29 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   const ficheText = r => `Demande ${r.ref} · reçue le ${new Date(r.createdAt).toLocaleString('fr-FR')}\n\n` + ficheData(r).map(blockText).join('\n\n');
   const copyText = (txt, ok) => navigator.clipboard?.writeText(txt).then(() => toast(ok), () => toast('Copie impossible'));
 
+  // Verdict on a new request: a letter (A sérieux, B à vérifier, C douteux), what is fine, what to check, then the team's decision.
   function scoreBox(r, canEdit){
-    const s = serieux(r), ko = s.sig.filter(x => !x.ok), ok = s.sig.filter(x => x.ok), lang = r.msgLang || 'fr';
-    const ask = !r.waConfirmed && s.score < 100 && s.sig[0].ok && s.sig[1].ok;   // valid phone and e-mail: worth asking
-    // The answer: confirmed, or fake. Inside the "ask" box when there is one, so asking and answering stay together.
-    const actions = `${canEdit || !r.juriste ? `<div class="ra"><button class="btn ${r.waConfirmed ? 'b-soft' : 'b-wa'} b-sm" id="waConf">${r.waConfirmed ? '✓ Confirmé sur WhatsApp · annuler' : 'Message de confirmation reçu sur WhatsApp'}</button>${s.paid ? '' : '<button class="btn b-soft b-sm" id="markFake">Faux client · archiver</button>'}</div>` : ''}
-      ${r.waConfirmed ? '' : '<p class="hint" style="margin:0">Le client a reçu un bouton « Confirmer sur WhatsApp » après l\'envoi. Quand sa réponse arrive, cliquez sur « Message de confirmation reçu ».</p>'}`;
-    return `<div class="box scb ${s.level}"><h4>Score de sérieux <span class="sc sc-${s.level}">${s.text}</span></h4>
-      <div class="big"><b>${s.score}<small> /100</small></b><span class="bar"><i style="width:${s.score}%"></i></span></div>
-      <div class="sigs">${[...ko, ...ok].map(x => `<span class="sig ${x.ok ? '' : 'ko'}">${x.ok ? '✓' : '✗'} ${esc(x.label)}</span>`).join('')}</div>
-      ${ask ? `<div class="askc"><b>Demander la confirmation au client</b><span>Coordonnées valides : un message poli pour qu'il confirme sa demande.${(r.sent || {}).confirmer ? ` Envoyé ${when(r.sent.confirmer)}.` : ''}</span>
-        <div class="ra"><a class="btn b-wa b-sm" data-wasend="confirmer" href="${waLink(r.client?.tel, msgText(r, 'confirmer', lang))}" target="_blank" rel="noopener">${(r.sent || {}).confirmer ? 'Relancer sur WhatsApp' : 'Demander sur WhatsApp'}</a><button class="btn b-soft b-sm" id="confMail">Copier l'e-mail</button>
-        <span class="mseg" role="group" aria-label="Langue"><button data-ml="fr" class="${lang === 'fr' ? 'on' : ''}">FR</button><button data-ml="ar" class="${lang === 'ar' ? 'on' : ''}">الدارجة</button></span></div>
-        <div class="askr">${actions}</div></div>` : actions}</div>`;
+    const s = serieux(r), ko = s.sig.filter(x => !x.ok), ok = s.sig.filter(x => x.ok), lang = r.msgLang || 'fr', sent = (r.sent || {}).confirmer;
+    const ask = !r.waConfirmed && ko.length && s.sig[0].ok && s.sig[1].ok;   // valid phone and e-mail: worth asking
+    const letter = { ok:'A', mid:'B', bad:'C' }[s.level];
+    const head = s.paid ? ['Avance payée', 'Le client a payé : il est engagé, vous pouvez lancer.']
+      : { ok:['Sérieux : vous pouvez lancer', r.waConfirmed ? 'Coordonnées correctes et demande confirmée par le client.' : 'Le formulaire est complet et les coordonnées sont correctes.'],
+          mid:['À vérifier avant de lancer', 'Coordonnées correctes, mais quelques points du formulaire sont à vérifier.'],
+          bad:['Douteux : probablement un faux client', s.sig[0].ok ? 'Plusieurs points ne collent pas. Demandez une confirmation avant d\'y passer du temps.' : 'Le téléphone n\'est pas valide : impossible de joindre ce client.'] }[s.level];
+    const line = x => `<div>${x.ok ? '✓' : '✗'} ${esc(x.label)}</div>`;
+    const decide = canEdit || !r.juriste;
+    const t = r.waConfirmed ? 'Le client a confirmé sa demande sur WhatsApp.'
+      : ask ? `Le client reçoit un message poli pour confirmer sa demande.${sent ? ` Envoyé ${when(sent)}.` : ''}`
+      : 'Quand le client répond « je confirme » sur WhatsApp, cliquez sur « Confirmé ».';
+    return `<div class="vd ${s.level}">
+      <div class="vh"><div class="gr">${letter}</div><div><h3>${head[0]}</h3><p>${head[1]}</p></div><div class="lg2" title="A sérieux · B à vérifier · C douteux">${['A', 'B', 'C'].map(x => `<span class="${x === letter ? 'on' : ''}">${x}</span>`).join('')}</div></div>
+      <div class="vc g"><h4>✓ Ce qui va</h4>${ok.length ? ok.map(line).join('') : '<p>Rien pour l\'instant.</p>'}</div>
+      <div class="vc r"><h4>! À vérifier</h4>${ko.length ? ko.map(line).join('') : '<p>Rien à vérifier.</p>'}</div>
+      ${decide ? `<div class="va"><b>Votre décision</b><span class="t">${t}</span>
+        ${ask ? `<a class="btn b-wa b-sm" data-wasend="confirmer" href="${waLink(r.client?.tel, msgText(r, 'confirmer', lang))}" target="_blank" rel="noopener">${sent ? 'Relancer sur WhatsApp' : 'Demander sur WhatsApp'}</a><button class="btn vg b-sm" id="confMail">Copier l'e-mail</button>
+        <span class="mseg" role="group" aria-label="Langue"><button data-ml="fr" class="${lang === 'fr' ? 'on' : ''}">FR</button><button data-ml="ar" class="${lang === 'ar' ? 'on' : ''}">الدارجة</button></span>` : ''}
+        <button class="btn vg b-sm" id="waConf">${r.waConfirmed ? '✓ Confirmé · annuler' : '✓ Confirmé'}</button>${s.paid ? '' : '<button class="btn vg b-sm" id="markFake">Faux client</button>'}</div>` : ''}
+    </div>`;
   }
   // Call-back request from the homepage form: no creation file yet, the team calls the person back.
   function rappelView(r, canEdit){
