@@ -331,6 +331,18 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
 .k1 .tk.half .cb{border-color:#f0a020;background:#fff4d6}
 .k1 .slide.later .tk{opacity:.55}
 .k1 .tk .amt{font-size:.78rem;color:var(--m);white-space:nowrap}
+.cnf{width:min(640px,100%)}.cnf .hint{margin:-8px 0 0;color:var(--m);font-size:.84rem}
+.cnn{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.cnf .cnnm{display:flex;flex-direction:row;gap:10px;align-items:center;position:relative;border:1.5px solid var(--line);border-radius:14px;padding:11px 12px;cursor:pointer}
+.cnnm input{position:absolute;opacity:0}.cnnm i{width:18px;height:18px;border-radius:50%;border:2px solid #d9c8d2;flex:none}
+.cnnm b{display:block;font-size:.88rem}.cnnm small{color:var(--m);font-size:.72rem}
+.cnnm:has(input:checked){border-color:var(--ok);background:#f2faf6}.cnnm:has(input:checked) i{border:6px solid var(--ok)}.cnnm:has(input:focus-visible){outline:2px solid var(--pink)}
+.cng{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:10px;align-items:start}
+.cnl{display:grid;gap:5px;white-space:nowrap;font-size:.66rem;font-weight:800;color:var(--m);text-transform:uppercase;letter-spacing:.05em}
+.cnl input{font:600 .88rem var(--font);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px;text-transform:none;letter-spacing:0;min-width:0}
+.cnl em{font-style:normal;text-transform:none;letter-spacing:0;font-weight:600;color:var(--m);font-size:.7rem;min-height:1em}.cnl em.ok{color:var(--ok)}
+.cnerr{margin:0;color:var(--err);font-weight:700;font-size:.82rem}
+@media (max-width:640px){.cng{grid-template-columns:1fr 1fr}}
 .k1 .cnx{display:flex;gap:8px;align-items:center;margin-top:6px;color:var(--ink);font-weight:600}.k1 .cnx input{font:inherit;font-size:.78rem;border:1px solid var(--line);border-radius:8px;padding:4px 8px}
 .k1 .tmore{margin:-4px 0 12px}
 .k1 .foot{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.k1 .foot .big{padding:12px 20px;border-radius:14px;font-size:.9rem}
@@ -888,7 +900,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   }
 
   // ---------- Helpers ----------
-  const title = r => r.noms?.[0] || r.client?.nom || r.ref;
+  const title = r => r.cn?.nom || r.noms?.[0] || r.client?.nom || r.ref;      // the name accepted by OMPIC once known
   const days = iso => Math.floor((Date.now() - Date.parse(iso)) / DAY);
   const isLate = r => r.step < DONE && days(r.updatedAt) >= 2;
   function when(iso){
@@ -1232,14 +1244,14 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
       formule:['Formule', [PLANS[r.plan] || r.plan, r.total == null ? 'sur devis' : fmt(r.total) + ' MAD'].filter(Boolean).join(' · ')],
       paiement:['Paiement', [r.payAmount === 'full' ? 'Totalité' : 'Avance 700 MAD', PAY[r.payMethod] || r.payMethod].filter(Boolean).join(' · ')],
       moyen:['Moyen de paiement', PAY[r.payMethod] || r.payMethod], ville:['Ville', r.ville],
-      denom:['Dénomination', noms[0] ? `${noms[0]} ${FORMES[r.forme] || ''}`.trim() : ''], forme:['Forme', FORMES[r.forme] || r.forme],
+      denom:['Dénomination', title(r) && (r.cn || noms[0]) ? `${r.cn?.nom || noms[0]} ${FORMES[r.forme] || ''}`.trim() : ''], forme:['Forme', FORMES[r.forme] || r.forme],
       capital:['Capital', r.capital != null ? fmt(r.capital) + ' MAD' : ''], activite:['Activité', r.activite], siege:['Siège', siege],
       gerant:['Gérant', g.name ? g.name + (g.cin ? ' · ' + g.cin : '') : ''], demandeur:['Demandeur', demandeur + (cinOf(demandeur) ? ' · ' + cinOf(demandeur) : '')],
       centre:dm ? ['Centre', dm.centreName] : null,
     };
     const assoc = ps.map((p, n) => [ps.length > 1 ? `Associé ${n + 1}` : 'Associé unique', [p.name, p.cin, p.pct != null ? p.pct + '\u00a0%' : ''].filter(Boolean).join(' · ')]);
     const pick = (...ks) => ks.map(k => F[k]).filter(Boolean);
-    const cnv = r.cnExp ? [['Certificat négatif', "valable jusqu'au " + new Date(r.cnExp).toLocaleDateString('fr-FR')]] : [];
+    const cnv = [...(r.cn ? [['ICE', r.cn.ice], ['N° certificat négatif', r.cn.num]] : []), ...(r.cnExp ? [['Certificat négatif', "valable jusqu'au " + new Date(r.cnExp).toLocaleDateString('fr-FR')]] : [])];
     const S = [
       { sub:"Pour vérifier le client et encaisser l'avance", rows:pick('client', 'tel', 'formule', 'paiement', 'ville') },
       { sub:"À saisir sur le site de l'OMPIC", rows:[...noms.map((n, k) => [`Nom ${k + 1}`, n]), ...pick('activite', 'forme', 'demandeur')] },
@@ -1252,6 +1264,27 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
       { sub:'Pour livrer les documents', rows:pick('client', 'tel', 'email', 'denom') },
     ];
     return S[Math.min(i, S.length - 1)];
+  }
+  // « Certificat négatif obtenu »: the name OMPIC accepted (one of the proposed names), ICE, certificate number and dates
+  const isoDay = d => new Date(d.getTime() - d.getTimezoneOffset() * 6e4).toISOString().slice(0, 10);
+  const plus3m = iso => { const d = new Date(iso + 'T12:00:00'); d.setMonth(d.getMonth() + 3); return isoDay(d); };
+  function cnWindow(r){
+    const c = r.cn || {}, noms = (r.noms || []).filter(Boolean), date = c.date || isoDay(new Date()), exp = r.cnExp || plus3m(date);
+    const pick = c.nom || (noms.length === 1 ? noms[0] : '');
+    return `<div class="modal" id="cnModal"><form class="mbox cnf" id="cnForm" role="dialog" aria-modal="true" aria-label="Certificat négatif obtenu" novalidate>
+      <h3>🎉 Certificat négatif obtenu <button type="button" class="btn b-soft b-sm" id="cnClose" aria-label="Fermer">✕</button></h3>
+      <p class="hint">Choisissez le nom accepté par l'OMPIC, puis les informations du certificat.</p>
+      ${noms.length ? `<div class="cnn">${noms.map((n, i) => `<label class="cnnm"><input type="radio" name="cnNom" value="${esc(n)}" ${n === pick ? 'checked' : ''}><i></i><span><b>${esc(n)}</b><small>Nom ${i + 1}</small></span></label>`).join('')}</div>`
+        : `<label class="cnl">Nom accepté<input id="cnNomTxt" value="${esc(pick)}" autocomplete="off"></label>`}
+      <div class="cng">
+        <label class="cnl">ICE<input id="cnIce" inputmode="numeric" maxlength="15" placeholder="15 chiffres" value="${esc(c.ice || '')}" autocomplete="off"><em id="cnIceOk"></em></label>
+        <label class="cnl">N° du certificat<input id="cnNum" value="${esc(c.num || '')}" autocomplete="off"></label>
+        <label class="cnl">Obtenu le<input type="date" id="cnDate" value="${esc(date)}"></label>
+        <label class="cnl">Valable jusqu'au<input type="date" id="cnExpIn" value="${esc(exp)}" data-auto="${r.cnExp ? '' : '1'}"><em>${r.cnExp ? '' : 'calculé : +3 mois'}</em></label>
+      </div>
+      <p class="cnerr" id="cnErr" hidden></p>
+      <button class="btn b-grad big">${r.cn ? 'Enregistrer' : 'Enregistrer et passer à la rédaction →'}</button>
+    </form></div>`;
   }
   // Call-back request from the homepage form: no creation file yet, the team calls the person back.
   function rappelView(r, canEdit){
@@ -1274,7 +1307,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   }
   function renderDetail(){
     const r = current && get(current);
-    if (current !== renderDetail.last) { rejectOpen = false; msgMore = false; qFocus = null; moreOpen = null; msgSel = null; view = null; renderDetail.last = current; }
+    if (current !== renderDetail.last) { rejectOpen = false; msgMore = false; qFocus = null; moreOpen = null; msgSel = null; view = null; cnOpen = false; renderDetail.last = current; }
     if (!r || !allowed(r)) {
       $('#detail').innerHTML = '<div class="ctr"><div class="blank"><b>Sélectionnez un dossier</b><span>La liste des demandes est à gauche.</span></div></div>';
       return;
@@ -1333,6 +1366,10 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
       let sub = tk.t === 'doc' ? DOC_ST[r.livrables[tk.k] || 0] : '', amt = '', right = '', qa = done ? (tk.t === 'doc' ? 'cours' : 'no') : 'ok', lock = !ed;
       if (tk.t === 'pay') { amt = r.paid.full ? 'Payé à la commande' : a && a.v != null ? fmt(a.v) + ' MAD · ' + (PAY[r.payMethod] || '') : 'Sur devis'; if (r.paid.full) lock = true; if (ed && !done) right = `<button class="btn b-soft b-sm" data-qa="${tk.k}:ok">Encaisser</button>`; }
       if (tk.t === 'doc' && ed && !done) right = `<button class="btn b-soft b-sm" data-qa="${tk.k}:${half ? 'ok' : 'cours'}">${half ? '✓ Obtenu' : 'En cours'}</button>`;
+      if (tk.k === 'cn') {                              // obtained: the accepted name, ICE, number and dates go through a window
+        if (ed && !done) right = `${half ? '' : `<button class="btn b-soft b-sm" data-qa="cn:cours">En cours</button>`}<button class="btn b-grad b-sm" data-cnopen>✓ Obtenu</button>`;
+        if (r.cn && done) { sub = `${r.cn.nom} · ICE ${r.cn.ice} · N° ${r.cn.num} · obtenu le ${new Date(r.cn.date).toLocaleDateString('fr-FR')}`; if (canEdit) right = '<button class="btn b-soft b-sm" data-cnopen>Modifier</button>'; }
+      }
       if (tk.t === 'conf') {
         const sentC = (r.sent || {}).confirmer; lock = !(isNow && (canEdit || !r.juriste));
         if (!done && sentC) sub = 'Demande envoyée ' + when(sentC);
@@ -1348,9 +1385,8 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
         else { const d = DOMI[r.ref]; sub = d ? (d.centreName || 'Centre attribué') + (d.centreAddress ? ' · ' + d.centreAddress : '') : 'Aucun centre pour l\'instant';
           if (SERVER) { lock = true; if (isNow && !d) right = '<button class="btn b-soft b-sm" data-more="centre">Choisir le centre</button>'; } }
       }
-      if (tk.k === 'cn' && vi === 1) sub += `<label class="cnx">Valable jusqu'au <input type="date" id="cnExp" value="${esc(r.cnExp || '')}" ${canEdit ? '' : 'disabled'}></label>`;
       const help = isNow && dAddr && vi <= domStep && ['statuts', 'domiciliation'].includes(tk.k) ? `<small>📍 ${esc(dAddr)}</small>` : '';
-      rows.push(`<div class="tk ${done ? 'dn' : half ? 'half' : ''}"><button class="cb" ${lock ? 'disabled' : `data-qa="${tk.k}:${qa}"`} aria-label="${esc(taskLabel(r, tk))}">${done ? '✓' : ''}</button><span>${esc(taskLabel(r, tk))}${tk.opt ? ' <em class="optb">Option</em>' : ''}${tk.cond === bigCapital ? ' <em class="optb">Capital > 100 000 MAD</em>' : ''}${sub ? `<small>${tk.k === 'cn' ? sub.replace(/^[^<]*/, m => esc(m)) : esc(sub)}</small>` : ''}${help}</span>${amt ? `<span class="amt">${esc(amt)}</span>` : ''}${right}</div>`);
+      rows.push(`<div class="tk ${done ? 'dn' : half ? 'half' : ''}"><button class="cb" ${lock ? 'disabled' : tk.k === 'cn' && !done ? 'data-cnopen' : `data-qa="${tk.k}:${qa}"`} aria-label="${esc(taskLabel(r, tk))}">${done ? '✓' : ''}</button><span>${esc(taskLabel(r, tk))}${tk.opt ? ' <em class="optb">Option</em>' : ''}${tk.cond === bigCapital ? ' <em class="optb">Capital > 100 000 MAD</em>' : ''}${sub ? `<small>${esc(sub)}</small>` : ''}${help}</span>${amt ? `<span class="amt">${esc(amt)}</span>` : ''}${right}</div>`);
     });
     // The negative certificate expires: warn on the steps that still need it
     const cnLeft = r.cnExp ? Math.ceil((Date.parse(r.cnExp + 'T23:59:59') - Date.now()) / DAY) : null;
@@ -1405,7 +1441,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
           <div class="foot">${foot}</div>${lks ? `<div class="lks">${lks}</div>` : ''}</div>
         <div class="fz"><h4>Fiche de l'étape <button class="btn b-soft b-sm" data-cps="${esc(fzText)}">⧉ Tout copier</button></h4><small>${esc(fz.sub)}</small>
           <div>${fz.rows.map(([k, v]) => `<div class="fr"><span>${esc(k)}</span>${v ? `<b>${esc(v)}</b><button class="cp" data-cp="${esc(v)}" title="Copier" aria-label="Copier ${esc(k)}">⧉</button>` : '<b class="na">Non renseigné</b>'}</div>`).join('')}</div></div>
-      </div>${panelHtml}</div></div>`;
+      </div>${panelHtml}</div></div>${cnOpen && canEdit ? cnWindow(r) : ''}`;
     $('#detail').innerHTML = `
     <section class="ctr">
       <div class="h">
@@ -1482,10 +1518,13 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   }
 
   // Actions on the open file (event delegation)
-  let rejectOpen = false, msgMore = false, qFocus = null, moreOpen = null, view = null;   // view: the step shown in the carousel (null: the current one)
+  let rejectOpen = false, msgMore = false, qFocus = null, moreOpen = null, view = null, cnOpen = false;   // cnOpen: the « certificat obtenu » window   // view: the step shown in the carousel (null: the current one)
   const qSkip = {};                                    // questions passed with « En cours » / « Pas encore », per file and step
   $('#detail').addEventListener('click', e => {
     const r = current && get(current); if (!r) return;
+    if (e.target.closest('[data-cnopen]')) { cnOpen = true; renderDetail(); setTimeout(() => $('#cnIce')?.focus(), 0); return; }
+    if (e.target.id === 'cnModal' || e.target.closest('#cnClose')) { cnOpen = false; renderDetail(); return; }
+    if (e.target.closest('#cnForm')) { if (!e.target.closest('button')) return; }
     const vw = e.target.closest('[data-view]');
     if (vw && !vw.disabled) { const i = +vw.dataset.view; view = i === r.step ? null : Math.max(0, Math.min(DONE - 1, i)); renderDetail(); return; }
     const mo = e.target.closest('[data-more]');
@@ -1596,7 +1635,26 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     if (swX == null) return; const dx = e.changedTouches[0].clientX - swX; swX = null;
     if (Math.abs(dx) < 60) return; const cur = $('.k1 .tls button[aria-current]'), b = cur && (dx < 0 ? cur.nextElementSibling : cur.previousElementSibling); if (b) b.click();
   });
+  $('#detail').addEventListener('input', e => {
+    if (e.target.closest('#cnForm') && $('#cnErr')) $('#cnErr').hidden = true;
+    if (e.target.id === 'cnIce') { e.target.value = e.target.value.replace(/\D/g, '').slice(0, 15); const n = e.target.value.length; $('#cnIceOk').textContent = n === 15 ? '✓ 15 chiffres' : n ? `${n} / 15 chiffres` : ''; $('#cnIceOk').className = n === 15 ? 'ok' : ''; }
+    if (e.target.id === 'cnExpIn') e.target.dataset.auto = '';
+    if (e.target.id === 'cnDate' && e.target.value && $('#cnExpIn').dataset.auto) $('#cnExpIn').value = plus3m(e.target.value);
+  });
   $('#detail').addEventListener('toggle', e => { if (e.target.classList?.contains('tmore')) msgMore = e.target.open; }, true);
+  $('#detail').addEventListener('submit', e => {
+    if (e.target.id !== 'cnForm') return;
+    e.preventDefault();
+    const r = get(current); if (!r) return;
+    const nom = ($('#cnForm input[name="cnNom"]:checked')?.value || $('#cnNomTxt')?.value || '').trim();
+    const ice = $('#cnIce').value.trim(), num = $('#cnNum').value.trim(), date = $('#cnDate').value, exp = $('#cnExpIn').value;
+    const err = !nom ? 'Choisissez le nom accepté par l\'OMPIC.' : !/^\d{15}$/.test(ice) ? "L'ICE doit avoir 15 chiffres." : !num ? 'Indiquez le numéro du certificat.' : !date ? "Indiquez la date d'obtention." : '';
+    if (err) { const p = $('#cnErr'); p.textContent = err; p.hidden = false; return; }
+    const first = !r.cn;
+    r.cn = { nom, ice, num, date }; r.cnExp = exp || null; r.livrables.cn = 2; r.checks['cn-depot'] = true; cnOpen = false;
+    log(r, `Certificat négatif ${first ? 'obtenu' : 'modifié'} : ${nom} · ICE ${ice} · N° ${num} · le ${new Date(date).toLocaleDateString('fr-FR')}${exp ? ` · valable jusqu'au ${new Date(exp).toLocaleDateString('fr-FR')}` : ''}.`);
+    advance(r); view = null; renderList(); renderDetail(); toast(first ? 'Certificat enregistré ✓' : 'Certificat modifié');
+  });
   $('#detail').addEventListener('submit', e => {
     if (e.target.id !== 'rejForm') return;
     e.preventDefault();

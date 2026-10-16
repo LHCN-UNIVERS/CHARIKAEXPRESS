@@ -32,7 +32,7 @@ export async function track(request, env){
     if (r.juriste) { const t = await env.DB.prepare('SELECT name FROM team WHERE id = ?').bind(r.juriste).first(); if (t) juriste = firstName(t.name); }
 
     return json({
-      ref, societe: (r.noms || [])[0] || '', forme: r.forme, plan: r.plan, createdAt: r.createdAt,
+      ref, societe: r.cn?.nom || (r.noms || [])[0] || '', forme: r.forme, plan: r.plan, createdAt: r.createdAt,
       step: stepOf(r), archived: !!r.archived, reject: !!r.reject, juriste,
       total: r.total ?? null, payAmount: r.payAmount, paid: r.paid || {}, remise: r.remise || 0
     });
