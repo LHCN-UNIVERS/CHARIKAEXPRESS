@@ -154,15 +154,11 @@ footer a{color:var(--m)}
 </style>
 </head>
 <body>
-<header><div class="wrap bar">
-  <a class="logo" href="index.html"><i></i><span>Charika <b>Express</b></span></a>
-  <span class="tag">Espace centre</span>
-  <div class="r"><div class="lng" role="group" aria-label="Langue"><button type="button" data-lang="fr" aria-pressed="true">FR</button><button type="button" data-lang="en" aria-pressed="false">EN</button></div><span id="who"></span><button class="out" id="out" type="button" hidden>Déconnexion</button></div>
-</div></header>
+<template id="nav-extra"><span id="who"></span><button class="out" id="out" type="button" hidden>Déconnexion</button></template>
+<script src="nav.js"></script>
 
 <main class="wrap">
   <section class="card login" id="loginView" hidden>
-    <div class="lhead"><a class="logo" href="index.html"><i></i><span>Charika <b>Express</b></span></a><div class="lng" role="group" aria-label="Langue"><button type="button" data-lang="fr" aria-pressed="true">FR</button><button type="button" data-lang="en" aria-pressed="false">EN</button></div></div>
     <h1>Espace centre</h1>
     <p class="muted">Connectez-vous avec l'e-mail et le mot de passe de votre centre.</p>
     <form id="lf" novalidate>
@@ -175,7 +171,6 @@ footer a{color:var(--m)}
   </section>
 
   <section class="card login" id="pwView" hidden>
-    <div class="lhead"><a class="logo" href="index.html"><i></i><span>Charika <b>Express</b></span></a><div class="lng" role="group" aria-label="Langue"><button type="button" data-lang="fr" aria-pressed="true">FR</button><button type="button" data-lang="en" aria-pressed="false">EN</button></div></div>
     <h1>Choisissez votre mot de passe</h1>
     <p class="muted">Vous vous êtes connecté avec un mot de passe temporaire. Choisissez-en un nouveau (10 caractères minimum).</p>
     <form id="pf" novalidate>

@@ -125,14 +125,8 @@ footer a{color:var(--m)}
 </style>
 </head>
 <body>
-<header>
-  <div class="wrap bar">
-    <a class="logo" href="index.html"><i></i><span>Charika <b>Express</b></span></a>
-    <span class="sp"></span>
-    <button class="out" id="out" type="button" hidden><span data-t="out1">Changer</span><span class="long" data-t="out2"> de dossier</span></button>
-    <div class="lang" role="group" aria-label="Langue"><button type="button" data-lang="fr" aria-pressed="true">FR</button><button type="button" data-lang="en" aria-pressed="false">EN</button></div>
-  </div>
-</header>
+<template id="nav-extra"><button class="out" id="out" type="button" hidden><span data-t="out1">Changer</span><span class="long" data-t="out2"> de dossier</span></button></template>
+<script src="nav.js" data-on="dossier"></script>
 
 <main class="wrap">
   <!-- Signed out -->
