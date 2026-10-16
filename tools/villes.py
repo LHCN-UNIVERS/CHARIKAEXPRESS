@@ -22,6 +22,10 @@ CITIES = [
     ('oujda', 'Oujda', "L'Oriental", "Capitale de l'Oriental, Oujda est un pôle de commerce, d'enseignement et de services pour toute la région."),
 ]
 
+# Guides linked from every city page (pages written by tools/guides.py)
+GUIDE_LINKS = [('cout-creation-societe-maroc', 'Combien coûte une société ?'), ('sarl-ou-sarl-au', 'SARL ou SARL AU ?'), ('documents-creation-sarl', 'Documents à fournir'),
+               ('certificat-negatif-ompic', 'Certificat négatif OMPIC'), ('domiciliation-entreprise-maroc', 'La domiciliation')]
+
 PACKS = [('Pack Essentiel', '4 680', '12 mois de domiciliation'), ('Pack Pro', '5 980', '24 mois de domiciliation + cachet'), ('Pack Premium', '9 980', '24 mois de domiciliation + cachet + protection de la marque')]
 
 def faq(c):
@@ -159,6 +163,12 @@ def page(c):
     <h2>Questions fréquentes à {e(name)}</h2>
     <p class="sub">Vous ne trouvez pas votre réponse ? Écrivez-nous sur WhatsApp.</p>
     {''.join(f'<details><summary>{e(a)}</summary><p>{e(b)}</p></details>' for a, b in q)}
+  </div></section>
+
+  <section class="blk"><div class="wrap">
+    <h2>Nos guides pour bien démarrer</h2>
+    <p class="sub">Les réponses aux questions que tout le monde se pose avant de créer sa société.</p>
+    <div class="others">{''.join(f'<a href="guide-{s}">{e(t)}</a>' for s, t in GUIDE_LINKS)}<a href="guides">Tous les guides →</a></div>
   </div></section>
 
   <section class="blk"><div class="wrap">
