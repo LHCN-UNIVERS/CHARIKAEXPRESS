@@ -3,8 +3,10 @@
 // Page-specific controls (sign-out button, account name…) go in a <template id="nav-extra"> placed just before the
 // script: they are moved into the navbar, so the page's own code still finds them by id.
 // The FR / EN buttons carry data-lang, so each page's own translation code drives them; the navbar follows <html lang>.
+// Private spaces (partner, centre): data-space="Espace partenaire" data-space-en="Partner space" shows the page name in a
+// badge after the logo instead of the site links, the call to action and the menu.
 (function(){
-  const me = document.currentScript, on = me.dataset.on || '';
+  const me = document.currentScript, on = me.dataset.on || '', space = me.dataset.space || '', spaceEn = me.dataset.spaceEn || space;
   const L = {
     fr:{ services:'Nos services', tarifs:'Tarifs', faq:'FAQ', about:'À propos', contact:'Contact', dossier:'Mon dossier', cta:'Créer ma société', open:'Ouvrir le menu', close:'Fermer le menu', home:'Charika Express, accueil' },
     en:{ services:'Our services', tarifs:'Pricing', faq:'FAQ', about:'About', contact:'Contact', dossier:'My file', cta:'Start my company', open:'Open the menu', close:'Close the menu', home:'Charika Express, home' }
@@ -34,6 +36,8 @@
 .cxn .cxg button{border:0;background:none;color:#e8d6e3;font:700 .78rem "Sora",system-ui,sans-serif;padding:6px 11px;border-radius:999px;cursor:pointer;margin:0}
 .cxn .cxg button[aria-pressed="true"]{background:#fff;color:#30102f}
 .cxn .cxc{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 18px;border-radius:999px;font-weight:700;font-size:.85rem;color:#fff;background:linear-gradient(90deg,#ff795b,#ff4f91);box-shadow:0 10px 24px -12px #ff4f91;white-space:nowrap}
+.cxn .cxs{background:linear-gradient(90deg,#ff795b,#ff4f91);color:#fff;border-radius:999px;padding:7px 14px;font-weight:800;font-size:.8rem;white-space:nowrap}
+.cxn.sp .cxx{margin-inline-start:auto}
 .cxn .cxb{display:none;width:44px;height:44px;border-radius:12px;border:0;background:rgba(255,255,255,.1);color:#fff;cursor:pointer;place-items:center;flex:none;padding:0;margin:0}
 .cxn .cxm{margin-top:8px;background:#30102f;border-radius:18px;padding:10px;display:grid;gap:2px}
 .cxn .cxm[hidden]{display:none}
@@ -43,23 +47,24 @@
 @media (max-width:1300px){.cxn.hx .cxk{display:none}.cxn.hx .cxb{display:grid}.cxn.hx nav .cxc{display:none}.cxn.hx .cxx{margin-inline-start:auto}}
 @media (max-width:1060px){.cxn .cxk{display:none}.cxn .cxb{display:grid}.cxn nav .cxc{display:none}.cxn .cxg{margin-inline-start:auto}.cxn nav{justify-content:space-between}}
 @media (max-width:640px){.cxn .cxx > span,.cxn .cxx .long{display:none}}
+@media (max-width:480px){.cxn.sp .cxs{padding:6px 10px;font-size:.72rem}.cxn.sp .cxl span{display:none}}
 @media (max-width:420px){.cxn .cxx > a,.cxn .cxx > button{padding:6px 10px;font-size:.72rem}.cxn nav{gap:8px;padding-inline-start:14px}.cxn .cxl{font-size:1rem;gap:8px}.cxn .cxl i{width:24px;height:24px}.cxn .cxg button{padding:6px 9px}}
 @media print{.cxn{display:none}}`;
   me.insertAdjacentHTML('beforebegin', `<style>${css}</style>
-<div class="cxn" role="banner"><div class="cxw">
+<div class="cxn${space ? ' sp' : ''}" role="banner"><div class="cxw">
   <nav aria-label="Navigation principale">
     <a class="cxl" href="index.html" data-nk="home" aria-label="${L.fr.home}"><i></i><span>Charika <b>Express</b></span></a>
-    <div class="cxk">${links.map(([k, h]) => a(k, h)).join('')}</div>
+    ${space ? `<span class="cxs" data-space>${space}</span>` : `<div class="cxk">${links.map(([k, h]) => a(k, h)).join('')}</div>`}
     <div class="cxx" id="cxExtra"></div>
     <div class="cxg" role="group" aria-label="Langue"><button type="button" data-lang="fr" aria-pressed="true">FR</button><button type="button" data-lang="en" aria-pressed="false">EN</button></div>
-    <a class="cxc" href="demande.html" data-nk="cta">${L.fr.cta} <span aria-hidden="true">→</span></a>
-    <button class="cxb" id="cxBurger" type="button" aria-expanded="false" aria-controls="cxMenu" aria-label="${L.fr.open}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    ${space ? '' : `<a class="cxc" href="demande.html" data-nk="cta">${L.fr.cta} <span aria-hidden="true">→</span></a>
+    <button class="cxb" id="cxBurger" type="button" aria-expanded="false" aria-controls="cxMenu" aria-label="${L.fr.open}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>`}
   </nav>
-  <div class="cxm" id="cxMenu" hidden>${links.map(([k, h]) => a(k, h)).join('')}<a class="cxc" href="demande.html" data-nk="cta">${L.fr.cta} <span aria-hidden="true">→</span></a></div>
+  ${space ? '' : `<div class="cxm" id="cxMenu" hidden>${links.map(([k, h]) => a(k, h)).join('')}<a class="cxc" href="demande.html" data-nk="cta">${L.fr.cta} <span aria-hidden="true">→</span></a></div>`}
 </div></div>`);
   const root = me.previousElementSibling, burger = root.querySelector('#cxBurger'), menu = root.querySelector('#cxMenu');
   const extra = document.getElementById('nav-extra');
-  if (extra && extra.content) { root.querySelector('#cxExtra').appendChild(extra.content.cloneNode(true)); root.classList.add('hx'); }
+  if (extra && extra.content) { root.querySelector('#cxExtra').appendChild(extra.content.cloneNode(true)); if (!space) root.classList.add('hx'); }
   const lang = () => document.documentElement.lang === 'en' ? 'en' : 'fr';
   function paint(){
     const t = L[lang()];
@@ -69,10 +74,13 @@
       else if (k === 'cta') el.firstChild.textContent = t.cta + ' ';
       else el.textContent = t[k];
     });
-    burger.setAttribute('aria-label', menu.hidden ? t.open : t.close);
+    const sp = root.querySelector('[data-space]'); if (sp) sp.textContent = lang() === 'en' ? spaceEn : space;
+    if (burger) burger.setAttribute('aria-label', menu.hidden ? t.open : t.close);
   }
-  burger.addEventListener('click', () => { menu.hidden = !menu.hidden; burger.setAttribute('aria-expanded', !menu.hidden); paint(); });
-  menu.addEventListener('click', e => { if (e.target.closest('a')) { menu.hidden = true; burger.setAttribute('aria-expanded', 'false'); } });
+  if (burger) {
+    burger.addEventListener('click', () => { menu.hidden = !menu.hidden; burger.setAttribute('aria-expanded', !menu.hidden); paint(); });
+    menu.addEventListener('click', e => { if (e.target.closest('a')) { menu.hidden = true; burger.setAttribute('aria-expanded', 'false'); } });
+  }
   new MutationObserver(paint).observe(document.documentElement, { attributes:true, attributeFilter:['lang'] });
   try { if (localStorage.getItem('ce-lang') === 'en') document.querySelectorAll('.cxg [data-lang]').forEach(b => b.setAttribute('aria-pressed', b.dataset.lang === 'en')); } catch(e) {}
   paint();
