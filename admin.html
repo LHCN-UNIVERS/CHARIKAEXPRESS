@@ -363,32 +363,31 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
 .li small.rej{color:var(--err);font-weight:600}
 .two{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
 .two > *,.box,.lgrp,.lv{min-width:0}
-/* The current step as questions, one at a time: each answer brings the next question, the last one opens the next step */
-.qwrap{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:20px;align-items:start}
-.qcard{background:#fff;border-radius:24px;padding:26px;box-shadow:0 24px 60px -30px #30102f55;display:grid;gap:14px;align-content:start;min-width:0}
-.qcard .k{font-size:.7rem;letter-spacing:.14em;font-weight:800;color:var(--pink);text-transform:uppercase}
-.qprog{display:flex;gap:6px}.qprog i{flex:1;height:6px;border-radius:6px;background:var(--line)}.qprog .d{background:var(--ok)}.qprog .n{background:var(--grad)}
-.qans{display:grid;gap:6px}
-.qans button{all:unset;cursor:pointer;display:flex;gap:10px;align-items:center;font-size:.84rem;color:var(--m)}.qans button b{color:var(--ink)}
-.qans button i{font-style:normal;width:22px;height:22px;border-radius:50%;background:var(--ok);color:#fff;display:grid;place-items:center;font-size:.7rem;font-weight:800;flex:none}
-.qans button:hover b{text-decoration:underline}
-.bigq{font-size:1.7rem;font-weight:800;letter-spacing:-.025em;line-height:1.2}
-.qsub{color:var(--m);font-size:.84rem;margin-top:-6px}
-.qhelp{display:flex;gap:10px;align-items:center;background:var(--blush,#fff1f5);border-radius:14px;padding:12px 14px;font-size:.86rem}.qhelp b{flex:1;min-width:0}
-.qopts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
-.qopts button{all:unset;box-sizing:border-box;cursor:pointer;border:2px solid var(--line);border-radius:16px;padding:16px;text-align:center;font-weight:800;font-size:.95rem;background:#fff}
-.qopts button:disabled{cursor:default;opacity:.5}
-.qopts .y{background:var(--ok);border-color:var(--ok);color:#fff}.qopts .c{border-color:#ffd98a;background:#fff8e6;color:#a06d00}
-.qopts button:not(:disabled):hover{transform:translateY(-1px);box-shadow:0 8px 18px -12px #30102f66}
-.qnote{color:var(--m);font-size:.76rem;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center}
-.qnote .lk{all:unset;cursor:pointer;color:var(--m);font-weight:700}.qnote .lk:hover{color:var(--ink)}
-.qdone{display:grid;justify-items:center;text-align:center;gap:8px;padding:10px 0}.qdone .ok{width:64px;height:64px;border-radius:50%;background:var(--ok);color:#fff;display:grid;place-items:center;font-size:30px;font-weight:900;box-shadow:0 0 0 10px #1d9a6220}
-.qside{display:grid;gap:14px;min-width:0}
-.qside .box{border-radius:18px}
+/* One action at a time: the file shows only the next thing to do (team or client), the next two in small, the rest behind links */
+.sline{display:flex;gap:12px;align-items:center;max-width:820px;width:100%;margin:0 auto;font-size:.8rem;color:var(--m)}.sline b{color:var(--ink);font-size:.9rem;white-space:nowrap}
+.sline .pb{flex:1;height:8px;border-radius:8px;background:var(--line);overflow:hidden}.sline .pb i{display:block;height:100%;background:var(--grad)}
+.act{max-width:820px;width:100%;margin:0 auto;background:#fff;border-radius:28px;padding:32px 30px;box-shadow:0 30px 70px -36px #30102f66;display:grid;gap:14px;justify-items:center;text-align:center;box-sizing:border-box}
+.act .k{font-size:.7rem;letter-spacing:.16em;font-weight:800;color:var(--pink);text-transform:uppercase}
+.act h2{margin:0;font-size:1.9rem;letter-spacing:-.03em;line-height:1.15}.act > p{margin:0;color:var(--m);font-size:.9rem;max-width:560px}
+.act .big{font-size:1rem;padding:15px 28px;border-radius:16px}
+.act .row3{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.act .chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.act .qhelp{width:100%;box-sizing:border-box;text-align:start}
+.act .tmore{width:100%;text-align:start}.act .tmore summary{text-align:center}
+.act .lks{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;font-size:.78rem}
+.lk{all:unset;cursor:pointer;color:var(--m);font-weight:700}.lk:hover{color:var(--ink)}
+.act .ok{width:64px;height:64px;border-radius:50%;background:var(--ok);color:#fff;display:grid;place-items:center;font-size:30px;font-weight:900;box-shadow:0 0 0 10px #1d9a6220}
+.act .rjt{width:100%;box-sizing:border-box;text-align:start}
+.then{max-width:820px;width:100%;margin:0 auto;display:grid;gap:8px}.then > b{font-size:.68rem;letter-spacing:.12em;font-weight:800;color:var(--m);text-align:center}
+.then button{all:unset;box-sizing:border-box;cursor:pointer;display:flex;gap:12px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:14px;padding:11px 14px;font-size:.82rem;color:var(--m)}
+.then button:hover{border-color:#ffc2d6}.then button b{color:var(--ink)}.then em{font-style:normal;width:24px;height:24px;border-radius:50%;background:#f4eef1;display:grid;place-items:center;font-size:.7rem;font-weight:800;flex:none}
+.morel{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.morel button{all:unset;cursor:pointer;padding:8px 14px;border-radius:999px;font-weight:700;font-size:.8rem;color:var(--m)}.morel button:hover{color:var(--ink);background:#fff}.morel button.on{background:var(--ink);color:#fff}
+.morep{max-width:820px;width:100%;margin:0 auto}
 .qrow{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);font-size:.8rem}.qrow:last-child{border:0}
-.qrow > span{color:var(--m);min-width:0}.qrow > b{text-align:end}.qrow .tbr{flex:none}
-.qside .tile,.qside .tile.hot{box-shadow:none;padding:0;background:none}
-@media (max-width:1100px){.qwrap{grid-template-columns:1fr}}
+.qrow > span{color:var(--m);min-width:0}.qrow > b{text-align:end}
+.qhelp{display:flex;gap:10px;align-items:center;background:var(--blush,#fff1f5);border-radius:14px;padding:12px 14px;font-size:.86rem}.qhelp b{flex:1;min-width:0}
+.morep .tile,.morep .tile.hot{box-shadow:none;padding:0;background:none}
 .board{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;align-items:start}
 .bcol{background:#f8f1f2;border-radius:18px;padding:12px;display:grid;gap:10px;min-width:0}
 .bcol > h3{margin:2px 2px 0;font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;color:var(--m);display:flex;justify-content:space-between;align-items:center;gap:8px}
@@ -1179,7 +1178,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   }
   function renderDetail(){
     const r = current && get(current);
-    if (current !== renderDetail.last) { rejectOpen = false; msgMore = false; qFocus = null; msgSel = null; renderDetail.last = current; }
+    if (current !== renderDetail.last) { rejectOpen = false; msgMore = false; qFocus = null; moreOpen = null; msgSel = null; renderDetail.last = current; }
     if (!r || !allowed(r)) {
       $('#detail').innerHTML = '<div class="ctr"><div class="blank"><b>Sélectionnez un dossier</b><span>La liste des demandes est à gauche.</span></div></div>';
       return;
@@ -1208,38 +1207,6 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
           <select class="f" id="rejCause"><option value="client">Problème côté client (le client sera notifié)</option><option value="cabinet">Problème côté cabinet</option></select><div class="tbr"><button class="btn b-ink b-sm">Enregistrer</button><button type="button" class="btn b-soft b-sm" id="rejCancel">Annuler</button></div></form>`;
       }
     }
-    // The step as questions: the first task not done (and not skipped) is asked; « En cours » or « Pas encore » moves on to the next one
-    const domStep = WORKFLOW.findIndex(x => x.tasks.some(t => t.k === 'domiciliation')), dAddr = DOMI[r.ref]?.centreAddress;
-    let qcard;
-    if (r.step >= DONE) qcard = `<div class="qcard"><div class="qdone"><div class="ok">✓</div><div class="bigq">Dossier livré</div><span class="qsub">Tous les documents ont été envoyés au client.</span></div>${backBtn ? `<div class="qnote"><span></span>${backBtn}</div>` : ''}</div>`;
-    else {
-      const tks = tasksOf(r, r.step), skey = r.ref + ':' + r.step, skip = qSkip[skey] || (qSkip[skey] = new Set());
-      const open = tks.filter(tk => !taskDone(r, tk));
-      if (open.length && open.every(tk => skip.has(tk.k))) skip.clear();
-      const cur = tks.find(tk => tk.k === qFocus) || open.find(tk => !skip.has(tk.k));
-      const qi = cur ? tks.indexOf(cur) : -1, nm = tk => tk.t === 'doc' ? DOCS[tk.k][0] : tk.t === 'check' ? tk.label : payLabel(tk.k);
-      const dis = canEdit ? '' : 'disabled';
-      let ask = '';
-      if (cur) {
-        const done = taskDone(r, cur), st = r.livrables[cur.k] || 0, a = am.find(x => x.k === cur.k);
-        const q = cur.t === 'doc' ? `${nm(cur)} : c'est prêt ?` : `${nm(cur)} ?`;
-        const sub = cur.t === 'doc' ? DOCS[cur.k][1] : cur.t === 'pay' ? (r.paid.full ? 'Totalité payée à la commande' : a && a.v != null ? fmt(a.v) + ' MAD · ' + (PAY[r.payMethod] || '') : 'Montant sur devis') : '';
-        const opts = cur.t === 'doc'
-          ? `<button class="y" data-qa="${cur.k}:ok" ${dis}>✓ Oui, obtenu</button><button class="c" data-qa="${cur.k}:cours" ${dis}>${st === 1 ? 'Toujours en cours' : 'En cours'}</button><button data-qa="${cur.k}:non" ${dis}>Pas encore</button>`
-          : cur.t === 'pay' && r.paid.full ? '<button class="y" disabled>✓ Payé à la commande</button>'
-          : `<button class="y" data-qa="${cur.k}:ok" ${dis}>✓ Oui, ${cur.t === 'pay' ? 'reçu' : "c'est fait"}</button><button data-qa="${cur.k}:non" ${dis}>${done ? 'Non, à refaire' : 'Pas encore'}</button>`;
-        const help = dAddr && r.step <= domStep && ['statuts', 'domiciliation'].includes(cur.k) ? `<div class="qhelp"><span>📍</span><b>Adresse à reporter : ${esc(dAddr)}</b><button class="btn b-grad b-sm" data-cp="${esc(dAddr)}">⧉ Copier</button></div>` : '';
-        ask = `<div class="bigq">${esc(q)}${cur.opt ? ' <em class="optb">Option</em>' : ''}</div>${sub ? `<div class="qsub">${esc(sub)}</div>` : ''}${help}<div class="qopts">${opts}</div>`;
-      } else ask = `<div class="qdone"><div class="ok">✓</div><div class="bigq">${esc(w.name)} : tout est fait</div>${canEdit && stepDone(r, r.step) ? `<button class="btn b-grad" id="stepNext">Passer à l'étape ${r.step + 2} : ${esc(stepName(r.step + 1))} →</button>` : ''}</div>`;
-      const answered = tks.filter(tk => taskDone(r, tk) && tk !== cur);
-      qcard = `<div class="qcard"><span class="k">Étape ${r.step + 1} / ${DONE} · ${esc(w.name)}${cur ? ` · question ${qi + 1} sur ${tks.length}` : ''}</span>
-        <div class="qprog">${tks.map(tk => `<i class="${tk === cur ? 'n' : taskDone(r, tk) ? 'd' : ''}"></i>`).join('')}</div>
-        ${rej}
-        ${answered.length ? `<div class="qans">${answered.map(tk => `<button data-qf="${tk.k}" title="Revoir cette question"><i>✓</i><span><b>${esc(nm(tk))}</b> · ${tk.t === 'doc' ? 'obtenu' : tk.t === 'pay' ? 'reçu' : 'fait'}</span></button>`).join('')}</div>` : ''}
-        ${ask}
-        <div class="qnote"><span>${cur ? (r.step + 1 < DONE ? `Après la dernière question, l'étape ${r.step + 2} « ${esc(stepName(r.step + 1))} » commence.` : 'Après la dernière question, le dossier est livré.') + (cur && open.length > 1 ? ` <button class="lk" data-qa="${cur.k}:skip">Passer cette question →</button>` : '') : ''}</span>
-          <span>${w.reject && canEdit && !r.reject && !rejectOpen ? '<button class="lk" id="rejOpen">⚠ Signaler un rejet</button> · ' : ''}${backBtn ? backBtn.replace('class="btn b-soft b-sm stepback"', 'class="lk"').replace('↩ Étape précédente', '↩ Étape précédente') : ''}</span></div></div>`;
-    }
     // Client: the message of the step (other messages and the preview folded under it), then one card per missing piece
     const toSend = mk === auto && !sentAt && mk !== 'libre';
     const msgTile = `<div class="tile ${toSend ? 'hot' : ''}"><b>${sentAt ? '✓ Message envoyé' : '📩 Message à envoyer'}</b><small>${esc(msgOf(mk).title || 'Message libre')}${sentAt ? ' · ' + when(sentAt) : ''}</small>${waBtn(sentAt ? 'Renvoyer' : 'Envoyer', 'b-sm')}
@@ -1248,26 +1215,65 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
           <div class="mseg" role="group" aria-label="Langue"><button data-ml="fr" class="${lang === 'fr' ? 'on' : ''}">Français</button><button data-ml="ar" class="${lang === 'ar' ? 'on' : ''}">الدارجة</button></div></div>
           <div class="mprev" ${lang === 'ar' ? 'dir="rtl"' : ''}>${esc(waText)}</div>
           ${msgOf(mk)[lang].mail ? '<button class="btn b-soft b-sm" id="mailCopy">Copier l\'e-mail</button>' : ''}</details></div>`;
-    const centre = DOMI[r.ref]?.centreName;
-    const side = `<div class="qside">
-        <div class="box"><h4>Fiche statuts <button class="btn b-soft b-sm" id="ficheCopy">copier</button></h4>
-          <div><div class="qrow"><span>Dénomination</span><b>${esc(title(r))}</b></div>${r.capital != null ? `<div class="qrow"><span>Capital</span><b>${fmt(r.capital)} MAD</b></div>` : ''}${r.gerant?.name ? `<div class="qrow"><span>Gérant</span><b>${esc(r.gerant.name)}</b></div>` : ''}${centre ? `<div class="qrow"><span>Centre</span><b>${esc(centre)}</b></div>` : r.siege === 'local' ? '<div class="qrow"><span>Siège</span><b>Local du client</b></div>' : ''}</div></div>
-        <div class="box"><h4>Message au client <small>${sentAt ? 'envoyé ✓' : toSend ? 'à envoyer' : ''}</small></h4>${msgTile}</div>
-        <div class="box"><h4>Client <small>${piecesOk}/${docs.length} pièce${docs.length > 1 ? 's' : ''}</small></h4><div>${docs.map(d => `<div class="qrow"><span>${esc(d.label)}</span>${r.docs[d.k]
-          ? `<button class="tpl s2" style="width:auto" data-doc="${d.k}" ${canEdit ? 'title="Cliquer pour la remettre en manquante"' : 'disabled'}>✓ Reçue</button>`
-          : `<span class="tbr"><a class="btn b-soft b-sm" href="${waLink(r.client?.tel, `Bonjour ${r.client?.nom || ''}, pour avancer sur votre dossier ${r.ref}, merci de nous envoyer : ${d.label}.`)}" target="_blank" rel="noopener">Relancer</a>${canEdit ? `<button class="btn b-soft b-sm" data-doc="${d.k}">Reçue</button>` : ''}</span>`}</div>`).join('')}</div></div>
-        ${r.forme !== 'ae' && r.siege === 'dom' && SERVER ? `<div class="box"><h4>Domiciliation <small>${DOMI[r.ref] ? esc(DOMI_ST[DOMI[r.ref].status]?.[0] || '') : 'aucun centre'}</small></h4>${domiTiles(r)}</div>` : ''}
-        <div class="box"><h4>Paiements <small>${fmt(paidSum)} / ${r.total == null ? 'devis' : fmt(r.total)}</small></h4><div>${am.map(a => { const ok = payDone(r, a.k);
-          return `<div class="qrow"><span>${ok ? '✓ ' : ''}${esc(a.label)}</span>${ok ? `<b>${a.v == null ? 'sur devis' : fmt(a.v)}</b>` : canEdit && !r.paid.full ? `<button class="btn b-soft b-sm" data-pay="${a.k}">${a.v == null ? 'Reçu' : fmt(a.v) + ' · reçu ?'}</button>` : `<b>${a.v == null ? 'sur devis' : fmt(a.v)}</b>`}</div>`; }).join('')}</div></div>
-        ${affBox(r)}
-      </div>`;
+    // The next action: the step's message to the client, then the step's tasks, then the missing pieces. « Plus tard » passes it.
+    const skey = r.ref + ':' + r.step, skip = qSkip[skey] || (qSkip[skey] = new Set());
+    const tks = r.step < DONE ? tasksOf(r, r.step) : [], missing = docs.filter(d => !r.docs[d.k]);
+    const nm = tk => tk.t === 'doc' ? DOCS[tk.k][0] : tk.t === 'check' ? tk.label : payLabel(tk.k);
+    const acts = [];
+    if (toSend) acts.push({ key:'msg', kind:'msg' });
+    tks.filter(tk => !taskDone(r, tk)).forEach(tk => acts.push({ key:tk.k, kind:'task', tk }));
+    if (missing.length) acts.push({ key:'pieces', kind:'pieces' });
+    let live = acts.filter(x => !skip.has(x.key)); if (acts.length && !live.length) { skip.clear(); live = acts; }
+    const cur = live.find(x => x.key === qFocus) || live[0], rest = live.filter(x => x !== cur).slice(0, 2);
+    const label = x => x.kind === 'msg' ? `Prévenir le client : ${msgOf(mk).title}` : x.kind === 'pieces' ? 'Relancer le client' : nm(x.tk);
+    const sublabel = x => x.kind === 'msg' ? 'message WhatsApp prêt' : x.kind === 'pieces' ? missing.map(d => d.label).join(', ') : x.tk.t === 'doc' ? DOC_ST[r.livrables[x.tk.k] || 0].toLowerCase() : x.tk.t === 'pay' ? 'paiement à confirmer' : 'à faire';
+    const dis = canEdit ? '' : 'disabled', domStep = WORKFLOW.findIndex(x => x.tasks.some(t => t.k === 'domiciliation')), dAddr = DOMI[r.ref]?.centreAddress;
+    const msgMoreHtml = `<details class="tmore" ${msgMore ? 'open' : ''}><summary>Aperçu · changer de message ▾</summary>
+          <div class="mrow"><select class="f" id="msgPick" aria-label="Message">${Object.entries(CM.MSG).map(([k, m]) => `<option value="${k}" ${k === mk ? 'selected' : ''}>${esc(m.n)}. ${esc(m.title)}${k === auto ? ' · étape actuelle' : ''}${(r.sent || {})[k] ? ' ✓' : ''}</option>`).join('')}<option value="libre" ${mk === 'libre' ? 'selected' : ''}>Message libre</option></select>
+          <div class="mseg" role="group" aria-label="Langue"><button data-ml="fr" class="${lang === 'fr' ? 'on' : ''}">Français</button><button data-ml="ar" class="${lang === 'ar' ? 'on' : ''}">الدارجة</button></div></div>
+          <div class="mprev" ${lang === 'ar' ? 'dir="rtl"' : ''}>${esc(waText)}</div>
+          ${msgOf(mk)[lang].mail ? '<button class="btn b-soft b-sm" id="mailCopy">Copier l\'e-mail</button>' : ''}</details>`;
+    let body;
+    if (!cur) {
+      body = r.step >= DONE ? `<div class="ok">✓</div><h2>Dossier livré</h2><p>Tous les documents ont été envoyés au client.</p>`
+        : canEdit && stepDone(r, r.step) ? `<div class="ok">✓</div><h2>${esc(w.name)} : tout est fait</h2><button class="btn b-grad big" id="stepNext">Passer à l'étape ${r.step + 2} : ${esc(stepName(r.step + 1))} →</button>`
+        : `<div class="ok">✓</div><h2>Rien à faire pour l'instant</h2>`;
+    } else if (cur.kind === 'msg') {
+      body = `<h2>${esc(label(cur))}</h2><p>Le message WhatsApp est prêt, en ${lang === 'ar' ? 'darija' : 'français'}.</p>${waBtn('📩 Envoyer sur WhatsApp', 'big')}${msgMoreHtml}`;
+    } else if (cur.kind === 'pieces') {
+      body = `<h2>Relancer le client</h2><p>Pièce${missing.length > 1 ? 's' : ''} manquante${missing.length > 1 ? 's' : ''} : ${esc(missing.map(d => d.label).join(', '))}</p>
+        <a class="btn b-wa big" href="${waLink(r.client?.tel, `Bonjour ${r.client?.nom || ''}, pour avancer sur votre dossier ${r.ref}, merci de nous envoyer : ${missing.map(d => d.label).join(', ')}.`)}" target="_blank" rel="noopener">📎 Relancer sur WhatsApp</a>
+        ${canEdit ? `<div class="chips">${missing.map(d => `<button class="btn b-soft b-sm" data-doc="${d.k}">✓ ${esc(d.label)} reçue</button>`).join('')}</div>` : ''}`;
+    } else {
+      const tk = cur.tk, a = am.find(x => x.k === tk.k);
+      const sub = tk.t === 'doc' ? DOCS[tk.k][1] : tk.t === 'pay' ? (r.paid.full ? 'Totalité payée à la commande' : a && a.v != null ? fmt(a.v) + ' MAD · ' + (PAY[r.payMethod] || '') : 'Montant sur devis') : '';
+      const help = dAddr && r.step <= domStep && ['statuts', 'domiciliation'].includes(tk.k) ? `<div class="qhelp"><span>📍</span><b>Adresse à reporter : ${esc(dAddr)}</b><button class="btn b-grad b-sm" data-cp="${esc(dAddr)}">⧉ Copier</button></div>` : '';
+      const btns = tk.t === 'doc' ? `<button class="btn b-grad big" data-qa="${tk.k}:ok" ${dis}>✓ Obtenu</button><button class="btn b-soft big" data-qa="${tk.k}:cours" ${dis}>En cours</button>`
+        : tk.t === 'pay' && r.paid.full ? '<span class="pill p-ok">Payé à la commande</span>'
+        : `<button class="btn b-grad big" data-qa="${tk.k}:ok" ${dis}>✓ ${tk.t === 'pay' ? 'Reçu' : "C'est fait"}</button>`;
+      body = `<h2>${esc(nm(tk))}${tk.opt ? ' <em class="optb">Option</em>' : ''}</h2>${sub ? `<p>${esc(sub)}</p>` : ''}${help}<div class="row3">${btns}</div>`;
+    }
+    const lks = [cur && live.length > 1 ? `<button class="lk" data-skip="${cur.key}">Plus tard →</button>` : '', w && w.reject && canEdit && !r.reject && !rejectOpen && r.step < DONE ? '<button class="lk" id="rejOpen">⚠ Signaler un rejet</button>' : '', backBtn ? backBtn.replace('class="btn b-soft b-sm stepback"', 'class="lk"') : ''].filter(Boolean).join('');
+    const acard = `<div class="act">${cur ? `<span class="k">Prochaine action · 1 sur ${live.length}</span>` : ''}${rej ? `<div class="rjt">${rej}</div>` : ''}${body}${lks ? `<div class="lks">${lks}</div>` : ''}</div>`;
+    const then = rest.length ? `<div class="then"><b>ENSUITE</b>${rest.map((x, i) => `<button data-qf="${x.key}"><em>${i + 2}</em><span><b>${esc(label(x))}</b> · ${esc(sublabel(x))}</span></button>`).join('')}</div>` : '';
+    const nDone = tks.filter(tk => taskDone(r, tk)).length;
+    const sline = r.step < DONE ? `<div class="sline"><b>Étape ${r.step + 1} / ${DONE} · ${esc(w.name)}</b><div class="pb"><i style="width:${tks.length ? nDone / tks.length * 100 : 0}%"></i></div><span>${nDone} / ${tks.length}</span></div>` : '';
+    // Everything else, behind small links
+    const hasDomi = r.forme !== 'ae' && r.siege === 'dom' && SERVER;
+    const panels = {
+      msg: `<div class="box"><h4>Messages au client <small>${sentAt ? 'envoyé ✓ · ' + when(sentAt) : ''}</small></h4>${msgTile}</div>`,
+      pay: `<div class="box"><h4>Paiements <small>${esc(PAY[r.payMethod] || '')} · ${fmt(paidSum)} / ${r.total == null ? 'sur devis' : fmt(r.total) + ' MAD'}</small></h4><div>${am.map(a => { const ok = payDone(r, a.k);
+          return `<div class="qrow"><span>${ok ? '✓ ' : ''}${esc(a.label)}</span>${ok ? `<b>${a.v == null ? 'sur devis' : fmt(a.v) + ' MAD'}</b>` : canEdit && !r.paid.full ? `<button class="btn b-soft b-sm" data-pay="${a.k}">${a.v == null ? 'Reçu' : fmt(a.v) + ' MAD · reçu ?'}</button>` : `<b>${a.v == null ? 'sur devis' : fmt(a.v) + ' MAD'}</b>`}</div>`; }).join('')}</div></div>${affBox(r)}`,
+      centre: hasDomi ? `<div class="box"><h4>Domiciliation <small>${DOMI[r.ref] ? esc(DOMI_ST[DOMI[r.ref].status]?.[0] || '') : 'aucun centre'}</small></h4>${domiTiles(r)}</div>` : '',
+    };
+    const moreBtn = (k, t) => `<button data-more="${k}" class="${moreOpen === k ? 'on' : ''}">${t}</button>`;
+    const morel = `<div class="morel"><button id="ficheToggle" class="${ficheOn ? 'on' : ''}" aria-pressed="${ficheOn}">📄 Fiche</button>${moreBtn('msg', '💬 Messages')}${moreBtn('pay', `💳 Paiements ${fmt(paidSum)}/${r.total == null ? 'devis' : fmt(r.total)}`)}${hasDomi ? moreBtn('centre', `🏢 Centre${DOMI[r.ref]?.status === 'done' ? ' ✓' : ''}`) : ''}${moreBtn('docs', `📚 Documents ${livOk}/${docsTotal(r)}`)}${moreBtn('hist', '🕑 Historique')}</div>`;
     $('#detail').innerHTML = `
     <section class="ctr">
       <div class="h">
         <button class="btn b-soft b-sm back" id="back">← Liste</button>
         <div><h2>${esc(title(r))}${isPrio(r) ? ' <em class="prio">⚡ Prioritaire</em>' : ''}</h2><small>${esc(r.ref)} · ${esc(FORMES[r.forme] || '')} · ${esc(r.ville || '')} · ${esc(PLANS[r.plan] || '')}</small></div>
         <div class="r">
-          <button class="btn b-soft" id="ficheToggle" aria-pressed="${ficheOn}">${ficheOn ? 'Masquer la demande' : 'Voir la demande'}</button>
           ${waBtn('WhatsApp', '')}
           ${r.client?.tel ? `<a class="btn b-soft" href="tel:${esc(r.client.tel.replace(/\s/g, ''))}">Appeler</a>` : ''}
           ${!r.juriste ? '<button class="btn b-ink" id="take">Prendre le dossier</button>' : ''}
@@ -1275,7 +1281,12 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
         </div>
       </div>
       ${scored(r) ? scoreBox(r, canEdit) : ''}
-      <div class="qwrap">${qcard}${side}</div>
+      ${sline}
+      ${acard}
+      ${then}
+      ${morel}
+      ${moreOpen && moreOpen !== 'docs' && moreOpen !== 'hist' && panels[moreOpen] ? `<div class="morep">${panels[moreOpen]}</div>` : ''}
+      ${moreOpen === 'docs' ? `<div class="morep">
       <div class="box"><h4>Documents de la société <small>${livOk}/${docsTotal(r)} obtenus</small></h4>
         <div class="prog"><i style="width:${livOk / docsTotal(r) * 100}%"></i></div>
         <div class="dtl">${WORKFLOW.map((x, i) => {
@@ -1290,10 +1301,13 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
             ${open ? `<div class="dds">${ds.map(tk => { const st = r.livrables[tk.k] || 0; return `<div class="dd s${st}"><i class="dcb">${st === 2 ? '✓' : ''}</i><span>${esc(DOCS[tk.k][0])}</span>${docBtn(tk.k)}</div>`; }).join('')}</div>` : ''}
           </div></div>`; }).join('')}</div>
       </div>
+      </div>` : ''}
+      ${moreOpen === 'hist' ? `<div class="morep">
       <div class="box"><h4>Historique et notes de l'équipe <small>visibles par l'équipe seulement</small></h4>
         <div class="feed" id="feed">${r.notes.map(n => { const w = member(n.by); return `<div class="msg ${n.t === 'sys' ? 'sys' : ''}"><span class="av" style="--c:${w ? w.c : '#c9b6c4'}">${n.t === 'sys' && !w ? '•' : esc((w?.name || '?')[0])}</span><div><small>${n.t === 'sys' ? 'Suivi' : 'Note'}${w ? ' · ' + esc(w.name) : ''} · ${when(n.at)}</small>${esc(n.text)}</div></div>`; }).join('')}</div>
         <form class="cmp" id="noteForm"><input class="f" id="noteIn" placeholder="Ajouter une note pour l'équipe…" autocomplete="off"><button class="btn b-grad">Ajouter</button></form>
       </div>
+      </div>` : ''}
     </section>
     <aside class="info" ${ficheOn ? '' : 'hidden'}>
       <div class="fiche-h"><b>Demande du client</b><span class="fiche-a"><button class="btn b-soft b-sm" id="ficheCopy">Copier tout</button><button class="btn b-soft b-sm" id="ficheHide" aria-label="Masquer la demande du client" title="Masquer">✕</button></span></div>
@@ -1305,7 +1319,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
         : `<div class="cl"><span class="av" style="--c:${j ? j.c : '#c9b6c4'};width:32px;height:32px">${j ? j.name[0] : '?'}</span><b>${j ? j.name : 'Non assigné'}</b></div>`}
     </aside>`;
     $('#body').classList.toggle('nofiche', !ficheOn);
-    const feed = $('#feed'); feed.scrollTop = feed.scrollHeight;
+    const feed = $('#feed'); if (feed) feed.scrollTop = feed.scrollHeight;
   }
 
   // Partner programme: a file sent with a partner's promo code records { promo, affiliate, remise }. The partner earns
@@ -1365,10 +1379,14 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   }
 
   // Actions on the open file (event delegation)
-  let rejectOpen = false, msgMore = false, qFocus = null;
+  let rejectOpen = false, msgMore = false, qFocus = null, moreOpen = null;
   const qSkip = {};                                    // questions passed with « En cours » / « Pas encore », per file and step
   $('#detail').addEventListener('click', e => {
     const r = current && get(current); if (!r) return;
+    const mo = e.target.closest('[data-more]');
+    if (mo) { moreOpen = moreOpen === mo.dataset.more ? null : mo.dataset.more; renderDetail(); return; }
+    const sk = e.target.closest('[data-skip]');
+    if (sk) { (qSkip[r.ref + ':' + r.step] || (qSkip[r.ref + ':' + r.step] = new Set())).add(sk.dataset.skip); qFocus = null; renderDetail(); return; }
     const qf = e.target.closest('[data-qf]');
     if (qf) { qFocus = qf.dataset.qf; renderDetail(); return; }
     const qa = e.target.closest('[data-qa]');
