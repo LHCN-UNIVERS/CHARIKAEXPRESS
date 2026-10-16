@@ -363,6 +363,29 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
 .li small.rej{color:var(--err);font-weight:600}
 .two{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
 .two > *,.box,.lgrp,.lv{min-width:0}
+/* The current step as the top card of a pile: done steps on the left, the ones to come on the right */
+.deck{display:grid;grid-template-columns:200px minmax(0,1fr) 200px;gap:20px;align-items:start}
+.pile{display:grid;gap:8px;align-content:start}.pile > b{font-size:.68rem;font-weight:800;letter-spacing:.12em;color:var(--m);text-transform:uppercase;margin:0 2px 2px}
+.pc{background:#fff;border-radius:12px;padding:9px 11px;font-size:.76rem;display:flex;gap:8px;align-items:center;border:1px solid #cdeedd;min-width:0}
+.pc i{font-style:normal;width:20px;height:20px;border-radius:50%;background:var(--ok);color:#fff;display:grid;place-items:center;font-size:.66rem;font-weight:800;flex:none}
+.pc.f{border-color:var(--line);color:var(--m)}.pc.f i{background:#f4eef1;color:var(--m)}
+.stack{position:relative;padding-top:38px;min-width:0}
+.stack .sb{position:absolute;left:50%;transform:translateX(-50%);border-radius:22px;background:#fff;border:1px solid var(--line)}
+.stack .sb2{top:0;width:86%;height:60px;opacity:.5}.stack .sb1{top:13px;width:93%;height:60px;opacity:.85;text-align:center;padding-top:5px;font-size:.7rem;font-weight:700;color:var(--m)}
+.scard{position:relative;background:#fff;border-radius:24px;padding:24px;box-shadow:0 30px 60px -30px #30102f66;display:grid;gap:10px;border-top:6px solid var(--pink)}
+.scard.okc{border-top-color:var(--ok)}
+.scard .k{font-size:.7rem;font-weight:800;letter-spacing:.14em;color:var(--pink)}.scard.okc .k{color:var(--ok)}
+.scard h2{font-size:1.6rem;letter-spacing:-.03em;margin:0}.scard .hint{margin:-4px 0 4px}
+.crow{display:flex;gap:12px;align-items:center;padding:11px 13px;border-radius:14px;background:#fdf7f8;font-size:.86rem}
+.crow > i{font-style:normal;width:24px;height:24px;border-radius:8px;border:2px solid #e2cfd7;flex:none;display:grid;place-items:center;color:#fff;font-size:.78rem;font-weight:800;background:#fff}
+.crow > span{flex:1;min-width:0}.crow small{display:block;color:var(--m);font-size:.72rem}
+.crow.y{background:#effaf4}.crow.y > i{background:var(--ok);border:0}.crow.y b{color:var(--m);text-decoration:line-through}
+.crow .tpl{width:auto;min-width:110px;text-align:center}.crow .btn{flex:none}
+.caddr{display:flex;gap:10px;align-items:center;background:var(--blush,#fff1f5);border-radius:14px;padding:11px 13px;font-size:.86rem}.caddr b{flex:1;min-width:0}
+.cfoot{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:12px;margin-top:4px;color:var(--m);font-size:.78rem}
+.cfoot .stepback{border:0;background:none;padding:0}
+.cfoot .off{opacity:.45;pointer-events:none}
+@media (max-width:1300px){.deck{grid-template-columns:1fr}.pile{display:flex;flex-wrap:wrap}.pile > b{width:100%}.deck .pile:first-child{order:2}.deck .pile:last-child{order:3}}
 .board{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;align-items:start}
 .bcol{background:#f8f1f2;border-radius:18px;padding:12px;display:grid;gap:10px;min-width:0}
 .bcol > h3{margin:2px 2px 0;font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;color:var(--m);display:flex;justify-content:space-between;align-items:center;gap:8px}
@@ -1169,20 +1192,11 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     const docBtn = k => { const st = r.livrables[k] || 0; return `<button class="lst s${st}" data-liv="${k}" ${canEdit ? '' : 'disabled'}>${DOC_ST[st]}</button>`; };
     const w = WORKFLOW[r.step];
     const opt = tk => tk.opt ? ' <em class="optb">Option</em>' : '';
-    const taskTile = tk => {
-      const done = taskDone(r, tk);
-      if (tk.t === 'doc') { const st = r.livrables[tk.k] || 0; return `<div class="tile ${done ? 'dn' : ''}"><b>${esc(DOCS[tk.k][0])}${opt(tk)}</b><small>${esc(DOCS[tk.k][1])}</small><button class="tpl s${st}" data-liv="${tk.k}" ${canEdit ? '' : 'disabled'}>${DOC_ST[st]}</button></div>`; }
-      if (tk.t === 'check') return `<div class="tile ${done ? 'dn' : ''}"><b>${esc(tk.label)}${opt(tk)}</b><button class="btn b-soft b-sm" data-check="${tk.k}" ${canEdit ? '' : 'disabled'}>${done ? 'Fait ✓' : 'Marquer fait'}</button></div>`;
-      const a = am.find(x => x.k === tk.k) || am[0];
-      return `<div class="tile ${done ? 'dn' : ''}"><b>${esc(payLabel(tk.k))}</b><small>${r.paid.full ? 'Totalité payée à la commande' : a.v == null ? 'Montant sur devis' : fmt(a.v) + ' MAD · ' + esc(PAY[r.payMethod] || '')}</small>${r.paid.full ? '<span class="tpl s2">Payé</span>' : `<button class="btn b-soft b-sm" data-pay="${tk.k}" ${canEdit ? '' : 'disabled'}>${done ? 'Reçu ✓' : 'Marquer reçu'}</button>`}</div>`;
-    };
     // Going back one step, for a file moved forward by mistake (the previous step's tasks stay as they are: untick the one to redo)
     const backBtn = canEdit && r.step > 0 ? `<button class="btn b-soft b-sm stepback" id="stepBack" title="Remet le dossier à l'étape « ${esc(WORKFLOW[r.step - 1].name)} »">↩ Étape précédente</button>` : '';
-    let team = '', left = 0;
-    if (r.step >= DONE) team = `<div class="tile"><b>✓ Dossier livré</b><small>Tous les documents ont été envoyés au client.</small></div><div class="tacts">${backBtn}</div>`;
-    else {
+    let left = 0, rej = '';
+    if (r.step < DONE) {
       left = tasksOf(r, r.step).filter(tk => !taskDone(r, tk)).length;
-      let rej = '';
       if (w.reject && r.reject) {
         rej = `<div class="tile rjt"><b>⚠ Dossier rejeté</b><small>Motif : ${esc(r.reject.motif)} · ${r.reject.cause === 'client' ? 'côté client' : 'côté cabinet'} · ${when(r.reject.at)}</small>
           ${r.reject.cause === 'client' ? waBtn('Notifier le client', 'b-sm', 'rejet', msgText(r, 'rejet', lang)) : ''}${canEdit ? '<button class="btn b-soft b-sm" id="redepot">Dossier corrigé et redéposé</button>' : ''}</div>`;
@@ -1190,10 +1204,34 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
         rej = `<form class="tile rejf" id="rejForm"><b>Signaler un rejet</b><input class="f" id="rejMotif" placeholder="Motif du rejet (ex. CIN expirée…)" required autocomplete="off">
           <select class="f" id="rejCause"><option value="client">Problème côté client (le client sera notifié)</option><option value="cabinet">Problème côté cabinet</option></select><div class="tbr"><button class="btn b-ink b-sm">Enregistrer</button><button type="button" class="btn b-soft b-sm" id="rejCancel">Annuler</button></div></form>`;
       }
-      const next = !left && canEdit && stepDone(r, r.step) ? `<button class="btn b-grad b-sm" id="stepNext">Étape suivante : ${esc(stepName(r.step + 1))} →</button>` : '';
-      const rejBtn = w.reject && canEdit && !r.reject && !rejectOpen ? '<button class="btn b-soft b-sm rejbtn" id="rejOpen">⚠ Signaler un rejet</button>' : '';
-      team = rej + tasksOf(r, r.step).map(taskTile).join('') + (next || backBtn || rejBtn ? `<div class="tacts">${next}${rejBtn}${backBtn}</div>` : '');
     }
+    // The step card: one row per task of the current step; done, it goes to the « Fait » pile and the next card comes up
+    const cardRow = tk => {
+      const done = taskDone(r, tk); let lab, sub = '', ctl;
+      if (tk.t === 'doc') { const st = r.livrables[tk.k] || 0; lab = DOCS[tk.k][0]; sub = DOCS[tk.k][1]; ctl = `<button class="tpl s${st}" data-liv="${tk.k}" ${canEdit ? '' : 'disabled'}>${DOC_ST[st]}</button>`; }
+      else if (tk.t === 'check') { lab = tk.label; ctl = `<button class="btn b-soft b-sm" data-check="${tk.k}" ${canEdit ? '' : 'disabled'}>${done ? 'Fait ✓' : 'Marquer fait'}</button>`; }
+      else { const a = am.find(x => x.k === tk.k) || am[0]; lab = payLabel(tk.k); sub = r.paid.full ? 'Totalité payée à la commande' : a.v == null ? 'Montant sur devis' : fmt(a.v) + ' MAD · ' + (PAY[r.payMethod] || '');
+        ctl = r.paid.full ? '<span class="tpl s2">Payé</span>' : `<button class="btn b-soft b-sm" data-pay="${tk.k}" ${canEdit ? '' : 'disabled'}>${done ? 'Reçu ✓' : 'Marquer reçu'}</button>`; }
+      return `<div class="crow ${done ? 'y' : ''}"><i>${done ? '✓' : ''}</i><span><b>${esc(lab)}${opt(tk)}</b>${sub ? `<small>${esc(sub)}</small>` : ''}</span>${ctl}</div>`;
+    };
+    const domStep = WORKFLOW.findIndex(x => x.tasks.some(t => t.k === 'domiciliation')), dAddr = DOMI[r.ref]?.centreAddress;
+    let card;
+    if (r.step >= DONE) card = `<div class="scard okc"><span class="k">✓ TOUTES LES ÉTAPES SONT FAITES</span><h2>Dossier livré</h2><p class="hint">Tous les documents ont été envoyés au client.</p><div class="cfoot">${backBtn ? backBtn.replace('↩ Étape précédente', `↩ Reprendre l'étape ${DONE}`) : '<span></span>'}<span>${DONE} / ${DONE} étapes</span></div></div>`;
+    else {
+      const tks = tasksOf(r, r.step), nDone = tks.length - left;
+      const nextBtn = !left && canEdit && stepDone(r, r.step) ? `<button class="btn b-grad b-sm" id="stepNext">Carte suivante →</button>` : `<span class="btn b-grad b-sm off" title="Se débloque quand tout est fait">Carte suivante →</span>`;
+      card = `<div class="scard"><span class="k">ÉTAPE ${r.step + 1} / ${DONE}</span><h2>${esc(w.name)}</h2><p class="hint">${esc(w.hint)}</p>
+        ${rej}
+        ${tks.map(cardRow).join('')}
+        ${dAddr && r.step <= domStep ? `<div class="caddr"><span>📍</span><b>Siège : ${esc(dAddr)}</b><button class="btn b-grad b-sm" data-cp="${esc(dAddr)}">⧉ Copier</button></div>` : ''}
+        ${w.reject && canEdit && !r.reject && !rejectOpen ? '<button class="btn b-soft b-sm rejbtn" id="rejOpen">⚠ Signaler un rejet</button>' : ''}
+        <div class="cfoot">${backBtn ? backBtn.replace('↩ Étape précédente', `↩ Reprendre l'étape ${r.step}`) : '<span></span>'}<span>${nDone} / ${tks.length} fait</span>${nextBtn}</div></div>`;
+    }
+    const deck = `<div class="deck">
+        <div class="pile"><b>Fait · ${Math.min(r.step, DONE)}</b>${WORKFLOW.slice(0, r.step).map((x, i) => `<div class="pc"><i>✓</i>${i + 1} · ${esc(x.name)}</div>`).join('') || '<small class="hint">Rien pour l\'instant</small>'}</div>
+        <div class="stack">${r.step + 1 < DONE ? `<div class="sb sb2"></div><div class="sb sb1">ensuite : ${r.step + 2} · ${esc(WORKFLOW[r.step + 1].name)}</div>` : ''}${card}</div>
+        <div class="pile"><b>À venir · ${Math.max(DONE - r.step - 1, 0)}</b>${WORKFLOW.slice(r.step + 1).map((x, i) => `<div class="pc f"><i>${r.step + i + 2}</i>${esc(x.name)}</div>`).join('') || '<small class="hint">C\'était la dernière</small>'}</div>
+      </div>`;
     // Client: the message of the step (other messages and the preview folded under it), then one card per missing piece
     const toSend = mk === auto && !sentAt && mk !== 'libre';
     const msgTile = `<div class="tile ${toSend ? 'hot' : ''}"><b>${sentAt ? '✓ Message envoyé' : '📩 Message à envoyer'}</b><small>${esc(msgOf(mk).title || 'Message libre')}${sentAt ? ' · ' + when(sentAt) : ''}</small>${waBtn(sentAt ? 'Renvoyer' : 'Envoyer', 'b-sm')}
@@ -1214,7 +1252,6 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
       <div class="h">
         <button class="btn b-soft b-sm back" id="back">← Liste</button>
         <div><h2>${esc(title(r))}${isPrio(r) ? ' <em class="prio">⚡ Prioritaire</em>' : ''}</h2><small>${esc(r.ref)} · ${esc(FORMES[r.forme] || '')} · ${esc(r.ville || '')} · ${esc(PLANS[r.plan] || '')}</small></div>
-        <span class="stp">${r.step >= DONE ? '✓ Livré' : `Étape ${r.step + 1} · ${esc(WORKFLOW[r.step].name)}`}</span>
         <div class="r">
           <button class="btn b-soft" id="ficheToggle" aria-pressed="${ficheOn}">${ficheOn ? 'Masquer la demande' : 'Voir la demande'}</button>
           ${waBtn('WhatsApp', '')}
@@ -1223,10 +1260,9 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
           ${r.step >= DONE ? '<span class="pill p-ok">✓ Dossier livré</span>' : ''}
         </div>
       </div>
-      <div class="trackw"><div class="track" role="list">${WORKFLOW.map((x, i) => `<div role="listitem" class="ts ${i < r.step ? 'ok' : i === r.step ? (r.reject && x.reject ? 'cur rj' : 'cur') : ''}" title="${esc(x.name)}"><span><i>${i < r.step ? '✓' : r.reject && x.reject && i === r.step ? '!' : i + 1 + ' ·'}</i> ${esc(x.short)}</span></div>`).join('')}</div></div>
       ${scored(r) ? scoreBox(r, canEdit) : ''}
+      ${deck}
       <div class="board">
-        <div class="bcol"><h3>Équipe <small>${r.step >= DONE ? '✓' : left}</small></h3>${team}</div>
         <div class="bcol"><h3>Client <small>${docs.length - piecesOk + (toSend ? 1 : 0)}</small></h3>${msgTile}${pieceTiles}</div>
         <div class="bcol"><h3>Domiciliation <small>${DOMI[r.ref]?.status === 'done' ? '✓' : ''}</small></h3>${domiTiles(r)}${affBox(r)}</div>
         <div class="bcol"><h3>Paiements <small>${fmt(paidSum)} / ${r.total == null ? 'devis' : fmt(r.total)}</small></h3>${payTiles}</div>
