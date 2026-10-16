@@ -341,6 +341,23 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
 .cnl{display:grid;gap:5px;white-space:nowrap;font-size:.66rem;font-weight:800;color:var(--m);text-transform:uppercase;letter-spacing:.05em}
 .cnl input{font:600 .88rem var(--font);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px;text-transform:none;letter-spacing:0;min-width:0}
 .cnl em{font-style:normal;text-transform:none;letter-spacing:0;font-weight:600;color:var(--m);font-size:.7rem;min-height:1em}.cnl em.ok{color:var(--ok)}
+.k1 .slide.wide{grid-template-columns:1fr}
+.gcar{display:grid;grid-template-columns:minmax(0,1fr) 150px;gap:12px;margin-bottom:12px;align-items:stretch}.gcar.last{grid-template-columns:1fr}
+.gcard{background:#fff;border:1px solid var(--line);border-radius:20px;padding:16px;display:grid;gap:12px;box-shadow:0 20px 40px -28px #30102f55;min-width:0}
+.gcard h5{margin:0;font-size:.98rem}
+.gtabs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.gtabs button{border:0;border-radius:12px;padding:8px 6px;font:700 .74rem var(--font);background:#f4eef1;color:var(--m);cursor:pointer}
+.gtabs .d{background:#e3f5ec;color:var(--ok)}.gtabs .on{background:var(--ink);color:#fff}
+.gsrc{font-size:.62rem;font-weight:700;color:var(--ok);background:#e3f5ec;border-radius:999px;padding:1px 7px;margin-inline-start:6px;text-transform:none;letter-spacing:0}
+.gf input.ro{background:#faf6f8;color:var(--ink)}.gf .w3{grid-column:1/-1}.gf{grid-template-columns:repeat(3,minmax(0,1fr))}
+.gnav{display:flex;gap:8px}.gnav .b-grad{margin-inline-start:auto}
+.gpeek{border:1.5px dashed #ffc2d6;border-radius:20px;padding:14px;color:var(--m);display:grid;align-content:center;gap:6px;background:#fff8fb;text-align:start;font:inherit;font-size:.76rem;cursor:pointer}
+.gpeek b{color:var(--ink);font-size:.86rem}.gpeek i{font-style:normal;font-size:1.4rem;color:var(--pink)}.gpeek:hover{border-color:var(--pink)}
+.gsums{display:grid;grid-template-columns:1fr 1fr;gap:10px}.gsums .w2{grid-column:1/-1}
+.gsum{border:1px solid var(--line);border-radius:14px;padding:10px 12px;background:#fffaf7}.gsum h6{margin:0 0 6px;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:#d6337a;display:flex;gap:6px;align-items:center}
+.gsum h6 em{font-style:normal;color:#a06500;text-transform:none;letter-spacing:0}.gsum h6 .lk{margin-inline-start:auto;text-transform:none;letter-spacing:0;font-size:.74rem}
+.gsum div{display:flex;justify-content:space-between;gap:10px;padding:2px 0;font-size:.78rem}.gsum div span{color:var(--m)}.gsum div b{text-align:end}
+.gsm2{margin:0;font-size:.76rem;color:var(--ok);font-weight:600}
+@media (max-width:820px){.gcar{grid-template-columns:1fr}.gpeek{display:none}.gsums{grid-template-columns:1fr}.gf{grid-template-columns:1fr 1fr}.gtabs{grid-template-columns:1fr 1fr}}
 .gen{border:1.5px solid #ffc2d6;background:linear-gradient(120deg,#fff4f8,#fffaf7);border-radius:18px;padding:14px 16px;display:grid;gap:12px;margin-bottom:12px}
 .gen h5{margin:0;font-size:.95rem;display:flex;align-items:center;gap:8px;flex-wrap:wrap}.gen h5 small{margin-inline-start:auto;font-weight:600;color:var(--m);font-size:.72rem}
 .gchk{display:grid;grid-template-columns:1fr 1fr;gap:6px 14px}.gchk div{display:flex;gap:8px;align-items:flex-start;font-size:.8rem;font-weight:600}.gchk small{font-weight:500;color:#7a5a12}
@@ -1351,7 +1368,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     return up.length && rest.length ? { nom:up.join(' '), prenom:rest.join(' ') } : { nom:w[0] || '', prenom:w.slice(1).join(' ') };
   };
   function genInfo(r){
-    const ps = people(r), g = Object.assign({ dateActes:isoDay(new Date()), civ:'Mr', vn:'100', mandat:'illimitee', mandatDuree:'', objet:r.activite || '', adrLocal:'', numRC:'' }, r.gen || {});
+    const ps = people(r), g = Object.assign({ dateActes:isoDay(new Date()), civ:'Mr', vn:'100', duree:'99', ville:r.ville || '', mandat:'illimitee', mandatDuree:'', objet:r.activite || '', adrLocal:'', numRC:'' }, r.gen || {});
     const p = ps[0], id = p ? (r.ids || {})[p.k] : null, sp = splitName(id?.nom || p?.name);
     const nm = { prenom:g.prenom != null ? g.prenom : sp.prenom, nom:g.nom != null ? g.nom : sp.nom };
     const d = r.siege === 'local' ? null : DOMI[r.ref], c = genCentre(r), cap = +r.capital > 0 ? r.capital : g.capital;
@@ -1368,7 +1385,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   function genPayload(r, M){
     const x = genInfo(r), id = x.id || {}, g = x.g, C = x.c && M.listerCentres().find(c => c.id === x.c.id);
     const months = String(x.d?.months || C?.dureeMois || 6), lm = C ? +C.loyerMois : 0;
-    return { forme:'SARL_AU', denomination:r.cn?.nom || title(r), siege:C ? '' : r.siege === 'local' ? g.adrLocal : x.d?.centreAddress || '', ville:r.ville || '', duree:'99',
+    return { forme:'SARL_AU', denomination:r.cn?.nom || title(r), siege:C ? '' : r.siege === 'local' ? g.adrLocal : x.d?.centreAddress || '', ville:g.ville || r.ville || '', duree:String(g.duree || 99),
       capital:String(x.cap || ''), vn:String(g.vn || 100), dateCN:r.cn?.date || '', numCN:r.cn?.num || '', ice:r.cn?.ice || '', numRC:g.numRC || '', dateActes:g.dateActes,
       dureeDom:months, loyerMois:C ? C.loyerMois : '', loyerTotal:C ? (lm * +months).toFixed(2) : '', mandat:g.mandat, mandatDuree:g.mandatDuree,
       objetResume:g.objet, objetDetailKeep:false, objetDetail:g.objet, remarques:'', centreId:C ? C.id : 'aucun',
@@ -1382,27 +1399,60 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   const DOCX = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
   const download = (name, bytes, mime) => { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([bytes], { type:mime })); a.download = name; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 2000); };
   const genErr = e => e && e.erreurs ? 'À corriger : ' + e.erreurs.map(x => `${x.libelle || x.champ} (${x.message})`).join(', ') : 'Génération impossible : ' + (e && e.message || e);
-  const genChecks = x => x.checks.map(([ok, t, why]) => `<div class="${ok ? 'y' : 'n'}"><i>${ok ? '✓' : '!'}</i><span>${esc(t)}${ok ? '' : ` <small>· ${esc(why)}</small>`}</span></div>`).join('');
+  // The generation carousel (W2): 1 partner, 2 company, 3 domiciliation, 4 check and generate; the next page peeks on the right
+  const GEN_PAGES = [['👤', 'Associé'], ['🏢', 'Société'], ['📍', 'Domiciliation'], ['✓', 'Valider']];
+  const tag = t => `<span class="gsrc">${t}</span>`;
+  function genPagesOk(r, x){
+    const g = x.g, id = x.id || {};
+    return [
+      people(r).length === 1 && idsDone(r) && !!String(x.nm.nom).trim() && !!String(x.nm.prenom).trim(),
+      !!r.cn && +x.cap > 0 && !!String(g.objet).trim() && /^\d{4}-\d\d-\d\d$/.test(g.dateActes) && +g.vn > 0,
+      r.siege === 'local' ? !!String(g.adrLocal).trim() : !!x.d,
+    ];
+  }
   function genCardHtml(r, canEdit){
-    const x = genInfo(r), g = x.g, got = GEN[r.ref], done = !!r.gen?.at;
-    const chk = genChecks(x);
-    const note = x.d && !x.c ? `<p class="gnote">Contrat et attestation de ${esc(x.d.centreName)} : modèle à recevoir du centre. Les 6 documents de constitution sont générés.</p>` : '';
-    const sel = (k, opts) => `<select data-gen="${k}">${opts.map(([v, l]) => `<option value="${v}" ${String(g[k]) === v ? 'selected' : ''}>${l}</option>`).join('')}</select>`;
-    const fields = `<div class="gf">
-      <label class="cnl">Date des actes<input type="date" data-gen="dateActes" value="${esc(g.dateActes)}"></label>
-      ${+r.capital > 0 ? '' : `<label class="cnl">Capital (MAD)<input type="number" min="1" data-gen="capital" value="${esc(g.capital || '')}"></label>`}
-      <label class="cnl">Civilité${sel('civ', [['Mr', 'M.'], ['Mme', 'Mme']])}</label>
-      <label class="cnl">Prénom<input data-gen="prenom" value="${esc(x.nm.prenom)}" autocomplete="off"></label>
-      <label class="cnl">Nom de famille<input data-gen="nom" value="${esc(x.nm.nom)}" autocomplete="off"></label>
-      <label class="cnl">Valeur d'une part (MAD)<input type="number" min="1" data-gen="vn" value="${esc(g.vn)}"></label>
-      <label class="cnl">Mandat du gérant${sel('mandat', [['illimitee', 'Illimité'], ['limitee', 'Limité']])}</label>
-      ${g.mandat === 'limitee' ? `<label class="cnl w2">Durée du mandat<input data-gen="mandatDuree" value="${esc(g.mandatDuree)}" placeholder="ex. 3 ans renouvelables" autocomplete="off"></label>` : ''}
-      ${r.siege === 'local' ? `<label class="cnl w4">Adresse du local (siège social)<input data-gen="adrLocal" value="${esc(g.adrLocal)}" autocomplete="off"></label>` : ''}
-      <label class="cnl w4">Objet social (validé avec le client)<textarea data-gen="objet" rows="3">${esc(g.objet)}</textarea></label></div>`;
-    const list = got ? `<div class="gdocs">${got.map(d => `<div><i>W</i><span>${esc(d.label)}</span><button type="button" class="btn b-soft b-sm" data-gdl="${esc(d.id)}" aria-label="Télécharger ${esc(d.label)}">⬇</button></div>`).join('')}</div>` : '';
-    const sub = done ? `généré ${when(r.gen.at)}${member(r.gen.by) ? ' · ' + member(r.gen.by).name : ''}` : `${x.n} documents Word`;
-    return `<div class="gen"><h5>📄 ${done ? 'Documents générés' : 'Générer les documents'} <small>${esc(sub)}</small></h5><div class="gchk">${chk}</div>${note}${canEdit ? fields : ''}${list}
-      ${canEdit ? `<div class="gact"><button type="button" class="btn b-grad" id="genGo" ${x.ok ? '' : 'disabled'}>${done ? '↻ Régénérer' : `📄 Générer les ${x.n} documents`}</button>${done ? `<button type="button" class="btn b-soft" id="genZip" ${x.ok ? '' : 'disabled'}>⬇ Tout télécharger (.zip)</button>` : ''}${done ? '<span class="gsm">Relisez, puis cochez chaque document ci-dessous.</span>' : ''}</div>` : ''}</div>`;
+    const x = genInfo(r), g = x.g, id = x.id || {}, oks = genPagesOk(r, x), pg = Math.min(genPage, 3), got = GEN[r.ref], done = !!r.gen?.at, dis = canEdit ? '' : 'disabled';
+    const ro = (label, v, src) => `<label class="cnl"><span>${label}${src ? tag(src) : ''}</span><input value="${esc(v || '')}" readonly tabindex="-1" class="ro"></label>`;
+    const inp = (label, k, v, attrs = '') => `<label class="cnl">${label}<input data-gen="${k}" value="${esc(v || '')}" autocomplete="off" ${attrs} ${dis}></label>`;
+    const sel = (label, k, opts) => `<label class="cnl">${label}<select data-gen="${k}" ${dis}>${opts.map(([v, l]) => `<option value="${v}" ${String(g[k]) === v ? 'selected' : ''}>${l}</option>`).join('')}</select></label>`;
+    const parts = +x.cap > 0 && +g.vn > 0 ? Math.round(x.cap / g.vn) : 0;
+    const ps = people(r);
+    const pages = [
+      () => ps.length !== 1 ? `<p class="gnote">${ps.length} personnes dans ce dossier (associés et gérant) : les modèles SARL à plusieurs personnes ne sont pas encore disponibles.</p>`
+        : `<div class="gf">
+          ${sel('Civilité', 'civ', [['Mr', 'M.'], ['Mme', 'Mme']])}${inp('Prénom', 'prenom', x.nm.prenom)}${inp('Nom de famille', 'nom', x.nm.nom)}
+          ${ro('Né(e) le', fdate(id.dn), 'pièce')}${ro('À', id.ln, 'pièce')}${ro(id.type === 'pass' ? 'Passeport' : 'CIN', id.num, 'pièce')}
+          <label class="cnl w3"><span>Domicile${tag('pièce')}</span><input value="${esc(id.adr || '')}" readonly tabindex="-1" class="ro"></label>
+          ${ro('Qualité', 'Associé unique et gérant')}${sel('Mandat du gérant', 'mandat', [['illimitee', 'Illimité'], ['limitee', 'Limité']])}${ro('Parts', parts ? `${fmt(parts)} (100 %)` : '')}
+          ${g.mandat === 'limitee' ? inp('Durée du mandat', 'mandatDuree', g.mandatDuree, 'placeholder="ex. 3 ans renouvelables"') : ''}</div>
+          ${idsDone(r) ? '' : '<p class="gnote">Fiche d\'identité incomplète ou pièce expirée.</p>'}${canEdit ? '<button type="button" class="lk" data-idopen>✎ Modifier la fiche d\'identité</button>' : ''}`,
+      () => `<div class="gf">
+          ${ro('Dénomination', r.cn?.nom || '', 'certificat')}${ro('Forme', FORMES[r.forme] || r.forme)}${inp('Ville · tribunal', 'ville', g.ville)}
+          ${+r.capital > 0 ? ro('Capital', fmt(r.capital) + ' MAD', 'demande') : inp('Capital (MAD)', 'capital', g.capital, 'type="number" min="1"')}${inp("Valeur d'une part (MAD)", 'vn', g.vn, 'type="number" min="1"')}${inp('Durée (ans)', 'duree', g.duree, 'type="number" min="1" max="99"')}
+          ${ro('N° du certificat négatif', r.cn?.num, 'certificat')}${ro('ICE', r.cn?.ice, 'certificat')}${inp('Date des actes', 'dateActes', g.dateActes, 'type="date"')}
+          <label class="cnl w3">Objet social (validé avec le client)<textarea data-gen="objet" rows="3" ${dis}>${esc(g.objet)}</textarea></label></div>
+          ${r.cn ? '' : '<p class="gnote">Certificat négatif à enregistrer à l\'étape 2 (dénomination, N°, ICE).</p>'}`,
+      () => r.siege === 'local' ? `<div class="gf"><label class="cnl w3">Adresse du local (siège social)<input data-gen="adrLocal" value="${esc(g.adrLocal)}" autocomplete="off" ${dis}></label></div><p class="gsm2">Local du client : les 6 documents de constitution sont générés.</p>`
+        : !x.d ? `<p class="gnote">Aucun centre attribué : choisissez-le dans la tâche « Centre de domiciliation attribué » ci-dessous.</p>`
+        : `<div class="gf">${ro('Centre', x.d.centreName)}${ro('Durée', (x.d.months || 6) + ' mois')}${ro('Ville', x.d.centreCity || '')}
+          <label class="cnl w3">Siège social<input value="${esc(x.d.centreAddress || '')}" readonly tabindex="-1" class="ro"></label></div>
+          ${x.c ? `<p class="gsm2">✓ Modèles du centre disponibles : ${x.c.n === 3 ? 'contrat, attestation et procuration' : 'contrat et attestation'}.</p>` : `<p class="gnote">Contrat et attestation de ${esc(x.d.centreName)} : modèle à recevoir du centre. Les 6 documents de constitution sont générés.</p>`}`,
+      () => {
+        const blk = (i, rows) => `<div class="gsum"><h6>${GEN_PAGES[i][0]} ${GEN_PAGES[i][1]} ${oks[i] ? '' : '<em>à compléter</em>'}<button type="button" class="lk" data-gpage="${i}">Modifier</button></h6>${rows.map(([k, v]) => `<div><span>${esc(k)}</span><b>${esc(v || '—')}</b></div>`).join('')}</div>`;
+        const docs = got ? `<div class="gdocs">${got.map(d => `<div><i>W</i><span>${esc(d.label)}</span><button type="button" class="btn b-soft b-sm" data-gdl="${esc(d.id)}" aria-label="Télécharger ${esc(d.label)}">⬇</button></div>`).join('')}</div>` : '';
+        return `<div class="gsums">${blk(0, [['Nom', `${g.civ === 'Mme' ? 'Mme' : 'M.'} ${x.nm.prenom} ${x.nm.nom}`], [id.type === 'pass' ? 'Passeport' : 'CIN', id.num], ['Né(e) le', id.dn ? `${fdate(id.dn)} à ${id.ln}` : ''], ['Qualité', 'Associé unique et gérant']])}
+          ${blk(1, [['Dénomination', r.cn ? `${r.cn.nom} ${FORMES[r.forme] || ''}` : ''], ['Capital', +x.cap > 0 ? `${fmt(x.cap)} MAD · ${fmt(parts)} parts` : ''], ['ICE', r.cn?.ice], ['Actes du', fdate(g.dateActes)]])}
+          <div class="w2">${blk(2, r.siege === 'local' ? [['Siège', g.adrLocal]] : [['Centre', x.d ? `${x.d.centreName} · ${x.d.months || 6} mois` : ''], ['Siège', x.d?.centreAddress]])}</div></div>
+          ${docs}${done ? `<p class="gsm2">Généré ${esc(when(r.gen.at))}${member(r.gen.by) ? ' · ' + esc(member(r.gen.by).name) : ''}. Relisez, puis cochez chaque document ci-dessous.</p>` : ''}
+          ${canEdit ? `<div class="gact"><button type="button" class="btn b-grad" id="genGo" ${x.ok && oks.every(Boolean) ? '' : 'disabled'}>${done ? '↻ Régénérer' : `📄 Générer les ${x.n} documents (.zip)`}</button>${done ? `<button type="button" class="btn b-soft" id="genZip" ${x.ok ? '' : 'disabled'}>⬇ Tout télécharger (.zip)</button>` : ''}</div>` : ''}`;
+      }
+    ];
+    const tabs = GEN_PAGES.map(([ic, t], i) => `<button type="button" data-gpage="${i}" class="${i === pg ? 'on' : i < 3 && oks[i] ? 'd' : ''}">${i < 3 && oks[i] && i !== pg ? '✓' : i + 1} · ${t}</button>`).join('');
+    const nav = `<div class="gnav">${pg > 0 ? `<button type="button" class="btn b-soft" data-gpage="${pg - 1}">← ${GEN_PAGES[pg - 1][1]}</button>` : ''}${pg < 3 ? `<button type="button" class="btn b-grad" data-gpage="${pg + 1}">Suivant : ${GEN_PAGES[pg + 1][1].toLowerCase()} →</button>` : ''}</div>`;
+    const peekTxt = [`${FORMES[r.forme] || ''} · ${r.cn?.nom || title(r)} · capital, ICE, objet social`, r.siege === 'local' ? 'Local du client' : x.d ? `${x.d.centreName} · ${x.d.months || 6} mois` : 'Centre à attribuer', `Résumé et génération des ${x.n} documents`];
+    const peek = pg < 3 ? `<button type="button" class="gpeek" data-gpage="${pg + 1}"><small>Page suivante</small><b>${pg + 2} · ${GEN_PAGES[pg + 1][1]}</b><span>${esc(peekTxt[pg])}</span><i>›</i></button>` : '';
+    return `<div class="gcar ${pg === 3 ? 'last' : ''}"><div class="gcard"><div class="gtabs">${tabs}</div>
+      <h5>${GEN_PAGES[pg][0]} ${['L\'associé unique et gérant', 'La société', 'La domiciliation', done ? 'Documents générés' : 'Valider et générer'][pg]}</h5>${pages[pg]()}${pg < 3 ? nav : ''}</div>${peek}</div>`;
   }
   function annCardHtml(r, canEdit){
     const x = genInfo(r), rc = x.g.numRC || '';
@@ -1458,7 +1508,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   }
   function renderDetail(){
     const r = current && get(current);
-    if (current !== renderDetail.last) { rejectOpen = false; msgMore = false; qFocus = null; moreOpen = null; msgSel = null; view = null; cnOpen = false; idOpen = null; renderDetail.last = current; }
+    if (current !== renderDetail.last) { rejectOpen = false; msgMore = false; qFocus = null; moreOpen = null; msgSel = null; view = null; cnOpen = false; idOpen = null; genPage = 0; renderDetail.last = current; }
     if (!r || !allowed(r)) {
       $('#detail').innerHTML = '<div class="ctr"><div class="blank"><b>Sélectionnez un dossier</b><span>La liste des demandes est à gauche.</span></div></div>';
       return;
@@ -1591,16 +1641,17 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
       </div>
       </div>` : ''}
     `;
+    const genWide = vi === 2 && r.forme !== 'ae';      // drafting: the generation carousel shows all the data, full width instead of the sheet
     const slide = `${r.step >= DONE ? '<div class="tile hot" style="text-align:center"><b>✓ Dossier livré</b><small>Tous les documents ont été envoyés au client.</small></div>' : ''}
       <div class="k1">${side}<div class="kmain">
-      <div class="slide ${past ? 'past' : isNow ? 'now' : 'later'}" id="slide">
+      <div class="slide ${past ? 'past' : isNow ? 'now' : 'later'}${genWide ? ' wide' : ''}" id="slide">
         <div><div class="no">Étape ${vi + 1} / ${DONE} <em class="${state[0]}">${state[1]}</em></div><h2>${esc(vw.name)}</h2><p class="hint">${esc(vw.hint)}</p>
           ${vi === 0 && scored(r) ? verdictLine(r) : ''}${cnWarn}${isNow && rej ? rej : ''}
           ${vi === 2 && r.forme !== 'ae' ? genCardHtml(r, canEdit) : vi === 6 && r.forme !== 'ae' ? annCardHtml(r, canEdit) : ''}
           <div class="tasks">${rows.join('')}</div>${showMsg ? msgMoreHtml : ''}
           <div class="foot">${foot}</div>${lks ? `<div class="lks">${lks}</div>` : ''}</div>
-        <div class="fz"><h4>Fiche de l'étape <button class="btn b-soft b-sm" data-cps="${esc(fzText)}">⧉ Tout copier</button></h4><small>${esc(fz.sub)}</small>
-          <div>${fz.rows.map(([k, v]) => `<div class="fr"><span>${esc(k)}</span>${v ? `<b>${esc(v)}</b><button class="cp" data-cp="${esc(v)}" title="Copier" aria-label="Copier ${esc(k)}">⧉</button>` : '<b class="na">Non renseigné</b>'}</div>`).join('')}</div></div>
+        ${genWide ? '' : `<div class="fz"><h4>Fiche de l'étape <button class="btn b-soft b-sm" data-cps="${esc(fzText)}">⧉ Tout copier</button></h4><small>${esc(fz.sub)}</small>
+          <div>${fz.rows.map(([k, v]) => `<div class="fr"><span>${esc(k)}</span>${v ? `<b>${esc(v)}</b><button class="cp" data-cp="${esc(v)}" title="Copier" aria-label="Copier ${esc(k)}">⧉</button>` : '<b class="na">Non renseigné</b>'}</div>`).join('')}</div></div>`}
       </div>${panelHtml}</div></div>${cnOpen && canEdit ? cnWindow(r) : ''}${idOpen && canEdit ? idWindow(r) : ''}`;
     $('#detail').innerHTML = `
     <section class="ctr">
@@ -1678,10 +1729,12 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   }
 
   // Actions on the open file (event delegation)
-  let rejectOpen = false, msgMore = false, qFocus = null, moreOpen = null, view = null, cnOpen = false, idOpen = null;   // cnOpen: the « certificat obtenu » window   // view: the step shown in the carousel (null: the current one)
+  let rejectOpen = false, msgMore = false, qFocus = null, moreOpen = null, view = null, cnOpen = false, idOpen = null, genPage = 0;   // cnOpen: the « certificat obtenu » window   // view: the step shown in the carousel (null: the current one)
   const qSkip = {};                                    // questions passed with « En cours » / « Pas encore », per file and step
   $('#detail').addEventListener('click', e => {
     const r = current && get(current); if (!r) return;
+    const gp = e.target.closest('[data-gpage]');
+    if (gp) { genPage = +gp.dataset.gpage; renderDetail(); return; }
     if (e.target.closest('#genGo') || e.target.closest('#genZip') || e.target.closest('[data-gdl]') || e.target.closest('#annGo')) {
       const b = e.target.closest('button'); if (b.disabled) return;
       const kind = b.id === 'genGo' ? 'go' : b.id === 'genZip' ? 'zip' : b.id === 'annGo' ? 'ann' : 'one', label = b.textContent; b.disabled = true; b.textContent = 'Génération…';
@@ -1823,7 +1876,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     if (e.target.closest('#idForm') && $('#idErr')) $('#idErr').hidden = true;
     if (e.target.dataset.gen) {
       const r = get(current); r.gen = Object.assign({}, r.gen, { [e.target.dataset.gen]:e.target.value });
-      const x = genInfo(r); if ($('.gchk')) $('.gchk').innerHTML = genChecks(x); ['genGo', 'genZip'].forEach(id => { const b = $('#' + id); if (b) b.disabled = !x.ok; }); const a = $('#annGo'); if (a) a.disabled = !(x.ok && x.g.numRC);
+      const x = genInfo(r); ['genGo', 'genZip'].forEach(id => { const b = $('#' + id); if (b) b.disabled = !x.ok; }); const a = $('#annGo'); if (a) a.disabled = !(x.ok && x.g.numRC);
     }
     if (e.target.id === 'idExp') { const v = e.target.value, d = v ? daysTo(v) : null, o = $('#idExpOk'); o.textContent = d != null ? validLeft(d) : ''; o.className = d == null ? '' : d < 0 ? 'ko' : 'ok'; e.target.classList.toggle('bad', d != null && d < 0); $('#idWarn').hidden = !(d != null && d < 0); }
     if (e.target.id === 'cnIce') { e.target.value = e.target.value.replace(/\D/g, '').slice(0, 15); const n = e.target.value.length; $('#cnIceOk').textContent = n === 15 ? '✓ 15 chiffres' : n ? `${n} / 15 chiffres` : ''; $('#cnIceOk').className = n === 15 ? 'ok' : ''; }
