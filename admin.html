@@ -296,22 +296,19 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
 /* Centre */
 .ctr{padding:20px 24px;display:grid;gap:16px;align-content:start;grid-auto-rows:max-content;overflow:auto;min-height:0;min-width:0}
 .ctr > *{min-width:0}
-.ctr .h{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.ctr .h{display:flex;align-items:center;gap:14px;flex-wrap:wrap;background:#fff;border:1px solid var(--line);border-radius:20px;padding:14px 16px}
+.ctr .h .stp{background:var(--blush,#fff1f5);color:var(--rose,#ff4f91);border-radius:999px;padding:4px 11px;font-size:.74rem;font-weight:700;white-space:nowrap}
 .ctr .h h2{font-size:1.35rem;letter-spacing:-.03em}
 .ctr .h small{color:var(--m);font-size:.74rem}
 .ctr .h .r{margin-inline-start:auto;display:flex;gap:8px;flex-wrap:wrap}
 .back{display:none}
 .trackw{border-radius:18px;overflow-x:auto}
-.track{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px 8px;display:grid;grid-template-columns:repeat(10,minmax(60px,1fr));min-width:620px}
-.track .ts{display:grid;cursor:default;user-select:none;justify-items:center;gap:6px;text-align:center;font-size:.68rem;color:var(--m);position:relative;padding:0 2px}
-.track .ts::before{content:"";position:absolute;top:13px;inset-inline-end:50%;width:100%;height:3px;background:var(--line)}
-.track .ts:first-child::before{display:none}
-.track .ts.ok::before,.track .ts.cur::before{background:var(--ok)}
-.track i{width:28px;height:28px;border-radius:50%;background:#fff;border:2px solid var(--line);display:grid;place-items:center;font-style:normal;font-weight:800;font-size:.72rem;position:relative;z-index:1}
-.track .ok i{background:var(--ok);border-color:var(--ok);color:#fff}
-.track .cur i{border-color:var(--pink);color:var(--pink);box-shadow:0 0 0 5px rgba(255,79,154,.15)}
-.track .cur{color:var(--ink);font-weight:700}
-.track .rj i{border-color:var(--err);color:var(--err);box-shadow:0 0 0 5px rgba(192,54,44,.14)}
+.track{display:grid;grid-template-columns:repeat(10,minmax(78px,1fr));gap:6px;min-width:820px}
+.track .ts{display:flex;align-items:center;justify-content:center;gap:5px;cursor:default;user-select:none;text-align:center;font-size:.7rem;font-weight:700;line-height:1.2;color:var(--m);background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 6px;min-height:42px}
+.track i{font-style:normal;font-weight:800}
+.track .ok{background:#e9f7f0;border-color:#cdeedd;color:var(--ok)}
+.track .cur{background:var(--grad);border-color:transparent;color:#fff;box-shadow:0 10px 22px -12px #ff4f91}
+.track .rj{background:#fff0ee;border-color:#f6c6bf;color:var(--err);box-shadow:none}
 .cur-step{border-color:#ffc2d6;box-shadow:inset 4px 0 0 var(--pink)}
 .cur-step.okb{border-color:#c5ead7;box-shadow:inset 4px 0 0 var(--ok)}
 .hint{font-size:.78rem;color:var(--m);margin-top:-4px}
@@ -363,6 +360,23 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
 .li small.rej{color:var(--err);font-weight:600}
 .two{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
 .two > *,.box,.lgrp,.lv{min-width:0}
+.board{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;align-items:start}
+.bcol{background:#f6eef0;border-radius:20px;padding:12px;display:grid;gap:10px;min-width:0}
+.bcol > h3{margin:2px 4px 0;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--m);display:flex;justify-content:space-between;align-items:center;gap:8px}
+.bcol > h3 small{font-size:.72rem;letter-spacing:0;color:var(--ink)}
+.bcol .box{border-radius:16px}
+.bcol .tk{grid-template-columns:22px 1fr;row-gap:6px}
+.bcol .tk > button,.bcol .tk > .pill{grid-column:1/-1;justify-self:stretch;text-align:center}
+.bcol .dpanel{margin-top:0;background:#fff;border-color:var(--line)}
+.bcol .dpanel .dadr{display:grid;grid-template-columns:1fr auto;gap:4px 8px;background:var(--blush,#fff1f5);border-radius:12px;padding:10px}
+.bcol .dpanel .dadr span{grid-column:1/-1;color:var(--m);font-size:.72rem}.bcol .dpanel .dadr b{margin:0;text-align:start;font-size:.86rem}
+.bcol .dpanel .dadr .cp{background:var(--grad);color:#fff;border-radius:10px;padding:4px 10px;font-weight:700;font-size:.75rem}
+.bcol .dsel{display:grid;gap:6px}
+.bcol .mrow select{min-width:0;flex-basis:100%}
+.bcol .box h4{flex-direction:column;align-items:flex-start;gap:2px}
+.bcol .box h4 small{font-size:.7rem}
+.bcol .mprev{max-height:180px}
+.bcol .dd{flex-wrap:wrap}.bcol .dd > span{flex:1 1 calc(100% - 30px)}.bcol .dd > .tg{flex:1;text-align:center}
 .box{background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px;display:grid;gap:10px;align-content:start}
 .box h4{font-size:.88rem;display:flex;justify-content:space-between;align-items:center;gap:8px}
 .box h4 small{color:var(--m);font-weight:600;font-size:.72rem}
@@ -1186,6 +1200,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
       <div class="h">
         <button class="btn b-soft b-sm back" id="back">← Liste</button>
         <div><h2>${esc(title(r))}${isPrio(r) ? ' <em class="prio">⚡ Prioritaire</em>' : ''}</h2><small class="mono">${esc(r.ref)} · ${esc(FORMES[r.forme] || '')} · ${esc(r.ville || '')} · ${esc(PLANS[r.plan] || '')}</small></div>
+        <span class="stp">${r.step >= DONE ? '✓ Livré' : `Étape ${r.step + 1} · ${esc(WORKFLOW[r.step].name)}`}</span>
         <div class="r">
           <button class="btn b-soft" id="ficheToggle" aria-pressed="${ficheOn}">${ficheOn ? 'Masquer la demande' : 'Voir la demande'}</button>
           ${waBtn('WhatsApp', '')}
@@ -1194,10 +1209,31 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
           ${r.step >= DONE ? '<span class="pill p-ok">✓ Dossier livré</span>' : ''}
         </div>
       </div>
-      <div class="trackw"><div class="track" role="list">${WORKFLOW.map((x, i) => `<div role="listitem" class="ts ${i < r.step ? 'ok' : i === r.step ? (r.reject && x.reject ? 'cur rj' : 'cur') : ''}" title="${esc(x.name)}"><i>${i < r.step ? '✓' : r.reject && x.reject && i === r.step ? '!' : i + 1}</i>${esc(x.short)}</div>`).join('')}</div></div>
+      <div class="trackw"><div class="track" role="list">${WORKFLOW.map((x, i) => `<div role="listitem" class="ts ${i < r.step ? 'ok' : i === r.step ? (r.reject && x.reject ? 'cur rj' : 'cur') : ''}" title="${esc(x.name)}"><span><i>${i < r.step ? '✓' : r.reject && x.reject && i === r.step ? '!' : i + 1 + ' ·'}</i> ${esc(x.short)}</span></div>`).join('')}</div></div>
       ${scored(r) ? scoreBox(r, canEdit) : ''}
-      ${curBox}
-      ${msgBox}
+      <div class="board">
+        <div class="bcol"><h3>Équipe <small>${r.step >= DONE ? '✓' : tasksOf(r, r.step).filter(tk => !taskDone(r, tk)).length}</small></h3>
+          ${curBox}
+        </div>
+        <div class="bcol"><h3>Client <small>${docs.length - piecesOk + (mk === auto && !sentAt && mk !== 'libre' ? 1 : 0)}</small></h3>
+          ${msgBox}
+        <div class="box"><h4>Pièces du client <small>${piecesOk}/${docs.length} reçue${piecesOk > 1 ? 's' : ''}</small></h4>
+          <div class="dds">${docs.map(d => `<div class="dd ${r.docs[d.k] ? 's2' : ''}"><i class="dcb">${r.docs[d.k] ? '✓' : ''}</i><span>${esc(d.label)}</span>
+            ${canEdit ? `<button class="tg ${r.docs[d.k] ? 'y' : ''}" data-doc="${d.k}">${r.docs[d.k] ? 'Reçue ✓' : 'Reçue'}</button>` : ''}
+            ${!r.docs[d.k] ? `<a class="tg" href="${waLink(r.client?.tel, `Bonjour ${r.client?.nom || ''}, pour avancer sur votre dossier ${r.ref}, merci de nous envoyer : ${d.label}.`)}" target="_blank" rel="noopener">Relancer</a>` : ''}</div>`).join('')}</div>
+        </div>
+        </div>
+        <div class="bcol"><h3>Domiciliation <small>${DOMI[r.ref]?.status === 'done' ? '✓' : ''}</small></h3>
+          ${domiBox(r) || `<div class="box"><h4>Siège <small>${r.siege === 'local' ? 'local du client' : r.forme === 'ae' ? 'auto-entrepreneur' : 'domiciliation'}</small></h4><p class="hint" style="margin:0">${r.siege === 'local' ? 'Le client fournit son propre local : adresse à reprendre dans la demande.' : 'Pas de centre à attribuer pour ce dossier.'}</p></div>`}
+          ${affBox(r)}
+        </div>
+        <div class="bcol"><h3>Paiements <small>${fmt(paidSum)} / ${r.total == null ? 'devis' : fmt(r.total)}</small></h3>
+        <div class="box"><h4>${esc(PAY[r.payMethod] || 'Paiement')} <small>${r.total == null ? 'sur devis' : 'reste ' + fmt(r.total - paidSum) + ' MAD'}</small></h4>
+          <div class="prog"><i style="width:${r.total ? paidSum / r.total * 100 : 0}%"></i></div>
+          <div class="pays3">${am.map(a => `<div class="${payDone(r, a.k) ? 'y' : ''}"><i>${payDone(r, a.k) ? '✓' : ''}</i><span>${esc(a.label)}${payDone(r, a.k) ? ' · reçu' : ''}</span><b>${a.v == null ? 'Sur devis' : fmt(a.v) + ' MAD'}</b></div>`).join('')}</div>
+        </div>
+        </div>
+      </div>
       <div class="box"><h4>Documents de la société <small>${livOk}/${docsTotal(r)} obtenus</small></h4>
         <div class="prog"><i style="width:${livOk / docsTotal(r) * 100}%"></i></div>
         <div class="dtl">${WORKFLOW.map((x, i) => {
@@ -1209,20 +1245,8 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
           const meta = all ? `${ok}/${ds.length} ✓${state === 'done' && ds.length > 1 ? ' · ' + esc(names) : ''}` : state === 'now' ? `${ok}/${ds.length} · en cours` : state === 'late' ? `${ok}/${ds.length} · en retard` : `${ds.length} document${ds.length > 1 ? 's' : ''}`;
           return `<div class="dti ${state}${open ? ' open' : ''}"><span class="ddot">${all ? '✓' : i + 1}</span><div>
             <button type="button" class="dth" data-lstep="${i}" aria-expanded="${open}"><b>${esc(x.name)}</b><small>${meta}</small></button>
-            ${open ? `<div class="dds">${ds.map(tk => { const st = r.livrables[tk.k] || 0; return `<div class="dd s${st}"><i class="dcb">${st === 2 ? '✓' : ''}</i><span>${esc(DOCS[tk.k][0])}</span>${docBtn(tk.k)}</div>`; }).join('')}</div>${ds.some(tk => tk.k === 'domiciliation') ? domiBox(r) : ''}` : ''}
+            ${open ? `<div class="dds">${ds.map(tk => { const st = r.livrables[tk.k] || 0; return `<div class="dd s${st}"><i class="dcb">${st === 2 ? '✓' : ''}</i><span>${esc(DOCS[tk.k][0])}</span>${docBtn(tk.k)}</div>`; }).join('')}</div>` : ''}
           </div></div>`; }).join('')}</div>
-      </div>
-      <div class="two">
-        <div class="box"><h4>Pièces du client <small>${piecesOk}/${docs.length} reçue${piecesOk > 1 ? 's' : ''}</small></h4>
-          <div class="dds">${docs.map(d => `<div class="dd ${r.docs[d.k] ? 's2' : ''}"><i class="dcb">${r.docs[d.k] ? '✓' : ''}</i><span>${esc(d.label)}</span>
-            ${canEdit ? `<button class="tg ${r.docs[d.k] ? 'y' : ''}" data-doc="${d.k}">${r.docs[d.k] ? 'Reçue ✓' : 'Reçue'}</button>` : ''}
-            ${!r.docs[d.k] ? `<a class="tg" href="${waLink(r.client?.tel, `Bonjour ${r.client?.nom || ''}, pour avancer sur votre dossier ${r.ref}, merci de nous envoyer : ${d.label}.`)}" target="_blank" rel="noopener">Relancer</a>` : ''}</div>`).join('')}</div>
-        </div>
-        <div class="box"><h4>Paiements <small>${esc(PAY[r.payMethod] || '')} · ${fmt(paidSum)} / ${r.total == null ? 'sur devis' : fmt(r.total) + ' MAD'}</small></h4>
-          <div class="prog"><i style="width:${r.total ? paidSum / r.total * 100 : 0}%"></i></div>
-          <div class="pays3">${am.map(a => `<div class="${payDone(r, a.k) ? 'y' : ''}"><i>${payDone(r, a.k) ? '✓' : ''}</i><span>${esc(a.label)}${payDone(r, a.k) ? ' · reçu' : ''}</span><b>${a.v == null ? 'Sur devis' : fmt(a.v) + ' MAD'}</b></div>`).join('')}</div>
-        </div>
-        ${affBox(r)}
       </div>
       <div class="box"><h4>Historique et notes de l'équipe <small>visibles par l'équipe seulement</small></h4>
         <div class="feed" id="feed">${r.notes.map(n => { const w = member(n.by); return `<div class="msg ${n.t === 'sys' ? 'sys' : ''}"><span class="av" style="--c:${w ? w.c : '#c9b6c4'}">${n.t === 'sys' && !w ? '•' : esc((w?.name || '?')[0])}</span><div><small>${n.t === 'sys' ? 'Suivi' : 'Note'}${w ? ' · ' + esc(w.name) : ''} · ${when(n.at)}</small>${esc(n.text)}</div></div>`; }).join('')}</div>
@@ -1283,7 +1307,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     if (!SERVER || r.kind === 'rappel' || r.siege !== 'dom' || r.forme === 'ae') return '';
     const d = DOMI[r.ref], [sl, sc] = d ? DOMI_ST[d.status] || [d.status, 'p-mute'] : ['Aucun centre attribué', 'p-mute'];
     let html = `<div class="row"><span>Centre</span><b>${d ? esc(d.centreName) : '—'}</b></div>`;
-    if (d && d.centreAddress) html += `<div class="row dadr"><span>Adresse du siège</span><b>${esc(d.centreAddress)}</b><button class="cp" data-cp="${esc(d.centreAddress)}" title="Copier l'adresse" aria-label="Copier l'adresse du siège">⧉</button></div>`;
+    if (d && d.centreAddress) html += `<div class="row dadr"><span>Adresse du siège</span><b>${esc(d.centreAddress)}</b><button class="cp" data-cp="${esc(d.centreAddress)}" title="Copier l'adresse" aria-label="Copier l'adresse du siège">⧉ Copier</button></div>`;
     html += `<div class="row"><span>Statut</span><span class="pill ${sc}">${sl}</span></div>`;
     if (d) html += `<div class="row"><span>Durée</span><b>${d.months} mois${me.role === 'admin' && d.rate ? ` · ${fmt(d.rate)} MAD au centre` : ''}</b></div>`;
     if (d && d.attFile) html += `<a class="btn b-soft b-sm" href="/api/admin/centre-files/${esc(d.attFile)}" target="_blank" rel="noopener">📎 Voir l'attestation</a>`;
