@@ -790,7 +790,7 @@ button.vcheck{width:100%;margin-top:12px;border:0;cursor:pointer;text-align:star
     const box = $('#domi'); if (!box) return;
     const on = val('siege') === 'dom' && val('forme') !== 'ae' && CENTRES.length > 0;
     box.hidden = !on; if (!on) return;
-    const city = $('#ville').value.trim(), list = CENTRES.filter(c => normCity(c.city) === normCity(city));
+    const city = $('#ville').value.trim(), list = CENTRES.filter(c => normCity(canonCity(c.city)) === normCity(canonCity(city)));
     const cur = val('centre'), en = lang === 'en';
     // District filter, only when the city has centres in more than one district
     const dists = [...new Set(list.map(c => (c.district || '').trim()).filter(Boolean))];
@@ -854,14 +854,35 @@ button.vcheck{width:100%;margin-top:12px;border:0;cursor:pointer;text-align:star
   // ---------- City search: type a few letters, accents and dashes don't matter; any other town can be typed in full ----------
   const CITIES = ['Agadir','Ahfir','Al Aroui','Al Hoceïma','Amizmiz','Aousserd','Asilah','Assa','Azemmour','Azilal','Azrou','Aït Melloul','Aït Ourir','Ben Ahmed','Ben Guerir','Benslimane','Berkane','Berrechid','Biougra','Bir Gandouz','Bir Jdid','Bouarfa','Bouizakarne','Boujad','Boujdour','Boulemane','Boumalne Dadès','Bouskoura','Béni Mellal','Casablanca','Chefchaouen','Chichaoua','Chtouka Aït Baha','Dakhla','Dar Bouazza','Dcheira El Jihadia','Driouch','El Hajeb','El Jadida','El Kelâa des Sraghna','El Marsa','Erfoud','Errachidia','Es-Semara','Essaouira','Figuig','Fnideq','Fquih Ben Salah','Fès','Goulmima','Guelmim','Guercif','Had Soualem','Ifrane','Imouzzer Kandar','Imzouren','Inezgane','Jerada','Kasba Tadla','Kelaat M\'Gouna','Khouribga','Khémisset','Khénifra','Ksar El Kébir','Kénitra','Larache','Laâyoune','M\'diq','M\'rirt','Marrakech','Martil','Mechra Bel Ksiri','Mehdia','Meknès','Midelt','Missour','Mohammedia','Moulay Yacoub','Médiouna','Nador','Nouaceur','Ouarzazate','Ouazzane','Oued Zem','Oujda','Oulad Abbou','Oulad Teima','Rabat','Rissani','Rommani','Safi','Salé','Saïdia','Sebt Gzoula','Sefrou','Selouane','Settat','Sidi Bennour','Sidi Ifni','Sidi Kacem','Sidi Slimane','Sidi Yahya El Gharb','Skhirat','Souk El Arbaa','Souk Sebt Oulad Nemma','Taghazout','Tahannaout','Tamansourt','Tan-Tan','Tanger','Taounate','Taourirt','Tarfaya','Taroudant','Tata','Taza','Tiflet','Tinghir','Tit Mellil','Tiznit','Témara','Tétouan','Youssoufia','Zagora','Zaïo'].sort((a, b) => a.localeCompare(b, 'fr'));
   const cnorm = v => v.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z]/g, '');
+  // Smart city matching: common spellings (« Mrakech », « Casa », « Fez »…) and close typos find the right city.
+  const CITY_ALIAS = { mrakech:'Marrakech', marakech:'Marrakech', marrakesh:'Marrakech', marakesh:'Marrakech', marrakch:'Marrakech', mrrakech:'Marrakech', kech:'Marrakech',
+    casa:'Casablanca', casablanka:'Casablanca', kazablanka:'Casablanca', darbeida:'Casablanca', darelbeida:'Casablanca', dbeida:'Casablanca',
+    tangier:'Tanger', tanja:'Tanger', tangiers:'Tanger', fez:'Fès', fas:'Fès', meknes:'Meknès', miknas:'Meknès', mekness:'Meknès',
+    tetouan:'Tétouan', tetuan:'Tétouan', titwan:'Tétouan', sale:'Salé', sla:'Salé', rbat:'Rabat', jdida:'El Jadida', eljadida:'El Jadida',
+    laayoune:'Laâyoune', layoune:'Laâyoune', elaaiun:'Laâyoune', wjda:'Oujda', ujda:'Oujda', tmara:'Témara', temara:'Témara', mohamedia:'Mohammedia', mhammedia:'Mohammedia',
+    benimellal:'Béni Mellal', bnimellal:'Béni Mellal', knitra:'Kénitra', kenitra:'Kénitra', khribga:'Khouribga', nadour:'Nador', ouarzazat:'Ouarzazate', warzazat:'Ouarzazate',
+    sweira:'Essaouira', souira:'Essaouira', mogador:'Essaouira', tiznite:'Tiznit', errachidiya:'Errachidia', rachidia:'Errachidia', settate:'Settat', berrchid:'Berrechid' };
+  const skel = v => cnorm(v).replace(/[aeiouy]/g, '').replace(/(.)\1+/g, '$1');      // consonants only: « mrakech » and « marrakech » → « mrkch »
+  const lev = (a, b) => { const d = Array.from({ length:b.length + 1 }, (_, i) => i);
+    for (let i = 1; i <= a.length; i++) { let p = d[0]; d[0] = i; for (let j = 1; j <= b.length; j++) { const t = d[j]; d[j] = Math.min(d[j] + 1, d[j - 1] + 1, p + (a[i - 1] === b[j - 1] ? 0 : 1)); p = t; } }
+    return d[b.length]; };
+  // The listed city a typed name surely means (alias or same consonants), or null
+  const strongCity = v => { const q = cnorm(v); if (!q) return null; if (CITY_ALIAS[q]) return CITY_ALIAS[q];
+    const exact = CITIES.find(c => cnorm(c) === q); if (exact) return exact;
+    if (q.length < 4) return null; const k = skel(v), m = CITIES.filter(c => skel(c) === k); return m.length === 1 ? m[0] : null; };
+  const canonCity = v => strongCity(v) || String(v || '').trim();
   (() => {
     const inp = $('#ville'), list = $('#villeList'); let items = [], act = -1;
-    const mark = (c, q) => { if (!q) return escapeHtml(c); let i = 0, j = 0, out = '', on = false; const nc = cnorm(c), at = nc.indexOf(q);
+    const mark = (c, q) => { if (!q) return escapeHtml(c); let i = 0, j = 0, out = '', on = false; const nc = cnorm(c), at = nc.indexOf(q); if (at < 0) return escapeHtml(c);
       for (const ch of c) { const k = cnorm(ch); const inQ = k && j >= at && j < at + q.length; if (inQ !== on) { out += inQ ? '<b>' : '</b>'; on = inQ; } out += escapeHtml(ch); j += k.length; i++; }
       return out + (on ? '</b>' : ''); };
     function render(){
       const raw = inp.value.trim(), q = cnorm(raw);
-      const hits = q ? CITIES.filter(c => cnorm(c).includes(q)).sort((a, b) => cnorm(b).startsWith(q) - cnorm(a).startsWith(q)) : CITIES;
+      let hits = q ? CITIES.filter(c => cnorm(c).includes(q)).sort((a, b) => cnorm(b).startsWith(q) - cnorm(a).startsWith(q)) : CITIES;
+      if (q.length >= 3) {                                   // spellings and typos: « Mrakech » → Marrakech
+        const sure = strongCity(raw), near = CITIES.filter(c => !hits.includes(c) && (skel(c).startsWith(skel(raw)) && skel(raw).length >= 3 || lev(cnorm(c).slice(0, q.length + 1), q) <= (q.length >= 6 ? 2 : 1)));
+        hits = [...new Set([...(sure ? [sure] : []), ...hits, ...near])];
+      }
       items = hits.slice();
       const exact = hits.some(c => cnorm(c) === q);
       let h = hits.map((c, i) => `<li role="option" data-i="${i}" id="vo${i}">${mark(c, q)}</li>`).join('');
@@ -883,7 +904,7 @@ button.vcheck{width:100%;margin-top:12px;border:0;cursor:pointer;text-align:star
     list.addEventListener('pointerdown', e => e.preventDefault());
     list.addEventListener('mousedown', e => e.preventDefault());
     list.addEventListener('click', e => { const li = e.target.closest('li[data-i]'); if (li) pick(+li.dataset.i); });
-    inp.addEventListener('blur', () => { setTimeout(() => open(false), 200); const q = cnorm(inp.value), c = q && CITIES.find(x => cnorm(x) === q); if (c && c !== inp.value) { inp.value = c; inp.dispatchEvent(new Event('change', { bubbles:true })); } });
+    inp.addEventListener('blur', () => { setTimeout(() => open(false), 200); const c = strongCity(inp.value); if (c && c !== inp.value) { inp.value = c; inp.dispatchEvent(new Event('change', { bubbles:true })); } });
   })();
 
   // ---------- Summary & review ----------
