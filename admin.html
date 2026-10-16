@@ -292,21 +292,41 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
 .sc{display:inline-flex;align-items:center;gap:4px;font-size:.6rem;font-weight:700;border-radius:999px;padding:1px 7px;white-space:nowrap}
 .sc::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
 .sc-ok{background:#e3f5ec;color:var(--ok)}.sc-mid{background:#fff4d6;color:#a06500}.sc-bad{background:#fdecea;color:var(--err)}
-.vd{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.vh{grid-column:1/-1;border-radius:18px;padding:16px 18px;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
-.vh .gr{width:56px;height:56px;border-radius:16px;color:#fff;display:grid;place-items:center;font-size:28px;font-weight:800;flex:none}
-.vh > div:nth-child(2){flex:1;min-width:200px}.vh h3{margin:0;font-size:1.05rem;letter-spacing:-.01em}.vh p{margin:3px 0 0;font-size:.8rem}
-.vh .lg2{display:flex;gap:5px;font-size:.68rem;font-weight:800;color:var(--m)}.vh .lg2 span{padding:4px 8px;border-radius:8px;background:#fff}
-.vd.ok .vh{background:linear-gradient(120deg,#e3f5ec,#f6fcf9);border:1px solid #c5ead7}.vd.ok .gr,.vd.ok .lg2 .on{background:var(--ok);color:#fff}.vd.ok .vh p{color:#145c3e}
-.vd.mid .vh{background:linear-gradient(120deg,#fff4d6,#fffaf0);border:1px solid #f6e2a9}.vd.mid .gr,.vd.mid .lg2 .on{background:#f0a020;color:#fff}.vd.mid .vh p{color:#7a5a12}
-.vd.bad .vh{background:linear-gradient(120deg,#fdecea,#fff8f7);border:1px solid #f5c2bd}.vd.bad .gr,.vd.bad .lg2 .on{background:var(--err);color:#fff}.vd.bad .vh p{color:#8a2a22}
-.vd .vc{background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px 14px}.vd .vc h4{margin:0 0 6px;font-size:.7rem;letter-spacing:.06em;text-transform:uppercase}
-.vd .vc div{padding:4px 0;font-size:.8rem}.vd .vc.g h4{color:var(--ok)}.vd .vc.r h4{color:var(--err)}.vd .vc.r div{color:#7d2a22}.vd .vc p{margin:0;font-size:.78rem;color:var(--m)}
-.vd .va{grid-column:1/-1;background:var(--plum,#30102f);color:#fff;border-radius:16px;padding:14px 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.vd .va b{font-size:.9rem}.vd .va .t{flex:1;min-width:180px;color:#e3cbdd;font-size:.76rem}
-.vd .va .btn{border:0}.vd .va .vg{background:#ffffff1c;color:#fff}.vd .va .vg:hover{background:#ffffff2e}.vd .va .b-wa{background:#25d366;color:#fff}
-.vd .va .mseg{border-color:#ffffff33}.vd .va .mseg button{color:#e3cbdd}.vd .va .mseg button.on{background:#fff;color:var(--plum,#30102f)}
-@media (max-width:640px){.vd{grid-template-columns:1fr}.vh .lg2{display:none}}
+.k1{display:grid;gap:14px;max-width:1180px;width:100%;margin:0 auto}
+.k1 .stage{display:grid;grid-template-columns:44px 1fr 44px;gap:12px;align-items:center}
+.k1 .arr{width:44px;height:44px;border-radius:50%;background:#fff;border:1px solid var(--line);display:grid;place-items:center;font-size:1.3rem;font-weight:800;color:var(--ink);cursor:pointer;box-shadow:0 8px 20px #30102f14;padding:0}
+.k1 .arr:disabled{opacity:.3;cursor:default}
+.k1 .slide{background:#fff;border:1px solid var(--line);border-radius:26px;padding:24px;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:24px;box-shadow:0 26px 50px -30px #30102f55;align-items:start}
+.k1 .no{font-size:.68rem;font-weight:800;letter-spacing:.12em;color:var(--pink);text-transform:uppercase;display:flex;gap:8px;align-items:center}
+.k1 .no em{font-style:normal;letter-spacing:0;text-transform:none;border-radius:99px;padding:2px 8px;font-size:.66rem}.k1 .no .e-ok{background:#e3f5ec;color:var(--ok)}.k1 .no .e-now{background:#ffe9f2;color:#d6337a}.k1 .no .e-later{background:#f4eef1;color:var(--m)}
+.k1 h2{margin:4px 0 2px;font-size:1.7rem;letter-spacing:-.03em;line-height:1.15}.k1 .hint{color:var(--m);margin:0 0 14px;font-size:.84rem}
+.k1 .vl{display:flex;gap:10px;align-items:center;border-radius:12px;padding:9px 12px;margin-bottom:10px;font-weight:600;font-size:.8rem}.k1 .vl b{width:26px;height:26px;border-radius:8px;color:#fff;display:grid;place-items:center;flex:none}
+.k1 .vl.ok{background:#e3f5ec;color:#145c3e}.k1 .vl.ok b{background:var(--ok)}.k1 .vl.mid{background:#fff4d6;color:#7a5a12}.k1 .vl.mid b{background:#f0a020}.k1 .vl.bad{background:#fdecea;color:#8a2a22}.k1 .vl.bad b{background:var(--err)}
+.k1 .tasks{display:grid;gap:8px;margin-bottom:14px}
+.k1 .tk{display:flex;gap:10px;align-items:center;padding:10px 12px;border:1px solid var(--line);border-radius:14px;background:#fff;font-weight:600;font-size:.84rem;min-height:52px;box-sizing:border-box}
+.k1 .tk > span:not(.cb):not(.amt){flex:1;min-width:0}.k1 .tk small{display:block;font-weight:500;color:var(--m);font-size:.72rem}
+.k1 .cb{width:22px;height:22px;border-radius:7px;border:2px solid #d9c8d2;background:#fff;flex:none;padding:0;cursor:pointer;display:grid;place-items:center;color:#fff;font-size:.75rem;font-weight:900}
+.k1 .cb:disabled{cursor:default}.k1 .tk.dn .cb{background:var(--ok);border-color:var(--ok)}.k1 .tk.dn > span{color:var(--m)}
+.k1 .foot .btn:disabled{opacity:.4;box-shadow:none;cursor:default}
+.k1 .tk.half .cb{border-color:#f0a020;background:#fff4d6}
+.k1 .slide.later .tk{opacity:.55}
+.k1 .tk .amt{font-size:.78rem;color:var(--m);white-space:nowrap}
+.k1 .tmore{margin:-4px 0 12px}
+.k1 .foot{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.k1 .foot .big{padding:12px 20px;border-radius:14px;font-size:.9rem}
+.k1 .foot .left{font-size:.76rem;color:var(--m)}
+.k1 .lks{display:flex;gap:14px;flex-wrap:wrap;font-size:.76rem;margin-top:12px}
+.k1 .fz{background:var(--blush);border-radius:20px;padding:16px}
+.k1 .fz h4{margin:0;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:#d6337a;display:flex;align-items:center;gap:8px}.k1 .fz h4 button{margin-inline-start:auto}
+.k1 .fz > small{color:var(--m);font-size:.72rem}
+.k1 .fr{display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid #f6d9e3;font-size:.82rem}.k1 .fr:last-child{border:0}
+.k1 .fr > span{color:var(--m);width:100px;flex:none}.k1 .fr b{flex:1;min-width:0;overflow-wrap:anywhere}.k1 .fr .na{color:#b9a4b3;font-weight:500}
+.k1 .fr .cp{flex:none}
+.k1 .dots{display:flex;justify-content:center;gap:6px;flex-wrap:wrap}
+.k1 .dots button{border:1px solid var(--line);background:#fff;border-radius:99px;padding:6px 11px;font-family:inherit;font-weight:700;font-size:.72rem;color:var(--m);cursor:pointer}
+.k1 .dots .d{background:#e3f5ec;color:var(--ok);border-color:#c5ead7}.k1 .dots .now{border-color:var(--pink);color:#d6337a}.k1 .dots .on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.ctr .h .r select.f{width:auto;min-height:40px}
+@media (max-width:820px){.k1 .stage{grid-template-columns:1fr}.k1 .arr{display:none}.k1 .slide{grid-template-columns:1fr;padding:18px;border-radius:22px}
+  .k1 .dots{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;padding-bottom:4px}.k1 .dots button{flex:none}.k1 .tk .amt{display:none}.k1 h2{font-size:1.4rem}}
 .items{overflow:auto}
 .li{display:grid;grid-template-columns:36px 1fr auto;gap:10px;padding:12px 14px;border-bottom:1px solid var(--line);align-items:center;cursor:pointer;width:100%;background:none;border-inline:0;border-top:0;text-align:start}
 .li:hover{background:#fffaf7}
@@ -891,7 +911,6 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
       .join('\n').replace(/\{(\w+)\}/g, (m, k) => vals[k] ?? m).replace(/\n{3,}/g, '\n\n').trim();
   }
   const msgText = (r, key, lang, part = 'wa') => fill(msgOf(key)[lang][part] || '', msgVals(r, key, lang));
-  let ficheOn = (() => { try { return localStorage.getItem('ce-admin-fiche') !== 'hide'; } catch(e) { return true; } })();   // client sheet shown or hidden, remembered per browser
   let msgSel = null;                                     // message picked by hand in the open file, if any
   // Two-click confirmation (the preview and some browsers block confirm() pop-ups): the first click arms the button.
   function armed(btn, label = 'Cliquez encore pour confirmer'){
@@ -1130,67 +1149,46 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   const LANGS = { fr:'Français', en:'English', ar:'Darija' };
   const OPT_PRICE = { o_prio:900, o_logo:1500, o_pacte:1200 };
   // Grouped by the paperwork the team fills in; the block for the file's current step comes first.
-  function ficheData(r){
-    const g = r.gerant || {}, ps = r.partners || [], isPartner = ps.some(p => p.name && p.name === g.name);
-    const noms = r.noms || [], nom1 = noms[0] || '';
-    const cinOf = name => (ps.find(p => p.name === name) || {}).cin || (g.name === name ? g.cin : '');
-    const demandeur = r.client?.nom || g.name || ps[0]?.name || '';
-    const dm = r.siege === 'dom' ? DOMI[r.ref] : null;      // domiciliation centre: its full address goes in the articles
-    const siege = r.siege === 'local' ? 'Local du client (bail ou titre)' : r.siege === 'dom' ? (dm && dm.centreAddress ? dm.centreAddress : 'Domiciliation : centre à attribuer') : r.siege;
-    const gerant = g.name ? `${g.name}${g.cin ? ' · ' + g.cin : ''} (${isPartner ? 'associé' : 'non associé'})` : '';
-    const capital = r.capital != null ? fmt(r.capital) + ' MAD' : '';
-    return [
-      { k:'ompic', title:'Certificat négatif · OMPIC', sub:"À saisir sur le site de l'OMPIC", steps:[1], rows:[
-        ...noms.map((n, i) => [`Nom ${i + 1}`, n]), ['Activité', r.activite], ['Forme', FORMES[r.forme] || r.forme],
-        ['Demandeur', demandeur + (cinOf(demandeur) ? ' · ' + cinOf(demandeur) : '')]] },
-      { k:'statuts', title:'Statuts et documents', sub:'Rédaction, légalisation et dépôts', steps:[2, 3, 4, 5, 6, 7, 8], rows:[
-        ['Dénomination', nom1 ? nom1 + ' (1er choix)' : ''], ['Forme', FORMES[r.forme] || r.forme], ['Capital', capital],
-        ...ps.map((p, i) => [`Associé ${i + 1}`, [p.name, p.cin, p.pct != null ? p.pct + '\u00a0%' : ''].filter(Boolean).join(' · ')]),
-        ['Gérant', gerant], ['Siège', siege], ...(dm ? [['Centre de domiciliation', dm.centreName]] : []), ['Ville', r.ville], ['Activité', r.activite],
-        ...((r.options || []).includes('o_pacte') ? [["Pacte d'associés", 'Oui (option choisie)']] : [])] },
-      { k:'client', title:'Client et commande', sub:'Contact, formule et paiement', steps:[0, 9, 10], rows:[
-        ['Nom', r.client?.nom], ['Téléphone', r.client?.tel, 'ltr'], ['E-mail', r.client?.email, 'ltr'], ['Langue', LANGS[r.lang] || r.lang], ['Message', r.message],
-        ['Formule', PLANS[r.plan] || r.plan], ['Options', (r.options || []).length ? r.options.map(o => (OPTS[o] || o) + (OPT_PRICE[o] ? ` (+${fmt(OPT_PRICE[o])} MAD)` : '')).join(', ') : 'Aucune'],
-        ['Total TTC', r.total == null ? 'Sur devis' : fmt(r.total) + ' MAD'], ['Paiement choisi', r.payAmount === 'full' ? 'Totalité à la commande' : 'Avance de 700 MAD, puis 2 tranches'],
-        ['Moyen de paiement', PAY[r.payMethod] || r.payMethod], ['Conditions générales', r.cgu === false ? 'Non acceptées' : 'Acceptées']] }
-    ];
-  }
-  const ficheBlocks = r => { const all = ficheData(r), now = all.find(b => b.steps.includes(Math.min(r.step, DONE))); return now ? [now, ...all.filter(b => b !== now)] : all; };
-  function ficheHtml(r){
-    return ficheBlocks(r).map((b, i) => {
-      const cur = i === 0 && b.steps.includes(Math.min(r.step, DONE));
-      const rows = b.rows.map(([k, v, cls]) => `<dt>${esc(k)}</dt><dd class="${cls || ''}">${v === '' || v == null ? '<span class="na">Non renseigné</span>' : esc(v)}${v ? `<button class="cp" data-cp="${esc(v)}" title="Copier" aria-label="Copier ${esc(k)}">⧉</button>` : ''}</dd>`).join('');
-      return `<section class="blk${cur ? ' now' : ''}"><div class="blk-h"><span><b>${esc(b.title)}</b><small>${esc(b.sub)}</small></span>${cur ? '<span class="now-tag">Étape en cours</span>' : ''}</div>
-        <dl class="dl fiche">${rows}</dl><div class="blk-f"><button class="btn ${cur ? 'b-grad' : 'b-soft'} b-sm" data-cpb="${b.k}">Copier le bloc</button></div></section>`;
-    }).join('');
-  }
-  const blockText = b => `${b.title.toUpperCase()}\n` + b.rows.map(([k, v]) => `${k} : ${v || '—'}`).join('\n');
-  const ficheText = r => `Demande ${r.ref} · reçue le ${new Date(r.createdAt).toLocaleString('fr-FR')}\n\n` + ficheData(r).map(blockText).join('\n\n');
   const copyText = (txt, ok) => navigator.clipboard?.writeText(txt).then(() => toast(ok), () => toast('Copie impossible'));
 
-  // Verdict on a new request: a letter (A sérieux, B à vérifier, C douteux), what is fine, what to check, then the team's decision.
-  function scoreBox(r, canEdit){
-    const s = serieux(r), ko = s.sig.filter(x => !x.ok), ok = s.sig.filter(x => x.ok), lang = r.msgLang || 'fr', sent = (r.sent || {}).confirmer;
-    const ask = !r.waConfirmed && ko.length && s.sig[0].ok && s.sig[1].ok;   // valid phone and e-mail: worth asking
-    const letter = { ok:'A', mid:'B', bad:'C' }[s.level];
-    const head = s.paid ? ['Avance payée', 'Le client a payé : il est engagé, vous pouvez lancer.']
-      : { ok:['Sérieux : vous pouvez lancer', r.waConfirmed ? 'Coordonnées correctes et demande confirmée par le client.' : 'Le formulaire est complet et les coordonnées sont correctes.'],
-          mid:['À vérifier avant de lancer', 'Coordonnées correctes, mais quelques points du formulaire sont à vérifier.'],
-          bad:['Douteux : probablement un faux client', s.sig[0].ok ? 'Plusieurs points ne collent pas. Demandez une confirmation avant d\'y passer du temps.' : 'Le téléphone n\'est pas valide : impossible de joindre ce client.'] }[s.level];
-    const line = x => `<div>${x.ok ? '✓' : '✗'} ${esc(x.label)}</div>`;
-    const decide = canEdit || !r.juriste;
-    const t = r.waConfirmed ? 'Le client a confirmé sa demande sur WhatsApp.'
-      : ask ? `Le client reçoit un message poli pour confirmer sa demande.${sent ? ` Envoyé ${when(sent)}.` : ''}`
-      : 'Quand le client répond « je confirme » sur WhatsApp, cliquez sur « Confirmé ».';
-    return `<div class="vd ${s.level}">
-      <div class="vh"><div class="gr">${letter}</div><div><h3>${head[0]}</h3><p>${head[1]}</p></div><div class="lg2" title="A sérieux · B à vérifier · C douteux">${['A', 'B', 'C'].map(x => `<span class="${x === letter ? 'on' : ''}">${x}</span>`).join('')}</div></div>
-      <div class="vc g"><h4>✓ Ce qui va</h4>${ok.length ? ok.map(line).join('') : '<p>Rien pour l\'instant.</p>'}</div>
-      <div class="vc r"><h4>! À vérifier</h4>${ko.length ? ko.map(line).join('') : '<p>Rien à vérifier.</p>'}</div>
-      ${decide ? `<div class="va"><b>Votre décision</b><span class="t">${t}</span>
-        ${ask ? `<a class="btn b-wa b-sm" data-wasend="confirmer" href="${waLink(r.client?.tel, msgText(r, 'confirmer', lang))}" target="_blank" rel="noopener">${sent ? 'Relancer sur WhatsApp' : 'Demander sur WhatsApp'}</a><button class="btn vg b-sm" id="confMail">Copier l'e-mail</button>
-        <span class="mseg" role="group" aria-label="Langue"><button data-ml="fr" class="${lang === 'fr' ? 'on' : ''}">FR</button><button data-ml="ar" class="${lang === 'ar' ? 'on' : ''}">الدارجة</button></span>` : ''}
-        <button class="btn vg b-sm" id="waConf">${r.waConfirmed ? '✓ Confirmé · annuler' : '✓ Confirmé'}</button>${s.paid ? '' : '<button class="btn vg b-sm" id="markFake">Faux client</button>'}</div>` : ''}
-    </div>`;
+  // Verdict on a new request, on one line in the first step: a letter (A sérieux, B à vérifier, C douteux) and what to check.
+  function verdictLine(r){
+    const s = serieux(r), ko = s.sig.filter(x => !x.ok && !/WhatsApp/.test(x.label)).map(x => x.label);
+    const letter = { ok:'A', mid:'B', bad:'C' }[s.level], name = s.paid ? 'Avance payée' : { ok:'Sérieux', mid:'À vérifier', bad:'Douteux' }[s.level];
+    return `<div class="vl ${s.level}" title="A sérieux · B à vérifier · C douteux"><b>${letter}</b>${esc(name)}${ko.length && !s.paid ? ' · ' + esc(ko.slice(0, 3).join(', ')) : ''}</div>`;
+  }
+  // The client sheet of one step: only what the team needs there, each line ready to copy.
+  function stepFiche(r, i){
+    const g = r.gerant || {}, ps = r.partners || [], noms = r.noms || [], dm = r.siege === 'dom' ? DOMI[r.ref] : null;
+    const cinOf = name => (ps.find(p => p.name === name) || {}).cin || (g.name === name ? g.cin : '');
+    const demandeur = r.client?.nom || g.name || ps[0]?.name || '';
+    const siege = r.siege === 'local' ? 'Local du client (bail ou titre)' : r.siege === 'dom' ? (dm && dm.centreAddress ? dm.centreAddress : 'Domiciliation : centre à attribuer') : r.siege;
+    const am = k => { const a = amounts(r).find(x => x.k === k); return r.paid.full ? 'Payé à la commande' : a && a.v != null ? fmt(a.v) + ' MAD' : 'Sur devis'; };
+    const F = {
+      client:['Client', r.client?.nom], tel:['Téléphone', r.client?.tel], email:['E-mail', r.client?.email],
+      formule:['Formule', [PLANS[r.plan] || r.plan, r.total == null ? 'sur devis' : fmt(r.total) + ' MAD'].filter(Boolean).join(' · ')],
+      paiement:['Paiement', [r.payAmount === 'full' ? 'Totalité' : 'Avance 700 MAD', PAY[r.payMethod] || r.payMethod].filter(Boolean).join(' · ')],
+      moyen:['Moyen de paiement', PAY[r.payMethod] || r.payMethod], ville:['Ville', r.ville],
+      denom:['Dénomination', noms[0] ? `${noms[0]} ${FORMES[r.forme] || ''}`.trim() : ''], forme:['Forme', FORMES[r.forme] || r.forme],
+      capital:['Capital', r.capital != null ? fmt(r.capital) + ' MAD' : ''], activite:['Activité', r.activite], siege:['Siège', siege],
+      gerant:['Gérant', g.name ? g.name + (g.cin ? ' · ' + g.cin : '') : ''], demandeur:['Demandeur', demandeur + (cinOf(demandeur) ? ' · ' + cinOf(demandeur) : '')],
+      centre:dm ? ['Centre', dm.centreName] : null,
+    };
+    const assoc = ps.map((p, n) => [ps.length > 1 ? `Associé ${n + 1}` : 'Associé unique', [p.name, p.cin, p.pct != null ? p.pct + '\u00a0%' : ''].filter(Boolean).join(' · ')]);
+    const pick = (...ks) => ks.map(k => F[k]).filter(Boolean);
+    const S = [
+      { sub:'Pour vérifier le client et encaisser l\'avance', rows:pick('client', 'tel', 'formule', 'paiement', 'ville') },
+      { sub:'À saisir sur le site de l\'OMPIC', rows:[...noms.map((n, k) => [`Nom ${k + 1}`, n]), ...pick('activite', 'forme', 'demandeur')] },
+      { sub:'Pour rédiger les statuts et les documents', rows:[...pick('denom', 'capital'), ...assoc, ...pick('gerant', 'siege', 'activite')] },
+      { sub:'Pour suivre la légalisation et le paiement', rows:[...pick('client', 'tel'), ['50 % du reste', am('second')], ...pick('moyen')] },
+      { sub:'Pour l\'enregistrement', rows:[...pick('denom', 'capital', 'siege', 'centre'), ...assoc] },
+      { sub:'Pour le dépôt à l\'OMPIC et aux Impôts', rows:pick('denom', 'forme', 'activite', 'capital', 'gerant', 'siege') },
+      { sub:'Pour le registre de commerce et la CNSS', rows:pick('denom', 'gerant', 'siege', 'activite', 'ville') },
+      { sub:'Pour la publication au Bulletin Officiel', rows:pick('denom', 'capital', 'siege', 'gerant') },
+      { sub:'Pour rédiger l\'annonce légale', rows:[...pick('denom', 'capital', 'siege', 'activite', 'gerant'), ...assoc] },
+      { sub:'Pour encaisser le solde et livrer', rows:[...pick('client', 'tel', 'email'), ['Solde', am('final')], ...pick('moyen')] },
+    ];
+    return S[Math.min(i, S.length - 1)];
   }
   // Call-back request from the homepage form: no creation file yet, the team calls the person back.
   function rappelView(r, canEdit){
@@ -1213,7 +1211,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   }
   function renderDetail(){
     const r = current && get(current);
-    if (current !== renderDetail.last) { rejectOpen = false; msgMore = false; qFocus = null; moreOpen = null; msgSel = null; renderDetail.last = current; }
+    if (current !== renderDetail.last) { rejectOpen = false; msgMore = false; qFocus = null; moreOpen = null; msgSel = null; view = null; renderDetail.last = current; }
     if (!r || !allowed(r)) {
       $('#detail').innerHTML = '<div class="ctr"><div class="blank"><b>Sélectionnez un dossier</b><span>La liste des demandes est à gauche.</span></div></div>';
       return;
@@ -1222,6 +1220,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     const paidSum = am.filter(a => payDone(r, a.k) && a.v != null).reduce((x, a) => x + a.v, 0);
     const piecesOk = docs.filter(d => r.docs[d.k]).length, livOk = docsOk(r);
     const canEdit = me.role === 'admin' || r.juriste === me.id;
+    $('#body').classList.add('nofiche');
     if (r.kind === 'rappel') { $('#detail').innerHTML = rappelView(r, canEdit); return; }
     const auto = msgKey(r), mk = msgSel || auto, lang = r.msgLang || 'fr', waText = msgText(r, mk, lang);
     const sentAt = (r.sent || {})[mk];
@@ -1250,49 +1249,14 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
           <div class="mseg" role="group" aria-label="Langue"><button data-ml="fr" class="${lang === 'fr' ? 'on' : ''}">Français</button><button data-ml="ar" class="${lang === 'ar' ? 'on' : ''}">الدارجة</button></div></div>
           <div class="mprev" ${lang === 'ar' ? 'dir="rtl"' : ''}>${esc(waText)}</div>
           ${msgOf(mk)[lang].mail ? '<button class="btn b-soft b-sm" id="mailCopy">Copier l\'e-mail</button>' : ''}</details></div>`;
-    // The next action: the step's message to the client, then the step's tasks, then the missing pieces. « Plus tard » passes it.
-    const skey = r.ref + ':' + r.step, skip = qSkip[skey] || (qSkip[skey] = new Set());
     const tks = r.step < DONE ? tasksOf(r, r.step) : [], missing = docs.filter(d => !r.docs[d.k]);
     const nm = tk => tk.t === 'doc' ? DOCS[tk.k][0] : tk.t === 'check' ? tk.label : payLabel(tk.k);
-    const acts = [];
-    if (toSend) acts.push({ key:'msg', kind:'msg' });
-    tks.filter(tk => !taskDone(r, tk)).forEach(tk => acts.push({ key:tk.k, kind:'task', tk }));
-    if (missing.length) acts.push({ key:'pieces', kind:'pieces' });
-    let live = acts.filter(x => !skip.has(x.key)); if (acts.length && !live.length) { skip.clear(); live = acts; }
-    const cur = live.find(x => x.key === qFocus) || live[0], rest = live.filter(x => x !== cur).slice(0, 2);
-    const label = x => x.kind === 'msg' ? `Prévenir le client : ${msgOf(mk).title}` : x.kind === 'pieces' ? 'Relancer le client' : nm(x.tk);
-    const sublabel = x => x.kind === 'msg' ? 'message WhatsApp prêt' : x.kind === 'pieces' ? missing.map(d => d.label).join(', ') : x.tk.t === 'doc' ? DOC_ST[r.livrables[x.tk.k] || 0].toLowerCase() : x.tk.t === 'pay' ? 'paiement à confirmer' : 'à faire';
-    const dis = canEdit ? '' : 'disabled', domStep = WORKFLOW.findIndex(x => x.tasks.some(t => t.k === 'domiciliation')), dAddr = DOMI[r.ref]?.centreAddress;
+    const domStep = WORKFLOW.findIndex(x => x.tasks.some(t => t.k === 'domiciliation')), dAddr = DOMI[r.ref]?.centreAddress;
     const msgMoreHtml = `<details class="tmore" ${msgMore ? 'open' : ''}><summary>Aperçu · changer de message ▾</summary>
           <div class="mrow"><select class="f" id="msgPick" aria-label="Message">${Object.entries(CM.MSG).map(([k, m]) => `<option value="${k}" ${k === mk ? 'selected' : ''}>${esc(m.n)}. ${esc(m.title)}${k === auto ? ' · étape actuelle' : ''}${(r.sent || {})[k] ? ' ✓' : ''}</option>`).join('')}<option value="libre" ${mk === 'libre' ? 'selected' : ''}>Message libre</option></select>
           <div class="mseg" role="group" aria-label="Langue"><button data-ml="fr" class="${lang === 'fr' ? 'on' : ''}">Français</button><button data-ml="ar" class="${lang === 'ar' ? 'on' : ''}">الدارجة</button></div></div>
           <div class="mprev" ${lang === 'ar' ? 'dir="rtl"' : ''}>${esc(waText)}</div>
           ${msgOf(mk)[lang].mail ? '<button class="btn b-soft b-sm" id="mailCopy">Copier l\'e-mail</button>' : ''}</details>`;
-    let body;
-    if (!cur) {
-      body = r.step >= DONE ? `<div class="ok">✓</div><h2>Dossier livré</h2><p>Tous les documents ont été envoyés au client.</p>`
-        : canEdit && stepDone(r, r.step) ? `<div class="ok">✓</div><h2>${esc(w.name)} : tout est fait</h2><button class="btn b-grad big" id="stepNext">Passer à l'étape ${r.step + 2} : ${esc(stepName(r.step + 1))} →</button>`
-        : `<div class="ok">✓</div><h2>Rien à faire pour l'instant</h2>`;
-    } else if (cur.kind === 'msg') {
-      body = `<h2>${esc(label(cur))}</h2><p>Le message WhatsApp est prêt, en ${lang === 'ar' ? 'darija' : 'français'}.</p>${waBtn('📩 Envoyer sur WhatsApp', 'big')}${msgMoreHtml}`;
-    } else if (cur.kind === 'pieces') {
-      body = `<h2>Relancer le client</h2><p>Pièce${missing.length > 1 ? 's' : ''} manquante${missing.length > 1 ? 's' : ''} : ${esc(missing.map(d => d.label).join(', '))}</p>
-        <a class="btn b-wa big" href="${waLink(r.client?.tel, `Bonjour ${r.client?.nom || ''}, pour avancer sur votre dossier ${r.ref}, merci de nous envoyer : ${missing.map(d => d.label).join(', ')}.`)}" target="_blank" rel="noopener">📎 Relancer sur WhatsApp</a>
-        ${canEdit ? `<div class="chips">${missing.map(d => `<button class="btn b-soft b-sm" data-doc="${d.k}">✓ ${esc(d.label)} reçue</button>`).join('')}</div>` : ''}`;
-    } else {
-      const tk = cur.tk, a = am.find(x => x.k === tk.k);
-      const sub = tk.t === 'doc' ? DOCS[tk.k][1] : tk.t === 'pay' ? (r.paid.full ? 'Totalité payée à la commande' : a && a.v != null ? fmt(a.v) + ' MAD · ' + (PAY[r.payMethod] || '') : 'Montant sur devis') : '';
-      const help = dAddr && r.step <= domStep && ['statuts', 'domiciliation'].includes(tk.k) ? `<div class="qhelp"><span>📍</span><b>Adresse à reporter : ${esc(dAddr)}</b><button class="btn b-grad b-sm" data-cp="${esc(dAddr)}">⧉ Copier</button></div>` : '';
-      const btns = tk.t === 'doc' ? `<button class="btn b-grad big" data-qa="${tk.k}:ok" ${dis}>✓ Obtenu</button><button class="btn b-soft big" data-qa="${tk.k}:cours" ${dis}>En cours</button>`
-        : tk.t === 'pay' && r.paid.full ? '<span class="pill p-ok">Payé à la commande</span>'
-        : `<button class="btn b-grad big" data-qa="${tk.k}:ok" ${dis}>✓ ${tk.t === 'pay' ? 'Reçu' : "C'est fait"}</button>`;
-      body = `<h2>${esc(nm(tk))}${tk.opt ? ' <em class="optb">Option</em>' : ''}</h2>${sub ? `<p>${esc(sub)}</p>` : ''}${help}<div class="row3">${btns}</div>`;
-    }
-    const lks = [cur && live.length > 1 ? `<button class="lk" data-skip="${cur.key}">Plus tard →</button>` : '', w && w.reject && canEdit && !r.reject && !rejectOpen && r.step < DONE ? '<button class="lk" id="rejOpen">⚠ Signaler un rejet</button>' : '', backBtn ? backBtn.replace('class="btn b-soft b-sm stepback"', 'class="lk"') : ''].filter(Boolean).join('');
-    const acard = `<div class="act">${cur ? `<span class="k">Prochaine action · 1 sur ${live.length}</span>` : ''}${rej ? `<div class="rjt">${rej}</div>` : ''}${body}${lks ? `<div class="lks">${lks}</div>` : ''}</div>`;
-    const then = rest.length ? `<div class="then"><b>ENSUITE</b>${rest.map((x, i) => `<button data-qf="${x.key}"><em>${i + 2}</em><span><b>${esc(label(x))}</b> · ${esc(sublabel(x))}</span></button>`).join('')}</div>` : '';
-    const nDone = tks.filter(tk => taskDone(r, tk)).length;
-    const sline = r.step < DONE ? `<div class="sline"><b>Étape ${r.step + 1} / ${DONE} · ${esc(w.name)}</b><div class="pb"><i style="width:${tks.length ? nDone / tks.length * 100 : 0}%"></i></div><span>${nDone} / ${tks.length}</span></div>` : '';
     // Everything else, behind small links
     const hasDomi = r.forme !== 'ae' && r.siege === 'dom' && SERVER;
     const panels = {
@@ -1301,8 +1265,48 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
           return `<div class="qrow"><span>${ok ? '✓ ' : ''}${esc(a.label)}</span>${ok ? `<b>${a.v == null ? 'sur devis' : fmt(a.v) + ' MAD'}</b>` : canEdit && !r.paid.full ? `<button class="btn b-soft b-sm" data-pay="${a.k}">${a.v == null ? 'Reçu' : fmt(a.v) + ' MAD · reçu ?'}</button>` : `<b>${a.v == null ? 'sur devis' : fmt(a.v) + ' MAD'}</b>`}</div>`; }).join('')}</div></div>${affBox(r)}`,
       centre: hasDomi ? `<div class="box"><h4>Domiciliation <small>${DOMI[r.ref] ? esc(DOMI_ST[DOMI[r.ref].status]?.[0] || '') : 'aucun centre'}</small></h4>${domiTiles(r)}</div>` : '',
     };
+    // The carousel: one step per page, the current one by default; ‹ › and the step chips move between them.
+    const vi = view == null ? Math.min(r.step, DONE - 1) : view, vw = WORKFLOW[vi], isNow = vi === r.step, past = vi < r.step;
+    const state = past ? ['e-ok', 'Terminée ✓'] : isNow ? ['e-now', 'En cours'] : ['e-later', 'À venir'];
+    const ed = isNow && canEdit;
+    const rows = [];
+    if (vi === 0 && scored(r) && !r.paid.full && !payDone(r, 'avance')) {
+      const s0 = serieux(r), ask = !r.waConfirmed && s0.sig[0].ok, sentC = (r.sent || {}).confirmer;
+      rows.push(`<div class="tk ${r.waConfirmed ? 'dn' : ''}"><button class="cb" id="waConf" ${canEdit || !r.juriste ? '' : 'disabled'} aria-label="Client confirmé sur WhatsApp">${r.waConfirmed ? '✓' : ''}</button><span>Client confirmé sur WhatsApp${sentC && !r.waConfirmed ? `<small>Demande envoyée ${esc(when(sentC))}</small>` : ''}</span>
+        ${ask ? `<a class="btn b-wa b-sm" data-wasend="confirmer" href="${waLink(r.client?.tel, msgText(r, 'confirmer', lang))}" target="_blank" rel="noopener">${sentC ? 'Relancer' : 'Demander'}</a>` : ''}</div>`);
+    }
+    if (isNow && mk !== 'libre') rows.push(`<div class="tk ${sentAt ? 'dn' : ''}"><span class="cb" aria-hidden="true">${sentAt ? '✓' : ''}</span><span>Prévenir le client : ${esc(msgOf(mk).title)}${sentAt ? `<small>Envoyé ${esc(when(sentAt))}</small>` : '<small>Message WhatsApp prêt</small>'}</span>${waBtn(sentAt ? 'Renvoyer' : 'Envoyer', 'b-sm')}</div>`);
+    tasksOf(r, vi).forEach(tk => {
+      const done = taskDone(r, tk), half = tk.t === 'doc' && r.livrables[tk.k] === 1;
+      const a = tk.t === 'pay' ? am.find(x => x.k === tk.k) : null;
+      const sub = tk.t === 'doc' ? DOC_ST[r.livrables[tk.k] || 0] : tk.t === 'pay' ? (r.paid.full ? 'Payé à la commande' : a && a.v != null ? fmt(a.v) + ' MAD · ' + (PAY[r.payMethod] || '') : 'Sur devis') : '';
+      const qa = done ? (tk.t === 'doc' ? 'cours' : 'no') : 'ok';
+      const right = !ed ? '' : tk.t === 'doc' && !done ? `<button class="btn b-soft b-sm" data-qa="${tk.k}:${half ? 'ok' : 'cours'}">${half ? '✓ Obtenu' : 'En cours'}</button>`
+        : tk.t === 'pay' && !done ? `<button class="btn b-soft b-sm" data-qa="${tk.k}:ok">Encaisser</button>` : '';
+      const help = isNow && dAddr && vi <= domStep && ['statuts', 'domiciliation'].includes(tk.k) ? `<small>📍 ${esc(dAddr)}</small>` : '';
+      rows.push(`<div class="tk ${done ? 'dn' : half ? 'half' : ''}"><button class="cb" ${ed && !(tk.t === 'pay' && r.paid.full) ? `data-qa="${tk.k}:${qa}"` : 'disabled'} aria-label="${esc(nm(tk))}">${done ? '✓' : ''}</button><span>${esc(nm(tk))}${tk.opt ? ' <em class="optb">Option</em>' : ''}${sub && tk.t !== 'pay' ? `<small>${esc(sub)}</small>` : ''}${help}</span>${tk.t === 'pay' ? `<span class="amt">${esc(sub)}</span>` : ''}${right}</div>`);
+    });
+    if (isNow && missing.length) rows.push(`<div class="tk"><span class="cb" aria-hidden="true"></span><span>Pièce${missing.length > 1 ? 's' : ''} manquante${missing.length > 1 ? 's' : ''}<small>${esc(missing.map(d => d.label).join(', '))}</small></span>
+      <a class="btn b-wa b-sm" href="${waLink(r.client?.tel, `Bonjour ${r.client?.nom || ''}, pour avancer sur votre dossier ${r.ref}, merci de nous envoyer : ${missing.map(d => d.label).join(', ')}.`)}" target="_blank" rel="noopener">Relancer</a></div>`);
+    const fz = stepFiche(r, vi), fzText = `${vw.name.toUpperCase()} · ${r.ref}\n` + fz.rows.map(([k, v]) => `${k} : ${v || '—'}`).join('\n');
+    const foot = isNow
+      ? `<button class="btn b-grad big" id="stepNext" ${ed && stepDone(r, r.step) ? '' : 'disabled'}>Étape suivante →</button>${left ? `<span class="left">Encore ${left} tâche${left > 1 ? 's' : ''}</span>` : ''}${vi === 0 && !payDone(r, 'avance') && (canEdit || !r.juriste) ? '<button class="btn b-soft" id="markFake" style="color:var(--err)">Faux client</button>' : ''}`
+      : r.step < DONE ? `<button class="btn b-soft big" data-view="${r.step}">Aller à l'étape en cours : ${esc(WORKFLOW[r.step].name)} →</button>` : '';
+    const lks = isNow ? [vw.reject && canEdit && !r.reject && !rejectOpen ? '<button class="lk" id="rejOpen">⚠ Signaler un rejet</button>' : '', backBtn ? backBtn.replace('class="btn b-soft b-sm stepback"', 'class="lk"') : ''].filter(Boolean).join('') : '';
+    const slide = `<div class="k1">${r.step >= DONE ? '<div class="tile hot" style="text-align:center"><b>✓ Dossier livré</b><small>Tous les documents ont été envoyés au client.</small></div>' : ''}
+      <div class="stage"><button class="arr" data-view="${vi - 1}" ${vi > 0 ? '' : 'disabled'} aria-label="Étape précédente">‹</button>
+      <div class="slide ${past ? 'past' : isNow ? 'now' : 'later'}" id="slide">
+        <div><div class="no">Étape ${vi + 1} / ${DONE} <em class="${state[0]}">${state[1]}</em></div><h2>${esc(vw.name)}</h2><p class="hint">${esc(vw.hint)}</p>
+          ${vi === 0 && scored(r) ? verdictLine(r) : ''}${isNow && rej ? rej : ''}
+          <div class="tasks">${rows.join('')}</div>${isNow && mk !== 'libre' ? msgMoreHtml : ''}
+          <div class="foot">${foot}</div>${lks ? `<div class="lks">${lks}</div>` : ''}</div>
+        <div class="fz"><h4>Fiche de l'étape <button class="btn b-soft b-sm" data-cps="${esc(fzText)}">⧉ Tout copier</button></h4><small>${esc(fz.sub)}</small>
+          <div>${fz.rows.map(([k, v]) => `<div class="fr"><span>${esc(k)}</span>${v ? `<b>${esc(v)}</b><button class="cp" data-cp="${esc(v)}" title="Copier" aria-label="Copier ${esc(k)}">⧉</button>` : '<b class="na">Non renseigné</b>'}</div>`).join('')}</div></div>
+      </div>
+      <button class="arr" data-view="${vi + 1}" ${vi < DONE - 1 ? '' : 'disabled'} aria-label="Étape suivante">›</button></div>
+      <div class="dots">${WORKFLOW.map((x, i) => `<button data-view="${i}" class="${i === vi ? 'on' : i < r.step ? 'd' : i === r.step ? 'now' : ''}">${i < r.step ? '✓' : i + 1} ${esc(x.short)}</button>`).join('')}</div></div>`;
     const moreBtn = (k, t) => `<button data-more="${k}" class="${moreOpen === k ? 'on' : ''}">${t}</button>`;
-    const morel = `<div class="morel"><button id="ficheToggle" class="${ficheOn ? 'on' : ''}" aria-pressed="${ficheOn}">📄 Fiche</button>${moreBtn('msg', '💬 Messages')}${moreBtn('pay', `💳 Paiements ${fmt(paidSum)}/${r.total == null ? 'devis' : fmt(r.total)}`)}${hasDomi ? moreBtn('centre', `🏢 Centre${DOMI[r.ref]?.status === 'done' ? ' ✓' : ''}`) : ''}${moreBtn('docs', `📚 Documents ${livOk}/${docsTotal(r)}`)}${moreBtn('hist', '🕑 Historique')}</div>`;
+    const morel = `<div class="morel">${moreBtn('msg', '💬 Messages')}${moreBtn('pay', `💳 Paiements ${fmt(paidSum)}/${r.total == null ? 'devis' : fmt(r.total)}`)}${hasDomi ? moreBtn('centre', `🏢 Centre${DOMI[r.ref]?.status === 'done' ? ' ✓' : ''}`) : ''}${moreBtn('docs', `📚 Documents ${livOk}/${docsTotal(r)}`)}${moreBtn('hist', '🕑 Historique')}</div>`;
     $('#detail').innerHTML = `
     <section class="ctr">
       <div class="h">
@@ -1311,14 +1315,12 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
         <div class="r">
           ${waBtn('WhatsApp', '')}
           ${r.client?.tel ? `<a class="btn b-soft" href="tel:${esc(r.client.tel.replace(/\s/g, ''))}">Appeler</a>` : ''}
+          ${me.role === 'admin' ? `<select class="f" id="assign" aria-label="Juriste assigné"><option value="">Non assigné</option>${TEAM.map(t => `<option value="${t.id}" ${r.juriste === t.id ? 'selected' : ''}>${esc(t.name)}</option>`).join('')}</select>` : ''}
           ${!r.juriste ? '<button class="btn b-ink" id="take">Prendre le dossier</button>' : ''}
           ${r.step >= DONE ? '<span class="pill p-ok">✓ Dossier livré</span>' : ''}
         </div>
       </div>
-      ${scored(r) ? scoreBox(r, canEdit) : ''}
-      ${sline}
-      ${acard}
-      ${then}
+      ${slide}
       ${morel}
       ${moreOpen && moreOpen !== 'docs' && moreOpen !== 'hist' && panels[moreOpen] ? `<div class="morep">${panels[moreOpen]}</div>` : ''}
       ${moreOpen === 'docs' ? `<div class="morep">
@@ -1344,16 +1346,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
       </div>
       </div>` : ''}
     </section>
-    <aside class="info" ${ficheOn ? '' : 'hidden'}>
-      <div class="fiche-h"><b>Demande du client</b><span class="fiche-a"><button class="btn b-soft b-sm" id="ficheCopy">Copier tout</button><button class="btn b-soft b-sm" id="ficheHide" aria-label="Masquer la demande du client" title="Masquer">✕</button></span></div>
-      <small class="fiche-sub">Reçue le ${esc(new Date(r.createdAt).toLocaleString('fr-FR', { dateStyle:'short', timeStyle:'short' }))} · ${esc(r.ref)}</small>
-      ${ficheHtml(r)}
-      <h4>Juriste assigné</h4>
-      ${me.role === 'admin'
-        ? `<select class="f" id="assign"><option value="">Non assigné</option>${TEAM.map(t => `<option value="${t.id}" ${r.juriste === t.id ? 'selected' : ''}>${t.name}</option>`).join('')}</select>`
-        : `<div class="cl"><span class="av" style="--c:${j ? j.c : '#c9b6c4'};width:32px;height:32px">${j ? j.name[0] : '?'}</span><b>${j ? j.name : 'Non assigné'}</b></div>`}
-    </aside>`;
-    $('#body').classList.toggle('nofiche', !ficheOn);
+    `;
     const feed = $('#feed'); if (feed) feed.scrollTop = feed.scrollHeight;
   }
 
@@ -1414,10 +1407,12 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   }
 
   // Actions on the open file (event delegation)
-  let rejectOpen = false, msgMore = false, qFocus = null, moreOpen = null;
+  let rejectOpen = false, msgMore = false, qFocus = null, moreOpen = null, view = null;   // view: the step shown in the carousel (null: the current one)
   const qSkip = {};                                    // questions passed with « En cours » / « Pas encore », per file and step
   $('#detail').addEventListener('click', e => {
     const r = current && get(current); if (!r) return;
+    const vw = e.target.closest('[data-view]');
+    if (vw && !vw.disabled) { const i = +vw.dataset.view; view = i === r.step ? null : Math.max(0, Math.min(DONE - 1, i)); renderDetail(); return; }
     const mo = e.target.closest('[data-more]');
     if (mo) { moreOpen = moreOpen === mo.dataset.more ? null : mo.dataset.more; renderDetail(); return; }
     const sk = e.target.closest('[data-skip]');
@@ -1434,7 +1429,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
       else if (tk.t === 'check') { const on = v === 'ok'; if (!!r.checks[k] !== on) { r.checks[k] = on; log(r, `${tk.label} : ${on ? 'fait ✓' : 'annulé'}.`); } }
       else { const on = v === 'ok'; if (!!r.paid[k] !== on) { r.paid[k] = on; const a = amounts(r).find(x => x.k === k); log(r, `${a.label}${a.v != null ? ` (${fmt(a.v)} MAD)` : ''} : ${on ? 'reçu ✓' : 'remis en attente'}.`); } }
       if (v !== 'ok') skip.add(k);
-      advance(r); renderList(); renderDetail(); return;
+      advance(r); view = null; renderList(); renderDetail(); return;
     }
     const ls = e.target.closest('[data-lstep]');
     if (ls) { const key = r.ref + ':' + ls.dataset.lstep; openSteps.has(key) ? openSteps.delete(key) : openSteps.add(key); renderDetail(); return; }
@@ -1475,15 +1470,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     if (t.id === 'waConf') { r.waConfirmed = !r.waConfirmed; log(r, r.waConfirmed ? 'Demande confirmée par le client sur WhatsApp.' : 'Confirmation WhatsApp annulée.'); renderList(); renderDetail(); return toast(r.waConfirmed ? 'Confirmée ✓' : 'Confirmation annulée'); }
     if (t.id === 'rappelDone') { if (!armed(t, 'Confirmer : rappel effectué')) return; archive(r, 'rappel effectué'); persist(); renderList(); return toast('Rappel archivé'); }
     if (t.id === 'markFake') { if (!armed(t, 'Confirmer : archiver comme faux client')) return; archive(r, 'faux client'); persist(); renderList(); return toast('Demande archivée'); }
-    if (t.id === 'ficheToggle' || t.id === 'ficheHide') {
-      ficheOn = t.id === 'ficheToggle' ? !ficheOn : false;
-      try { localStorage.setItem('ce-admin-fiche', ficheOn ? 'show' : 'hide'); } catch(err) {}
-      renderDetail();
-      if (ficheOn && matchMedia('(max-width:1180px)').matches) $('.info').scrollIntoView({ behavior:'smooth', block:'start' });
-      return;
-    }
-    if (t.id === 'ficheCopy') { copyText(ficheText(r), 'Fiche complète copiée'); return; }
-    if (t.dataset.cpb) { const b = ficheData(r).find(x => x.k === t.dataset.cpb); copyText(blockText(b), 'Bloc copié : ' + b.title); return; }
+    if (t.dataset.cps != null) { copyText(t.dataset.cps, 'Fiche de l\'étape copiée'); return; }
     if (t.dataset.ml) { r.msgLang = t.dataset.ml; persist(); renderDetail(); return; }
     if (t.id === 'confMail') { const lang = r.msgLang || 'fr'; copyText(msgText(r, 'confirmer', lang, 'subj') + '\n\n' + msgText(r, 'confirmer', lang, 'mail'), 'E-mail copié : collez-le dans votre messagerie'); return; }
     if (t.id === 'mailCopy') {
@@ -1523,6 +1510,13 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     }
     else return;
     advance(r); renderList(); renderDetail();
+  });
+  // Swipe between the steps of the carousel on a phone
+  let swX = null;
+  $('#detail').addEventListener('touchstart', e => { swX = e.target.closest('#slide') ? e.touches[0].clientX : null; }, { passive:true });
+  $('#detail').addEventListener('touchend', e => {
+    if (swX == null) return; const dx = e.changedTouches[0].clientX - swX; swX = null;
+    if (Math.abs(dx) < 60) return; const b = $(`.k1 .arr[aria-label="Étape ${dx < 0 ? 'suivante' : 'précédente'}"]`); if (b && !b.disabled) b.click();
   });
   $('#detail').addEventListener('toggle', e => { if (e.target.classList?.contains('tmore')) msgMore = e.target.open; }, true);
   $('#detail').addEventListener('submit', e => {
