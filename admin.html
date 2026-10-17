@@ -190,6 +190,8 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
 @media (max-width:520px){.hw{padding:16px}.hl .it{padding:10px 12px;gap:10px}.hl .it .btn{padding:6px 10px}}
 .ad .tb-codes{display:grid;gap:12px}
 .aw{display:grid;grid-template-columns:340px minmax(0,1fr);min-height:100%}
+.aw.listv{display:block}.aw.listv .hw{width:100%;padding-inline:0}.aw.det{grid-template-columns:minmax(0,1fr)}.aw.det .ad{max-width:none;padding-inline:0}
+.hl .it > .aav{width:34px;height:34px;flex:none}.hl .amtb{font-size:.84rem;white-space:nowrap}
 .al{background:#fff;border-right:1px solid var(--line);display:flex;flex-direction:column;min-width:0}
 .al .lq{padding:14px;border-bottom:1px solid var(--line)}
 .al .lq input{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:11px;font:inherit;font-size:.84rem;background:var(--bg)}
@@ -204,7 +206,7 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
 .al .empty{padding:18px 16px;color:var(--m);font-size:.8rem}
 .aav{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-weight:800;color:#fff;flex:none;font-size:.8rem}
 .ad{padding:24px max(28px,env(safe-area-inset-right)) 40px 28px;min-width:0;display:grid;gap:18px;align-content:start;max-width:1100px}
-.ad .back{display:none}
+.ad .back{display:inline-flex;justify-self:start}
 .ad .hero{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
 .ad .hero .aav{width:56px;height:56px;font-size:1.1rem}
 .ad .hero .who{flex:1;min-width:200px}.ad .hero h2{font-size:1.3rem;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
@@ -2228,19 +2230,36 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   const affSum = a => { const f = affFiles(a); return { f, deliv:f.filter(r => r.step >= DONE).length, due:f.filter(affDue).length, paid:f.filter(r => r.affPaid).length }; };
   const nextFive = () => { const d = new Date(); if (d.getDate() >= 5) d.setMonth(d.getMonth() + 1); d.setDate(5); return d.toLocaleDateString('fr-FR', { day:'numeric', month:'long' }); };
   const AFF_GRP = [['pending', 'À valider'], ['active', 'Actifs'], ['suspended', 'Suspendus'], ['refused', 'Refusés']];
+  // Partners page (C1, like « Dossiers »): a search, tabs, and one row per partner with what to do now
+  let affView = 'todo';
+  const AFF_TABS = [['todo', 'À traiter'], ['active', 'Actifs'], ['pending', "Demandes d'inscription"], ['off', 'Suspendus']];
+  const hRow = (attr, av, name, act, sub, right) => `<div class="it" ${attr} tabindex="0" role="button">${av}<div class="t"><b>${esc(name)} <span>· ${esc(act)}</span></b><small>${esc(sub)}</small></div>${right}</div>`;
+  const uniq = list => list.filter((x, i, arr) => arr.findIndex(y => y.id === x.id) === i);
+  function affRows(){
+    const out = [];
+    AFFS.forEach(a => {
+      const s2 = affSum(a), codes = a.codes.filter(c => c.active).map(c => c.code).join(' · ') || 'aucun code actif';
+      const last = s2.f[0] ? daysSince(s2.f[0].createdAt) : daysSince(a.createdAt);
+      const base = { id:a.id, a, attr:`data-afrow="${a.id}"`, av:affAv(a) };
+      if (a.status === 'pending') out.push(Object.assign({ cats:['todo', 'pending'], act:"demande d'inscription", sub:[a.profile, a.city, when(a.createdAt)].filter(Boolean).join(' · '),
+        right:`<button class="btn b-soft b-sm" data-afst="${a.id}" data-v="refused">Refuser</button><button class="btn b-ink b-sm" data-afst="${a.id}" data-v="active">Valider</button>` }, base));
+      else if (a.status === 'active') {
+        if (s2.due) out.push(Object.assign({ cats:['todo'], act:'commission à verser', sub:`${codes} · ${s2.due} dossier${s2.due > 1 ? 's' : ''} livré${s2.due > 1 ? 's' : ''} et payé${s2.due > 1 ? 's' : ''} · à verser le ${nextFive()}`,
+          right:`<b class="amtb">${fmt(s2.due * AFF_COMMISSION)} MAD</b><button class="btn b-ink b-sm" data-afpayall="${a.id}">Marquer versée</button>` }, base));
+        else if (last >= 30) out.push(Object.assign({ cats:['todo'], act:`aucun dossier depuis ${last} j`, sub:codes,
+          right:a.phone ? `<a class="btn b-wa b-sm" href="${waLink(a.phone, `Bonjour ${a.name}, comment allez-vous ? Avez-vous des clients qui souhaitent créer leur société ? Votre code : ${a.codes.find(c => c.active)?.code || ''}`)}" target="_blank" rel="noopener">Relancer</a>` : '' }, base));
+        out.push(Object.assign({ cats:['active'], act:`${s2.f.length} dossier${s2.f.length > 1 ? 's' : ''} apporté${s2.f.length > 1 ? 's' : ''}`, sub:`${codes} · ${s2.deliv} livré${s2.deliv > 1 ? 's' : ''} · ${fmt(s2.paid * AFF_COMMISSION)} MAD versés`,
+          right:`${s2.due ? `<b class="amtb">${fmt(s2.due * AFF_COMMISSION)} MAD</b>` : ''}<button class="btn b-soft b-sm" data-afsel="${a.id}">Ouvrir</button>` }, base));
+      } else out.push(Object.assign({ cats:['off'], act:(AFF_ST[a.status]?.[0] || a.status).toLowerCase(), sub:[a.company, a.city, codes].filter(Boolean).join(' · '), right:`<button class="btn b-soft b-sm" data-afsel="${a.id}">Ouvrir</button>` }, base));
+    });
+    return out;
+  }
   function affList(){
-    const q = affQ.trim().toLowerCase();
-    const hit = a => !q || [a.name, a.company, a.email, a.phone, a.city, ...a.codes.map(c => c.code)].join(' ').toLowerCase().includes(q);
-    const groups = AFF_GRP.map(([k, label]) => {
-      const xs = AFFS.filter(a => a.status === k && hit(a)); if (!xs.length) return '';
-      return `<div class="grp">${label} · ${xs.length}</div>` + xs.map(a => {
-        const s = affSum(a), codes = a.codes.filter(c => c.active).map(c => c.code).join(' · ');
-        const right = k === 'pending' ? '<span class="pill p-new">Nouveau</span>'
-          : `<div class="r"><b class="${s.due ? '' : 'z'}">${fmt(s.due * AFF_COMMISSION)} MAD</b>${s.f.length} dossier${s.f.length > 1 ? 's' : ''}</div>`;
-        return `<button type="button" class="li ${affSel === a.id ? 'on' : ''} ${k === 'suspended' || k === 'refused' ? 'off' : ''}" data-afsel="${a.id}">${affAv(a)}<div class="t"><b>${esc(a.name)}</b><span>${esc(k === 'pending' ? [a.profile, a.city].filter(Boolean).join(' · ') : codes || 'Aucun code actif')}</span></div>${right}</button>`;
-      }).join('');
-    }).join('');
-    return groups || `<p class="empty">${AFFS.length ? 'Aucun partenaire ne correspond.' : 'Aucun partenaire pour l\'instant. Les inscriptions de la page « Devenir partenaire » apparaissent ici.'}</p>`;
+    const q = affQ.trim().toLowerCase(), rows = affRows();
+    const hit = x => [x.a.name, x.a.company, x.a.email, x.a.phone, x.a.city, ...x.a.codes.map(c => c.code)].join(' ').toLowerCase().includes(q);
+    const list = q ? uniq(rows.filter(x => !x.cats.includes('todo') || x.a.status === 'pending').filter(hit)) : rows.filter(x => x.cats.includes(affView));
+    if (!list.length) return `<div class="empty">${q ? 'Aucun partenaire ne correspond.' : affView === 'todo' ? '✓ Rien à traiter pour l\'instant.' : AFFS.length ? 'Aucun partenaire ici.' : 'Aucun partenaire pour l\'instant. Les inscriptions de la page « Devenir partenaire » apparaissent ici.'}</div>`;
+    return list.map(x => hRow(x.attr, x.av, x.a.name, x.act, x.sub, x.right)).join('');
   }
   function affStatus(r){
     if (r.step < DONE) return `<span class="pill ${r.step >= 5 ? 'p-wait' : 'p-mute'}">Étape ${r.step + 1}/${DONE}</span>`;
@@ -2296,10 +2315,18 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
       const order = { pending:0, active:1, suspended:2, refused:3 };
       affSel = AFFS.slice().sort((a, b) => (order[a.status] ?? 9) - (order[b.status] ?? 9))[0]?.id || 'new';
     }
-    $('#affBox').classList.toggle('det', affDet);
-    $('#affBox').innerHTML = `<aside class="al"><div class="lq"><input type="search" id="afQ" placeholder="Chercher un partenaire ou un code…" aria-label="Chercher un partenaire" value="${esc(affQ)}"></div>
-      <div id="afList">${affList()}</div><div class="add"><button type="button" class="btn b-grad" data-afnew>+ Ajouter un partenaire</button></div></aside>
-      <section class="ad">${affDetail(AFFS.find(a => a.id === affSel))}</section>`;
+    $('#affBox').classList.toggle('det', affDet); $('#affBox').classList.toggle('listv', !affDet);
+    if (affDet) { $('#affBox').innerHTML = `<section class="ad">${affDetail(AFFS.find(a => a.id === affSel))}</section>`; affMsg = ''; return; }
+    const rows = affRows(), cnt = k => rows.filter(x => x.cats.includes(k)).length, sums = AFFS.map(affSum);
+    $('#affBox').innerHTML = `<div class="hw">${affMsg}
+      <label class="hsearch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input type="search" id="afQ" value="${esc(affQ)}" placeholder="Rechercher un partenaire : nom, code promo, ville…" autocomplete="off" aria-label="Rechercher un partenaire"></label>
+      <div class="hg"><div class="hl"><div class="htabs" role="tablist">${AFF_TABS.map(([k, l]) => `<button type="button" role="tab" data-afview="${k}" class="${!affQ && affView === k ? 'on' : ''}" aria-selected="${!affQ && affView === k}">${l} <em>${cnt(k)}</em></button>`).join('')}</div><div id="afList">${affList()}</div></div>
+        <div class="hs"><div class="hk">
+          <div class="dk"><small>À verser le ${nextFive()}</small><b>${fmt(sums.reduce((n, x) => n + x.due, 0) * AFF_COMMISSION)} MAD</b><small>commissions de ${AFF_COMMISSION} MAD</small></div>
+          <div><small>Dossiers apportés</small><b>${sums.reduce((n, x) => n + x.f.length, 0)}</b><small>dont ${sums.reduce((n, x) => n + x.deliv, 0)} livrés</small></div>
+          <div><small>Déjà versé</small><b>${fmt(sums.reduce((n, x) => n + x.paid, 0) * AFF_COMMISSION)}</b><small>MAD au total</small></div>
+          <div><small>Partenaires actifs</small><b>${AFFS.filter(a => a.status === 'active').length}</b><small>${AFFS.filter(a => a.status === 'pending').length} demande(s) en attente</small></div></div>
+          <div class="hn"><button type="button" class="btn b-grad" data-afnew>+ Ajouter un partenaire</button></div></div></div></div>`;
     affMsg = '';
   }
   async function openAff(){
@@ -2308,8 +2335,14 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     if ($('#affm').hidden) showAff(true);
   }
   $('#affBtn').addEventListener('click', openAff);
+  $('#affm').addEventListener('click', e => {           // a click on a row (not on its buttons) opens the partner
+    if (e.target.closest('a,button,input,form')) return;
+    const row = e.target.closest('[data-afrow]'); if (!row) return;
+    affSel = row.dataset.afrow; affTab = 'dos'; affDet = true; renderAff(); scrollTo({ top:0 });
+  });
   $('#affm').addEventListener('click', async e => {
     const t = e.target.closest('button'); if (!t || t.closest('form')) return;
+    if (t.dataset.afview) { affView = t.dataset.afview; affQ = ''; renderAff(); return; }
     if (t.dataset.afsel) { affSel = t.dataset.afsel; affTab = 'dos'; affDet = true; renderAff(); $('#affm').scrollTop = 0; scrollTo({ top:0 }); return; }
     if (t.dataset.afnew != null) { affSel = 'new'; affDet = true; renderAff(); setTimeout(() => $('#afName')?.focus(), 30); return; }
     if (t.dataset.afback != null) { affDet = false; renderAff(); scrollTo({ top:0 }); return; }
@@ -2373,16 +2406,35 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   const ctrNote = (c, pw) => { const txt = `Bonjour ${c.contact || c.name}, votre centre « ${c.name} » est ${pw ? 'prêt' : 'validé'} sur Charika Express ✅\nEspace partenaire : ${location.origin}/partenaire.html\nE-mail : ${c.email}\n${pw ? `Mot de passe provisoire : ${pw}\n` : 'Connectez-vous avec le mot de passe choisi à l\'inscription.\n'}Vous y recevrez les demandes de domiciliation de nos clients.`;
     return `<div class="newpw"><span>${pw ? `Mot de passe provisoire de <b>${esc(c.name)}</b> : <code>${esc(pw)}</code>` : `<b>${esc(c.name)}</b> est validé et visible par les clients de ${esc(c.city || 'sa ville')}.`} Envoyez-lui ce message :</span>
       <div class="acts">${c.phone ? `<a class="btn b-grad b-sm" href="${waLink(c.phone, txt)}" target="_blank" rel="noopener">Envoyer sur WhatsApp</a>` : ''}<button class="btn b-soft b-sm" data-cp="${esc(txt)}">Copier le message</button></div></div>`; };
+  let ctrView = 'todo';
+  const CTR_TABS = [['todo', 'À traiter'], ['active', 'Actifs'], ['pending', 'À vérifier'], ['off', 'Refusés · suspendus']];
+  function ctrRows(){
+    const out = [];
+    CTRS.forEach(c => {
+      const sm = ctrSum(c), base = { id:c.id, c, attr:`data-ctrrow="${c.id}"`, av:ctrAv(c) }, place = [c.city, c.district].filter(Boolean).join(' · ') || '—';
+      const wa = (txt, label) => c.phone ? `<a class="btn b-wa b-sm" href="${waLink(c.phone, txt)}" target="_blank" rel="noopener">${label}</a>` : '';
+      if (c.status === 'pending') { out.push(Object.assign({ cats:['todo', 'pending'], act:'nouvelle inscription à vérifier', sub:`${place} · ${c.files.length ? c.files.length + ' fichier(s) reçu(s)' : 'aucun justificatif'}`,
+        right:`<button class="btn b-soft b-sm" data-ctrst="${c.id}" data-v="refused">Refuser</button><button class="btn b-ink b-sm" data-ctrst="${c.id}" data-v="active">Valider</button>` }, base)); return; }
+      if (c.status !== 'active') { out.push(Object.assign({ cats:['off'], act:(CTR_ST[c.status]?.[0] || c.status).toLowerCase(), sub:place, right:`<button class="btn b-soft b-sm" data-ctrsel="${c.id}">Ouvrir</button>` }, base)); return; }
+      sm.k.forEach(x => {
+        const d = daysSince(x.updatedAt || x.createdAt), late = d >= 2 ? `<span class="late">+${d} j</span>` : '';
+        if (x.status === 'new') out.push(Object.assign({ cats:['todo'], act:'demande à accepter par le centre', sub:`${x.company || x.ref} · ${x.ref} · ${x.months} mois`, right:late + wa(`Bonjour ${c.contact || ''}, pouvez-vous accepter la demande de domiciliation ${x.ref} (${x.company || ''}) dans votre espace Charika Express ? Merci !`, 'Relancer') }, base));
+        else if (x.status === 'accepted') out.push(Object.assign({ cats:['todo'], act:'attestation à recevoir', sub:`${x.company || x.ref} · ${x.ref}`, right:late + wa(`Bonjour ${c.contact || ''}, l'attestation de domiciliation de ${x.company || x.ref} (${x.ref}) est-elle prête ? Merci !`, 'Relancer') }, base));
+        else if (x.status === 'done' && !x.paidAt) out.push(Object.assign({ cats:['todo'], act:`payer le centre · ${fmt(x.rate)} MAD`, sub:`${x.company || x.ref} · ${x.ref} · attestation reçue`, right:`<button class="btn b-ink b-sm" data-ctrpay="${esc(x.ref)}">Payé</button>` }, base));
+      });
+      if (!GEN_CENTRES.some(g => normTxt(c.name).includes(g.match))) out.push(Object.assign({ cats:['todo'], act:'modèle de contrat à recevoir', sub:`${place} · pour générer le contrat et l'attestation`,
+        right:wa(`Bonjour ${c.contact || ''}, pour préparer automatiquement vos contrats de domiciliation, pouvez-vous nous envoyer votre modèle de contrat et d'attestation (Word) ? Merci !`, 'Demander') }, base));
+      out.push(Object.assign({ cats:['active'], act:`${sm.done.length} domicilié${sm.done.length > 1 ? 's' : ''}${c.available ? '' : ' · complet'}`, sub:`${place} · 12 / 24 mois : ${c.rate12 ? fmt(c.rate12) : '—'} / ${c.rate24 ? fmt(c.rate24) : '—'} MAD`,
+        right:`${sm.dueAmt ? `<b class="amtb">${fmt(sm.dueAmt)} MAD</b>` : ''}<button class="btn b-soft b-sm" data-ctrsel="${c.id}">Ouvrir</button>` }, base));
+    });
+    return out;
+  }
   function ctrList(){
-    const q = ctrQ.trim().toLowerCase();
-    const hit = c => !q || [c.name, c.company, c.email, c.phone, c.city, c.district].join(' ').toLowerCase().includes(q);
-    const groups = CTR_GRP.map(([k, label]) => {
-      const xs = CTRS.filter(c => c.status === k && hit(c)); if (!xs.length) return '';
-      return `<div class="grp">${label} · ${xs.length}</div>` + xs.map(c => { const sm = ctrSum(c);
-        const right = k === 'pending' ? '<span class="pill p-new">Nouveau</span>' : `<div class="r"><b>${sm.done.length}</b>domicilié${sm.done.length > 1 ? 's' : ''}</div>`;
-        return `<button type="button" class="li ${ctrSel === c.id ? 'on' : ''} ${k === 'suspended' || k === 'refused' ? 'off' : ''}" data-ctrsel="${c.id}">${ctrAv(c)}<div class="t"><b>${esc(c.name)}</b><span>${esc([c.city, c.district].filter(Boolean).join(' · ') || '—')}${k === 'active' && !c.available ? ' · complet' : ''}</span></div>${right}</button>`; }).join('');
-    }).join('');
-    return groups || `<p class="empty">${CTRS.length ? 'Aucun centre ne correspond.' : 'Aucun centre pour l\'instant. Les inscriptions de la page « Devenir partenaire » (profil centre) apparaissent ici.'}</p>`;
+    const q = ctrQ.trim().toLowerCase(), rows = ctrRows();
+    const hit = x => [x.c.name, x.c.company, x.c.email, x.c.phone, x.c.city, x.c.district].join(' ').toLowerCase().includes(q);
+    const list = q ? uniq(rows.filter(x => !x.cats.includes('todo') || x.c.status === 'pending').filter(hit)) : rows.filter(x => x.cats.includes(ctrView));
+    if (!list.length) return `<div class="empty">${q ? 'Aucun centre ne correspond.' : ctrView === 'todo' ? '✓ Rien à traiter pour l\'instant.' : CTRS.length ? 'Aucun centre ici.' : 'Aucun centre pour l\'instant. Les inscriptions de la page « Devenir partenaire » (profil centre) apparaissent ici.'}</div>`;
+    return list.map(x => hRow(x.attr, x.av, x.c.name, x.act, x.sub, x.right)).join('');
   }
   function ctrDetail(c){
     const back = '<button type="button" class="btn b-soft b-sm back" data-ctrback>← Centres</button>';
@@ -2434,10 +2486,18 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
       const order = { pending:0, active:1, suspended:2, refused:3 };
       ctrSel = CTRS.slice().sort((a, b) => (order[a.status] ?? 9) - (order[b.status] ?? 9))[0]?.id || 'new';
     }
-    $('#ctrBox').classList.toggle('det', ctrDet);
-    $('#ctrBox').innerHTML = `<aside class="al"><div class="lq"><input type="search" id="ctQ" placeholder="Chercher un centre ou une ville…" aria-label="Chercher un centre" value="${esc(ctrQ)}"></div>
-      <div id="ctList">${ctrList()}</div><div class="add"><button type="button" class="btn b-grad" data-ctrnew>+ Ajouter un centre</button></div></aside>
-      <section class="ad">${ctrDetail(CTRS.find(c => c.id === ctrSel))}</section>`;
+    $('#ctrBox').classList.toggle('det', ctrDet); $('#ctrBox').classList.toggle('listv', !ctrDet);
+    if (ctrDet) { $('#ctrBox').innerHTML = `<section class="ad">${ctrDetail(CTRS.find(c => c.id === ctrSel))}</section>`; ctrMsg = ''; return; }
+    const rows = ctrRows(), cnt = k => rows.filter(x => x.cats.includes(k)).length, sums = CTRS.map(ctrSum);
+    $('#ctrBox').innerHTML = `<div class="hw">${ctrMsg}
+      <label class="hsearch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input type="search" id="ctQ" value="${esc(ctrQ)}" placeholder="Rechercher un centre : nom, ville, quartier…" autocomplete="off" aria-label="Rechercher un centre"></label>
+      <div class="hg"><div class="hl"><div class="htabs" role="tablist">${CTR_TABS.map(([k, l]) => `<button type="button" role="tab" data-ctrview="${k}" class="${!ctrQ && ctrView === k ? 'on' : ''}" aria-selected="${!ctrQ && ctrView === k}">${l} <em>${cnt(k)}</em></button>`).join('')}</div><div id="ctList">${ctrList()}</div></div>
+        <div class="hs"><div class="hk">
+          <div class="dk"><small>À payer aux centres</small><b>${fmt(sums.reduce((n, x) => n + x.dueAmt, 0))} MAD</b><small>attestations reçues</small></div>
+          <div><small>Sociétés domiciliées</small><b>${sums.reduce((n, x) => n + x.done.length, 0)}</b><small>sur ${sums.reduce((n, x) => n + x.k.length, 0)} demandes</small></div>
+          <div><small>Déjà payé</small><b>${fmt(sums.reduce((n, x) => n + x.paidAmt, 0))}</b><small>MAD au total</small></div>
+          <div><small>Centres actifs</small><b>${CTRS.filter(c => c.status === 'active').length}</b><small>${CTRS.filter(c => c.status === 'pending').length} à vérifier</small></div></div>
+          <div class="hn"><button type="button" class="btn b-grad" data-ctrnew>+ Ajouter un centre</button></div></div></div></div>`;
     ctrMsg = '';
   }
   async function openCtr(){ await loadCtrs(); renderCtr(); if (PAGE !== 'ctr') showPage('ctr'); }
@@ -2445,9 +2505,15 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   $('#tbCtr').addEventListener('click', () => { ctrDet = false; openCtr(); });
   const ctrPut = (id, body) => api('centres/' + id, { method:'PUT', body:JSON.stringify(body) });
   async function payDomi(refs){ for (const ref of refs) await api('domi/' + ref, { method:'PUT', body:JSON.stringify({ paid:true }) }); await Promise.all([loadCtrs(), loadDomi()]); }
+  $('#ctrm').addEventListener('click', e => {
+    if (e.target.closest('a,button,input,form')) return;
+    const row = e.target.closest('[data-ctrrow]'); if (!row) return;
+    ctrSel = row.dataset.ctrrow; ctrTab = 'contrats'; ctrDet = true; renderCtr(); scrollTo({ top:0 });
+  });
   $('#ctrm').addEventListener('click', async e => {
     const t = e.target.closest('button'); if (!t || t.closest('form')) return;
     if (t.dataset.cp != null) { copyText(t.dataset.cp, 'Message copié'); return; }
+    if (t.dataset.ctrview) { ctrView = t.dataset.ctrview; ctrQ = ''; renderCtr(); return; }
     if (t.dataset.ctrsel) { ctrSel = t.dataset.ctrsel; ctrTab = 'contrats'; ctrDet = true; renderCtr(); $('#ctrm').scrollTop = 0; scrollTo({ top:0 }); return; }
     if (t.dataset.ctrnew != null) { ctrSel = 'new'; ctrDet = true; renderCtr(); setTimeout(() => $('#ctName')?.focus(), 30); return; }
     if (t.dataset.ctrback != null) { ctrDet = false; renderCtr(); scrollTo({ top:0 }); return; }
