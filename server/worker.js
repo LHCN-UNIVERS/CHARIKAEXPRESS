@@ -6,12 +6,14 @@ import { login, logout } from './auth.js';
 import { track } from './track.js';
 import { affApi, promoApi } from './affiliate.js';
 import { centresPublic, centreApi } from './centres.js';
+import { clientDoc } from './vault.js';
 
 export default {
   async fetch(request, env, ctx){
     const { pathname } = new URL(request.url);
     if (pathname === '/api/requests') return request.method === 'POST' ? postRequest(request, env, ctx) : json({ error: 'method' }, 405);
     if (pathname === '/api/track') return request.method === 'POST' ? track(request, env) : json({ error: 'method' }, 405);
+    if (pathname.startsWith('/api/doc/')) return request.method === 'GET' ? clientDoc(request, env, pathname.slice('/api/doc/'.length)) : json({ error: 'method' }, 405);
     if (pathname === '/api/promo') return request.method === 'GET' ? promoApi(request, env) : json({ error: 'method' }, 405);
     if (pathname.startsWith('/api/aff/')) return affApi(request, env, pathname.slice('/api/aff/'.length));
     if (pathname === '/api/centres' || pathname.startsWith('/api/centres/')) return centresPublic(request, env, pathname.slice('/api/centres'.length).replace(/^\//, ''));

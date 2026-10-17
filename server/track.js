@@ -1,11 +1,12 @@
 // POST /api/track : the client tracking page (suivi.html) asks for the state of one file.
 // Public route: the reference alone opens the file (owner's choice, Oct 2026). Rate limiting below keeps guessing slow.
-// Only what the client needs is returned (progress, payments), never the notes or the documents.
+// Only what the client needs is returned (progress, payments, the vault files the team shared, as 2-hour signed links), never the notes.
 // Wrong guesses are counted per IP (table login_fails, key 't:<ip hash>') so references can't be tried one by one.
 import { json, now, readJson, fail, HttpError } from './http.js';
 import { sameOrigin } from './auth.js';
 import { ipHash } from './requests.js';
 import { stepOf } from './workflow.js';
+import { clientDocs } from './vault.js';
 
 const MAX_FAILS = 10;                       // per IP, per 15 minutes
 const firstName = s => String(s || '').trim().split(/\s+/)[0] || '';
@@ -34,7 +35,8 @@ export async function track(request, env){
     return json({
       ref, societe: r.cn?.nom || (r.noms || [])[0] || '', forme: r.forme, plan: r.plan, createdAt: r.createdAt,
       step: stepOf(r), archived: !!r.archived, reject: !!r.reject, juriste,
-      total: r.total ?? null, payAmount: r.payAmount, paid: r.paid || {}, remise: r.remise || 0
+      total: r.total ?? null, payAmount: r.payAmount, paid: r.paid || {}, remise: r.remise || 0,
+      docs: await clientDocs(env, ref).catch(() => [])
     });
   } catch (e) { return fail(e); }
 }

@@ -355,6 +355,7 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
 .vdrop b{font-size:.86rem}.vdrop span{font-size:.74rem;color:var(--m)}.vdrop:hover{border-color:var(--pink)}.vdrop:focus-within{outline:2px solid var(--pink)}
 .vsec{font-size:.66rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--m);margin-top:6px}
 .vrow{display:flex;gap:10px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:7px 8px 7px 10px;background:#fff}.vrow span{flex:1;min-width:0}.vrow span a{font-weight:700;font-size:.82rem;color:var(--ink);text-decoration:none;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.vrow small{color:var(--m);font-size:.7rem}
+.vshare{flex:none;border:1px solid var(--line);background:#fff;color:var(--m);border-radius:999px;padding:4px 10px;font:inherit;font-size:.7rem;font-weight:700;cursor:pointer;white-space:nowrap}.vshare.on{background:#e3f5ec;border-color:#b9e4cc;color:var(--ok)}button.vshare:hover{border-color:var(--ink)}
 .vrow i{font-style:normal;width:30px;height:30px;border-radius:8px;display:grid;place-items:center;font-size:.6rem;font-weight:800;flex:none}.vrow i.doc{background:#e8f0fe;color:#2b5797}.vrow i.pdf{background:#fdecea;color:#c0362c}.vrow i.img{background:#e3f5ec;color:var(--ok)}
 .gcar{display:grid;grid-template-columns:minmax(0,1fr) 150px;gap:12px;margin-bottom:12px;align-items:stretch}.gcar.last{grid-template-columns:1fr}
 .gcard{background:#fff;border:1px solid var(--line);border-radius:20px;padding:16px;display:grid;gap:12px;box-shadow:0 20px 40px -28px #30102f55;min-width:0}
@@ -1517,9 +1518,10 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     if (!SERVER) return '<div class="box"><h4>🔐 Coffre-fort</h4><p class="hint">Le coffre-fort garde les documents sur le serveur : il fonctionne sur le site en ligne.</p></div>';
     const fs = VAULT[r.ref];
     const row = f => { const [t, c] = fileIco(f.mime), w = member(f.by); return `<div class="vrow"><i class="${c}">${t}</i><span><a href="/api/admin/vault-file/${esc(f.id)}" target="_blank" rel="noopener">${esc(f.name)}</a><small>${f.kind === 'gen' ? 'Généré' : 'Ajouté'} ${esc(when(f.createdAt))}${w ? ' · ' + esc(w.name) : ''} · ${kb(f.size)}</small></span>
+      ${canEdit ? `<button class="vshare ${f.shared ? 'on' : ''}" data-vshare="${esc(f.id)}" data-v="${f.shared ? 0 : 1}" aria-pressed="${!!f.shared}" title="${f.shared ? 'Le client voit ce fichier sur « Suivre mon dossier ». Cliquer pour le masquer.' : 'Montrer ce fichier au client sur « Suivre mon dossier »'}">${f.shared ? '👁 Visible client' : '🔒 Équipe'}</button>` : f.shared ? '<span class="vshare on">👁 Visible client</span>' : ''}
       <a class="btn b-soft b-sm" href="/api/admin/vault-file/${esc(f.id)}" download="${esc(f.name)}" aria-label="Télécharger ${esc(f.name)}">⬇</a>${me.role === 'admin' || f.by === me.id ? `<button class="btn b-soft b-sm" data-vdel="${esc(f.id)}" aria-label="Supprimer ${esc(f.name)}">✕</button>` : ''}</div>`; };
     const gen = (fs || []).filter(f => f.kind === 'gen'), scan = (fs || []).filter(f => f.kind !== 'gen');
-    return `<div class="box vault"><h4>🔐 Coffre-fort <small>${fs ? `${fs.length} fichier${fs.length > 1 ? 's' : ''}` : 'chargement…'}</small></h4>
+    return `<div class="box vault"><h4>🔐 Coffre-fort <small>${fs ? `${fs.length} fichier${fs.length > 1 ? 's' : ''}${fs.some(f => f.shared) ? ` · ${fs.filter(f => f.shared).length} visible${fs.filter(f => f.shared).length > 1 ? 's' : ''} par le client` : ''}` : 'chargement…'}</small></h4>
       ${canEdit ? `<label class="vdrop"><input type="file" id="vaultIn" multiple accept="application/pdf,image/jpeg,image/png,image/webp,.docx"><b>＋ Ajouter des fichiers</b><span>PDF, photo ou Word · 1,2 Mo maximum chacun : documents légalisés, RC, ICE, attestation…</span></label>` : ''}
       ${fs ? `${gen.length ? `<div class="vsec">📄 Documents générés</div>${gen.map(row).join('')}` : ''}${scan.length ? `<div class="vsec">📎 Documents ajoutés</div>${scan.map(row).join('')}` : ''}${!fs.length ? '<p class="hint" style="margin:0">Aucun fichier. Les documents générés à l\'étape Rédaction arrivent ici automatiquement.</p>' : ''}` : ''}</div>`;
   }
@@ -1820,6 +1822,17 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
         } catch (err) { toast(genErr(err)); console.warn(err); }
         renderDetail(); if (b.isConnected) { b.disabled = false; b.textContent = label; }
       })();
+      return;
+    }
+    const vs = e.target.closest('[data-vshare]');
+    if (vs) {
+      const id = vs.dataset.vshare, on = vs.dataset.v === '1'; vs.disabled = true;
+      api('vault-file/' + id, { method:'PUT', body:JSON.stringify({ shared:on }) }).then(res => {
+        if (!res.ok) { vs.disabled = false; return toast('Modification impossible'); }
+        (VAULT[r.ref] || []).forEach(f => { if (f.id === id) f.shared = on; });
+        log(r, `${on ? 'Fichier montré au client' : 'Fichier masqué au client'} : ${(VAULT[r.ref] || []).find(f => f.id === id)?.name || id}.`);
+        renderDetail(); toast(on ? 'Le client voit ce fichier sur « Suivre mon dossier » 👁' : 'Fichier masqué au client');
+      });
       return;
     }
     const vd = e.target.closest('[data-vdel]');

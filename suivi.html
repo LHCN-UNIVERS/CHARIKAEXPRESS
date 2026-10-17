@@ -97,6 +97,13 @@ label{display:grid;gap:6px;font-weight:600;font-size:.86rem}
 .pay .st.y{background:var(--okbg);color:var(--ok)}
 .pay .st.n{background:var(--blush);color:var(--m)}
 .ltr{direction:ltr;unicode-bidi:isolate}
+.docs{display:grid;gap:8px;margin-top:12px}
+.doc{display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:14px;padding:10px 12px;text-decoration:none;color:var(--ink);background:#fff;transition:border-color .15s,transform .15s}
+.doc:hover{border-color:#f3b5ca;transform:translateY(-1px)}
+.doc i{font-style:normal;flex:none;width:36px;height:36px;border-radius:10px;display:grid;place-items:center;font-size:.64rem;font-weight:800;background:#fdecea;color:#c0362c}
+.doc i.img{background:var(--okbg);color:var(--ok)}.doc i.w{background:#e8f0fe;color:#2b5797}
+.doc span{flex:1;min-width:0}.doc b{display:block;font-size:.88rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.doc small{color:var(--m);font-size:.74rem}
+.doc em{font-style:normal;flex:none;font-size:.76rem;font-weight:700;color:var(--pink)}
 
 .ref-card{background:linear-gradient(160deg,#fff,#fff6f9)}
 .ref-card .big{font-size:1.15rem;font-weight:800;letter-spacing:-.01em;margin:2px 0 6px}
@@ -161,6 +168,11 @@ footer a{color:var(--m)}
         <ol class="tl" id="tl"></ol>
       </section>
       <div class="side">
+        <section class="card" id="docsCard" hidden>
+          <h2 data-t="dh">Mes documents</h2>
+          <p class="muted" data-t="dp">Les documents de votre société, partagés par votre juriste.</p>
+          <div class="docs" id="docs"></div>
+        </section>
         <section class="card">
           <h2 data-t="ph">Paiements</h2>
           <div class="pays" id="pays"></div>
@@ -229,6 +241,7 @@ footer a{color:var(--m)}
       jur:n => 'Juriste : ' + n, since:d => 'Demande du ' + d,
       aTodo:(t, s) => `<b>À faire de votre côté</b>${s}`, aRej:'<b>Un point est à corriger</b>Votre juriste vous contacte. Grâce à notre garantie anti-rejet, la correction est à nos frais si l\'erreur vient de nous.',
       aDone:'<b>Votre société est créée 🎉</b>Tous vos documents vous ont été envoyés. Merci de votre confiance !', aArch:'<b>Dossier clôturé</b>Contactez-nous sur WhatsApp pour toute question.',
+      dh:'Mes documents', dp:'Les documents de votre société, partagés par votre juriste.', dOpen:'Ouvrir', dAdded:d => 'Ajouté le ' + d,
       rBig:`Gagnez <em>${COMMISSION} MAD</em> par société créée`,
       waTxt:r => `Bonjour, je vous écris au sujet de mon dossier ${r}.`
     },
@@ -245,6 +258,7 @@ footer a{color:var(--m)}
       jur:n => 'Legal advisor: ' + n, since:d => 'Request of ' + d,
       aTodo:(t, s) => `<b>Your next step</b>${s}`, aRej:'<b>Something needs fixing</b>Your legal advisor will contact you. With our anti-rejection guarantee, the fix is on us if the error was ours.',
       aDone:'<b>Your company is created 🎉</b>All your documents have been sent to you. Thank you for your trust!', aArch:'<b>File closed</b>Contact us on WhatsApp with any question.',
+      dh:'My documents', dp:'Your company documents, shared by your legal advisor.', dOpen:'Open', dAdded:d => 'Added on ' + d,
       rBig:`Earn <em>${COMMISSION} MAD</em> per company created`,
       waTxt:r => `Hello, I am writing about my file ${r}.`
     }
@@ -253,7 +267,8 @@ footer a{color:var(--m)}
 
   // Sample file for the preview (no server behind the page)
   const SAMPLE = { ref:'CE-482913', societe:'Atlas Digital', forme:'sarlau', plan:'pro', createdAt:new Date(Date.now() - 6 * 864e5).toISOString(),
-    step:3, archived:false, reject:false, juriste:'Salma', total:5980, payAmount:'avance', paid:{ avance:true } };
+    step:3, archived:false, reject:false, juriste:'Salma', total:5980, payAmount:'avance', paid:{ avance:true },
+    docs:[{ name:'Statuts - Atlas Digital.pdf', mime:'application/pdf', size:184000, createdAt:new Date(Date.now() - 864e5).toISOString(), url:'#' }] };
 
   function amounts(f){
     const t = f.total;
@@ -288,6 +303,13 @@ footer a{color:var(--m)}
     $('#pays').innerHTML = amounts(f).map(a => {
       const ok = !!(f.paid.full || f.paid[a.k]);
       return `<div class="pay"><div><small>${t.payL[a.k]}</small><b class="ltr">${a.v == null ? t.quote : fmt(a.v)}</b></div><span class="st ${ok ? 'y' : 'n'}">${ok ? t.paid : t.topay}</span></div>`;
+    }).join('');
+    const docs = f.docs || [], day = x => new Date(x).toLocaleDateString(lang === 'en' ? 'en-GB' : 'fr-FR', { day:'numeric', month:'short', year:'numeric' });
+    const size = n => n > 1e6 ? (n / 1e6).toFixed(1) + (lang === 'en' ? ' MB' : ' Mo') : Math.max(1, Math.round(n / 1e3)) + (lang === 'en' ? ' KB' : ' Ko');
+    $('#docsCard').hidden = !docs.length;
+    $('#docs').innerHTML = docs.map(x => {
+      const [ico, c] = x.mime === 'application/pdf' ? ['PDF', ''] : x.mime.startsWith('image/') ? ['IMG', 'img'] : ['W', 'w'];
+      return `<a class="doc" href="${esc(x.url)}" target="_blank" rel="noopener"><i class="${c}">${ico}</i><span><b>${esc(x.name)}</b><small>${esc(t.dAdded(day(x.createdAt)))} · <span class="ltr">${size(x.size)}</span></small></span><em>${t.dOpen} ↗</em></a>`;
     }).join('');
     $('#waBtn').href = `https://wa.me/${WA}?text=` + encodeURIComponent(t.waTxt(f.ref));
 
