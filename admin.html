@@ -614,6 +614,14 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   .track i{width:24px;height:24px;font-size:.64rem}
   .track .ts::before{top:11px}
 }
+/* Same width as the site navbar (nav.js, 1160px centred): the top bar and every page of the team space */
+@media (min-width:821px){
+  .top{width:min(1160px,100% - 32px);margin-inline:auto;box-sizing:border-box}
+  .body,.aw{width:min(1160px,100% - 32px);margin-inline:auto;box-sizing:border-box}
+  .body{margin-top:14px}.list{border:1px solid var(--line);border-radius:20px;overflow:hidden;align-self:start}
+  .hw{width:min(1160px,100% - 32px);padding-inline:0}
+  .ctr{padding-inline:0}
+}
 </style>
 </head>
 <body>
