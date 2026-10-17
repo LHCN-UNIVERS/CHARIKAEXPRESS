@@ -174,12 +174,19 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
 .hl .it.wait{opacity:.65}.hl .empty{padding:22px 18px;color:var(--m);font-size:.86rem}
 .i1{background:#ffe9f2}.i2{background:#e3f5ec}.i3{background:#fff4d6}.i4{background:#f1e9ff}.i5{background:#fde8e6}
 .hs{display:grid;gap:12px;min-width:0}
+.hsearch{display:flex;align-items:center;gap:10px;background:#fff;border:1.5px solid var(--ink);border-radius:16px;padding:0 14px;cursor:text}.hsearch svg{width:18px;height:18px;color:var(--m);flex:none}
+.hsearch input{flex:1;min-width:0;border:0;outline:none;background:none;padding:13px 0;font:500 .95rem var(--font);color:var(--ink)}.hsearch kbd{font:600 .7rem var(--font);border:1px solid var(--line);border-bottom-width:2px;border-radius:6px;padding:1px 6px;color:var(--m)}
+.htabs{display:flex;gap:4px;flex-wrap:wrap;padding:12px 14px 10px}.htabs button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 12px;font:700 .78rem var(--font);color:var(--m);cursor:pointer}
+.htabs button em{font-style:normal;background:#f4eef1;border-radius:99px;padding:0 6px;margin-inline-start:4px;font-size:.7rem}.htabs button.on{background:var(--ink);color:#fff;border-color:var(--ink)}.htabs button.on em{background:#ffffff26}
+.hl .it{cursor:pointer}.hl .it:hover{background:#fffaf7}.hl .it .t b span{font-weight:600;color:var(--m)}.hl .it > i{background:var(--blush,#fff0ec)}
+.hn .sw{margin-bottom:8px}.hn{display:grid;gap:8px;justify-items:start}
+.top .search{display:none!important}
 .hk{display:grid;grid-template-columns:1fr 1fr;gap:10px}.hk > div{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px;min-width:0}.hk small{color:var(--m);font-size:.74rem;display:block}.hk b{display:block;font-size:1.45rem;letter-spacing:-.02em;margin:2px 0}
 .hk .dk{background:var(--plum,#30102f);border:0;color:#fff}.hk .dk small{color:#e3cbdd}.hk .dk b{color:#ffc145}
 .hk .pb{height:7px;border-radius:7px;background:var(--line);overflow:hidden;margin-top:8px}.hk .pb i{display:block;height:100%;background:var(--grad)}
 .hn{background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px 16px}.hn h4{margin:0 0 8px;font-size:.88rem;display:flex;justify-content:space-between}.hn h4 small{color:var(--m);font-weight:600}
 .hn .rw{display:flex;gap:10px;align-items:center;padding:8px 0;border-top:1px solid var(--line);font-size:.82rem}.hn .rw span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.hn .rw small{color:var(--m)}
-@media (max-width:980px){.hg{grid-template-columns:1fr}.hs{order:-1}}
+@media (max-width:980px){.hg{grid-template-columns:1fr}.hsearch kbd{display:none}.htabs{flex-wrap:nowrap;overflow-x:auto}.htabs button{flex:none}}
 @media (max-width:520px){.hw{padding:16px}.hl .it{padding:10px 12px;gap:10px}.hl .it .btn{padding:6px 10px}}
 .ad .tb-codes{display:grid;gap:12px}
 .aw{display:grid;grid-template-columns:340px minmax(0,1fr);min-height:100%}
@@ -654,7 +661,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   <header class="top">
     <div class="logo"><i></i>Charika <span>Express</span></div>
     <span class="space">Espace équipe</span>
-    <nav class="seg" aria-label="Sections"><button type="button" class="on" id="segHome" aria-current="page">Accueil</button><button type="button" id="segReq">Demandes</button><button type="button" id="affBtn" hidden>Partenaires</button><button type="button" id="ctrBtn" hidden>Centres</button></nav>
+    <nav class="seg" aria-label="Sections"><button type="button" class="on" id="segHome" aria-current="page">Dossiers</button><button type="button" id="segReq" hidden>Demandes</button><button type="button" id="affBtn" hidden>Partenaires</button><button type="button" id="ctrBtn" hidden>Centres</button></nav>
     <label class="search" for="q"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="q" type="search" placeholder="Rechercher : réf, nom, téléphone, CIN…" aria-label="Rechercher" autocomplete="off"><kbd title="Raccourci clavier">/</kbd></label>
     <div class="r">
       <button class="ib bell" id="bell" type="button" title="Nouvelles demandes non lues" aria-label="Nouvelles demandes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><b id="bellN" hidden>0</b></button>
@@ -673,8 +680,8 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     </div>
   </header>
   <nav class="tabbar" id="tabbar" aria-label="Navigation">
-    <button type="button" class="on" id="tbHome"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg><span>Accueil</span></button>
-    <button type="button" id="tbReq"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg><span>Demandes</span><b id="tbN" hidden>0</b></button>
+    <button type="button" class="on" id="tbHome"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg><span>Dossiers</span></button>
+    <button type="button" id="tbReq" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg><span>Demandes</span><b id="tbN" hidden>0</b></button>
     <button type="button" id="tbAff" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M21.5 20a6.5 6.5 0 0 0-4-6"/></svg><span>Partenaires</span></button>
     <button type="button" id="tbCtr" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16M16 9h3a1 1 0 0 1 1 1v11M2 21h20M8 7h4M8 11h4M8 15h4"/></svg><span>Centres</span></button>
   </nav>
@@ -691,7 +698,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
     </aside>
     <div class="detail" id="detail"></div>
   </div>
-  <main class="affpage" id="homem" aria-label="Ma journée"><div class="hw" id="homeBox"></div></main>
+  <main class="affpage" id="homem" aria-label="Dossiers"><div class="hw" id="homeBox"></div></main>
   <main class="affpage" id="affm" hidden aria-label="Partenaires"><div class="aw" id="affBox"></div></main>
   <main class="affpage" id="ctrm" hidden aria-label="Centres de domiciliation"><div class="aw" id="ctrBox"></div></main>
 </div>
@@ -1852,7 +1859,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
       navigator.clipboard?.writeText(txt).then(() => toast('E-mail copié : collez-le dans votre messagerie'), () => toast('Copie impossible'));
       return;
     }
-    if (t.id === 'back') { $('#body').classList.remove('open'); return; }
+    if (t.id === 'back') { $('#body').classList.remove('open'); current = null; showPage('home'); return; }
     if (t.id === 'rejOpen' || t.id === 'rejCancel') { rejectOpen = t.id === 'rejOpen'; renderDetail(); if (rejectOpen) $('#rejMotif').focus(); return; }
     if (t.closest('#rejForm')) return;                  // the form's own submit
     if (t.id === 'stepNext') {                          // one step forward, after a step back
@@ -2024,71 +2031,95 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   document.addEventListener('click', e => { if (!$('#umenu').hidden && !e.target.closest('.mewrap')) menu(false); });
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape' && !$('#umenu').hidden) { menu(false); $('#meBtn').focus(); }
-    if (e.key === '/' && !e.target.closest('input,textarea,select,[contenteditable]') && !$('#appView').hidden) { e.preventDefault(); $('#q').focus(); }
+    if (e.key === '/' && !e.target.closest('input,textarea,select,[contenteditable]') && !$('#appView').hidden) { e.preventDefault(); if (PAGE !== 'home') showPage('home'); $('#hq')?.focus(); }
   });
   // Sections: « Demandes » (list + file), the « Partenaires » page or the « Centres » page
   let PAGE = 'home';
   // « Ma journée »: one list of the next action of every file, sorted by urgency. A file not touched for 2 days is late.
   let homeAll = false;
   const daysSince = iso => Math.floor((Date.now() - Date.parse(iso || 0)) / 864e5);
-  function renderHome(){
-    if (!me || !db) return;
+  // « Dossiers »: one list of files, each with its next action. Tabs: to do, new, waiting for the client, all, delivered; a search on top.
+  let homeTab = 'todo', homeQ = '';
+  function homeData(){
     const all = me.role === 'admin' && homeAll;
     const live = db.requests.filter(r => allowed(r) && !r.archived);
-    const files = live.filter(r => r.kind !== 'rappel' && r.step < DONE && r.juriste && (all || r.juriste === me.id));
-    const late = [], today = [], wait = [];
-    const row = (ico, cls, t, sub, act, d) => `<div class="it"><i class="${cls}">${ico}</i><div class="t"><b>${esc(t)}</b><small>${esc(sub)}</small></div>${d >= 2 ? `<span class="late">+${d} j</span>` : ''}${act}</div>`;
-    const openBtn = r => `<button class="btn b-soft b-sm" data-hopen="${esc(r.ref)}">Ouvrir</button>`;
-    // Call-back requests from the homepage
-    live.filter(r => r.kind === 'rappel' && (all || !r.juriste || r.juriste === me.id)).forEach(r => {
-      const d = daysSince(r.createdAt), tel = (r.client?.tel || '').replace(/\s/g, '');
-      (d >= 1 ? late : today).push(row('📞', 'i1', 'Rappeler ' + (r.client?.nom || ''), `${r.ref} · demande de rappel · ${when(r.createdAt)}`, tel ? `<a class="btn b-wa b-sm" href="tel:${esc(tel)}">Appeler</a>` : openBtn(r), d >= 1 ? Math.max(d, 2) : 0));
-    });
-    files.forEach(r => {
-      const d = daysSince(r.updatedAt), who = all && member(r.juriste) ? ' · ' + member(r.juriste).name : '', base = `${r.ref} · ${title(r)} · ${stepName(r.step)}${who}`;
-      if (r.reject) { late.push(row('⚠', 'i5', 'Dossier rejeté : ' + (r.reject.motif || ''), base, openBtn(r), Math.max(d, 2))); return; }
-      const k = msgKey(r);
-      if (k && k !== 'libre' && !(r.sent || {})[k]) {
-        const btn = `<a class="btn b-wa b-sm" data-hsend="${esc(r.ref)}" href="${waLink(r.client?.tel, msgText(r, k, r.msgLang || 'fr'))}" target="_blank" rel="noopener">Envoyer</a>`;
-        (d >= 2 ? late : today).push(row('📩', 'i1', 'Prévenir le client : ' + msgOf(k).title, base, btn, d)); return;
+    const mine = r => r.juriste && (all || r.juriste === me.id);
+    const wa = (href, label, attr = '') => `<a class="btn b-wa b-sm" href="${href}" target="_blank" rel="noopener" ${attr}>${label}</a>`;
+    const take = r => `<button class="btn b-ink b-sm" data-htake="${esc(r.ref)}">Prendre</button>`;
+    const openB = r => `<button class="btn b-soft b-sm" data-hopen="${esc(r.ref)}">Ouvrir</button>`;
+    const rows = [];
+    live.forEach(r => {
+      const d = daysSince(r.updatedAt), who = all && member(r.juriste) ? ' · ' + member(r.juriste).name : '';
+      const base = `${r.ref} · ${r.kind === 'rappel' ? 'demande de rappel' : stepName(r.step)}${who}`;
+      let x = null;
+      if (r.kind === 'rappel') {
+        const tel = (r.client?.tel || '').replace(/\s/g, '');
+        if (!r.juriste || mine(r)) x = { cat:!r.juriste ? 'new' : 'todo', ico:'📞', act:'rappeler', btn:tel ? `<a class="btn b-wa b-sm" href="tel:${esc(tel)}">Appeler</a>` : openB(r), d:daysSince(r.createdAt) };
+      } else if (r.step >= DONE) x = { cat:'done', ico:'✓', act:'dossier livré', btn:openB(r), d:0 };
+      else if (!r.juriste) x = { cat:'new', ico:'🆕', act:'nouvelle demande', sub:`${r.ref} · ${FORMES[r.forme] || ''}${r.ville ? ' · ' + r.ville : ''} · ${when(r.createdAt)}`, btn:take(r), d:0 };
+      else {
+        const k = msgKey(r), tk = nextTask(r);
+        if (r.reject) x = { cat:'todo', ico:'⚠', act:'dossier rejeté : ' + (r.reject.motif || ''), btn:openB(r), d:Math.max(d, 2) };
+        else if (k && k !== 'libre' && !(r.sent || {})[k]) x = { cat:'todo', ico:'📩', act:'prévenir le client', sub:`${r.ref} · ${msgOf(k).title}${who}`, btn:wa(waLink(r.client?.tel, msgText(r, k, r.msgLang || 'fr')), 'Envoyer', `data-hsend="${esc(r.ref)}"`), d };
+        else if (tk && waitsClient(r)) {
+          const msg = `Bonjour ${r.client?.nom || ''}, petit rappel pour votre dossier ${r.ref} : ${taskName(r, tk).toLowerCase()}. Merci !`;
+          x = d >= 2 ? { cat:'todo', ico:tk.t === 'pay' ? '💳' : '⏳', act:'relancer : ' + taskName(r, tk).toLowerCase(), btn:wa(waLink(r.client?.tel, msg), 'Relancer'), d }
+            : { cat:'wait', ico:tk.t === 'pay' ? '💳' : '⏳', act:taskName(r, tk).toLowerCase(), btn:wa(waLink(r.client?.tel, msg), 'Relancer'), d };
+        } else if (tk) x = { cat:'todo', ico:tk.t === 'doc' ? '📄' : '🏛️', act:taskName(r, tk).toLowerCase(), btn:openB(r), d };
+        else x = { cat:'todo', ico:'➡', act:'passer à l\'étape suivante', btn:openB(r), d };
+        if (!mine(r)) x.cat = 'other';
       }
-      const tk = nextTask(r); if (!tk) return;
-      if (waitsClient(r)) {
-        const msg = `Bonjour ${r.client?.nom || ''}, petit rappel pour votre dossier ${r.ref} : ${taskName(r, tk).toLowerCase()}. Merci !`;
-        (d >= 2 ? late : wait).push(row(tk.t === 'pay' ? '💳' : '⏳', 'i3', (d >= 2 ? 'Relancer : ' : 'Attend le client : ') + taskName(r, tk), base, d >= 2 ? `<a class="btn b-wa b-sm" href="${waLink(r.client?.tel, msg)}" target="_blank" rel="noopener">Relancer</a>` : openBtn(r), d));
-        return;
-      }
-      (d >= 2 ? late : today).push(row(tk.t === 'doc' ? '✍️' : '🏛️', tk.t === 'doc' ? 'i2' : 'i4', taskName(r, tk), base, openBtn(r), d));
+      if (x) rows.push(Object.assign({ r, sub:base }, x));
     });
-    // Figures
+    const prio = x => (isPrio(x.r) ? 1 : 0);
+    rows.sort((a, b) => prio(b) - prio(a) || (b.d >= 2) - (a.d >= 2) || b.d - a.d || Date.parse(b.r.updatedAt) - Date.parse(a.r.updatedAt));
+    return { all, live, rows };
+  }
+  const HTABS = [['todo', 'À faire'], ['new', 'Nouvelles'], ['wait', 'Attend le client'], ['all', 'Tous'], ['done', 'Livrés']];
+  function homeRows(data){
+    const q = homeQ.trim().toLowerCase();
+    let list = data.rows.filter(x => q ? true : homeTab === 'all' ? x.cat !== 'done' : x.cat === homeTab);
+    if (q) list = list.filter(x => { const r = x.r; return [r.ref, ...(r.noms || []), r.cn?.nom, r.client?.nom, r.client?.tel, r.client?.email, ...(r.partners || []).flatMap(p => [p.name, p.cin])].join(' ').toLowerCase().includes(q); });
+    if (!list.length) return `<div class="empty">${q ? 'Aucun dossier ne correspond.' : homeTab === 'todo' ? '✓ Rien à faire pour l\'instant.' : 'Aucun dossier ici.'}</div>`;
+    return list.map(x => `<div class="it ${x.cat === 'wait' ? 'wait' : ''}" data-hrow="${esc(x.r.ref)}" tabindex="0" role="button"><i>${x.ico}</i><div class="t"><b>${esc(title(x.r))} <span>· ${esc(x.act)}</span>${isPrio(x.r) ? ' <em class="prio">⚡</em>' : ''}</b><small>${esc(x.sub)}</small></div>${x.d >= 2 && x.cat !== 'done' ? `<span class="late">+${x.d} j</span>` : ''}${x.btn}</div>`).join('');
+  }
+  function renderHome(){
+    if (!me || !db) return;
+    const data = homeData(), { all, live, rows } = data;
+    const cnt = k => rows.filter(x => k === 'all' ? x.cat !== 'done' : x.cat === k).length;
     const act = live.filter(r => r.kind !== 'rappel' && r.step < DONE);
     let paid = 0, due = 0;
     live.filter(r => r.kind !== 'rappel').forEach(r => amounts(r).forEach(a => { if (a.v == null) return; due += a.v; if (payDone(r, a.k)) paid += a.v; }));
     const m0 = new Date(); m0.setDate(1); m0.setHours(0, 0, 0, 0);
     const delivered = live.filter(r => r.step >= DONE && Date.parse(r.updatedAt) >= +m0).length;
     const week = live.filter(r => daysSince(r.createdAt) < 7).length;
-    const take = live.filter(r => r.kind !== 'rappel' && r.step < DONE && !r.juriste);
-    const n = late.length + today.length, hour = new Date().getHours();
-    const sec = (t, list) => list.length ? `<div class="sec">${t}</div>${list.join('')}` : '';
+    const focus = document.activeElement?.id === 'hq';
     $('#homeBox').innerHTML = `
-      <div class="hi"><div><h1>${hour < 18 ? 'Bonjour' : 'Bonsoir'} ${esc(me.name.split(' ')[0])} 👋</h1><p>${esc(new Date().toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long' }))} · ${n ? `${n} action${n > 1 ? 's' : ''} aujourd'hui${late.length ? `, dont ${late.length} en retard` : ''}` : 'rien d\'urgent pour l\'instant'}</p></div>
-        <div class="r">${me.role === 'admin' ? `<div class="sw" role="group" aria-label="Dossiers"><button data-hall="0" class="${all ? '' : 'on'}">Mes dossiers</button><button data-hall="1" class="${all ? 'on' : ''}">Toute l'équipe</button></div>` : ''}<button class="btn b-soft b-sm" data-hgo="req">Tous les dossiers</button></div></div>
-      <div class="hg"><div class="hl">${sec('🔴 En retard', late)}${sec("Aujourd'hui", today)}${sec('En attente du client · rien à faire', wait)}${!late.length && !today.length && !wait.length ? `<div class="empty">✓ Aucune action pour l'instant.${take.length ? ' Prenez une nouvelle demande à droite.' : ''}</div>` : ''}</div>
+      <label class="hsearch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="hq" type="search" value="${esc(homeQ)}" placeholder="Rechercher un dossier : nom, référence, téléphone, CIN…" autocomplete="off" aria-label="Rechercher un dossier"><kbd>/</kbd></label>
+      <div class="hg"><div class="hl"><div class="htabs" role="tablist">${HTABS.map(([k, l]) => `<button role="tab" data-htab="${k}" class="${!homeQ && homeTab === k ? 'on' : ''}" aria-selected="${!homeQ && homeTab === k}">${l} <em>${cnt(k)}</em></button>`).join('')}</div><div id="hList">${homeRows(data)}</div></div>
         <div class="hs"><div class="hk">
           <div class="dk"><small>Encaissé · dossiers ouverts</small><b>${fmt(paid)} MAD</b><small>sur ${fmt(due)} attendus</small></div>
-          <div><small>Nouvelles demandes</small><b>${week}</b><small>ces 7 derniers jours</small></div>
           <div><small>Dossiers en cours</small><b>${act.length}</b><small>dont ${act.filter(r => r.juriste === me.id).length} à moi</small></div>
+          <div><small>Nouvelles demandes</small><b>${week}</b><small>ces 7 derniers jours</small></div>
           <div><small>Livrés ce mois</small><b>${delivered}</b><div class="pb"><i style="width:${act.length + delivered ? Math.round(delivered / (act.length + delivered) * 100) : 0}%"></i></div></div></div>
-          <div class="hn"><h4>Nouvelles demandes <small>${take.length ? 'à prendre' : 'aucune'}</small></h4>${take.slice(0, 6).map(r => `<div class="rw"><span><b>${esc(title(r))}</b> <small>· ${esc(FORMES[r.forme] || '')}${r.ville ? ' · ' + esc(r.ville) : ''}</small></span><button class="btn b-soft b-sm" data-hopen="${esc(r.ref)}">Voir</button><button class="btn b-ink b-sm" data-htake="${esc(r.ref)}">Prendre</button></div>`).join('') || '<p class="hint" style="margin:0">Tout est attribué.</p>'}</div></div></div>`;
+          <div class="hn"><h4>Raccourcis</h4>${me.role === 'admin' ? `<div class="sw" role="group" aria-label="Dossiers"><button data-hall="0" class="${all ? '' : 'on'}">Mes dossiers</button><button data-hall="1" class="${all ? 'on' : ''}">Toute l'équipe</button></div>` : ''}
+            <button class="btn b-soft b-sm" data-hexport>⬇ Exporter la liste (CSV)</button></div></div></div>`;
+    if (focus) { const i = $('#hq'); i.focus(); i.setSelectionRange(i.value.length, i.value.length); }
   }
+  $('#homeBox').addEventListener('input', e => { if (e.target.id !== 'hq') return; homeQ = e.target.value; $('#hList').innerHTML = homeRows(homeData()); document.querySelectorAll('[data-htab]').forEach(b => b.classList.toggle('on', !homeQ && b.dataset.htab === homeTab)); });
+  $('#homeBox').addEventListener('keydown', e => { const row = e.target.closest?.('[data-hrow]'); if (row && (e.key === 'Enter' || e.key === ' ') && e.target === row) { e.preventDefault(); open(row.dataset.hrow); } });
   $('#homeBox').addEventListener('click', e => {
     const o = e.target.closest('[data-hopen]'); if (o) { open(o.dataset.hopen); return; }
+    const tb = e.target.closest('[data-htab]'); if (tb) { homeTab = tb.dataset.htab; homeQ = ''; renderHome(); return; }
+    if (e.target.closest('[data-hexport]')) { $('#exportBtn').click(); return; }
     const g = e.target.closest('[data-hgo]'); if (g) { showPage(g.dataset.hgo); return; }
     const a = e.target.closest('[data-hall]'); if (a) { homeAll = a.dataset.hall === '1'; renderHome(); return; }
     const t = e.target.closest('[data-htake]');
     if (t) { const r = get(t.dataset.htake); if (r && !r.juriste) { r.juriste = me.id; r.seen = true; log(r, `${me.name} prend le dossier.`); renderList(); toast('Dossier assigné à vous'); } return; }
     const s = e.target.closest('[data-hsend]');
-    if (s) { const r = get(s.dataset.hsend), k = r && msgKey(r); if (r && k) { r.sent = r.sent || {}; r.sent[k] = new Date().toISOString(); log(r, `Message WhatsApp envoyé au client : ${msgOf(k).title} (${(r.msgLang || 'fr') === 'ar' ? 'darija' : 'français'}).`); setTimeout(() => { renderList(); }, 0); } }
+    if (s) { const r = get(s.dataset.hsend), k = r && msgKey(r); if (r && k) { r.sent = r.sent || {}; r.sent[k] = new Date().toISOString(); log(r, `Message WhatsApp envoyé au client : ${msgOf(k).title} (${(r.msgLang || 'fr') === 'ar' ? 'darija' : 'français'}).`); setTimeout(() => { renderList(); }, 0); } return; }
+    if (e.target.closest('a,button,input')) return;
+    const row = e.target.closest('[data-hrow]'); if (row) open(row.dataset.hrow);
   });
   function showPage(p){
     PAGE = p;
