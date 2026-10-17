@@ -351,6 +351,11 @@ input.f:focus,select.f:focus,textarea.f:focus{border-color:var(--pink);box-shado
 .cnl input{font:600 .88rem var(--font);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px;text-transform:none;letter-spacing:0;min-width:0}
 .cnl em{font-style:normal;text-transform:none;letter-spacing:0;font-weight:600;color:var(--m);font-size:.7rem;min-height:1em}.cnl em.ok{color:var(--ok)}
 .k1 .slide.wide{grid-template-columns:1fr}
+.vault{display:grid;gap:8px}.vdrop{display:grid;gap:2px;border:1.5px dashed #ffc2d6;background:#fff8fb;border-radius:14px;padding:12px 14px;cursor:pointer}.vdrop input{position:absolute;opacity:0;width:1px;height:1px}
+.vdrop b{font-size:.86rem}.vdrop span{font-size:.74rem;color:var(--m)}.vdrop:hover{border-color:var(--pink)}.vdrop:focus-within{outline:2px solid var(--pink)}
+.vsec{font-size:.66rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--m);margin-top:6px}
+.vrow{display:flex;gap:10px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:7px 8px 7px 10px;background:#fff}.vrow span{flex:1;min-width:0}.vrow span a{font-weight:700;font-size:.82rem;color:var(--ink);text-decoration:none;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.vrow small{color:var(--m);font-size:.7rem}
+.vrow i{font-style:normal;width:30px;height:30px;border-radius:8px;display:grid;place-items:center;font-size:.6rem;font-weight:800;flex:none}.vrow i.doc{background:#e8f0fe;color:#2b5797}.vrow i.pdf{background:#fdecea;color:#c0362c}.vrow i.img{background:#e3f5ec;color:var(--ok)}
 .gcar{display:grid;grid-template-columns:minmax(0,1fr) 150px;gap:12px;margin-bottom:12px;align-items:stretch}.gcar.last{grid-template-columns:1fr}
 .gcard{background:#fff;border:1px solid var(--line);border-radius:20px;padding:16px;display:grid;gap:12px;box-shadow:0 20px 40px -28px #30102f55;min-width:0}
 .gcard h5{margin:0;font-size:.98rem}
@@ -1491,6 +1496,33 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
       <div class="gact"><button type="button" class="btn b-grad" id="annGo" ${x.ok && rc ? '' : 'disabled'}>📄 Générer l'annonce légale</button></div>` : ''}
       ${x.ok ? '' : '<p class="gnote">Complétez d\'abord la carte « Générer les documents » de l\'étape Rédaction.</p>'}</div>`;
   }
+  // ---------- The file vault: generated documents and scans, kept on the server for each company file (server/vault.js) ----------
+  const VAULT = {}, vaultLoading = new Set();
+  async function loadVault(ref){
+    vaultLoading.add(ref);
+    try { const res = await api('vault/' + ref); if (res.ok) VAULT[ref] = (await res.json()).files; } catch (e) {}
+    vaultLoading.delete(ref); if (current === ref) renderDetail();
+  }
+  const b64 = bytes => { let s = ''; for (let i = 0; i < bytes.length; i += 0x8000) s += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000)); return btoa(s); };
+  async function vaultAdd(ref, files, replaceGen){
+    const res = await api('vault/' + ref, { method:'POST', body:JSON.stringify({ files, replaceGen:!!replaceGen }) });
+    const j = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(j.error === 'file_too_large' ? 'fichier trop lourd (1,2 Mo maximum)' : j.error === 'bad_file_type' ? 'type de fichier non accepté (PDF, image ou Word)' : 'envoi impossible');
+    VAULT[ref] = replaceGen ? (VAULT[ref] || []).filter(f => f.kind !== 'gen') : (VAULT[ref] || []);
+    VAULT[ref] = [...j.files, ...VAULT[ref]];
+  }
+  const fileIco = m => m === 'application/pdf' ? ['PDF', 'pdf'] : m.startsWith('image/') ? ['IMG', 'img'] : ['W', 'doc'];
+  const kb = n => n > 1e6 ? (n / 1e6).toFixed(1).replace('.', ',') + ' Mo' : Math.max(1, Math.round(n / 1e3)) + ' Ko';
+  function vaultHtml(r, canEdit){
+    if (!SERVER) return '<div class="box"><h4>🔐 Coffre-fort</h4><p class="hint">Le coffre-fort garde les documents sur le serveur : il fonctionne sur le site en ligne.</p></div>';
+    const fs = VAULT[r.ref];
+    const row = f => { const [t, c] = fileIco(f.mime), w = member(f.by); return `<div class="vrow"><i class="${c}">${t}</i><span><a href="/api/admin/vault-file/${esc(f.id)}" target="_blank" rel="noopener">${esc(f.name)}</a><small>${f.kind === 'gen' ? 'Généré' : 'Ajouté'} ${esc(when(f.createdAt))}${w ? ' · ' + esc(w.name) : ''} · ${kb(f.size)}</small></span>
+      <a class="btn b-soft b-sm" href="/api/admin/vault-file/${esc(f.id)}" download="${esc(f.name)}" aria-label="Télécharger ${esc(f.name)}">⬇</a>${me.role === 'admin' || f.by === me.id ? `<button class="btn b-soft b-sm" data-vdel="${esc(f.id)}" aria-label="Supprimer ${esc(f.name)}">✕</button>` : ''}</div>`; };
+    const gen = (fs || []).filter(f => f.kind === 'gen'), scan = (fs || []).filter(f => f.kind !== 'gen');
+    return `<div class="box vault"><h4>🔐 Coffre-fort <small>${fs ? `${fs.length} fichier${fs.length > 1 ? 's' : ''}` : 'chargement…'}</small></h4>
+      ${canEdit ? `<label class="vdrop"><input type="file" id="vaultIn" multiple accept="application/pdf,image/jpeg,image/png,image/webp,.docx"><b>＋ Ajouter des fichiers</b><span>PDF, photo ou Word · 1,2 Mo maximum chacun : documents légalisés, RC, ICE, attestation…</span></label>` : ''}
+      ${fs ? `${gen.length ? `<div class="vsec">📄 Documents générés</div>${gen.map(row).join('')}` : ''}${scan.length ? `<div class="vsec">📎 Documents ajoutés</div>${scan.map(row).join('')}` : ''}${!fs.length ? '<p class="hint" style="margin:0">Aucun fichier. Les documents générés à l\'étape Rédaction arrivent ici automatiquement.</p>' : ''}` : ''}</div>`;
+  }
   // Identity sheets: what the documents need about each partner and the manager (from the CIN or passport the client sent)
   function idWindow(r){
     const ps = people(r), cur = ps.find(p => p.k === idOpen) || ps[0]; if (!cur) return '';
@@ -1644,6 +1676,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
       <div class="sums">
         ${sumCard('pay', '💳 Paiements', `${fmt(paidSum)} / ${r.total == null ? 'devis' : fmt(r.total) + ' MAD'}`, r.total ? paidSum / r.total * 100 : null)}
         ${sumCard('docs', '📚 Documents', `${livOk} / ${docsTotal(r)} obtenus`, livOk / docsTotal(r) * 100)}
+        ${sumCard('vault', '🔐 Coffre-fort', SERVER ? (VAULT[r.ref] ? `${VAULT[r.ref].length} fichier${VAULT[r.ref].length > 1 ? 's' : ''}` : '…') : 'site en ligne', null)}
         ${sumCard('hist', '🕑 ' + (lastNote && lastNote.t === 'note' ? 'Dernière note' : 'Historique'), lastNote ? esc(`${lnw ? lnw.name + ' · ' : ''}${lastNote.text}`.slice(0, 60)) : 'Aucune note', null)}
       </div></aside>`;
     const panelHtml = `
@@ -1664,6 +1697,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
           </div></div>`; }).join('')}</div>
       </div>
       </div>` : ''}
+      ${moreOpen === 'vault' ? `<div class="morep">${vaultHtml(r, canEdit)}</div>` : ''}
       ${moreOpen === 'hist' ? `<div class="morep">
       <div class="box"><h4>Historique et notes de l'équipe <small>visibles par l'équipe seulement</small></h4>
         <div class="feed" id="feed">${r.notes.map(n => { const w = member(n.by); return `<div class="msg ${n.t === 'sys' ? 'sys' : ''}"><span class="av" style="--c:${w ? w.c : '#c9b6c4'}">${n.t === 'sys' && !w ? '•' : esc((w?.name || '?')[0])}</span><div><small>${n.t === 'sys' ? 'Suivi' : 'Note'}${w ? ' · ' + esc(w.name) : ''} · ${when(n.at)}</small>${esc(n.text)}</div></div>`; }).join('')}</div>
@@ -1671,6 +1705,7 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
       </div>
       </div>` : ''}
     `;
+    if (SERVER && !VAULT[r.ref] && !vaultLoading.has(r.ref)) loadVault(r.ref);
     const genWide = vi === 2 && r.forme !== 'ae';      // drafting: the generation carousel shows all the data, full width instead of the sheet
     const slide = `${r.step >= DONE ? '<div class="tile hot" style="text-align:center"><b>✓ Dossier livré</b><small>Tous les documents ont été envoyés au client.</small></div>' : ''}
       <div class="k1">${side}<div class="kmain">
@@ -1776,12 +1811,21 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
             docs.forEach(d => { const k = GEN_TASK[d.id]; if (k && !r.livrables[k]) r.livrables[k] = 1; });
             log(r, `Documents générés (${docs.length}) : ${docs.map(d => d.label).join(', ')}.`);
             download(`${r.ref} - ${title(r)}.zip`, M.zipper(docs), 'application/zip'); toast(`${docs.length} documents générés ✓`);
+            if (SERVER) vaultAdd(r.ref, docs.map(d => ({ name:d.filename, mime:DOCX, data:b64(d.octets), kind:'gen' })), true)
+              .then(() => { toast(`${docs.length} documents rangés dans le coffre-fort 🔐`); renderDetail(); }, err => toast('Coffre-fort : ' + err.message));
           } else if (kind === 'zip') download(`${r.ref} - ${title(r)}.zip`, M.zipper(docs), 'application/zip');
-          else if (kind === 'ann') { const d = docs.find(x => x.id === 'annonce-legale'); download(d.filename, d.octets, DOCX); log(r, `Annonce légale générée avec le RC n° ${r.gen.numRC}.`); toast('Annonce légale générée ✓'); }
+          else if (kind === 'ann') { const d = docs.find(x => x.id === 'annonce-legale'); download(d.filename, d.octets, DOCX); log(r, `Annonce légale générée avec le RC n° ${r.gen.numRC}.`); toast('Annonce légale générée ✓');
+            if (SERVER) vaultAdd(r.ref, [{ name:d.filename.replace(/\.docx$/, ` (RC ${r.gen.numRC}).docx`), mime:DOCX, data:b64(d.octets), kind:'scan' }]).then(() => renderDetail(), () => {}); }
           else { const d = docs.find(x => x.id === b.dataset.gdl); if (d) download(d.filename, d.octets, DOCX); }
         } catch (err) { toast(genErr(err)); console.warn(err); }
         renderDetail(); if (b.isConnected) { b.disabled = false; b.textContent = label; }
       })();
+      return;
+    }
+    const vd = e.target.closest('[data-vdel]');
+    if (vd) {
+      if (!armed(vd, 'Confirmer : supprimer')) return;
+      api('vault-file/' + vd.dataset.vdel, { method:'DELETE' }).then(res => { if (!res.ok) return toast('Suppression impossible'); VAULT[r.ref] = (VAULT[r.ref] || []).filter(f => f.id !== vd.dataset.vdel); renderDetail(); toast('Fichier supprimé'); });
       return;
     }
     if (e.target.closest('[data-idopen]')) { const ps = people(r); idOpen = (ps.find(p => !idState((r.ids || {})[p.k]).complete || idState(r.ids[p.k]).expired) || ps[0])?.k || null; renderDetail(); setTimeout(() => $('#idNom')?.focus(), 0); return; }
@@ -1961,6 +2005,17 @@ h2 .prio{font-size:.7rem;vertical-align:3px}
   });
   $('#detail').addEventListener('change', e => {
     if (e.target.id === 'msgPick') { msgSel = e.target.value; renderDetail(); return; }
+    if (e.target.id === 'vaultIn') {
+      const r = get(current), list = [...e.target.files]; if (!r || !list.length) return;
+      (async () => {
+        try {
+          const files = await Promise.all(list.map(async f => ({ name:f.name, mime:f.type || (f.name.endsWith('.docx') ? DOCX : ''), data:b64(new Uint8Array(await f.arrayBuffer())), kind:'scan' })));
+          toast('Envoi…'); await vaultAdd(r.ref, files); log(r, `Coffre-fort : ${files.map(f => f.name).join(', ')} ajouté${files.length > 1 ? 's' : ''}.`); persist(); toast(`${files.length} fichier${files.length > 1 ? 's' : ''} ajouté${files.length > 1 ? 's' : ''} ✓`);
+        } catch (err) { toast('Coffre-fort : ' + err.message); }
+        renderDetail();
+      })();
+      return;
+    }
     if (e.target.dataset.gen) { persist(); if (e.target.tagName === 'SELECT' || e.target.dataset.gen === 'ville') renderDetail(); return; }   // text fields are kept as typed (input event), without redrawing
     if (e.target.id === 'cnExp') { const r = get(current); r.cnExp = e.target.value || null; log(r, r.cnExp ? `Certificat négatif valable jusqu'au ${new Date(r.cnExp).toLocaleDateString('fr-FR')}.` : 'Date de validité du certificat négatif effacée.'); persist(); renderDetail(); return; }
     if (e.target.id !== 'assign') return;

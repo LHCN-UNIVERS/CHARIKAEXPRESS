@@ -3,6 +3,7 @@
 //   GET  /api/admin/requests        -> every request (the full file as saved by the team space)
 //   PUT  /api/admin/requests/:ref   -> save one file; refused (409) if a colleague saved it in the meantime
 //   GET  /api/admin/team, POST /api/admin/team, PUT /api/admin/team/:id  -> manage the team (admin only)
+//   /api/admin/vault/:ref, vault-file/:id -> the documents of a company file (see server/vault.js)
 //   /api/admin/affiliates…, /api/admin/codes/:code  -> partner programme (admin only, see server/affiliate.js)
 //   /api/admin/push-*               -> phone notifications (see server/push.js)
 //   /api/admin/centres…, domi…, centre-files/:id -> domiciliation centres (see server/centres.js)
@@ -12,6 +13,7 @@ import { sessionEmail, sameOrigin, hashPassword, changePassword } from './auth.j
 import { adminAffiliates } from './affiliate.js';
 import { pushApi } from './push.js';
 import { adminCentres } from './centres.js';
+import { vaultApi } from './vault.js';
 
 const COLORS = ['linear-gradient(100deg,#ff7a59,#ff4f9a)', '#7a5cff', '#14a3a3', '#e0a100', '#e5533d', '#2f80ed', '#1d9a62', '#b04ad8'];
 const pretty = email => email.split('@')[0].split(/[._-]+/).filter(Boolean).map(w => w[0].toUpperCase() + w.slice(1)).join(' ') || email;
@@ -56,6 +58,7 @@ export async function adminApi(request, env, path){
     }
     if (path === 'centres' || path.startsWith('centres/') || path === 'domi' || path.startsWith('domi/') || path.startsWith('centre-files/'))
       return await adminCentres(request, env, path, me, tempPassword);   // the centres are admin only, a file's domiciliation is for the whole team
+    if (path.startsWith('vault/') || path.startsWith('vault-file/')) return await vaultApi(request, env, path, me);   // each company file's documents
     if (path === 'team' || path.startsWith('team/')) {
       if (me.role !== 'admin') throw new HttpError(403, 'admin_only');
       if (method === 'GET' && path === 'team') {
